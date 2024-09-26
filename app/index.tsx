@@ -4,8 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Home = () => {
   return (
-    <SafeAreaView className='flex flex-1 justify-center items-center'>
-        <Text className='text-3xl text-white'>Home</Text>
+    <SafeAreaView className='flex flex-1 justify-center items-center dark:bg-darkGray-500'>
+        <Text className='font-ralewayBold text-3xl text-darkGray-500 dark:text-white-100 '>Home Poligym</Text>
     </SafeAreaView>
   )
 }
