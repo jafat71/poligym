@@ -1,17 +1,16 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { useColorScheme } from 'react-native';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     "Raleway-Bold": require("../assets/fonts/Raleway-Bold.ttf"),
     "Raleway-ExtraBold": require("../assets/fonts/Raleway-ExtraBold.ttf"),
@@ -33,12 +32,15 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider >
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        {/* <Stack.Screen name="(tabs)" options={{ headerShown: false }} />*/}
+        <Stack.Screen name="(root)" options={{ headerShown: false }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+
         {/* <Stack.Screen name="+not-found" />  */}
       </Stack>
     </ThemeProvider>
+
   );
 }

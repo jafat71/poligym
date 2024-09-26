@@ -10,7 +10,15 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1C1C1C"
+      "backgroundColor": "#1C1C1C",
+      "dark": {
+        "image": "./assets/splash.png",
+        "backgroundColor": "#1C1C1C"
+      },
+      "light": {
+        "image": "./assets/splash-light.png",
+        "backgroundColor": "#FFFFFF"
+      }
     },
     "ios": {
       "supportsTablet": true
@@ -19,7 +27,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#1C1C1C"
-      }
+      },
+      "package": "com.poligym.app"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +40,11 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e83a516b-d0cb-4256-8392-fbe97aafa2a3"
+      }
     }
   }
 }
