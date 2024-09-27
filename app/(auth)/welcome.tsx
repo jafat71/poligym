@@ -1,7 +1,7 @@
-import { onBoardingImages } from '@/constants'
+import { mainLogo, onBoardingImages } from '@/constants'
 import { useTheme } from '@/context/ThemeContext'
 import React from 'react'
-import { ImageBackground, Text, View } from 'react-native'
+import { Image, ImageBackground, Text, View } from 'react-native'
 
 const Welcome = () => {
     const { isDark } = useTheme()
@@ -13,6 +13,9 @@ const Welcome = () => {
             className="flex-1 justify-center items-center w-full h-full"
             resizeMode="cover" 
         >
+            <Image
+                source={mainLogo}
+            />
             <View className="flex-1 justify-center items-center ">
                 <Text className={`font-ralewayBold text-3xl`}>
                     Welcome Poligym
