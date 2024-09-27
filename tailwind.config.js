@@ -13,14 +13,13 @@ module.exports = {
         ralewaySemiBold: ["Raleway-SemiBold", "sans-serif"],
         ralewayThin: ["Raleway-Thin", "sans-serif"],
       },
-      },
-      colors: {
+      colors: { // Aquí es donde debe estar el objeto colors
         blueEPN: {
           100: "#E6EAF0",  
           200: "#B8C0D0",  
           300: "#8A97AF",  
           400: "#5C6E8F",  
-          500: "#16243E",  
+          500: "#0F172A",  
           600: "#0F1A2C",  
           700: "#0C1523",  
           800: "#080F1A",  
@@ -74,6 +73,7 @@ module.exports = {
           100: "#FFFFFF",
         },
       },
+    },
   },
   plugins: [],
 };
