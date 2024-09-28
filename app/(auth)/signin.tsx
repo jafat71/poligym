@@ -8,7 +8,7 @@ import React from 'react'
 import { Pressable, Text, TextInput, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const Signup = () => {
+const Signin = () => {
   const { isDark } = useTheme()
 
   return (
@@ -55,34 +55,17 @@ const Signup = () => {
 
         </View>
 
-        <Text className='text-2xl font-ralewayBold text-white-100'>Confirmar contraseña</Text>
-        <View className='bg-darkGray-800 mt-2 rounded-lg shadow-lg text-white-100'>
 
-          <View className='flex flex-row items-center justify-around w-full'>
-            <View className='w-10'>
-              <FontAwesome6 name="umbrella" size={24} color="white" />
-            </View>
-            <TextInput
-              className='flex-1 bg-darkGray-800 mt-2 rounded-lg shadow-lg text-white-100 ml-2'
-              placeholder="useless "
-              keyboardType="ascii-capable"
-              placeholderTextColor="#FFFFFF"
-            />
-          </View>
-
-
-
-        </View>
       </View>
 
       <View className='w-full items-end justify-end'>
         <Pressable
           className='mb-5'
-          onPress={()=>{
-            router.replace('/(auth)/signin')
+          onPress={() => {
+            router.replace('/(auth)/signup')
           }}
         >
-          <Text className={`mt-2 text-xl ${isDark ? "text-white-100" : "text-darkGray-500"} `}>No tengo una cuenta</Text>
+          <Text className={`mt-2 text-xl ${isDark ? "text-white-100" : "text-darkGray-500"} `}>Ya tengo una cuenta</Text>
         </Pressable>
       </View>
 
@@ -95,4 +78,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default Signin
