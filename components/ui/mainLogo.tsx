@@ -1,14 +1,8 @@
 
 
+import { MainLogoColorSchema } from '@/types/interfaces/ui';
 import React from 'react';
 import { Svg, Path } from 'react-native-svg';
-
-interface MainLogoColorSchema {
-    principal?: string,
-    secondary?: string,
-    width?: string,
-    height?: string,
-}
 
 const MainLogoCustomComponent = ({ principal = "#FFFFFF", secondary = "#E11F1C", width = "250px", height = "250px" }: MainLogoColorSchema) => {
     return (

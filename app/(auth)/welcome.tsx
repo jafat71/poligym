@@ -1,39 +1,40 @@
-import MainLogoCustomComponent from '@/components/ui/mainLogo'
-import { mainLogo, onBoardingImages } from '@/constants'
+import CTAButton from '@/components/ui/ctaButton'
+import MainLogoGradientComponent from '@/components/ui/mainLogoGrandient'
+import { onBoardingImages } from '@/constants'
 import { useTheme } from '@/context/ThemeContext'
 import React from 'react'
-import { Image, ImageBackground, Pressable, Text, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 //On Boarding Screen - Página de Bienvenida
 const Welcome = () => {
     const { isDark } = useTheme()
 
-    console.log(onBoardingImages)
     return (
-        <ImageBackground
-            source={isDark ? onBoardingImages[0] : onBoardingImages[1]}
-            className="flex-1 justify-center items-center w-full h-full"
-            resizeMode="cover"
-        >
-            <SafeAreaView className='p-4 flex flex justify-around items-center'>
-                <View className='w-full'>
-                    <MainLogoCustomComponent  width='100' principal='#222222'/>
-                </View>
-                <View className="flex-1 justify-around items-center ">
+        <SafeAreaView className={`p-2 flex flex-1 flex-col justify-center r ${isDark ? "bg-darkGray-500" : "bg-white-100"}`}>
+            <View className='w-full flex items-center mt-3'>
+                <MainLogoGradientComponent width='100' height='100' principal={`${isDark ? "#fff" : "#000"}`} />
+                <Text className={`font-ralewayExtraBold text-5xl ${isDark ? "text-white-100" : "text-darkGray-500"}`} >POLIGYM</Text>
+            </View>
+            <View className="flex-1 justify-around items-center text-center">
 
-                    <Text className={`font-ralewayBold text-3xl ${isDark ? "text-white-100" : "text-darkGray-500"}`}>
-                        Crea la mejor versión de ti!
-                    </Text>
+                <Text className={`font-ralewayLight text-5xl ${isDark ? "text-white-100" : "text-darkGray-500"}`}>
+                    !Crea la mejor versión de ti!
+                </Text>
 
-                    <Pressable
-                        className='w-full flex items-center'
-                    >
-                        <Text className={`font-raleway ${isDark ? "bg-orange-500 text-white-100" : "bg-skyBlue-500 text-darkGray-500"}  p-5 rounded-2xl text-3xl`}>Empezar ya!</Text>
-                    </Pressable>
-                </View>
-            </SafeAreaView>
+                <Image
+                    source={onBoardingImages[0]}
+                    className='w-full h-3/5 ' //-translate-x-36
+                    resizeMode='contain'
+                />
 
-        </ImageBackground>
+                <CTAButton
+                    route="/(auth)/signup"
+                    text="Empezar ya!"
+                />
+
+            </View>
+        </SafeAreaView>
+
     )
 }
 

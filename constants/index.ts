@@ -1,7 +1,6 @@
 
-const onboardingImgD1 = require('@/assets/images/dk-ob.jpg')
-const onboardingImgL1 = require('@/assets/images/lg-ob.jpg')
+const onboardingImg1 = require('@/assets/images/ob.jpg')
+
 export const onBoardingImages = [
-    onboardingImgD1,
-    onboardingImgL1,
+    onboardingImg1,
 ]
