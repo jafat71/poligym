@@ -69,9 +69,21 @@ const Signin = () => {
         </Pressable>
       </View>
 
+      <View className='w-full items-end justify-end'>
+        <Pressable
+          className='mb-5'
+          onPress={() => {
+            router.replace('/(auth)/forgot')
+          }}
+        >
+          <Text className={`mt-2 text-xl ${isDark ? "text-white-100" : "text-darkGray-500"} `}>Olvide mi contraseña</Text>
+        </Pressable>
+      </View>
+
+
       <CTAButton
         route={'/(tabs)/home'}
-        text='Registrarse'
+        text='Ingresar'
       />
 
     </SafeAreaView>
