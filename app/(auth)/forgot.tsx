@@ -48,7 +48,7 @@ const Forgot = () => {
         <Pressable
           className='mb-5'
           onPress={() => {
-            router.replace('/(auth)/signup')
+            router.replace('/(auth)/signin')
           }}
         >
           <Text className={`mt-2 text-xl ${isDark ? "text-white-100" : "text-darkGray-500"} `}>Regresar al login</Text>
