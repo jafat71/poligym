@@ -1,32 +1,35 @@
-import CTAButton from '@/components/ui/ctaButton'
+import OnboardingItem from '@/components/animatedUi/onboardingText'
+import OnBoardingText from '@/components/animatedUi/onboardingText'
+import CTAButtonSecondary from '@/components/ui/CtaButtonSecondary'
 import MainLogoGradientComponent from '@/components/ui/mainLogoGrandient'
-import WelcomeHeaderComponent from '@/components/ui/welcomeHeader'
-import { onBoardingImages } from '@/constants'
-import { useTheme } from '@/context/ThemeContext'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 //On Boarding Screen - Página de Bienvenida
 const Welcome = () => {
-    const { isDark } = useTheme()
 
     return (
-        <SafeAreaView className={`p-2 flex flex-1 flex-col justify-center r ${isDark ? "bg-darkGray-500" : "bg-white-100"}`}>
-            <WelcomeHeaderComponent />
-            <View className="flex-1 justify-around items-center text-center">
+        <SafeAreaView className={"p-2 flex flex-1 flex-col justify-center bg-eBlue-500"}>
 
-                <Text className={`font-ralewayLight text-5xl ${isDark ? "text-white-100" : "text-darkGray-500"}`}>
-                    !Crea la mejor versión de ti!
-                </Text>
-
-                <Image
-                    source={onBoardingImages[0]}
-                    className='w-full h-3/5 ' //-translate-x-36
-                    resizeMode='contain'
+            <View className='w-full items-center'>
+                <MainLogoGradientComponent
+                    height='200'
+                    width='200'
+                    principal='#fff'
+                    secondary='#fff'
                 />
 
-                <CTAButton
-                    route="/(auth)/signup"
+            </View>
+            <Text className='text-9xl font-ralewayExtraBold text-white '>POLI</Text>
+            <Text className='text-9xl font-ralewayExtraBold text-darkGray-500 '>GYM</Text>
+
+            <View className="flex-1 justify-around items-center text-center">
+                <OnboardingItem width={75}/>
+                <OnboardingItem width={150}/>
+                <OnboardingItem width={250}/>
+
+                <CTAButtonSecondary
+                    route="/(auth)/signin"
                     text="Empezar ya!"
                 />
 

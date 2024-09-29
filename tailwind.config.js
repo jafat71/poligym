@@ -13,7 +13,7 @@ module.exports = {
         ralewaySemiBold: ["Raleway-SemiBold", "sans-serif"],
         ralewayThin: ["Raleway-Thin", "sans-serif"],
       },
-      colors: { // Aquí es donde debe estar el objeto colors
+      colors: { 
         blueEPN: {
           100: "#E6EAF0",  
           200: "#B8C0D0",  
@@ -25,7 +25,7 @@ module.exports = {
           800: "#080F1A",  
           900: "#050B12",  
         },
-        orange: {
+        eOrange: {
           100: "#FFEDE6",  
           200: "#FFCEB8",  
           300: "#FFAF89",  
@@ -36,16 +36,16 @@ module.exports = {
           800: "#A03411",  
           900: "#80280C",  
         },
-        skyBlue: {
-          100: "#E0FFFF",  
-          200: "#A9FCFF",  
-          300: "#73FAFF",  
-          400: "#3CF7FF",  
-          500: "#14F1FF",  
-          600: "#0FBDC8",  
-          700: "#0B8A91",  
-          800: "#07665A",  
-          900: "#034033",  
+        eBlue: {
+          100: "#CCE0FF",  
+          200: "#99C2FF",   
+          300: "#66A3FF",   
+          400: "#3385FF",   
+          500: "#0059FF",   
+          600: "#004ECC",   
+          700: "#004299",   
+          800: "#003666",  
+          900: "#002933",
         },
         redEPN: {
           100: "#FDECEC",  
@@ -58,6 +58,17 @@ module.exports = {
           800: "#520E0D",  
           900: "#220807",  
         },
+        ePurple: {
+          100: "#E5CCFF",  
+          200: "#D1A6FF",  
+          300: "#BD80FF",  
+          400: "#A859FF",  
+          500: "#9320FF",  
+          600: "#7F00E6",  
+          800: "#560099",  
+          700: "#6B00BF",  
+          900: "#420073",
+        },
         darkGray: {
           100: "#F2F2F2",  
           200: "#D9D9D9",   
@@ -69,9 +80,7 @@ module.exports = {
           800: "#0D0D0D",  
           900: "#080808",  
         },
-        white: {
-          100: "#FFFFFF",
-        },
+        lightGreen: "#77FFaa"
       },
     },
   },

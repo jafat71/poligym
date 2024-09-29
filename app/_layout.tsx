@@ -19,6 +19,8 @@ export default function RootLayout() {
     "Raleway-Thin": require("../assets/fonts/Raleway-Thin.ttf"),
   });
 
+  const isDark = useTheme()
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
@@ -29,7 +31,6 @@ export default function RootLayout() {
     return null;
   }
 
-  const isDark = useTheme()
 
   return (
     <ThemeProvider >
