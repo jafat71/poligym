@@ -93,7 +93,7 @@ const Signin = () => {
 
 
       <CTAButtonPrimary
-        route={'/(tabs)/home'}
+        route={'/(root)/(tabs)/home'}
         text='Ingresar'
       />
 

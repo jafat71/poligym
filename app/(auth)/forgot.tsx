@@ -55,13 +55,13 @@ const Forgot = () => {
             router.replace('/(auth)/signin')
           }}
         >
-          <Text className={`mt-2 text-xl ${isDark ? "text-white-100" : "text-darkGray-500"} `}>Regresar al login</Text>
+          <Text className={`mt-2 text-xl ${isDark ? "text-white" : "text-darkGray-500"} `}>Regresar al login</Text>
         </TouchableOpacity>
       </View>
 
 
       <CTAButtonPrimary
-        route={'/(tabs)/home'}
+        route={'/(auth)/signin'}
         text='Enviar Correo'
       />
 
