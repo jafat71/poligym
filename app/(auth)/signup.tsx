@@ -103,7 +103,7 @@ const Signup = () => {
       </View>
 
       <CTAButtonPrimary
-        route={'/(root)/(tabs)/home'}
+        route={'/(root)/(init)/form01'}
         text='Registrarse'
       />
 

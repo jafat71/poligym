@@ -5,7 +5,8 @@ export default function RootLayout() {
   return (
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="(init)" options={{ headerShown: false }} />
+        <Stack.Screen name="(form01)" options={{ headerShown: false }} />
+
       </Stack>
   );
 }
