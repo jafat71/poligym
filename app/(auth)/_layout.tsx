@@ -1,13 +1,17 @@
 import { Stack } from 'expo-router';
 
-export default function RootLayout() {
+export default function AuthLayout() {
 
   return (
-      <Stack>
-        <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom'}} />
-        <Stack.Screen name="signin" options={{ headerShown: false, animation: 'fade_from_bottom' }} />
-        <Stack.Screen name="signup" options={{ headerShown: false, animation: 'fade_from_bottom' }} />
-        <Stack.Screen name="forgot" options={{ headerShown: false, animation: 'fade_from_bottom' }} />
-      </Stack>
+    <Stack
+      screenOptions={
+        { headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }
+      }
+    >
+      <Stack.Screen name="welcome" />
+      <Stack.Screen name="signin" />
+      <Stack.Screen name="signup" />
+      <Stack.Screen name="forgot" />
+    </Stack>
   );
 }

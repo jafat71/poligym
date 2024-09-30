@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import FontAwesome6 from '@expo/vector-icons/Ionicons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from '@/context/ThemeContext';
 
 
@@ -20,7 +20,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="home" options={{
         headerShown: true,
         tabBarIcon: () => (
-          <FontAwesome6 name="home" size={26} color={tabBarIconColor} />
+          <Ionicons name="home" size={26} color={tabBarIconColor} />
         ),
         tabBarLabel: 'Home',
         tabBarLabelStyle: { color: tabBarTextColor },
@@ -29,7 +29,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="exercises" options={{
         headerShown: true,
         tabBarIcon: () => (
-          <FontAwesome6 name="walk" size={26} color={tabBarIconColor} />
+          <Ionicons name="walk" size={26} color={tabBarIconColor} />
         ),
         tabBarLabel: 'Ejercicios',
         tabBarLabelStyle: { color: tabBarTextColor },
@@ -39,7 +39,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="stats" options={{
         headerShown: true,
         tabBarIcon: () => (
-          <FontAwesome6 name="bar-chart" size={26} color={tabBarIconColor} />
+          <Ionicons name="bar-chart" size={26} color={tabBarIconColor} />
         ),
         tabBarLabel: 'Stats',
         tabBarLabelStyle: { color: tabBarTextColor },
@@ -49,7 +49,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="feed" options={{
         headerShown: true,
         tabBarIcon: () => (
-          <FontAwesome6 name="people" size={26} color={tabBarIconColor} />
+          <Ionicons name="people" size={26} color={tabBarIconColor} />
         ),
         tabBarLabel: 'Feed',
         tabBarLabelStyle: { color: tabBarTextColor },
@@ -59,7 +59,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="profile" options={{
         headerShown: true,
         tabBarIcon: () => (
-          <FontAwesome6 name="person" size={26} color={tabBarIconColor} />
+          <Ionicons name="person" size={26} color={tabBarIconColor} />
         ),
         tabBarLabel: 'Profile',
         tabBarLabelStyle: { color: tabBarTextColor },

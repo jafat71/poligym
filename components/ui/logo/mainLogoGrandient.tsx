@@ -1,10 +1,15 @@
 
-
-import { MainLogoColorSchema } from '@/types/interfaces/ui';
 import React from 'react';
 import { Svg, Path, Defs, LinearGradient, Stop } from 'react-native-svg';
 
-const MainLogoGradientComponent = ({ principal = "#E11F1C", secondary = "#16243E", width = "250px", height = "250px" }: MainLogoColorSchema) => {
+interface LogoColorSchema {
+    principal?: string,
+    secondary?: string,
+    width?: string,
+    height?: string,
+}
+
+const MainLogoGradientComponent = ({ principal = "#E11F1C", secondary = "#16243E", width = "250px", height = "250px" }: LogoColorSchema) => {
     return (
         <Svg
             width={width}

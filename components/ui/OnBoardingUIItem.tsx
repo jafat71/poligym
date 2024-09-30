@@ -7,7 +7,7 @@ interface Props {
     width: number
 }
 
-const OnboardingItem = ({width}:Props) => {
+const OnBoardingUIItem = ({width}:Props) => {
     return (
         <View style={[styles.container, { width }]}>
     </View>
@@ -26,4 +26,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default OnboardingItem;
+export default OnBoardingUIItem;

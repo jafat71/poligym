@@ -13,7 +13,7 @@ const CTAButtonPrimary = ({ route, text}: Props) => {
     return (
         <TouchableHighlight
             onPress={() => {
-                router.replace(route)
+                router.push(route)
             }}
 
         >

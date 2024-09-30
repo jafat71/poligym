@@ -15,7 +15,6 @@ const CTAButtonSecondary = ({ route, text}: Props) => {
             onPress={() => {
                 router.replace(route)
             }}
-
         >
             <Text className={`w-full rounded-xl text-xl text-center bg-lightGreen py-4 text-darkGray-500 px-24 shadow-xl shadow-black font-ralewayExtraBold`}>{text}</Text>
         </TouchableHighlight>
