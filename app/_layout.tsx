@@ -39,9 +39,7 @@ export default function RootLayout() {
 
       <GestureHandlerRootView style={{ flex: 1 }}>
 
-        <Stack
-          initialRouteName='index'
-        >
+        <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
           <Stack.Screen name="(animated)" options={{ headerShown: false }} />

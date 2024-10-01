@@ -7,64 +7,67 @@ export default function TabsLayout() {
 
   const { isDark } = useTheme()
 
-  const tabBarBackgroundColor = isDark ? '#1c1c1c' : '#fff';
-  const tabBarIconColor = isDark ? '#fff' : '#000';
-  const tabBarTextColor = isDark ? '#fff' : '#000';
-
+  const tabBarBackgroundColor = '#003666';
+  const tabBarIconColor = '#fff';
+  const tabBarTextColor = '#fff';
+  const tabBarActiveColor = '#77FFAA';
+  const tabBarInactiveColor = isDark ? '#999' : '#aaa';
   return (
     <Tabs
       screenOptions={{
-        tabBarStyle: { backgroundColor: tabBarBackgroundColor},
-      }}      
-      >
+        tabBarStyle: {
+          backgroundColor: tabBarBackgroundColor,
+          paddingVertical: 5,
+          height: 60,
+        },
+        tabBarLabelStyle: {
+          fontSize: 16, 
+          fontWeight: '600', 
+        },
+        tabBarActiveTintColor: tabBarActiveColor,
+        tabBarInactiveTintColor: tabBarInactiveColor,
+      }}
+    >
       <Tabs.Screen name="home" options={{
         headerShown: true,
-        tabBarIcon: () => (
-          <Ionicons name="home" size={26} color={tabBarIconColor} />
+        tabBarIcon: ({ focused }) => (
+          <Ionicons name="home" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
         tabBarLabel: 'Home',
         tabBarLabelStyle: { color: tabBarTextColor },
-        tabBarActiveBackgroundColor: "#0059FF",
       }} />
       <Tabs.Screen name="exercises" options={{
         headerShown: true,
-        tabBarIcon: () => (
-          <Ionicons name="walk" size={26} color={tabBarIconColor} />
+        tabBarIcon: ({ focused }) => (
+          <Ionicons name="walk" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
         tabBarLabel: 'Ejercicios',
         tabBarLabelStyle: { color: tabBarTextColor },
-        tabBarActiveBackgroundColor: "#0059FF",
-
       }} />
       <Tabs.Screen name="stats" options={{
         headerShown: true,
-        tabBarIcon: () => (
-          <Ionicons name="bar-chart" size={26} color={tabBarIconColor} />
+        tabBarIcon: ({ focused }) => (
+          <Ionicons name="bar-chart" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
         tabBarLabel: 'Stats',
         tabBarLabelStyle: { color: tabBarTextColor },
-        tabBarActiveBackgroundColor: "#0059FF",
-
       }} />
       <Tabs.Screen name="feed" options={{
         headerShown: true,
-        tabBarIcon: () => (
-          <Ionicons name="people" size={26} color={tabBarIconColor} />
+        tabBarIcon: ({ focused }) => (
+          <Ionicons name="people" size={26} color={focused ? tabBarActiveColor : tabBarIconColor}  />
         ),
         tabBarLabel: 'Feed',
         tabBarLabelStyle: { color: tabBarTextColor },
-        tabBarActiveBackgroundColor: "#0059FF",
 
       }} />
-      <Tabs.Screen name="profile" options={{
-        headerShown: true,
-        tabBarIcon: () => (
-          <Ionicons name="person" size={26} color={tabBarIconColor} />
+      <Tabs.Screen name="(profile)/profile" options={{
+        headerShown: false,
+        tabBarIcon: ({ focused }) => (
+          <Ionicons name="person" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
-        tabBarLabel: 'Profile',
+        tabBarLabel: 'Perfil',
         tabBarLabelStyle: { color: tabBarTextColor },
-        tabBarActiveBackgroundColor: "#0059FF",
-
       }} />
 
     </Tabs>
