@@ -20,7 +20,7 @@ const AuthSupportButton = ({ title, route }: Props) => {
                     router.push(route)
                 }}
             >
-                <Text className={`font-raleway text-xl ${isDark ? "text-white" : "text-darkGray-500"} `}>{title}</Text>
+                <Text className={`font-raleway text-xl ${isDark ? "text-white" : "text-darkGray-100"} `}>{title}</Text>
             </TouchableOpacity>
         </View>
     );

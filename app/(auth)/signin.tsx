@@ -21,7 +21,7 @@ const Signin = () => {
   };
 
   return (
-    <SafeAreaView className={`flex flex-1 flex-col justify-center r ${isDark ? "bg-darkGray-500" : "bg-white-100"}`}>
+    <SafeAreaView className={`flex flex-1 flex-col justify-center r ${isDark ? "bg-darkGray-500" : "bg-eBlue-500"}`}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
@@ -30,15 +30,15 @@ const Signin = () => {
           <View className={`p-4`}>
             <TopHeaderComponent />
 
-            <View className='p-4 mt-2 bg-darkGray-900 rounded-lg'>
+            <View className='p-4 mt-2 bg-eBlue-800 rounded-lg shadow-2xl shadow-eBlue-700'>
 
               <Text className='text-2xl font-ralewayBold text-center mb-6 text-lightGreen'>Login</Text>
 
               <Text className='text-2xl font-ralewayBold text-white'>Email Institucional</Text>
-              <View className='bg-darkGray-800 mt-2 rounded-lg shadow-lg text-white-100'>
+              <View className='bg-eBlue-800 mt-2 rounded-lg shadow-lg text-white-100'>
 
                 <View className='flex flex-row items-center justify-center w-full'>
-                  <View className='w-10'>
+                  <View className='w-10 h-10 items-center p-1 '>
                     <Ionicons name="person" size={35} color="#0059FF" />
                   </View>
                   <TextInput
@@ -54,11 +54,11 @@ const Signin = () => {
               </View>
 
               <Text className='text-2xl font-ralewayBold text-white'>Contraseña</Text>
-              <View className='bg-darkGray-800 mt-2 rounded-lg shadow-lg text-white-100'>
+              <View className='bg-eBlue-800 mt-2 rounded-lg shadow-lg text-white-100'>
 
                 <View className='flex flex-row items-center justify-around w-full'>
-                  <View className='w-10'>
-                    <Ionicons name="shield-checkmark-sharp" size={35} color="#0059FF" />
+                <View className='w-10 h-10 items-center p-1 '>
+                <Ionicons name="shield-checkmark-sharp" size={35} color="#0059FF" />
                   </View>
                   <TextInput
                     className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen  ml-2 font-raleway'

@@ -17,7 +17,7 @@ const CTAButtonPrimary = ({ route, text}: Props) => {
             }}
 
         >
-            <Text className={`w-full rounded-xl text-xl text-center bg-eBlue-500 py-4 text-white px-24 shadow-xl shadow-black font-ralewayExtraBold`}>{text}</Text>
+            <Text className={`w-full rounded-xl text-xl text-center bg-eBlue-800 py-4 text-white px-24 shadow-xl shadow-black font-ralewayExtraBold`}>{text}</Text>
         </TouchableHighlight>
     );
 };
