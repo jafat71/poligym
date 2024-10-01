@@ -1,15 +1,10 @@
 import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
 import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
-import TopHeaderComponent from '@/components/ui/header/TopHeaderComponent';
-import { useTheme } from '@/context/ThemeContext'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react'
-import { Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { Text, TextInput, View } from 'react-native'
 
 const Signup = () => {
-  const { isDark } = useTheme()
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,16 +19,7 @@ const Signup = () => {
   };
 
   return (
-    <SafeAreaView className={`flex flex-1 flex-col justify-center r ${isDark ? "bg-darkGray-500" : "bg-eBlue-500"}`}>
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-      >
-
-
         <View className='p-4'>
-          <TopHeaderComponent />
           <View className='p-4 mt-2 bg-eBlue-800 rounded-lg shadow-2xl shadow-eBlue-700'>
 
             <Text className='text-2xl font-ralewayBold text-center mb-6 text-lightGreen'>Registro</Text>
@@ -112,11 +98,6 @@ const Signup = () => {
           />
 
         </View>
-
-
-      </ScrollView>
-
-    </SafeAreaView>
   )
 }
 

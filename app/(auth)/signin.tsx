@@ -1,15 +1,10 @@
 import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
-import { useTheme } from '@/context/ThemeContext'
 import React, { useState } from 'react'
-import { Text, TextInput, useWindowDimensions, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { Text, TextInput, View } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import TopHeaderComponent from '@/components/ui/header/TopHeaderComponent';
-import { ScrollView } from 'react-native-gesture-handler';
 import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
 
 const Signin = () => {
-  const { isDark } = useTheme()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -21,14 +16,8 @@ const Signin = () => {
   };
 
   return (
-    <SafeAreaView className={`flex flex-1 flex-col justify-center r ${isDark ? "bg-darkGray-500" : "bg-eBlue-500"}`}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-      >
 
           <View className={`p-4`}>
-            <TopHeaderComponent />
 
             <View className='p-4 mt-2 bg-eBlue-800 rounded-lg shadow-2xl shadow-eBlue-700'>
 
@@ -87,7 +76,6 @@ const Signin = () => {
               />
             </View>
 
-
             <CTAButtonPrimary
               route={'/(root)/(tabs)/home'}
               text='Ingresar'
@@ -95,9 +83,6 @@ const Signin = () => {
 
           </View>
 
-      </ScrollView>
-
-    </SafeAreaView>
   )
 }
 

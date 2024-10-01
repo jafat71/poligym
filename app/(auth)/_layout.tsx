@@ -1,17 +1,21 @@
-import { Stack } from 'expo-router';
+import TopHeaderComponent from '@/components/ui/header/TopHeaderComponent';
+import { useTheme } from '@/context/ThemeContext';
+import { Slot } from 'expo-router';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function AuthLayout() {
+  const { isDark } = useTheme()
 
   return (
-    <Stack
-      screenOptions={
-        { headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }
-      }
-    >
-      <Stack.Screen name="welcome" />
-      <Stack.Screen name="signin" />
-      <Stack.Screen name="signup" />
-      <Stack.Screen name="forgot" />
-    </Stack>
+    <SafeAreaView className={`flex flex-1 flex-col justify-center r ${isDark ? "bg-darkGray-500" : "bg-eBlue-500"}`}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+          <TopHeaderComponent />
+            <Slot />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
