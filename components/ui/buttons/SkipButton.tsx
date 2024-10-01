@@ -14,7 +14,7 @@ const SkipButton = () => {
                 router.replace('/(root)/(tabs)/home')
             }}
         >
-            <Text className={`${isDark ? "text-white" : "text-darkGray-500"}`}>OMITIR</Text>
+            <Text className="text-white font-raleway">OMITIR</Text>
         </TouchableOpacity>
     );
 };

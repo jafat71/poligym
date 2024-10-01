@@ -93,7 +93,7 @@ const Signup = () => {
           </View>
 
           <CTAButtonPrimary
-            route={'/(root)/(init)/form00'}
+            route={'/(animated)/form00'}
             text='Registrarse'
           />
 

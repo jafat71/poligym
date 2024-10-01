@@ -9,7 +9,6 @@ interface Props {
 }
 
 const CTAButtonPrimary = ({ route, text}: Props) => {
-
     return (
         <TouchableHighlight
             onPress={() => {

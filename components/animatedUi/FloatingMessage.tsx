@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const FloatingMessage = ({ text, distance, duration}: Props) => {
-    const translateX = useSharedValue(-(distance * 10)); 
+    const translateX = useSharedValue(-(distance * 8)); 
 
     useEffect(() => {
         translateX.value = withTiming(distance, { 

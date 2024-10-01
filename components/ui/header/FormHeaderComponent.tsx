@@ -9,14 +9,14 @@ const FormHeaderComponent = () => {
     const { isDark } = useTheme()
 
     return (
-        <View className='my-4 items-center'>
+        <View className='my-2 items-center'>
                 <MainLogoCustomComponent
                     height='50'
                     width='50'
-                    principal={`${isDark ? "#0059FF" : "#1c1c1c"}`}
+                    principal={`${isDark ? "#0059FF" : "#fff"}`}
                 />
-                <Text className={`text-4xl font-ralewayExtraBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>Bienvenido</Text>
-                <Text className={`text-sxl font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>Queremos saber más sobre ti...</Text>
+                <Text className={`text-4xl font-ralewayExtraBold text-white text-center`}>Bienvenido</Text>
+                <Text className={`text-sxl font-ralewayBold text-white text-center`}>Queremos saber más sobre ti...</Text>
             </View>
     );
 };

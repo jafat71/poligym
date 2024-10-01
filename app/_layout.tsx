@@ -41,13 +41,11 @@ export default function RootLayout() {
 
         <Stack
           initialRouteName='index'
-          screenOptions={{
-            animation: 'flip'
-          }}
         >
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
-          <Stack.Screen name="(root)" options={{ headerShown: false }} />
+          <Stack.Screen name="(animated)" options={{ headerShown: false }} />
+          <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'slide_from_right', animationTypeForReplace: 'pop' }} />
           <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
           <Stack.Screen name="+not-found" options={{ headerShown: false }} />
         </Stack>
