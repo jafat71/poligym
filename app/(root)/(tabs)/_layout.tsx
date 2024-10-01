@@ -1,13 +1,13 @@
 import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from '@/context/ThemeContext';
+import MainLogoGradientComponent from '@/components/ui/logo/mainLogoGrandient';
 
 
 export default function TabsLayout() {
 
   const { isDark } = useTheme()
-
-  const tabBarBackgroundColor = '#003666';
+  const tabBarBackgroundColor = '#0059FF';
   const tabBarIconColor = '#fff';
   const tabBarTextColor = '#fff';
   const tabBarActiveColor = '#77FFAA';
@@ -62,7 +62,18 @@ export default function TabsLayout() {
 
       }} />
       <Tabs.Screen name="(profile)/profile" options={{
-        headerShown: false,
+        headerTitle: () => (
+          <MainLogoGradientComponent
+            height='40'
+            principal='#77FFAA'
+            secondary='#FFF'
+          />
+        ), 
+        headerStyle: {
+          backgroundColor: isDark ? '#1c1c1c' : '#0059FF',
+        },
+        headerTintColor: '#77FFAA',
+        headerTitleAlign: 'center',
         tabBarIcon: ({ focused }) => (
           <Ionicons name="person" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
