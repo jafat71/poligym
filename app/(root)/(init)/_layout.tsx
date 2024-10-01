@@ -17,8 +17,11 @@ export default function RootLayout() {
   const routeMapping: RouteMapping = {
     '/form01': '/form02',
     '/form02': '/form03',
-    '/form03': '/form01',
-
+    '/form03': '/form04',
+    '/form04': '/form05',
+    '/form05': '/form06',
+    '/form06': '/form07',
+    '/form07': '/(root)/(tabs)/home',
   };
 
   return (
