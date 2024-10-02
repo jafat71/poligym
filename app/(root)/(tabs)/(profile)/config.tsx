@@ -39,14 +39,21 @@ const Config = () => {
             </View>
 
             <View className='px-4'>
-                <TouchableOpacity className='mb-2'>
+                <TouchableOpacity
+                    onPress={() => {
+                        router.navigate('/(profile)/editprofile')
+                    }}
+                    className='mb-2'>
                     <View className='flex flex-row items-center gap-3'>
+                        <Ionicons name="person-sharp" size={24} color={`#fff`} />
                         <Text className='text-xl text-white font-ralewayBold'>Editar Perfil</Text>
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity className='mb-2'>
                     <View className='flex flex-row items-center gap-3'>
+                    <Ionicons name="shield-checkmark-outline" size={24} color={`#fff`} />
+
                         <Text className='text-xl text-white font-ralewayBold'>Actualizar Contraseña</Text>
                     </View>
                 </TouchableOpacity>
@@ -59,15 +66,20 @@ const Config = () => {
                 </View>
 
                 <View className='mt-2'>
-                    <View className='flex flex-row items-center justify-between gap-3 mb-2'>
+                <View className='flex flex-row items-center justify-start gap-3 mb-2'>
+                <Ionicons name="watch" size={24} color={`#fff`} />
+
                         <Text className='text-xl text-white font-ralewayBold'>Sistema Métrico</Text>
                         <RadioButtonSmallComponent
                             options={['Métrico', 'Imperial']}
                         />
                     </View>
-                    <View className='flex flex-row items-center justify-between gap-3 mb-2'>
+                    <View className='flex flex-row items-center justify-start gap-3 mb-2'>
+                    <Ionicons name="alarm" size={24} color={`#fff`} />
+
                         <Text className='text-xl text-white font-ralewayBold'>Notificaciones</Text>
                         <Switch
+                        className='flex-1'
                             style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
                             onValueChange={() => setNotificationEnabled(prevState => !prevState)}
                             value={notificationEnabled}
@@ -88,18 +100,24 @@ const Config = () => {
 
                 <TouchableOpacity className='mb-2'>
                     <View className='flex flex-row items-center gap-3'>
+                    <Ionicons name="document-attach" size={24} color={`#fff`} />
+
                         <Text className='text-xl text-white font-ralewayBold'>Terminos y Condiciones</Text>
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity className='mb-2'>
                     <View className='flex flex-row items-center gap-3'>
+                    <Ionicons name="documents" size={24} color={`#fff`} />
+
                         <Text className='text-xl text-white font-ralewayBold'>FAQs</Text>
                     </View>
                 </TouchableOpacity>
 
                 <TouchableOpacity className='mb-2'>
                     <View className='flex flex-row items-center gap-3'>
+                    <Ionicons name="text" size={24} color={`#fff`} />
+
                         <Text className='text-xl text-white font-ralewayBold'>Acerca de</Text>
                     </View>
                 </TouchableOpacity>

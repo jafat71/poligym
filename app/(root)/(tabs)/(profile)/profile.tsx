@@ -10,7 +10,7 @@ const Profile = () => {
   return (
     <SafeAreaView className={`flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-eBlue-500"} `}>
 
-      <View className='flex flex-row items-center justify-between w-full bg-blue-900'>
+      <View className='flex flex-row items-center justify-between w-full bg-eBlue-800'>
         <View className='flex flex-row items-center justify-center gap-2'>
           <View className={`w-24 h-24 scale-110 rounded-full  flex items-center justify-center p-1 ${isDark ? "bg-eBlue-500" : "bg-eBlue-900"}  `}>
             <Ionicons name="person-circle" size={42} color={`#fff`} />
