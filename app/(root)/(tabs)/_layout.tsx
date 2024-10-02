@@ -61,7 +61,7 @@ export default function TabsLayout() {
         tabBarLabelStyle: { color: tabBarTextColor },
 
       }} />
-      <Tabs.Screen name="(profile)/profile" options={{
+      <Tabs.Screen name="(profile)" options={{
         headerTitle: () => (
           <MainLogoGradientComponent
             height='40'

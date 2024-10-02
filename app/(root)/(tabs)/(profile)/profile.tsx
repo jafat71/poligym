@@ -1,5 +1,6 @@
 import { useTheme } from '@/context/ThemeContext'
 import { Ionicons } from '@expo/vector-icons'
+import { router } from 'expo-router'
 import React from 'react'
 import { Image, Pressable, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -18,7 +19,11 @@ const Profile = () => {
         </View>
 
         <View className='mr-4'>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={()=> {
+              router.navigate('/(profile)/config')
+            }}
+          >
             <Ionicons name="settings-outline" size={32} color={`#fff`} />
           </TouchableOpacity>
         </View>
@@ -27,36 +32,36 @@ const Profile = () => {
 
       <View className='p-4'>
         <TouchableOpacity className='my-2'>
-          <View className='flex flex-row items-center gap-3'>
+          <View className='flex flex-row items-center gap-3 border-b-2 border-slate-300 py-2'>
             <Ionicons name="person-sharp" size={32} color={`#fff`} />
             <Text className='text-xl text-white font-ralewayBold'>Mi Perfil</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity className='my-2'>
-          <View className='flex flex-row items-center gap-3'>
-            <Ionicons name="calendar-clear-outline" size={32} color={`#fff`} />
+        <View className='flex flex-row items-center gap-3 border-b-2 border-slate-300 py-2'>
+        <Ionicons name="calendar-clear-outline" size={32} color={`#fff`} />
             <Text className='text-xl text-white font-ralewayBold'>Mi Plan</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity className='my-2'>
-          <View className='flex flex-row items-center gap-3'>
-            <Ionicons name="star-half" size={32} color={`#fff`} />
+        <View className='flex flex-row items-center gap-3 border-b-2 border-slate-300 py-2'>
+        <Ionicons name="star-half" size={32} color={`#fff`} />
             <Text className='text-xl text-white font-ralewayBold'>Mi Progreso</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity className='my-2'>
-          <View className='flex flex-row items-center gap-3'>
-            <Ionicons name="reload-circle-outline" size={32} color={`#fff`} />
+        <View className='flex flex-row items-center gap-3 border-b-2 border-slate-300 py-2'>
+        <Ionicons name="reload-circle-outline" size={32} color={`#fff`} />
             <Text className='text-xl text-white font-ralewayBold'>Historial de ejercicios</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity className='my-2'>
-          <View className='flex flex-row items-center gap-3'>
-            <Ionicons name="heart-circle" size={32} color={`#fff`} />
+        <View className='flex flex-row items-center gap-3 border-b-2 border-slate-300 py-2'>
+        <Ionicons name="heart-circle" size={32} color={`#fff`} />
             <Text className='text-xl text-white font-ralewayBold'>Favoritos</Text>
           </View>
         </TouchableOpacity>
