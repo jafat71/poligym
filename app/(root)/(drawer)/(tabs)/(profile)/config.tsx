@@ -5,7 +5,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
+import { SafeAreaView, Text, useColorScheme, View } from 'react-native';
 import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 
 const Config = () => {
@@ -18,7 +18,7 @@ const Config = () => {
                 <View className='flex flex-row items-center justify-between'>
                     <TouchableOpacity
                         onPress={() => {
-                            router.back()
+                            router.push('/(drawer)/(profile)/profile')
                         }}
                     >
                         <Ionicons name="arrow-back" size={32} color={`#fff`} />
@@ -41,18 +41,22 @@ const Config = () => {
             <View className='px-4'>
                 <TouchableOpacity
                     onPress={() => {
-                        router.navigate('/(profile)/editprofile')
+                        router.navigate('/(profile)/updateinformation')
                     }}
                     className='mb-2'>
                     <View className='flex flex-row items-center gap-3'>
                         <Ionicons name="person-sharp" size={24} color={`#fff`} />
-                        <Text className='text-xl text-white font-ralewayBold'>Editar Perfil</Text>
+                        <Text className='text-xl text-white font-ralewayBold'>Actualizar Información</Text>
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity className='mb-2'>
+                <TouchableOpacity className='mb-2'
+                    onPress={()=>{
+                        router.push('/(auth)/update')
+                    }}
+                >
                     <View className='flex flex-row items-center gap-3'>
-                    <Ionicons name="shield-checkmark-outline" size={24} color={`#fff`} />
+                        <Ionicons name="shield-checkmark-outline" size={24} color={`#fff`} />
 
                         <Text className='text-xl text-white font-ralewayBold'>Actualizar Contraseña</Text>
                     </View>
@@ -66,20 +70,22 @@ const Config = () => {
                 </View>
 
                 <View className='mt-2'>
-                <View className='flex flex-row items-center justify-start gap-3 mb-2'>
-                <Ionicons name="watch" size={24} color={`#fff`} />
-
-                        <Text className='text-xl text-white font-ralewayBold'>Sistema Métrico</Text>
-                        <RadioButtonSmallComponent
-                            options={['Métrico', 'Imperial']}
+                    <View className='flex flex-row items-center justify-between gap-3'>
+                        <Ionicons name="moon" size={24} color={`#fff`} />
+                        <Text className='text-xl text-white font-ralewayBold'>Tema Oscuro</Text>
+                        <Switch
+                            className='flex-1'
+                            style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
+                            thumbColor={'#f4f3f4'}
+                            trackColor={{ false: '#767577', true: isDark ? "#0059FF" : "#16243E" }}
                         />
                     </View>
-                    <View className='flex flex-row items-center justify-start gap-3 mb-2'>
-                    <Ionicons name="alarm" size={24} color={`#fff`} />
+                    <View className='flex flex-row items-center justify-start gap-3'>
+                        <Ionicons name="alarm" size={24} color={`#fff`} />
 
                         <Text className='text-xl text-white font-ralewayBold'>Notificaciones</Text>
                         <Switch
-                        className='flex-1'
+                            className='flex-1'
                             style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
                             onValueChange={() => setNotificationEnabled(prevState => !prevState)}
                             value={notificationEnabled}
@@ -100,7 +106,7 @@ const Config = () => {
 
                 <TouchableOpacity className='mb-2'>
                     <View className='flex flex-row items-center gap-3'>
-                    <Ionicons name="document-attach" size={24} color={`#fff`} />
+                        <Ionicons name="document-attach" size={24} color={`#fff`} />
 
                         <Text className='text-xl text-white font-ralewayBold'>Terminos y Condiciones</Text>
                     </View>
@@ -108,7 +114,7 @@ const Config = () => {
 
                 <TouchableOpacity className='mb-2'>
                     <View className='flex flex-row items-center gap-3'>
-                    <Ionicons name="documents" size={24} color={`#fff`} />
+                        <Ionicons name="documents" size={24} color={`#fff`} />
 
                         <Text className='text-xl text-white font-ralewayBold'>FAQs</Text>
                     </View>
@@ -116,7 +122,7 @@ const Config = () => {
 
                 <TouchableOpacity className='mb-2'>
                     <View className='flex flex-row items-center gap-3'>
-                    <Ionicons name="text" size={24} color={`#fff`} />
+                        <Ionicons name="text" size={24} color={`#fff`} />
 
                         <Text className='text-xl text-white font-ralewayBold'>Acerca de</Text>
                     </View>
@@ -129,16 +135,26 @@ const Config = () => {
                     </View>
                 </View>
 
-                <TouchableOpacity className='mb-2'>
+                <TouchableOpacity className='mb-2'
+                    onPress={()=>{
+                        router.push('/(auth)/delete')
+                    }}
+                >
                     <View className='flex flex-row items-center gap-3'>
-                        <Text className='text-xl text-redEPN-300 font-ralewayBold'>Eliminar Cuenta</Text>
+                        <Ionicons name="flash-off-sharp" size={24} color={`#E11F1C`} />
+                        <Text className='text-xl text-redEPN-500 font-ralewayBold'>Eliminar Cuenta</Text>
                     </View>
                 </TouchableOpacity>
 
 
-                <TouchableOpacity className='mb-2'>
+                <TouchableOpacity className='mb-2'
+                     onPress={()=>{
+                        router.replace('/(auth)/signin')
+                    }}
+                >
                     <View className='flex flex-row items-center gap-3'>
-                        <Text className='text-xl text-redEPN-300 font-ralewayBold'>Salir</Text>
+                    <Ionicons name="exit-outline" size={24} color={`#E11F1C`} />
+                        <Text className='text-xl text-redEPN-500 font-ralewayBold'>Salir</Text>
                     </View>
                 </TouchableOpacity>
 

@@ -62,18 +62,7 @@ export default function TabsLayout() {
 
       }} />
       <Tabs.Screen name="(profile)" options={{
-        headerTitle: () => (
-          <MainLogoGradientComponent
-            height='40'
-            principal='#77FFAA'
-            secondary='#FFF'
-          />
-        ), 
-        headerStyle: {
-          backgroundColor: isDark ? '#1c1c1c' : '#0059FF',
-        },
-        headerTintColor: '#77FFAA',
-        headerTitleAlign: 'center',
+        headerShown: false,
         tabBarIcon: ({ focused }) => (
           <Ionicons name="person" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),

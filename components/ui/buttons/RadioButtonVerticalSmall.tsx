@@ -1,13 +1,15 @@
+import { useTheme } from '@/context/ThemeContext';
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 
 const RadioButton = ({ label, value, selected, onSelect }: any) => {
+    const { isDark } = useTheme();
     return (
         <TouchableOpacity
-            className={`transition-all duration-200 rounded-md bg-eBlue-800 mx-3 w-12 p-1 flex items-center ${selected ? "bg-lightGreen text-darkGray-500 scale-110 -translate-y-1" : ""}`}
+            className={`transition-all duration-200 rounded-md bg-darkGray-500 mx-2 w-full mb-2 p-2 flex items-center ${selected ? "bg-lightGreen text-darkGray-500 scale-105 -translate-y-1" : ""}`}
             onPress={() => onSelect(value)}>
-                <Text className={`text-center text-xs font-ralewayBold text-white  ${selected ? "text-darkGray-500" : ""} `}>{label}</Text>
+                <Text className={`text-center text-sm font-raleway text-white  ${selected ? "text-darkGray-500" : ""} `}>{label}</Text>
         </TouchableOpacity>
     );
 };
@@ -17,10 +19,10 @@ interface Props {
     options: string[]
 }
 
-const RadioButtonSmallComponent = ({ options = [] }: Props) => {
+const RadioButtonVerticalSmallComponent = ({ options = [] }: Props) => {
     const [selectedValue, setSelectedValue] = useState(null);
     return (
-        <View className='flex flex-row items-center justify-center mt-4'>
+        <View className='flex flex-col items-center justify-center mt-4 px-4 '>
             {
                 options.map((opt, i) => (
                     <RadioButton
@@ -37,4 +39,4 @@ const RadioButtonSmallComponent = ({ options = [] }: Props) => {
     );
 };
 
-export default RadioButtonSmallComponent;
+export default RadioButtonVerticalSmallComponent;

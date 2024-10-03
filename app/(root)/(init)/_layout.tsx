@@ -3,7 +3,6 @@ import SkipButton from '@/components/ui/buttons/SkipButton';
 import FormHeaderComponent from '@/components/ui/header/FormHeaderComponent';
 import { useTheme } from '@/context/ThemeContext';
 import { Href, Slot, usePathname } from 'expo-router';
-import { useEffect } from 'react';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
