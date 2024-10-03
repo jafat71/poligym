@@ -8,12 +8,13 @@ export default function AuthLayout() {
   const { isDark } = useTheme()
 
   return (
-    <SafeAreaView className={`flex flex-1 flex-col justify-center r ${isDark ? "bg-darkGray-500" : "bg-eBlue-500"}`}>
+    <SafeAreaView className={`flex flex-col items-center justify-center h-full ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        className='w-full p-4'
       >
-          <TopHeaderComponent />
+            <TopHeaderComponent />
             <Slot />
       </ScrollView>
     </SafeAreaView>

@@ -3,8 +3,12 @@ import { Text, TextInput, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
 import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
+import { useTheme } from '@/context/ThemeContext';
+import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
+import { router } from 'expo-router';
 
 const Forgot = () => {
+  const { isDark } = useTheme()
   const [email, setEmail] = useState('');
 
   const handleSubmit = () => {
@@ -13,51 +17,47 @@ const Forgot = () => {
     });
   };
   return (
-    <View className='p-4'>
+    <View className={`p-4 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-200"}  rounded-sm`}>
 
-      <View className='p-4 mt-2 bg-eBlue-800 rounded-lg shadow-2xl shadow-eBlue-700'>
+      <View className='p-4 mt-2 rounded-lg '>
 
-        <Text className='text-2xl font-ralewayBold text-center mb-6 text-lightGreen'>Olvidé mi contraseña</Text>
+        <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
 
-        <Text className={`mt-2 text-xl text-center mb-4 text-white`}>Ingresa tu correo electónico para recibir las instrucciones necesarias para recuperar el acceso a tu cuenta</Text>
-
-        <Text className='text-2xl font-ralewayBold text-white'>Email Institucional</Text>
-        <View className='bg-eBlue-800 mt-2 rounded-lg shadow-lg text-white-100'>
-
-          <View className='flex flex-row items-center justify-center w-full'>
-            <View className='w-10 h-10 items-center p-1 '>
-              <Ionicons name="person" size={35} color="#0059FF" />
-            </View>
-            <TextInput
-              className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-              placeholder="tu.nombre@epn.edu.ec"
-              keyboardType="email-address"
-              placeholderTextColor="#FFFFFF"
-              value={email}
-              onChangeText={setEmail}
-            />
-          </View>
+          <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
+          <Text className={`text-lg font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>Ingresa tu correo electónico para recibir las instrucciones necesarias para recuperar el acceso a tu cuenta</Text>
 
         </View>
-        <Text className='text-sm text-center font-ralewayBold text-white-100'>
-        </Text>
+
+        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
+          <IconTextInputForm
+            title='Email Institucional'
+            icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+            inputKeyboardType='email-address'
+            inputPlaceholder='tu.nombre@epn.edu.ec'
+            inputValue={email}
+            inputOnChangeText={setEmail}
+            inputSecure={false}
+          />
+
+        </View>
+
+        <View className='mb-5'>
+          <AuthSupportButton
+            title='Regresar al login'
+            onPress={() => {
+              router.push('/(auth)/signin')
+            }}
+          />
 
 
-      </View>
+        </View>
 
-      <View className='mb-10'>
-        <AuthSupportButton
-          title='Regresar al login'
-          route={'/(auth)/signin'}
+        <CTAButtonPrimary
+          onPress={() => {
+            router.push('/(auth)/signin')
+          }} text='Enviar Correo'
         />
-
-
       </View>
-
-      <CTAButtonPrimary
-        route={'/(auth)/signin'}
-        text='Enviar Correo'
-      />
     </View>
   )
 }

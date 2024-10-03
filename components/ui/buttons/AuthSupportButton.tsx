@@ -1,26 +1,22 @@
 
-
 import { useTheme } from '@/context/ThemeContext';
-import { Href, router } from 'expo-router';
 import React from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
     title: string;
-    route: Href<string | object>,
+    onPress: ((event: GestureResponderEvent) => void) | undefined,
 }
 
-const AuthSupportButton = ({ title, route }: Props) => {
+const AuthSupportButton = ({ title, onPress }: Props) => {
     const { isDark } = useTheme()
     return (
-        <View className='w-full items-end justify-end'>
+        <View className='w-full items-end justify-end mt-1'>
             <TouchableOpacity
                 className='mt-1'
-                onPress={() => {
-                    router.push(route)
-                }}
+                onPress={onPress}
             >
-                <Text className={`font-raleway text-xl ${isDark ? "text-white" : "text-darkGray-100"} `}>{title}</Text>
+                <Text className={`text-sm  font-raleway ${isDark ? "text-white" : "text-darkGray-500"} `}>{title}</Text>
             </TouchableOpacity>
         </View>
     );

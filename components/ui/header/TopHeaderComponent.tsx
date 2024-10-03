@@ -9,9 +9,9 @@ const TopHeaderComponent = () => {
     const { isDark } = useTheme()
 
     return (
-        <View className='w-full flex items-center mt-3'>
-            <MainLogoCustomComponent width='100' height='100' principal={`${isDark ? "#0059FF" : "#1c1c1c"}`}/>
-            <Text className={`font-ralewayExtraBold text-5xl ${isDark ? "text-white" : "text-darkGray-500"}`} >POLIGYM</Text>
+        <View className='w-full flex items-center my-8 '>
+            <MainLogoCustomComponent width='50' height='50' principal={`${isDark ? "#fff" : "#1c1c1c"}`}/>
+            <Text className={`font-ralewayExtraBold text-3xl ${isDark ? "text-white" : "text-darkGray-500"}`} >POLIGYM</Text>
         </View>
     );
 };

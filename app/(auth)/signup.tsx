@@ -1,11 +1,15 @@
 import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
 import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
+import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
+import { useTheme } from '@/context/ThemeContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { router } from 'expo-router';
 import React, { useState } from 'react'
 import { Text, TextInput, View } from 'react-native'
 
 const Signup = () => {
 
+  const { isDark } = useTheme()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -19,85 +23,71 @@ const Signup = () => {
   };
 
   return (
-        <View className='p-4'>
-          <View className='p-4 mt-2 bg-eBlue-800 rounded-lg shadow-2xl shadow-eBlue-700'>
+    <View className={`p-4 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-200"}  rounded-sm`}>
 
-            <Text className='text-2xl font-ralewayBold text-center mb-6 text-lightGreen'>Registro</Text>
+      <View className='p-4 mt-2 rounded-lg '>
 
-            <Text className='text-2xl font-ralewayBold text-white'>Email Institucional</Text>
-            <View className='bg-eBlue-800 mt-2 rounded-lg shadow-lg text-white-100'>
+        <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
 
-              <View className='flex flex-row items-center justify-center w-full'>
-                <View className='w-10 h-10 items-center p-1 '>
-                  <Ionicons name="person" size={35} color="#0059FF" />
-                </View>
-                <TextInput
-                  className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                  placeholder="tu.nombre@epn.edu.ec"
-                  keyboardType="email-address"
-                  placeholderTextColor="#FFFFFF"
-                  value={email}
-                  onChangeText={setEmail}
-                />
-              </View>
+          <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
+          <Text className={`text-lg font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>Ingresa tu información para crear una cuenta</Text>
 
-            </View>
+        </View>
 
-            <Text className='text-2xl font-ralewayBold text-white'>Contraseña</Text>
-            <View className='bg-eBlue-800 mt-2 rounded-lg shadow-lg text-white-100'>
+        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
+          <IconTextInputForm
+            title='Email Institucional'
+            icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+            inputKeyboardType='email-address'
+            inputPlaceholder='tu.nombre@epn.edu.ec'
+            inputValue={email}
+            inputOnChangeText={setEmail}
+            inputSecure={false}
+          />
 
-              <View className='flex flex-row items-center justify-center w-full'>
-                <View className='w-10 h-10 items-center p-1 '>
-                  <Ionicons name="shield" size={35} color="#0059FF" />
-                </View>
-                <TextInput
-                  className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                  placeholder="********"
-                  secureTextEntry
-                  keyboardType="ascii-capable"
-                  placeholderTextColor="#FFFFFF"
-                  value={password}
-                  onChangeText={setPassword}
-                />
-              </View>
+          <IconTextInputForm
+            title='Contraseña'
+            icon={<Ionicons name="shield-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+            inputKeyboardType='ascii-capable'
+            inputPlaceholder='*********'
+            inputValue={password}
+            inputOnChangeText={setPassword}
+            inputSecure={true}
+          />
 
-            </View>
-
-            <Text className='text-2xl font-ralewayBold text-white'>Confirmar contraseña</Text>
-            <View className='bg-eBlue-800 mt-2 rounded-lg shadow-lg text-white-100'>
-
-              <View className='flex flex-row items-center justify-around w-full'>
-                <View className='w-10 h-10 items-center p-1 '>
-                  <Ionicons name="shield-checkmark-sharp" size={35} color="#0059FF" />
-                </View>
-                <TextInput
-                  className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen  ml-2 font-raleway'
-                  placeholder="********"
-                  keyboardType="ascii-capable"
-                  placeholderTextColor="#FFFFFF"
-                  secureTextEntry
-                  value={confirmPassword}
-                  onChangeText={setConfirmPassword}
-                />
-              </View>
-
-            </View>
-          </View>
-
-          <View className='mb-10'>
-            <AuthSupportButton
-              title='Ya tengo una cuenta'
-              route={'/(auth)/signin'}
-            />
-
-          </View>
-
-          <CTAButtonPrimary
-            route={'/(animated)/form00'}
-            text='Registrarse'
+          <IconTextInputForm
+            title='Confirmar Contraseña'
+            icon={<Ionicons name="shield-checkmark-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+            inputKeyboardType='ascii-capable'
+            inputPlaceholder='*********'
+            inputValue={password}
+            inputOnChangeText={setPassword}
+            inputSecure={true}
           />
 
         </View>
+
+
+        <View className='mb-5'>
+          <AuthSupportButton
+            title='Ya tengo una cuenta'
+            onPress={() => {
+              router.push('/(auth)/signin')
+            }}
+          />
+
+        </View>
+
+        <CTAButtonPrimary
+          onPress={() => {
+            router.push('/(animated)/form00')
+          }}
+          text='Registrarse'
+        />
+      </View>
+
+
+    </View>
   )
 }
 
