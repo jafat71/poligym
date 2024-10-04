@@ -17,7 +17,7 @@ const Forgot = () => {
     });
   };
   return (
-    <View className={`p-4 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-200"}  rounded-sm`}>
+    <View className={`p-4 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm`}>
 
       <View className='p-4 mt-2 rounded-lg '>
 
@@ -28,7 +28,7 @@ const Forgot = () => {
 
         </View>
 
-        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
+        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
           <IconTextInputForm
             title='Email Institucional'
             icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}

@@ -9,11 +9,20 @@ import { Pressable, Text, View } from 'react-native';
 
 const CustomDrawerContent = () => {
     const { isDark, toggleTheme } = useTheme()
+    const labelStyle = {
+        color: isDark ? "#fff" : '#1c1c1c',
+        fontFamily: 'Raleway-SemiBold',
+        fontSize: 18,
+    }
+    const iconStyle = `rounded-full w-10 h-10 
+                        flex items-center justify-center mt-2
+                        border-[1px] 
+                        ${isDark ? "border-darkGray-400" : "bg-darkGray-200 border-darkGray-500"}`
     return (
         <DrawerContentScrollView>
-            <View className={`p-2 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-200"}  rounded-sm`}>
+            <View className={`p-2 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm`}>
                 <View className='p-2 rounded-lg '>
-                    <View className={`pb-2 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}
+                    <View className={`pb-2 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-300"}
                     flex flex-row items-center justify-between
                     `}>
                         <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>POLIGYM</Text>
@@ -23,21 +32,19 @@ const CustomDrawerContent = () => {
                             }}
                         >
                             <Ionicons name="arrow-forward-circle-sharp" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-
                         </Pressable>
                     </View>
 
-                    <View className={`flex flex-row items-center pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
+                    <View className={`flex flex-row items-center pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
                         <View className={`rounded-full w-16 h-16 
                         flex items-center justify-center mt-2
                         border-[1px] 
-                        ${isDark ? "border-darkGray-400" : "bg-darkGray-200 border-darkGray-200"}`}>
+                        ${isDark ? "border-darkGray-400" : "bg-darkGray-200 border-darkGray-500"}`}>
                             <Text className={` text-2xl font-raleway ${isDark ? "text-white" : "text-darkGray-400"} `}>JD</Text>
                         </View>
                         <View className={`pl-3`}>
                             <Text className={`text-lg font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Jhon Doe</Text>
                             <Text className={`text-lg font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>jhon.doe@epn.edu.ec</Text>
-
                         </View>
                     </View>
                 </View>
@@ -46,78 +53,109 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     router.push('/(profile)/profile')
                 }}
+                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
                 label={'Mi Perfil'}
                 icon={() => (
-                    <Ionicons name="person-sharp" size={24} color={`${isDark ? "white" : "#a6a6a6"}`} />
+                    <View className={iconStyle}>
+                        <Ionicons name="person-sharp" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
+                    </View>
                 )}
-                labelStyle={{ color: isDark ? "#fff" : '#1c1c1c', fontFamily: 'Raleway-Bold', fontSize: 18 }}
+                labelStyle={labelStyle}
             />
 
             <DrawerItem
                 onPress={() => {
                     router.push('/(profile)/profile')
                 }}
+                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
+
                 label={'Mi Plan'}
                 icon={() => (
-                    <Ionicons name="calendar-clear-outline" size={24} color={`${isDark ? "white" : "#a6a6a6"}`} />
+                    <View className={iconStyle}>
+                        <Ionicons name="calendar-clear-outline" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
+                    </View>
                 )}
-                labelStyle={{ color: isDark ? "#fff" : '#1c1c1c', fontFamily: 'Raleway-Bold', fontSize: 18 }}
+                labelStyle={labelStyle}
             />
 
             <DrawerItem
                 onPress={() => {
                     router.push('/(profile)/profile')
                 }}
+                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
+
                 label={'Mi Progreso'}
                 icon={() => (
-                    <Ionicons name="star-half" size={24} color={`${isDark ? "white" : "#a6a6a6"}`} />
+                    <View className={iconStyle}>
+
+                        <Ionicons name="star-half" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
+                    </View>
                 )}
-                labelStyle={{ color: isDark ? "#fff" : '#1c1c1c', fontFamily: 'Raleway-Bold', fontSize: 18 }}
+                labelStyle={labelStyle}
             />
 
             <DrawerItem
                 onPress={() => {
                     router.push('/(profile)/profile')
                 }}
+                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
+
                 label={'Historial'}
                 icon={() => (
-                    <Ionicons name="reload-circle-outline" size={24} color={`${isDark ? "white" : "#a6a6a6"}`} />
+                    <View className={iconStyle}>
+
+                        <Ionicons name="reload-circle-outline" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
+                    </View>
                 )}
-                labelStyle={{ color: isDark ? "#fff" : '#1c1c1c', fontFamily: 'Raleway-Bold', fontSize: 18 }}
+                labelStyle={labelStyle}
             />
 
             <DrawerItem
                 onPress={() => {
                     router.push('/(profile)/profile')
                 }}
+                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
+
                 label={'Favoritos'}
                 icon={() => (
-                    <Ionicons name="heart-circle" size={24} color={`${isDark ? "white" : "#a6a6a6"}`} />
+                    <View className={iconStyle}>
+
+                        <Ionicons name="heart-circle" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
+                    </View>
                 )}
-                labelStyle={{ color: isDark ? "#fff" : '#1c1c1c', fontFamily: 'Raleway-Bold', fontSize: 18 }}
+                labelStyle={labelStyle}
             />
 
             <DrawerItem
                 onPress={() => {
                     router.push('/(profile)/config')
                 }}
+                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
+
                 label={'Configuración'}
                 icon={() => (
-                    <Ionicons name="settings-outline" size={24} color={`${isDark ? "white" : "#a6a6a6"}`} />
+                    <View className={iconStyle}>
+
+                        <Ionicons name="settings-outline" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
+                    </View>
                 )}
-                labelStyle={{ color: isDark ? "#fff" : '#1c1c1c', fontFamily: 'Raleway-Bold', fontSize: 18 }}
+                labelStyle={labelStyle}
             />
 
             <DrawerItem
                 onPress={() => {
                     toggleTheme()
                 }}
+                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
+
                 label={`Activar Tema ${isDark ? "Claro" : "Oscuro"}`}
                 icon={() => (
-                    <Ionicons name={isDark ? "sunny-outline" : "moon-outline"} size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+                    <View className={iconStyle}>
+                        <Ionicons name={isDark ? "sunny-outline" : "moon-outline"} size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+                    </View>
 
                 )}
-                labelStyle={{ color: isDark ? "#fff" : '#1c1c1c', fontFamily: 'Raleway-Bold', fontSize: 18 }}
+                labelStyle={labelStyle}
             />
 
             <DrawerItem
@@ -125,9 +163,16 @@ const CustomDrawerContent = () => {
                     router.push('/(auth)/signin')
 
                 }}
+                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
+
                 label={'Salir'}
                 icon={() => (
-                    <Ionicons name="exit-outline" size={24} color={`#E11F1C`} />
+                    <View className={`rounded-full w-10 h-10 
+                        flex items-center justify-center mt-2
+                        border-[1px] bg-[#e11a1a]
+                        ${isDark ? "border-darkGray-400" : " border-darkGray-500"}`}>
+                        <Ionicons name="exit-outline" size={24} color={`#fff`} />
+                    </View>
                 )}
                 labelStyle={{ color: `#E11F1C`, fontFamily: 'Raleway-Bold', fontSize: 18 }}
             />
@@ -156,7 +201,7 @@ export default function RootLayout() {
                 headerRight: () => (
                     <View className='flex flex-row items-end justify-end px-4'>
                         <Pressable
-                        onPress={()=>{toggleTheme()}}
+                            onPress={() => { toggleTheme() }}
                         >
                             <Ionicons name={isDark ? "sunny-outline" : "moon-outline"} size={24} color={isDark ? "#fff" : "#1c1c1c"} />
 

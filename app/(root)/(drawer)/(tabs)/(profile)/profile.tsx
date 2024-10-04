@@ -2,33 +2,48 @@ import { useTheme } from '@/context/ThemeContext'
 import { Ionicons } from '@expo/vector-icons'
 import { router } from 'expo-router'
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Pressable, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const Profile = () => {
   const { isDark } = useTheme()
   return (
-    <SafeAreaView className={`flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-eBlue-500"} `}>
+    <SafeAreaView className={`flex flex-1
+    px-2 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm
+    ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
 
-      <View className='flex flex-row items-center justify-between w-full bg-eBlue-800'>
-        <View className='flex flex-row items-center justify-center gap-2'>
-          <View className={`w-24 h-24 scale-110 rounded-full  flex items-center justify-center p-1 ${isDark ? "bg-eBlue-500" : "bg-eBlue-900"}  `}>
-            <Ionicons name="person-circle" size={42} color={`#fff`} />
+
+      <View className={`border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm`}>
+        <View className='p-2 rounded-lg '>
+          <View className={`pb-2 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}
+                    flex flex-row items-center justify-between`}>
+            <View className={`rounded-full w-32 h-32 
+                        flex items-center justify-center
+                        border-[1px] ${isDark ? "border-darkGray-400" : "bg-darkGray-200 border-darkGray-500"}`}>
+              <Text className={` text-2xl font-raleway ${isDark ? "text-white" : "text-darkGray-400"} `}>JD</Text>
+            </View>
+            <View className='h-full'>
+              <Pressable
+                onPress={() => {
+                  router.navigate('/(profile)/config')
+                }}
+              >
+                <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+              </Pressable>
+            </View>
           </View>
-          <Text className='text-3xl text-white font-ralewayBold pl-2'>Jhon Doe</Text>
-        </View>
 
-        <View className='mr-4'>
-          <TouchableOpacity
-            onPress={()=> {
-              router.navigate('/(profile)/config')
-            }}
-          >
-            <Ionicons name="settings-outline" size={32} color={`#fff`} />
-          </TouchableOpacity>
-        </View>
+          <View className={`flex flex-row items-center`}>
 
+            <View className={`pl-3 w-full items-end`}>
+              <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Jhon Doe</Text>
+              <Text className={`text-base font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>jhon.doe@epn.edu.ec</Text>
+
+            </View>
+          </View>
+        </View>
       </View>
+
 
 
     </SafeAreaView>

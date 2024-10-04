@@ -1,8 +1,8 @@
-
-
-import RadioButtonLargeComponent from '@/components/ui/buttons/RadioButtonLarge';
+import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
 import RadioButtonSmallComponent from '@/components/ui/buttons/RadioButtonSmall';
 import RadioButtonVerticalSmallComponent from '@/components/ui/buttons/RadioButtonVerticalSmall';
+import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
+import IconTextInputRadioButtonForm from '@/components/ui/form/IconTextInputRadioButtonForm';
 import ImagePicker from '@/components/ui/image/ImagePicker';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,125 +21,189 @@ const EditProfile = () => {
         "thursday": false,
         "friday": false,
     });
+
     return (
-        <SafeAreaView className={`flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-eBlue-600"} `}>
+        <SafeAreaView className={`flex flex-1
+            border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm
+            ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                <View className='p-4'>
-                    <View className={`flex flex-row items-center `}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                router.back()
-                            }}
-                        >
-                            <Ionicons name="arrow-back" size={32} color={`#fff`} />
-                        </TouchableOpacity>
-                        <Text className='text-3xl ml-2 text-white font-ralewayBold'>Actualizar Información</Text>
+                <View className='p-4 rounded-lg '>
+                    <View className={`py-1 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                        <View className='flex flex-row items-center justify-between'>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    router.back()
+                                }}
+                            >
+                                <Ionicons name="arrow-back" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
+                            </TouchableOpacity>
+                            <Text className={`text-2xl mr-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Actualizar Información</Text>
+                        </View>
+
                     </View>
 
 
-                    <View className='p-4 mt-2 bg-eBlue-800 rounded-lg shadow-2xl shadow-eBlue-700'>
+                    <View className={`p-4 mt-2 rounded-lg border-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} `}>
                         <View className='w-full items-center mt-2'>
                             <ImagePicker />
                         </View>
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Nombre </Text>
-                            <TextInput
-                                className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                                placeholder="Jhon Doe"
-                                keyboardType="ascii-capable"
-                                placeholderTextColor="#FFFFFF"
+                        <IconTextInputForm
+                            title='Email Institucional'
+                            icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                            inputKeyboardType='email-address'
+                            inputPlaceholder='jhon.doe@epn.edu.ec'
+                            inputSecure={false}
+                            enabled={false}
+                            inputValue={undefined}
+                            inputOnChangeText={undefined} />
+                        <IconTextInputForm
+                            title='Nombre'
+                            icon={<Ionicons name="person-circle-sharp" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                            inputKeyboardType='email-address'
+                            inputPlaceholder='Jhon Doe'
+                            inputSecure={false}
+                            inputValue={undefined}
+                            inputOnChangeText={undefined} />
+                        <IconTextInputForm
+                            title='Edad'
+                            icon={<Ionicons name="balloon-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                            inputKeyboardType='number-pad'
+                            inputPlaceholder='18'
+                            inputSecure={false}
+                            inputValue={undefined}
+                            inputOnChangeText={undefined} />
+                        <IconTextInputRadioButtonForm
+                            title="Género"
+                            icon={<Ionicons name="male-female-outline"
+                                size={35}
+                                color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                            inputPlaceholder={'Másculino'}
+                            inputKeyboardType='ascii-capable'
+                            inputValue={undefined}
+                            inputOnChangeText={undefined}
+                            options={['M', 'F']}
+                            enabled={false}
+                            rbComponentStyle='flex-1 flex-row '
+                            rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center'
+                            rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
+                        />
+                        <IconTextInputRadioButtonForm
+                            title="Peso"
+                            icon={<Ionicons name="scale"
+                                size={35}
+                                color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                            inputPlaceholder={'70'}
+                            inputKeyboardType='number-pad'
+                            inputValue={undefined}
+                            inputOnChangeText={undefined}
+                            options={['KG', 'LB']}
+                            enabled={true}
+                            rbComponentStyle='flex-1 flex-row '
+                            rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center'
+                            rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
+                        />
+
+                        <IconTextInputRadioButtonForm
+                            title="Altura"
+                            icon={<Ionicons name="resize-outline"
+                                size={35}
+                                color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                            inputPlaceholder={'166'}
+                            inputKeyboardType='number-pad'
+                            inputValue={undefined}
+                            inputOnChangeText={undefined}
+                            options={['CM', 'PIES']}
+                            enabled={true}
+                            rbComponentStyle='flex-1 flex-row '
+                            rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center'
+                            rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
+                        />
+
+                        <View>
+                            <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>Objetivo</Text>
+                            <RadioButtonIconComponent
+                                options={["Bajar de Peso", "Ganar Músculo", "Mantenerse en forma"]}
+                                icons={[
+                                    <Ionicons name="nutrition-outline"
+                                        size={35}
+                                        color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
+                                    <Ionicons name="barbell-outline"
+                                        size={35}
+                                        color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
+                                    <Ionicons name="fitness-sharp"
+                                        size={35}
+                                        color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
+                                ]}
+                                rbComponentStyle='w-full '
+                                rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2'
+                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
                             />
-                        </View>
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Edad </Text>
-                            <TextInput
-                                className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                                placeholder="18"
-                                keyboardType="number-pad"
-                                placeholderTextColor="#FFFFFF"
-                            />
+
                         </View>
 
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Género </Text>
-                            <Text
-                                className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                            >
-                                Hombre
-                            </Text>
-                            <RadioButtonSmallComponent
-                                options={['M', 'F']}
+                        <View>
+                            <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>Estado físico</Text>
+                            <RadioButtonIconComponent
+                                options={["Principiante", "Intermedio", "Avanzado"]}
+                                icons={[
+                                    <Ionicons name="star-outline"
+                                        size={35}
+                                        color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
+                                    <Ionicons name="star-half-outline"
+                                        size={35}
+                                        color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
+                                    <Ionicons name="star"
+                                        size={35}
+                                        color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
+                                ]}
+                                rbComponentStyle='w-full '
+                                rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2'
+                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
                             />
-                        </View>
-
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Peso </Text>
-                            <TextInput
-                                className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                                placeholder="70"
-                                keyboardType="number-pad"
-                                placeholderTextColor="#FFFFFF"
-                            />
-                            <RadioButtonSmallComponent
-                                options={['KG', 'LBS']}
-                            />
-                        </View>
-
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Altura </Text>
-                            <TextInput
-                                className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                                placeholder="166"
-                                keyboardType="number-pad"
-                                placeholderTextColor="#FFFFFF"
-                            />
-                            <RadioButtonSmallComponent
-                                options={['CM', 'PIES']}
-                            />
-                        </View>
-
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Objetivo</Text>
-                            <View className='flex-1'>
-                                <View className='w-full'>
-                                    <RadioButtonVerticalSmallComponent
-                                        options={["Bajar de Peso", "Ganar Músculo", "Mantenerse en forma"]}
-                                    />
-                                </View>
-                            </View>
 
                         </View>
 
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Estado físico</Text>
-                            <View className='flex-1'>
-                                <View className='w-full'>
-                                    <RadioButtonVerticalSmallComponent
-                                        options={["Principiante", "Intermedio", "Avanzado"]}
-                                    />
-                                </View>
-                            </View>
-                        </View>
+                        <View >
+                            <IconTextInputRadioButtonForm
+                                title="Información Médica"
+                                icon={<Ionicons name="medkit-outline"
+                                    size={35}
+                                    color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                                inputPlaceholder={'Sin problema'}
+                                inputKeyboardType='ascii-capable'
+                                inputValue={undefined}
+                                inputOnChangeText={undefined}
+                                options={['SI', 'NO']}
+                                enabled={false}
+                                rbComponentStyle='flex-1 flex-row '
+                                rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center'
+                                rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
+                            />
+                            <View className='mt-1'>
+                                <RadioButtonIconComponent
+                                    options={["Lesiónes", "Alergias"]}
+                                    icons={[
+                                        <Ionicons name="bandage-outline"
+                                            size={35}
+                                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
+                                        <Ionicons name="warning-outline"
+                                            size={35}
+                                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
 
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Información Médica</Text>
-                            <View className='flex-1'>
-                                <RadioButtonSmallComponent
-                                    options={['Si', 'No']}
+                                    ]}
+                                    rbComponentStyle='w-full '
+                                    rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2'
+                                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
                                 />
-                                <View className='w-full'>
-                                    <RadioButtonVerticalSmallComponent
-                                        options={["Lesiones", "Alergías"]}
-                                    />
-                                </View>
-                                <View className='p-4'>
+                                <View className={`mt-2 border-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} rounded-lg text-white-100`}>
                                     <TextInput
-                                        className={`text-start px-3 justify-start text-sm mt-2  rounded-xl py-2  text-lightGreen  bg-darkGray-500 "}`}
+                                        className={`flex-1 p-2 rounded-lg shadow-lg 
+                                        pl-3 ${isDark ? "text-white" : "text-darkGray-500"}  ml-2 font-ralewayBold`}
                                         placeholder={'Tengo una lesión en ...'}
-                                        placeholderTextColor={`${"#fff"}`}
+                                        placeholderTextColor="#a6a6a6"
                                         keyboardType='ascii-capable'
                                         maxLength={200}
                                         multiline
@@ -151,147 +215,157 @@ const EditProfile = () => {
                             </View>
                         </View>
 
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Medidas Corporales</Text>
-                            <View className='flex-1'>
-                                <RadioButtonSmallComponent
-                                    options={['CM', 'PIES']}
-                                />
-                                <View className='w-full'>
-                                    <View className='flex flex-row items-center justify-center p-2'>
-                                        <Text className='w-1/2 text-white font-ralewayBold'>
-                                            Circunferencia de cintura
-                                        </Text>
-                                        <TextInput
-                                            className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                                            placeholder="85"
-                                            keyboardType="number-pad"
-                                            placeholderTextColor="#FFFFFF"
-                                        />
-                                    </View>
+                        <View>
+                            <IconTextInputRadioButtonForm
+                                title="Médidas Corporales"
+                                icon={<Ionicons name="body-outline"
+                                    size={35}
+                                    color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                                inputPlaceholder={'CM'}
+                                inputKeyboardType='number-pad'
+                                inputValue={undefined}
+                                inputOnChangeText={undefined}
+                                options={['CM', 'PIES']}
+                                enabled={true}
+                                rbComponentStyle='flex-1 flex-row '
+                                rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center'
+                                rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
+                            />
 
-                                    <View className='flex flex-row items-center justify-center p-2'>
-                                        <Text className='w-1/2 text-white font-ralewayBold'>
-                                            Circunferencia de cadera
-                                        </Text>
-                                        <TextInput
-                                            className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                                            placeholder="95"
-                                            keyboardType="number-pad"
-                                            placeholderTextColor="#FFFFFF"
-                                        />
-                                    </View>
+                            <IconTextInputForm
+                                title='Circunferencia de cintura'
+                                icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                                inputKeyboardType='number-pad'
+                                inputPlaceholder='85'
+                                inputSecure={false}
+                                enabled={false}
+                                inputValue={undefined}
+                                inputOnChangeText={undefined} />
 
-                                    <View className='flex flex-row items-center justify-center p-2'>
-                                        <Text className='w-1/2 text-white font-ralewayBold'>
-                                            Circunferencia de brazo
-                                        </Text>
-                                        <TextInput
-                                            className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                                            placeholder="32"
-                                            keyboardType="number-pad"
-                                            placeholderTextColor="#FFFFFF"
-                                        />
-                                    </View>
+                            <IconTextInputForm
+                                title='Circunferencia de cadera'
+                                icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                                inputKeyboardType='number-pad'
+                                inputPlaceholder='96'
+                                inputSecure={false}
+                                enabled={false}
+                                inputValue={undefined}
+                                inputOnChangeText={undefined} />
 
-                                    <View className='flex flex-row items-center justify-center p-2'>
-                                        <Text className='w-1/2 text-white font-ralewayBold'>
-                                            Circunferencia de muslo
-                                        </Text>
-                                        <TextInput
-                                            className='flex-1 bg-darkGray-500 p-2 mt-2 rounded-lg shadow-lg pl-3 text-lightGreen ml-2 font-raleway'
-                                            placeholder="54"
-                                            keyboardType="number-pad"
-                                            placeholderTextColor="#FFFFFF"
-                                        />
-                                    </View>
+                            <IconTextInputForm
+                                title='Circunferencia de brazo'
+                                icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                                inputKeyboardType='number-pad'
+                                inputPlaceholder='96'
+                                inputSecure={false}
+                                enabled={false}
+                                inputValue={undefined}
+                                inputOnChangeText={undefined} />
 
-                                </View>
-                            </View>
+                            <IconTextInputForm
+                                title='Circunferencia de muslo'
+                                icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                                inputKeyboardType='number-pad'
+                                inputPlaceholder='54'
+                                inputSecure={false}
+                                enabled={false}
+                                inputValue={undefined}
+                                inputOnChangeText={undefined} />
 
                         </View>
 
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className='text-base font-ralewayBold w-16 text-white'>Horarios de Entrenamiento</Text>
-                            <View className='flex-1'>
-                                <RadioButtonSmallComponent
-                                    options={['Mañana', 'Tarde']}
-                                />
-                                <View className='w-full'>
-                                    <View className='flex flex-row items-center justify-between p-2'>
-                                        <Text className='text-xs text-white font-raleway'>
-                                            Lunes
-                                        </Text>
-                                        <Checkbox
-                                            className='w-6 h-6'
-                                            value={days.monday}
-                                            onValueChange={() => setDays({
-                                                ...days,
-                                                monday: !days.monday
-                                            })}
-                                            color={days.monday ? `${isDark ? "#0059FF" : "#16243E"}` : `${isDark ? "#0059FF" : "#1c1c1c"}`}
-                                        />
-                                    </View>
+                        <View>
+                            <IconTextInputRadioButtonForm
+                                title="Horarios de Entrenamiento"
+                                icon={<Ionicons name="time-outline"
+                                    size={35}
+                                    color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                                inputPlaceholder={'AM'}
+                                inputKeyboardType='number-pad'
+                                inputValue={undefined}
+                                inputOnChangeText={undefined}
+                                options={['AM', 'PM']}
+                                enabled={true}
+                                rbComponentStyle='flex-1 flex-row '
+                                rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center'
+                                rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
+                            />
 
-                                    <View className='flex flex-row items-center justify-between p-2'>
-                                        <Text className='text-xs text-white font-raleway'>
-                                            Martes
-                                        </Text>
-                                        <Checkbox
-                                            className='w-6 h-6'
-                                            value={days.tuesday}
-                                            onValueChange={() => setDays({
-                                                ...days,
-                                                tuesday: !days.tuesday
-                                            })}
-                                            color={days.tuesday ? `${isDark ? "#0059FF" : "#16243E"}` : `${isDark ? "#0059FF" : "#1c1c1c"}`}
-                                        />
-                                    </View>
 
-                                    <View className='flex flex-row items-center justify-between p-2'>
-                                        <Text className='text-xs text-white font-raleway'>
-                                            Miercoles
-                                        </Text>
-                                        <Checkbox
-                                            className='w-6 h-6'
-                                            value={days.wednesday}
-                                            onValueChange={() => setDays({
-                                                ...days,
-                                                wednesday: !days.wednesday
-                                            })}
-                                            color={days.wednesday ? `${isDark ? "#0059FF" : "#16243E"}` : `${isDark ? "#0059FF" : "#1c1c1c"}`}
-                                        />
-                                    </View>
+                            <View className='w-full'>
+                                <View className='flex flex-row items-center justify-between p-2'>
+                                    <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                                        Lunes
+                                    </Text>
+                                    <Checkbox
+                                        className='w-6 h-6'
+                                        value={days.monday}
+                                        onValueChange={() => setDays({
+                                            ...days,
+                                            monday: !days.monday
+                                        })}
+                                        color={days.monday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                                    />
+                                </View>
 
-                                    <View className='flex flex-row items-center justify-between p-2'>
-                                        <Text className='text-xs text-white font-raleway'>
-                                            Jueves
-                                        </Text>
-                                        <Checkbox
-                                            className='w-6 h-6'
-                                            value={days.thursday}
-                                            onValueChange={() => setDays({
-                                                ...days,
-                                                thursday: !days.thursday
-                                            })}
-                                            color={days.thursday ? `${isDark ? "#0059FF" : "#16243E"}` : `${isDark ? "#0059FF" : "#1c1c1c"}`}
-                                        />
-                                    </View>
+                                <View className='flex flex-row items-center justify-between p-2'>
+                                    <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                                        Martes
+                                    </Text>
+                                    <Checkbox
+                                        className='w-6 h-6'
+                                        value={days.tuesday}
+                                        onValueChange={() => setDays({
+                                            ...days,
+                                            tuesday: !days.tuesday
+                                        })}
+                                        color={days.tuesday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                                    />
+                                </View>
 
-                                    <View className='flex flex-row items-center justify-between p-2'>
-                                        <Text className='text-xs text-white font-raleway'>
-                                            Viernes
-                                        </Text>
-                                        <Checkbox
-                                            className='w-6 h-6'
-                                            value={days.friday}
-                                            onValueChange={() => setDays({
-                                                ...days,
-                                                friday: !days.friday
-                                            })}
-                                            color={days.friday ? `${isDark ? "#0059FF" : "#16243E"}` : `${isDark ? "#0059FF" : "#1c1c1c"}`}
-                                        />
-                                    </View>
+                                <View className='flex flex-row items-center justify-between p-2'>
+                                    <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                                        Miercoles
+                                    </Text>
+                                    <Checkbox
+                                        className='w-6 h-6'
+                                        value={days.wednesday}
+                                        onValueChange={() => setDays({
+                                            ...days,
+                                            wednesday: !days.wednesday
+                                        })}
+                                        color={days.wednesday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                                    />
+                                </View>
+
+                                <View className='flex flex-row items-center justify-between p-2'>
+                                    <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                                        Jueves
+                                    </Text>
+                                    <Checkbox
+                                        className='w-6 h-6'
+                                        value={days.thursday}
+                                        onValueChange={() => setDays({
+                                            ...days,
+                                            thursday: !days.thursday
+                                        })}
+                                        color={days.thursday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                                    />
+                                </View>
+
+                                <View className='flex flex-row items-center justify-between p-2'>
+                                    <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                                        Viernes
+                                    </Text>
+                                    <Checkbox
+                                        className='w-6 h-6'
+                                        value={days.friday}
+                                        onValueChange={() => setDays({
+                                            ...days,
+                                            friday: !days.friday
+                                        })}
+                                        color={days.friday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                                    />
                                 </View>
                             </View>
 

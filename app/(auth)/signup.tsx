@@ -23,18 +23,18 @@ const Signup = () => {
   };
 
   return (
-    <View className={`p-4 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-200"}  rounded-sm`}>
+    <View className={`p-4 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm`}>
 
       <View className='p-4 mt-2 rounded-lg '>
 
-        <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
+        <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
 
           <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
           <Text className={`text-lg font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>Ingresa tu información para crear una cuenta</Text>
 
         </View>
 
-        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
+        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
           <IconTextInputForm
             title='Email Institucional'
             icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}

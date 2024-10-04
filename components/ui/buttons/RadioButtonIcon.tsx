@@ -4,27 +4,39 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 
-const RadioButton = ({ label, value, selected, onSelect,btnStyle, textStyle }: any) => {
+const RadioButton = ({ label, value, selected, onSelect,btnStyle, textStyle, icon }: any) => {
     const { isDark } = useTheme();
     return (
         <TouchableOpacity
             className={`transition-all duration-200 
-                rounded-md mx-1 translate-x-2 
-                ${btnStyle}
+                rounded-md  
+                ${btnStyle} 
                 ${isDark ? "bg-white text-darkGray-500": "bg-darkGray-500 text-white"} 
-                ${selected ? "scale-110 " : ""}`}
+                ${selected ? "scale-105 " : ""}`}
             onPress={() => onSelect(value)}>
+                <View className='absolute w-full items-start'>
+                {
+                    icon
+                }
+                </View>
+      
                 <Text className={`text-center
                     ${textStyle} font-ralewayBold`}>{label}</Text>
         </TouchableOpacity>
     );
 };
 
-const RadioButtonComponent = ({ 
+interface RadioButtonIconComponentProps extends RadioButtonComponentProps{
+    icons: React.ReactNode[]
+}
+
+const RadioButtonIconComponent = ({ 
     options = [],
     rbComponentStyle,
     rbIndividualRadioButtonStyle,
-    rbIndividualTextBtnStyle}: RadioButtonComponentProps) => {
+    rbIndividualTextBtnStyle,
+    icons = []
+}: RadioButtonIconComponentProps) => {
     const [selectedValue, setSelectedValue] = useState(null);
     return (
         <View className={`${rbComponentStyle}`}>
@@ -38,6 +50,7 @@ const RadioButtonComponent = ({
                         key={i}
                         btnStyle={rbIndividualRadioButtonStyle}
                         textStyle={rbIndividualTextBtnStyle}
+                        icon={icons[i]}
                     />
                 ))
             }
@@ -46,4 +59,4 @@ const RadioButtonComponent = ({
     );
 };
 
-export default RadioButtonComponent;
+export default RadioButtonIconComponent;

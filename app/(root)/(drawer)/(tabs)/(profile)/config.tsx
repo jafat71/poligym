@@ -11,154 +11,130 @@ import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 const Config = () => {
     const { isDark } = useTheme()
     const [notificationEnabled, setNotificationEnabled] = useState(false);
-
+    const iconStyle = `rounded-full w-10 h-10 
+    flex items-center justify-center mt-2
+    border-[1px] ${isDark ? "border-darkGray-400 bg-white" : "bg-darkGray-200 border-darkGray-500"}`
+    const textStyle = `text-lg ml-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `
+    const textRedStyle = `text-lg ml-2  font-ralewayBold text-red-500 `
+    const itemStyle = 'flex flex-row items-center justify-start w-full my-2'
     return (
-        <SafeAreaView className={`flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-eBlue-800"} `}>
+        <SafeAreaView className={`flex flex-1
+            border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm
+            ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
+
             <View className='p-4'>
-                <View className='flex flex-row items-center justify-between'>
+                <View className={`py-1 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                    <View className='flex flex-row items-center justify-between'>
+                        <TouchableOpacity
+                            onPress={() => {
+                                router.push('/(drawer)/(profile)/profile')
+                            }}
+                        >
+                            <Ionicons name="arrow-back" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
+                        </TouchableOpacity>
+                        <Text className={`text-2xl mr-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Configuración</Text>
+                    </View>
+
+                </View>
+
+                <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
                     <TouchableOpacity
                         onPress={() => {
-                            router.push('/(drawer)/(profile)/profile')
+                            router.navigate('/(profile)/updateinformation')
+                        }}
+                        className={itemStyle}
+                    >
+                        <View className={iconStyle}>
+                            <Ionicons name="person-sharp" size={24} color={`#1c1c1c`} />
+                        </View>
+                        <Text className={textStyle}>Actualizar Información</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        className={itemStyle}
+                        onPress={() => {
+                            router.push('/(auth)/update')
                         }}
                     >
-                        <Ionicons name="arrow-back" size={32} color={`#fff`} />
+                        <View className={iconStyle}>
+                            <Ionicons name="shield-checkmark-outline" size={24} color={`#1c1c1c`} />
+                        </View>
+                        <Text className={textStyle}>Actualizar Contraseña</Text>
                     </TouchableOpacity>
-                    <View className={`flex flex-row items-center `}>
-                        <Ionicons name="settings-sharp" size={32} color={`#fff`} />
-                        <Text className='text-3xl ml-2 text-white font-ralewayBold'>Configuración</Text>
-                    </View>
-                </View>
 
-                <View>
-                    <View className='mt-2 border-[1px] border-white' />
-                    <View className='w-full items-end'>
-                        <Text className='text-white font-raleway'>Gestión de Perfil</Text>
-                    </View>
-                </View>
-
-            </View>
-
-            <View className='px-4'>
-                <TouchableOpacity
-                    onPress={() => {
-                        router.navigate('/(profile)/updateinformation')
-                    }}
-                    className='mb-2'>
-                    <View className='flex flex-row items-center gap-3'>
-                        <Ionicons name="person-sharp" size={24} color={`#fff`} />
-                        <Text className='text-xl text-white font-ralewayBold'>Actualizar Información</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity className='mb-2'
-                    onPress={()=>{
-                        router.push('/(auth)/update')
-                    }}
-                >
-                    <View className='flex flex-row items-center gap-3'>
-                        <Ionicons name="shield-checkmark-outline" size={24} color={`#fff`} />
-
-                        <Text className='text-xl text-white font-ralewayBold'>Actualizar Contraseña</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <View className='mb-4'>
-                    <View className='mt-2 border-[1px] border-white' />
-                    <View className='w-full items-end'>
-                        <Text className='text-white font-raleway'>Preferencias de Usuario</Text>
-                    </View>
-                </View>
-
-                <View className='mt-2'>
-                    <View className='flex flex-row items-center justify-between gap-3'>
-                        <Ionicons name="moon" size={24} color={`#fff`} />
-                        <Text className='text-xl text-white font-ralewayBold'>Tema Oscuro</Text>
-                        <Switch
-                            className='flex-1'
-                            style={{ transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }] }}
-                            thumbColor={'#f4f3f4'}
-                            trackColor={{ false: '#767577', true: isDark ? "#0059FF" : "#16243E" }}
-                        />
-                    </View>
-                    <View className='flex flex-row items-center justify-start gap-3'>
-                        <Ionicons name="alarm" size={24} color={`#fff`} />
-
-                        <Text className='text-xl text-white font-ralewayBold'>Notificaciones</Text>
+                    <View className={itemStyle}>
+                        <View className={iconStyle}>
+                            <Ionicons name="alarm" size={24} color={`#1c1c1c`} />
+                        </View>
+                        <Text className={textStyle}>Notificaciones</Text>
                         <Switch
                             className='flex-1'
                             style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
                             onValueChange={() => setNotificationEnabled(prevState => !prevState)}
                             value={notificationEnabled}
-                            thumbColor={notificationEnabled ? '#77FFAA' : '#f4f3f4'}
-                            trackColor={{ false: '#767577', true: isDark ? "#0059FF" : "#16243E" }}
+                            thumbColor={isDark ? "#fff" : "#16243E"}
+                            trackColor={{ false: isDark ? "#ddds" : "#ddd", true: isDark ? "#fff" : "#16243E" }}
+                            ios_backgroundColor={isDark ? "#333" : "#ddd"}
                         />
                     </View>
 
-                </View>
+                    <TouchableOpacity className={itemStyle}>
+                        <View className={iconStyle}>
+                            <Ionicons name="document-sharp" size={24} color={`#1c1c1c`} />
+                        </View>
+                        <Text className={textStyle}>Términos y Condiciones</Text>
+                    </TouchableOpacity>
 
+                    <TouchableOpacity className={itemStyle}>
+                        <View className={iconStyle}>
+                            <Ionicons name="documents" size={24} color={`#1c1c1c`} />
+                        </View>
+                        <Text className={textStyle}>FAQs</Text>
+                    </TouchableOpacity>
 
-                <View className='mb-4'>
-                    <View className='mt-2 border-[1px] border-white' />
-                    <View className='w-full items-end'>
-                        <Text className='text-white font-raleway'>Información</Text>
-                    </View>
-                </View>
+                    <TouchableOpacity className={itemStyle}>
+                        <View className={iconStyle}>
+                            <Ionicons name="text" size={24} color={`#1c1c1c`} />
 
-                <TouchableOpacity className='mb-2'>
-                    <View className='flex flex-row items-center gap-3'>
-                        <Ionicons name="document-attach" size={24} color={`#fff`} />
+                        </View>
+                        <Text className={textStyle}>Acerca de</Text>
+                    </TouchableOpacity>
 
-                        <Text className='text-xl text-white font-ralewayBold'>Terminos y Condiciones</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity className='mb-2'>
-                    <View className='flex flex-row items-center gap-3'>
-                        <Ionicons name="documents" size={24} color={`#fff`} />
-
-                        <Text className='text-xl text-white font-ralewayBold'>FAQs</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <TouchableOpacity className='mb-2'>
-                    <View className='flex flex-row items-center gap-3'>
-                        <Ionicons name="text" size={24} color={`#fff`} />
-
-                        <Text className='text-xl text-white font-ralewayBold'>Acerca de</Text>
-                    </View>
-                </TouchableOpacity>
-
-                <View className='mb-4'>
-                    <View className='mt-2 border-[1px] border-white' />
-                    <View className='w-full items-end'>
-                        <Text className='text-white font-raleway'>Cuenta</Text>
-                    </View>
-                </View>
-
-                <TouchableOpacity className='mb-2'
-                    onPress={()=>{
+                    <TouchableOpacity className={itemStyle}
+                    
+                    onPress={() => {
                         router.push('/(auth)/delete')
                     }}
-                >
-                    <View className='flex flex-row items-center gap-3'>
-                        <Ionicons name="flash-off-sharp" size={24} color={`#E11F1C`} />
-                        <Text className='text-xl text-redEPN-500 font-ralewayBold'>Eliminar Cuenta</Text>
-                    </View>
-                </TouchableOpacity>
+                    >
+
+                        <View className={`rounded-full w-10 h-10 
+                        flex items-center justify-center mt-2
+                        border-[1px] bg-[#e11a1a]
+                        ${isDark ? "border-darkGray-400" : " border-darkGray-500"}`}>
+                            <Ionicons name="flash-off-sharp" size={24} color={`#fff`} />
+                        </View>
+                        <Text className={textRedStyle}>Eliminar Cuenta</Text>
+                    </TouchableOpacity>
 
 
-                <TouchableOpacity className='mb-2'
-                     onPress={()=>{
-                        router.replace('/(auth)/signin')
-                    }}
-                >
-                    <View className='flex flex-row items-center gap-3'>
-                    <Ionicons name="exit-outline" size={24} color={`#E11F1C`} />
-                        <Text className='text-xl text-redEPN-500 font-ralewayBold'>Salir</Text>
-                    </View>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        className={itemStyle}
+                        onPress={() => {
+                            router.replace('/(auth)/signin')
+                        }}
+                    >
+                        <View className={`rounded-full w-10 h-10 
+                        flex items-center justify-center mt-2
+                        border-[1px] bg-[#e11a1a]
+                        ${isDark ? "border-darkGray-400" : " border-darkGray-500"}`}>
+                            <Ionicons name="exit-outline" size={24} color={`#fff`} />
+                        </View>
+                        <Text className={textRedStyle}>Salir</Text>
+                    </TouchableOpacity>
 
+                </View>
             </View>
+
         </SafeAreaView>
     );
 };

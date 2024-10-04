@@ -1,11 +1,14 @@
 
 
 import { useTheme } from '@/context/ThemeContext';
-import { IconTextInputFormProps } from '@/types/interfaces/ui';
 import React, { ReactNode } from 'react';
 import { Text, TextInput, View } from 'react-native';
+import RadioButtonComponent from '../buttons/RadioButton';
+import { IconTextInputFormProps, RadioButtonComponentProps } from '@/types/interfaces/ui';
 
-const IconTextInputForm = (
+interface Props extends IconTextInputFormProps, RadioButtonComponentProps{}
+
+const IconTextInputRadioButtonForm = (
     {
         title,
         icon,
@@ -15,7 +18,11 @@ const IconTextInputForm = (
         inputValue =  undefined,
         inputSecure = false,
         enabled = true,
-    }: IconTextInputFormProps
+        options = [],   
+        rbComponentStyle="",
+        rbIndividualRadioButtonStyle="",
+        rbIndividualTextBtnStyle=""
+    }: Props
 ) => {
     const { isDark } = useTheme()
     return (
@@ -23,8 +30,10 @@ const IconTextInputForm = (
             <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>{title}</Text>
             <View className={`mt-2 border-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} rounded-lg text-white-100`}>
 
-                <View className='flex flex-row items-center justify-center w-full'>
-                    <View className={`border-r-[1px]  border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                <View className='flex flex-row items-center justify-around w-full'>
+                    <View className={`border-r-[1px]  border-${isDark ? "darkGray-400" : "darkGray-500"} 
+                        flex flex-col items-center justify-center
+                    `}>
                         {icon}
                     </View>
                     <TextInput
@@ -37,6 +46,12 @@ const IconTextInputForm = (
                         secureTextEntry={inputSecure}
                         editable={enabled}
                     />
+                    <RadioButtonComponent
+                        options={options}
+                        rbComponentStyle={rbComponentStyle}
+                        rbIndividualTextBtnStyle={rbIndividualTextBtnStyle}
+                        rbIndividualRadioButtonStyle={rbIndividualRadioButtonStyle}
+                    />
                 </View>
 
             </View>
@@ -44,4 +59,4 @@ const IconTextInputForm = (
     );
 };
 
-export default IconTextInputForm;
+export default IconTextInputRadioButtonForm;
