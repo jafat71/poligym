@@ -12,7 +12,7 @@ export default function AuthLayout() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        className='w-full p-4'
+        className='w-full px-4'
       >
             <TopHeaderComponent />
             <Slot />

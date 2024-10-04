@@ -86,6 +86,9 @@ const Signup = () => {
         />
       </View>
 
+      <View className='w-full items-center'>
+        <Text className={`text-sm font-raleway text-center  ${isDark ? "text-white" : "text-darkGray-400"} `}>Al seleccionar REGISTRARSE, estas de acuerdo con nuestros TÉRMINOS Y CONDICIONES y nuestra POLÍTICA DE PRIVACIDAD</Text>
+      </View>
 
     </View>
   )

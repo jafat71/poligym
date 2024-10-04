@@ -1,23 +1,21 @@
 import { Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from '@/context/ThemeContext';
-import MainLogoGradientComponent from '@/components/ui/logo/mainLogoGrandient';
-
 
 export default function TabsLayout() {
 
   const { isDark } = useTheme()
-  const tabBarBackgroundColor = '#0059FF';
-  const tabBarIconColor = '#fff';
-  const tabBarTextColor = '#fff';
-  const tabBarActiveColor = '#77FFAA';
+  const tabBarBackgroundColor = isDark ? "#1c1c1c": "#fff";
+  const tabBarIconColor = isDark ? "#fff": "#1c1c1c";
+  const tabBarActiveIconColor = isDark ? "#fff": "#1c1c1c";
+  const tabBarTextColor =  isDark ? "#1c1c1c": "#fff";
+  const tabBarActiveColor = isDark ? "#1c1c1c": "#fff";
   const tabBarInactiveColor = isDark ? '#999' : '#aaa';
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
           backgroundColor: tabBarBackgroundColor,
-          paddingVertical: 5,
           height: 60,
         },
         tabBarLabelStyle: {
@@ -33,15 +31,17 @@ export default function TabsLayout() {
         tabBarIcon: ({ focused }) => (
           <Ionicons name="home" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
+        tabBarActiveBackgroundColor: tabBarActiveIconColor,
         tabBarLabel: 'Home',
         tabBarLabelStyle: { color: tabBarTextColor },
       }} />
       <Tabs.Screen name="exercises" options={{
         headerShown: true,
         tabBarIcon: ({ focused }) => (
-          <Ionicons name="walk" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
+          <Ionicons name="library-outline" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
-        tabBarLabel: 'Ejercicios',
+        tabBarActiveBackgroundColor: tabBarActiveIconColor,
+        tabBarLabel: 'Biblioteca',
         tabBarLabelStyle: { color: tabBarTextColor },
       }} />
       <Tabs.Screen name="stats" options={{
@@ -49,14 +49,18 @@ export default function TabsLayout() {
         tabBarIcon: ({ focused }) => (
           <Ionicons name="bar-chart" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
+        tabBarActiveBackgroundColor: tabBarActiveIconColor,
+
         tabBarLabel: 'Stats',
         tabBarLabelStyle: { color: tabBarTextColor },
       }} />
       <Tabs.Screen name="feed" options={{
         headerShown: true,
         tabBarIcon: ({ focused }) => (
-          <Ionicons name="people" size={26} color={focused ? tabBarActiveColor : tabBarIconColor}  />
+          <Ionicons name="people-sharp" size={26} color={focused ? tabBarActiveColor : tabBarIconColor}  />
         ),
+        tabBarActiveBackgroundColor: tabBarActiveIconColor,
+
         tabBarLabel: 'Feed',
         tabBarLabelStyle: { color: tabBarTextColor },
 
@@ -66,6 +70,8 @@ export default function TabsLayout() {
         tabBarIcon: ({ focused }) => (
           <Ionicons name="person" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
+        tabBarActiveBackgroundColor: tabBarActiveIconColor,
+
         tabBarLabel: 'Perfil',
         tabBarLabelStyle: { color: tabBarTextColor },
       }} />
