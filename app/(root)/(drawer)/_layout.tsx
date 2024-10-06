@@ -1,3 +1,4 @@
+import LightDarkButton from '@/components/ui/buttons/LightDarkButton';
 import MainLogoCustomComponent from '@/components/ui/logo/mainLogo';
 import MainLogoGradientComponent from '@/components/ui/logo/mainLogoGrandient';
 import { useTheme } from '@/context/ThemeContext';
@@ -185,7 +186,7 @@ const CustomDrawerContent = () => {
 }
 
 export default function RootLayout() {
-    const { isDark, toggleTheme } = useTheme()
+    const { isDark } = useTheme()
 
     return (
         <Drawer
@@ -199,14 +200,9 @@ export default function RootLayout() {
                     </View>
                 ),
                 headerRight: () => (
-                    <View className='flex flex-row items-end justify-end px-4'>
-                        <Pressable
-                            onPress={() => { toggleTheme() }}
-                        >
-                            <Ionicons name={isDark ? "sunny-outline" : "moon-outline"} size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-
-                        </Pressable>
-                    </View>
+                    <LightDarkButton
+                        style="w-full flex flex-row items-end justify-end px-4"
+                    />
                 ),
                 headerStyle: {
                     backgroundColor: isDark ? '#1c1c1c' : '#fff',

@@ -5,43 +5,50 @@ import { Text, View } from 'react-native';
 import MainLogoCustomComponent from '../logo/mainLogo';
 import { useTheme } from '@/context/ThemeContext';
 import { usePathname } from 'expo-router';
+import LightDarkButton from '../buttons/LightDarkButton';
 
 const FormHeaderComponent = () => {
     const { isDark } = useTheme()
     const pathname = usePathname();
-
+    const titleStyle = `text-4xl font-ralewayExtraBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`
+    const subtitleStyle = `text-xl font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`
+    
     const getHeader = () => {
         switch (pathname) {
             case '/form06':
                 return (
                     <>
-                        <Text className={`text-4xl font-ralewayExtraBold text-white text-center`}>Estamos cerca de terminar</Text>
+                        <Text className={titleStyle}>Estamos cerca de terminar</Text>
                     </>
 
                 )
             case '/form07':
                 return (
                     <>
-                        <Text className={`text-4xl font-ralewayExtraBold text-white text-center`}>Completar perfil</Text>
+                        <Text className={titleStyle}>Completar perfil</Text>
                     </>
                 )
             default:
                 return (
                     <>
-                        <Text className={`text-4xl font-ralewayExtraBold text-white text-center`}>Bienvenido</Text>
-                        <Text className={`text-xl font-ralewayBold text-white text-center`}>Queremos saber más sobre ti...</Text>
+                        <Text className={titleStyle}>Bienvenido</Text>
+                        <Text className={subtitleStyle}>Queremos saber más sobre ti...</Text>
                     </>
                 )
         }
     }
 
     return (
-        <View className='my-2 items-center'>
+        <View className='w-full flex flex-col justify-center items-center mb-4'>
+            <LightDarkButton style="w-full items-end px-4" />
+
             <MainLogoCustomComponent
-                height='50'
-                width='50'
-                principal={`${isDark ? "#0059FF" : "#fff"}`}
+                height='40'
+                width='40'
+                principal={`${isDark ? "#fff" : "#1c1c1c"}`}
             />
+
+
             {getHeader()}
 
         </View>

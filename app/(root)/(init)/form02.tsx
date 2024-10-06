@@ -1,5 +1,8 @@
+import IconButton from '@/components/ui/buttons/IconButton';
 import RadioButtonComponent from '@/components/ui/buttons/RadioButton';
+import BigIconTextInputForm from '@/components/ui/form/BigIconTextInputForm';
 import { useTheme } from '@/context/ThemeContext';
+import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Text, TextInput, View } from 'react-native';
 
@@ -8,38 +11,65 @@ const Form02 = () => {
 
     return (
         <>
-            <View className='my-2 px-10'>
-                <Text className={`text-2xl font-ralewayExtraBold text-white text-center`}>¿Cuál es tu peso?</Text>
-                <RadioButtonComponent
-                    options={["Kgs", "Lbs"]}
-                />
-                <TextInput
-                    className={`text-center px-3 text-7xl mt-2  rounded-xl py-2  text-lightGreen ${isDark ? " bg-darkGray-800" : "bg-eBlue-400"}`}
-                    placeholder={'60'}
-                    placeholderTextColor={`${isDark ? "#acacac" : "#3385"}`}
-                    keyboardType='number-pad'
-                    maxLength={3}
-                />
+            <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                <BigIconTextInputForm
+                    title='¿Cuál es tu peso?'
+                    icon={<Ionicons name="scale" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                    inputKeyboardType='number-pad'
+                    inputPlaceholder='18'
+                    inputSecure={false}
+                    inputValue={undefined}
+                    inputOnChangeText={undefined} />
+                <View className='flex flex-row items-center justify-between my-2'>
+                    <IconButton
+                        icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
+                        onPress={() => { }}
+                    />
+                    <IconButton
+                        icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
+                        onPress={() => { }}
+                    />
+                </View>
+                <View className='flex flex-row items-center justify-between '>
+                    <RadioButtonComponent
+                        options={["KG", "LB"]}
+                        rbComponentStyle='w-full flex flex-row items-center justify-between'
+                        rbIndividualRadioButtonStyle='w-1/3 h-12 text-white flex flex-col items-center justify-center'
+                        rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
+                    />
+                </View>
 
             </View>
 
-            <View className='my-2 px-10'>
-                <Text className={`text-2xl font-ralewayExtraBold text-white text-center`}>¿Cuál es tu altura?</Text>
-                <RadioButtonComponent
-                    options={["Cms", "Pies"]}
-                />
-                <TextInput
-                    className={`text-center px-3 text-7xl mt-2  rounded-xl py-2  text-lightGreen ${isDark ? " bg-darkGray-800" : "bg-eBlue-400"}`}
-                    placeholder={'170'}
-                    placeholderTextColor={`${isDark ? "#acacac" : "#3385"}`}
-                    keyboardType='number-pad'
-                    maxLength={3}
-                    
-                />
+            <View className={`py-5`}>
+                <BigIconTextInputForm
+                    title='¿Cuál es tu altura?'
+                    icon={<Ionicons name="resize-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                    inputKeyboardType='number-pad'
+                    inputPlaceholder='18'
+                    inputSecure={false}
+                    inputValue={undefined}
+                    inputOnChangeText={undefined} />
+                <View className='flex flex-row items-center justify-between my-2'>
+                    <IconButton
+                        icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
+                        onPress={() => { }}
+                    />
+                    <IconButton
+                        icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
+                        onPress={() => { }}
+                    />
+                </View>
+                <View className='flex flex-row items-center justify-between '>
+                    <RadioButtonComponent
+                        options={["CM", "PIES"]}
+                        rbComponentStyle='w-full flex flex-row items-center justify-between'
+                        rbIndividualRadioButtonStyle='w-1/3 h-12 text-white flex flex-col items-center justify-center'
+                        rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
+                    />
+                </View>
 
             </View>
-
-
         </>
     );
 };

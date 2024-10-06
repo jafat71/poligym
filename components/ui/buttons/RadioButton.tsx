@@ -9,7 +9,7 @@ const RadioButton = ({ label, value, selected, onSelect,btnStyle, textStyle }: a
     return (
         <TouchableOpacity
             className={`transition-all duration-200 
-                rounded-md mx-1 translate-x-2 
+                rounded-md 
                 ${btnStyle}
                 ${isDark ? "bg-white text-darkGray-500": "bg-darkGray-500 text-white"} 
                 ${selected ? "scale-110 " : ""}`}

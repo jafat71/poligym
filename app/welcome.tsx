@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const Welcome = () => {
 
     return (
-        <SafeAreaView className={"p-2 flex flex-1 flex-col justify-center bg-eBlue-500"}>
+        <SafeAreaView className={"p-2 flex flex-1 flex-col justify-center bg-darkGray-500"}>
 
             <View className='w-full items-center'>
                 <MainLogoCustomComponent
@@ -20,7 +20,7 @@ const Welcome = () => {
 
             </View>
             <Text className='text-9xl font-ralewayExtraBold text-white '>POLI</Text>
-            <Text className='text-9xl font-ralewayExtraBold text-darkGray-500 '>GYM</Text>
+            <Text className='text-9xl font-ralewayExtraBold text-darkGray-300 '>GYM</Text>
 
             <View className="flex-1 justify-around items-center text-center">
                 <OnBoardingUIItem width={75}/>

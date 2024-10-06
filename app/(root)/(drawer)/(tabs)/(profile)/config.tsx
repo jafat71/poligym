@@ -1,6 +1,4 @@
 
-
-import RadioButtonSmallComponent from '@/components/ui/buttons/RadioButtonSmall';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';

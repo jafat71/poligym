@@ -16,7 +16,7 @@ const OnBoardingUIItem = ({width}:Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#1c1c1c', 
+        backgroundColor: '#adadad', 
         padding: 13,
         shadowColor: '#1c1c1c', 
         shadowOffset: { width: 0, height: 4 },

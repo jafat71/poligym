@@ -9,12 +9,12 @@ const SkipButton = () => {
     const {isDark} = useTheme();
     return (
         <TouchableOpacity
-        className='mt-4'
+        className='w-full items-center mt-4'
             onPress={ ()=> {
                 router.replace('/(root)/(tabs)/home')
             }}
         >
-            <Text className="text-white font-raleway">OMITIR</Text>
+            <Text className={`${isDark ? "text-white" : "text-darkGray-500"}  font-raleway`}>OMITIR</Text>
         </TouchableOpacity>
     );
 };

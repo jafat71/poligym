@@ -7,25 +7,29 @@ import ImagePicker from '@/components/ui/image/ImagePicker';
 const Form07 = () => {
     const { isDark } = useTheme()
     const [notificationEnabled, setNotificationEnabled] = useState(false);
-    const {} = useImagePicker();
+    const { } = useImagePicker();
 
     return (
         <>
-            <View className='my-2'>
-                <Text className={`text-2xl font-ralewayExtraBold text-white text-center`}>Subir foto de perfil</Text>
-
+            <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} w-full items-center`}>
+                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>Subir Foto de Perfil</Text>
+                </View>
                 <View className='w-full items-center my-3'>
-                    <ImagePicker/>
+                    <ImagePicker />
                 </View>
 
                 <View className='w-full items-center mt-3'>
-                    <Text className={`text-2xl font-ralewayExtraBold text-white text-center mb-2`}>¿Activar notificaciones?</Text>
+                    <View className={`pb-5 border-t-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} w-full items-center`}>
+                        <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>¿Deseas activar las notificaciones?</Text>
+                    </View>
                     <Switch
                         style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
                         onValueChange={() => setNotificationEnabled(prevState => !prevState)}
                         value={notificationEnabled}
-                        thumbColor={notificationEnabled ? '#77FFAA' : '#f4f3f4'}
-                        trackColor={{ false: '#767577', true: isDark ? "#0059FF" : "#16243E" }}
+                        thumbColor={isDark ? "#fff" : "#16243E"}
+                        trackColor={{ false: isDark ? "#ddds" : "#ddd", true: isDark ? "#fff" : "#16243E" }}
+                        ios_backgroundColor={isDark ? "#333" : "#ddd"}
                     />
                 </View>
 

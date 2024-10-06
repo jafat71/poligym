@@ -2,7 +2,7 @@ import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
 import SkipButton from '@/components/ui/buttons/SkipButton';
 import FormHeaderComponent from '@/components/ui/header/FormHeaderComponent';
 import { useTheme } from '@/context/ThemeContext';
-import { Href, Slot, usePathname } from 'expo-router';
+import { Href, router, Slot, usePathname } from 'expo-router';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -24,7 +24,7 @@ export default function RootLayout() {
   };
 
   return (
-    <SafeAreaView className={`p-2 pt-6 flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-eBlue-500"}`}>
+    <SafeAreaView className={`p-4 pt-6 flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
       <View className='flex-1 flex flex-col'>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -34,9 +34,12 @@ export default function RootLayout() {
           <Slot />
 
         </ScrollView>
-        <View className='flex flex-col justify-between items-center p-4'>
+        <View className={`py-3 px-2 w-full
+          border-t-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
           <CTAButtonPrimary
-            route={routeMapping[pathname]}
+            onPress={() => {
+              router.push(routeMapping[pathname])
+            }}
             text="Continuar"
           />
           <SkipButton />

@@ -5,6 +5,7 @@ import { SafeAreaView, Text, TextInput, View } from 'react-native';
 import MainLogoGradientComponent from '@/components/ui/logo/mainLogoGrandient';
 import { FloatingMessage } from '@/components/animatedUi/FloatingMessage';
 import { router } from 'expo-router';
+import { useTheme } from '@/context/ThemeContext';
 const Form00 = () => {
 
     useEffect(() => {
@@ -17,13 +18,13 @@ const Form00 = () => {
 
     return (
 
-        <SafeAreaView className={`p-2 pt-6 flex flex-1 flex-col justify-center items-center bg-eBlue-500`}>
+        <SafeAreaView className={`p-2 pt-6 flex flex-1 flex-col justify-center items-center bg-darkGray-500`}>
 
             <MainLogoGradientComponent
                 height='100'
                 width='100'
                 principal='#FFF'
-                secondary='#77FFAA'
+                secondary='#FFF'
             />
 
         <FloatingMessage
