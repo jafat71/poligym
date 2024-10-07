@@ -17,5 +17,10 @@ export interface RadioButtonComponentProps {
     options: string[];
     rbComponentStyle?: string;
     rbIndividualRadioButtonStyle?: string;
-    rbIndividualTextBtnStyle?:string
+    rbIndividualTextBtnStyle?: string
+}
+
+export interface FloatingModalProps {
+    modalVisible: boolean;
+    toggleModal: () => void;
 }

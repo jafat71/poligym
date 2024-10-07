@@ -1,20 +1,27 @@
 import LightDarkButton from '@/components/ui/buttons/LightDarkButton';
 import MainLogoCustomComponent from '@/components/ui/logo/mainLogo';
-import MainLogoGradientComponent from '@/components/ui/logo/mainLogoGrandient';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
-import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem, useDrawerStatus } from '@react-navigation/drawer';
 import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer'
 import { Pressable, Text, View } from 'react-native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 const CustomDrawerContent = () => {
     const { isDark, toggleTheme } = useTheme()
+    const navigation = useNavigation();
+    const isDrawerOpen = useDrawerStatus() === 'open';
     const labelStyle = {
         color: isDark ? "#fff" : '#1c1c1c',
         fontFamily: 'Raleway-SemiBold',
         fontSize: 18,
     }
+    const closeDrawer = () => {
+        if (isDrawerOpen) {
+          navigation.dispatch(DrawerActions.closeDrawer());  // Cierra el Drawer si está abierto
+        }
+      };
     const iconStyle = `rounded-full w-10 h-10 
                         flex items-center justify-center mt-2
                         border-[1px] 
@@ -27,12 +34,8 @@ const CustomDrawerContent = () => {
                     flex flex-row items-center justify-between
                     `}>
                         <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>POLIGYM</Text>
-                        <Pressable
-                            onPress={() => {
-                                router.back()
-                            }}
-                        >
-                            <Ionicons name="arrow-forward-circle-sharp" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+                        <Pressable onPress={closeDrawer}>
+                            <Ionicons name="close" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
                         </Pressable>
                     </View>
 
@@ -54,7 +57,7 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     router.push('/(profile)/profile')
                 }}
-                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
+                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
                 label={'Mi Perfil'}
                 icon={() => (
                     <View className={iconStyle}>
@@ -66,10 +69,8 @@ const CustomDrawerContent = () => {
 
             <DrawerItem
                 onPress={() => {
-                    router.push('/(profile)/profile')
                 }}
-                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
-
+                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
                 label={'Mi Plan'}
                 icon={() => (
                     <View className={iconStyle}>
@@ -81,10 +82,8 @@ const CustomDrawerContent = () => {
 
             <DrawerItem
                 onPress={() => {
-                    router.push('/(profile)/profile')
                 }}
-                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
-
+                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
                 label={'Mi Progreso'}
                 icon={() => (
                     <View className={iconStyle}>
@@ -97,14 +96,11 @@ const CustomDrawerContent = () => {
 
             <DrawerItem
                 onPress={() => {
-                    router.push('/(profile)/profile')
                 }}
-                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
-
+                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
                 label={'Historial'}
                 icon={() => (
                     <View className={iconStyle}>
-
                         <Ionicons name="reload-circle-outline" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
                     </View>
                 )}
@@ -113,14 +109,11 @@ const CustomDrawerContent = () => {
 
             <DrawerItem
                 onPress={() => {
-                    router.push('/(profile)/profile')
                 }}
-                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
-
+                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
                 label={'Favoritos'}
                 icon={() => (
                     <View className={iconStyle}>
-
                         <Ionicons name="heart-circle" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
                     </View>
                 )}
@@ -131,12 +124,10 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     router.push('/(profile)/config')
                 }}
-                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
-
+                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
                 label={'Configuración'}
                 icon={() => (
                     <View className={iconStyle}>
-
                         <Ionicons name="settings-outline" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
                     </View>
                 )}
@@ -147,8 +138,7 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     toggleTheme()
                 }}
-                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
-
+                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
                 label={`Activar Tema ${isDark ? "Claro" : "Oscuro"}`}
                 icon={() => (
                     <View className={iconStyle}>
@@ -164,7 +154,7 @@ const CustomDrawerContent = () => {
                     router.push('/(auth)/signin')
 
                 }}
-                pressColor={isDark ? "#d6d6d6": "#d6d6d6"}
+                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
 
                 label={'Salir'}
                 icon={() => (
@@ -177,10 +167,6 @@ const CustomDrawerContent = () => {
                 )}
                 labelStyle={{ color: `#E11F1C`, fontFamily: 'Raleway-Bold', fontSize: 18 }}
             />
-
-
-
-
         </DrawerContentScrollView>
     )
 }

@@ -1,11 +1,12 @@
 import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
 import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
 import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
+import TermsModal from '@/components/ui/modal/TermsModal';
 import { useTheme } from '@/context/ThemeContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
 import React, { useState } from 'react'
-import { Text, TextInput, View } from 'react-native'
+import { Pressable, Text, TextInput, View } from 'react-native'
 
 const Signup = () => {
 
@@ -13,6 +14,11 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [termsVisible, setTermsVisible] = useState(false);
+
+  const toggleTermseModal = () => {
+      setTermsVisible(!termsVisible);
+  };
 
   const handleSubmit = () => {
     console.log({
@@ -87,8 +93,23 @@ const Signup = () => {
       </View>
 
       <View className='w-full items-center'>
-        <Text className={`text-sm font-raleway text-center  ${isDark ? "text-white" : "text-darkGray-400"} `}>Al seleccionar REGISTRARSE, estas de acuerdo con nuestros TÉRMINOS Y CONDICIONES y nuestra POLÍTICA DE PRIVACIDAD</Text>
+        <Text className={`text-sm font-raleway text-center  ${isDark ? "text-white" : "text-darkGray-400"} `}>Al seleccionar REGISTRARSE, estas de acuerdo con nuestros 
+          <Pressable 
+            onPress={()=>{
+              toggleTermseModal()
+            }}
+          >
+           <Text className={`text-sm font-ralewayExtraBold text-center  ${isDark ? "text-white" : "text-darkGray-400"} `}>
+            TÉRMINOS Y CONDICIONES
+            </Text> 
+          </Pressable>
+        </Text>
       </View>
+
+      <TermsModal
+                modalVisible={termsVisible}
+                toggleModal={() => toggleTermseModal()}
+            />
 
     </View>
   )

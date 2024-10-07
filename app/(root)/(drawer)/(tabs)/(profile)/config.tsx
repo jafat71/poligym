@@ -1,20 +1,41 @@
 
+import AboutModal from '@/components/ui/modal/AboutModal';
+import FaqModal from '@/components/ui/modal/FaqModal';
+import TermsModal from '@/components/ui/modal/TermsModal';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { SafeAreaView, Text, useColorScheme, View } from 'react-native';
+import { SafeAreaView, Text, View } from 'react-native';
 import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
 
 const Config = () => {
     const { isDark } = useTheme()
     const [notificationEnabled, setNotificationEnabled] = useState(false);
+    const [termsVisible, setTermsVisible] = useState(false);
+    const [faqVisible, setFAQVisible] = useState(false);
+    const [aboutVisible, setAboutVisible] = useState(false);
+
+    const toggleTermsModal = () => {
+        setTermsVisible(!termsVisible);
+    };
+
+    const toggleFaqModal = () => {
+        setFAQVisible(!faqVisible);
+    };
+
+    const toggleAboutModal = () => {
+        setAboutVisible(!aboutVisible);
+    };
+
+
     const iconStyle = `rounded-full w-10 h-10 
     flex items-center justify-center mt-2
     border-[1px] ${isDark ? "border-darkGray-400 bg-white" : "bg-darkGray-200 border-darkGray-500"}`
     const textStyle = `text-lg ml-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `
     const textRedStyle = `text-lg ml-2  font-ralewayBold text-red-500 `
     const itemStyle = 'flex flex-row items-center justify-start w-full my-2'
+
     return (
         <SafeAreaView className={`flex flex-1
             border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm
@@ -76,21 +97,27 @@ const Config = () => {
                         />
                     </View>
 
-                    <TouchableOpacity className={itemStyle}>
+                    <TouchableOpacity className={itemStyle}
+                        onPress={toggleTermsModal}
+                    >
                         <View className={iconStyle}>
                             <Ionicons name="document-sharp" size={24} color={`#1c1c1c`} />
                         </View>
                         <Text className={textStyle}>Términos y Condiciones</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className={itemStyle}>
+                    <TouchableOpacity className={itemStyle}
+                        onPress={toggleFaqModal}
+                    >
                         <View className={iconStyle}>
                             <Ionicons name="documents" size={24} color={`#1c1c1c`} />
                         </View>
                         <Text className={textStyle}>FAQs</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className={itemStyle}>
+                    <TouchableOpacity className={itemStyle}
+                        onPress={() => toggleAboutModal()}
+                    >
                         <View className={iconStyle}>
                             <Ionicons name="text" size={24} color={`#1c1c1c`} />
 
@@ -99,10 +126,10 @@ const Config = () => {
                     </TouchableOpacity>
 
                     <TouchableOpacity className={itemStyle}
-                    
-                    onPress={() => {
-                        router.push('/(auth)/delete')
-                    }}
+
+                        onPress={() => {
+                            router.push('/(auth)/delete')
+                        }}
                     >
 
                         <View className={`rounded-full w-10 h-10 
@@ -132,6 +159,21 @@ const Config = () => {
 
                 </View>
             </View>
+
+            <TermsModal
+                modalVisible={termsVisible}
+                toggleModal={() => toggleTermsModal()}
+            />
+
+            <FaqModal
+                modalVisible={faqVisible}
+                toggleModal={() => toggleFaqModal()}
+            />
+
+            <AboutModal
+                modalVisible={aboutVisible}
+                toggleModal={() => toggleAboutModal()}
+            />
 
         </SafeAreaView>
     );
