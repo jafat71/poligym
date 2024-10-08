@@ -1,27 +1,23 @@
 import LightDarkButton from '@/components/ui/buttons/LightDarkButton';
 import MainLogoCustomComponent from '@/components/ui/logo/mainLogo';
+import { emptyUser } from '@/constants';
 import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
-import { DrawerContentScrollView, DrawerItem, useDrawerStatus } from '@react-navigation/drawer';
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer'
 import { Pressable, Text, View } from 'react-native';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 const CustomDrawerContent = () => {
     const { isDark, toggleTheme } = useTheme()
-    const navigation = useNavigation();
-    const isDrawerOpen = useDrawerStatus() === 'open';
     const labelStyle = {
         color: isDark ? "#fff" : '#1c1c1c',
         fontFamily: 'Raleway-SemiBold',
         fontSize: 18,
     }
-    const closeDrawer = () => {
-        if (isDrawerOpen) {
-          navigation.dispatch(DrawerActions.closeDrawer());  // Cierra el Drawer si está abierto
-        }
-      };
+    const {setUser} = useUser()
+
     const iconStyle = `rounded-full w-10 h-10 
                         flex items-center justify-center mt-2
                         border-[1px] 
@@ -34,9 +30,11 @@ const CustomDrawerContent = () => {
                     flex flex-row items-center justify-between
                     `}>
                         <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>POLIGYM</Text>
-                        <Pressable onPress={closeDrawer}>
-                            <Ionicons name="close" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-                        </Pressable>
+                        <MainLogoCustomComponent
+                            height='30'
+                            width='30'
+                            principal={`${isDark ? "#fff" : "#1c1c1c"}`}
+                        />
                     </View>
 
                     <View className={`flex flex-row items-center pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
@@ -57,7 +55,7 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     router.push('/(profile)/profile')
                 }}
-                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
+                pressColor={"#d6d6d6"}
                 label={'Mi Perfil'}
                 icon={() => (
                     <View className={iconStyle}>
@@ -70,7 +68,7 @@ const CustomDrawerContent = () => {
             <DrawerItem
                 onPress={() => {
                 }}
-                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
+                pressColor={"#d6d6d6"}
                 label={'Mi Plan'}
                 icon={() => (
                     <View className={iconStyle}>
@@ -83,7 +81,7 @@ const CustomDrawerContent = () => {
             <DrawerItem
                 onPress={() => {
                 }}
-                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
+                pressColor={"#d6d6d6"}
                 label={'Mi Progreso'}
                 icon={() => (
                     <View className={iconStyle}>
@@ -97,7 +95,7 @@ const CustomDrawerContent = () => {
             <DrawerItem
                 onPress={() => {
                 }}
-                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
+                pressColor={"#d6d6d6"}
                 label={'Historial'}
                 icon={() => (
                     <View className={iconStyle}>
@@ -110,7 +108,7 @@ const CustomDrawerContent = () => {
             <DrawerItem
                 onPress={() => {
                 }}
-                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
+                pressColor={"#d6d6d6"}
                 label={'Favoritos'}
                 icon={() => (
                     <View className={iconStyle}>
@@ -124,7 +122,7 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     router.push('/(profile)/config')
                 }}
-                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
+                pressColor={"#d6d6d6"}
                 label={'Configuración'}
                 icon={() => (
                     <View className={iconStyle}>
@@ -138,23 +136,22 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     toggleTheme()
                 }}
-                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
+                pressColor={"#d6d6d6"}
                 label={`Activar Tema ${isDark ? "Claro" : "Oscuro"}`}
                 icon={() => (
                     <View className={iconStyle}>
                         <Ionicons name={isDark ? "sunny-outline" : "moon-outline"} size={24} color={isDark ? "#fff" : "#1c1c1c"} />
                     </View>
-
                 )}
                 labelStyle={labelStyle}
             />
 
             <DrawerItem
                 onPress={() => {
-                    router.push('/(auth)/signin')
-
+                    setUser(emptyUser)
+                    router.dismissAll()
                 }}
-                pressColor={isDark ? "#d6d6d6" : "#d6d6d6"}
+                pressColor={"#d6d6d6"}
 
                 label={'Salir'}
                 icon={() => (

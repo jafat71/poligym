@@ -1,37 +1,37 @@
-import WeekChecklistComponent from '@/components/ui/buttons/Checklist';
-import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
 import { useTheme } from '@/context/ThemeContext';
-import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Switch, Text, View } from 'react-native';
+import { useImagePicker } from '@/hooks/useImagePicker';
+import ImagePicker from '@/components/ui/image/ImagePicker';
 
 const Form06 = () => {
     const { isDark } = useTheme()
+    const [notificationEnabled, setNotificationEnabled] = useState(false);
+    const { } = useImagePicker();
 
     return (
         <>
             <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
                 <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} w-full items-center`}>
-                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>¿Cuál es tu horario preferido de entrenamiento?</Text>
+                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>Subir Foto de Perfil</Text>
+                </View>
+                <View className='w-full items-center my-3'>
+                    <ImagePicker />
                 </View>
 
-                <RadioButtonIconComponent
-                    options={["Mañana", "Tarde"]}
-                    icons={[
-                        <Ionicons name="sunny-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
-                        <Ionicons name="partly-sunny-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
-                    ]}
-                    rbComponentStyle='w-full '
-                    rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2 '
-                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
-                />
-
-
-                <WeekChecklistComponent/>
+                <View className='w-full items-center mt-3'>
+                    <View className={`pb-5 border-t-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} w-full items-center`}>
+                        <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>¿Deseas activar las notificaciones?</Text>
+                    </View>
+                    <Switch
+                        style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
+                        onValueChange={() => setNotificationEnabled(prevState => !prevState)}
+                        value={notificationEnabled}
+                        thumbColor={isDark ? "#fff" : "#16243E"}
+                        trackColor={{ false: isDark ? "#ddds" : "#ddd", true: isDark ? "#fff" : "#16243E" }}
+                        ios_backgroundColor={isDark ? "#333" : "#ddd"}
+                    />
+                </View>
 
             </View>
         </>

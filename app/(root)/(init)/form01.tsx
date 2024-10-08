@@ -1,18 +1,37 @@
 
-import IconButton from '@/components/ui/buttons/IconButton';
-import RadioButtonComponent from '@/components/ui/buttons/RadioButton';
 import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
 import BigIconTextInputForm from '@/components/ui/form/BigIconTextInputForm';
 import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
 
 const Form01 = () => {
     const { isDark } = useTheme()
-    return (
-        <View className=''>
+    const {user, setUser} = useUser()
+    const [ageInput, setAgeInput] = useState(String(0));
 
+    const handleAgeChange = (e: string) => {
+        let numericValue = e.replace(/[^0-9]/g, '');
+        if (numericValue.startsWith('0')) {
+            numericValue = numericValue.replace(/^0+/, '');
+        }
+        setAgeInput(numericValue);
+        if (numericValue === '') {
+            setUser({
+                ...user,
+                userAge: 0,
+            });
+        } else {
+            setUser({
+                ...user,
+                userAge: parseInt(numericValue, 10),
+            });
+        }
+    };
+    return (
+        <>
             <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
                 <BigIconTextInputForm
                     title='¿Cuántos años tienes?'
@@ -20,19 +39,9 @@ const Form01 = () => {
                     inputKeyboardType='number-pad'
                     inputPlaceholder='18'
                     inputSecure={false}
-                    inputValue={undefined}
-                    inputOnChangeText={undefined} />
-                <View className='flex flex-row items-center justify-between my-2'>
-                    <IconButton
-                        icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                        onPress={() => { }}
+                    inputValue={ageInput}
+                    inputOnChangeText={handleAgeChange}
                     />
-                    <IconButton
-                        icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                        onPress={() => { }}
-                    />
-                </View>
-
             </View>
 
             <View >
@@ -54,11 +63,8 @@ const Form01 = () => {
                     />
 
                 </View>
-
             </View>
-
-
-        </View>
+        </>
     );
 };
 

@@ -1,6 +1,4 @@
-import IconButton from '@/components/ui/buttons/IconButton';
-import RadioButtonComponent from '@/components/ui/buttons/RadioButton';
-import BigIconTextInputForm from '@/components/ui/form/BigIconTextInputForm';
+import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
@@ -9,104 +7,48 @@ import { Text, TextInput, View } from 'react-native';
 const Form04 = () => {
     const { isDark } = useTheme()
     return (
-        <>
+        <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
 
-            <View >
-                <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
-                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuáles son tus medidas corporales?</Text>
+            <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} w-full items-center`}>
+                <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Tienes algún problema médico?</Text>
+            </View>
+
+            <View className='mt-1'>
+                <RadioButtonIconComponent
+                    options={["Ninguno", "Lesiónes/Alergias"]}
+                    icons={[
+                        <Ionicons name="body-outline"
+                            size={35}
+                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
+                        <Ionicons name="bandage-outline"
+                            size={35}
+                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
+                    ]}
+                    rbComponentStyle='w-full '
+                    rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2 '
+                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
+                />
+                <View className={`py-5 border-t-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} w-full items-center`}>
+                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Cuéntanos un poco más...</Text>
                 </View>
+                <View className={`mt-2 border-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} rounded-lg text-white-100`}>
 
-                <View className='mt-2'>
-                    <BigIconTextInputForm
-                        title='Circunferencia de cintura'
-                        icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                        inputKeyboardType='number-pad'
-                        inputPlaceholder='85'
-                        inputSecure={false}
-                        inputValue={undefined}
-                        inputOnChangeText={undefined} />
+                    <TextInput
+                        className={`flex-1 p-2 rounded-lg shadow-lg 
+                                        pl-3 ${isDark ? "text-white" : "text-darkGray-500"}  ml-2 font-ralewayBold`}
+                        placeholder={'Tengo una lesión en ...'}
+                        placeholderTextColor="#a6a6a6"
+                        keyboardType='ascii-capable'
+                        maxLength={200}
+                        multiline
+                        numberOfLines={5}
 
-                    <View className='flex flex-row items-center justify-between my-2'>
-                        <IconButton
-                            icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                            onPress={() => { }}
-                        />
-                        <IconButton
-                            icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                            onPress={() => { }}
-                        />
-                    </View>
-                </View>
-
-                <View>
-                    <BigIconTextInputForm
-                        title='Circunferencia de cadera'
-                        icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                        inputKeyboardType='number-pad'
-                        inputPlaceholder='96'
-                        inputSecure={false}
-                        inputValue={undefined}
-                        inputOnChangeText={undefined} />
-
-                    <View className='flex flex-row items-center justify-between my-2'>
-                        <IconButton
-                            icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                            onPress={() => { }}
-                        />
-                        <IconButton
-                            icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                            onPress={() => { }}
-                        />
-                    </View>
-                </View>
-
-                <View>
-                    <BigIconTextInputForm
-                        title='Circunferencia de brazo'
-                        icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                        inputKeyboardType='number-pad'
-                        inputPlaceholder='96'
-                        inputSecure={false}
-                        inputValue={undefined}
-                        inputOnChangeText={undefined} />
-
-                    <View className='flex flex-row items-center justify-between my-2'>
-                        <IconButton
-                            icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                            onPress={() => { }}
-                        />
-                        <IconButton
-                            icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                            onPress={() => { }}
-                        />
-                    </View>
-                </View>
-
-                <View className='mb-2'>
-                    <BigIconTextInputForm
-                        title='Circunferencia de muslo'
-                        icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                        inputKeyboardType='number-pad'
-                        inputPlaceholder='54'
-                        inputSecure={false}
-                        inputValue={undefined}
-                        inputOnChangeText={undefined} />
-
-                    <View className='flex flex-row items-center justify-between my-2'>
-                        <IconButton
-                            icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                            onPress={() => { }}
-                        />
-                        <IconButton
-                            icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                            onPress={() => { }}
-                        />
-                    </View>
+                    />
                 </View>
 
             </View>
 
-        </>
+        </View>
     );
 };
 

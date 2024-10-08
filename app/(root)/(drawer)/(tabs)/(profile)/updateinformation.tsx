@@ -4,6 +4,7 @@ import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
 import IconTextInputRadioButtonForm from '@/components/ui/form/IconTextInputRadioButtonForm';
 import ImagePicker from '@/components/ui/image/ImagePicker';
 import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
@@ -12,6 +13,8 @@ import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-ha
 
 const EditProfile = () => {
     const { isDark } = useTheme()
+    const {user, setUser} = useUser()
+    const [ageInput, setAgeInput] = useState(String(user?.userAge));
 
 
     return (
@@ -65,7 +68,7 @@ const EditProfile = () => {
                             inputKeyboardType='number-pad'
                             inputPlaceholder='18'
                             inputSecure={false}
-                            inputValue={undefined}
+                            inputValue={ageInput}
                             inputOnChangeText={undefined} />
                         <IconTextInputRadioButtonForm
                             title="Género"
@@ -191,51 +194,6 @@ const EditProfile = () => {
                                 </View>
 
                             </View>
-                        </View>
-
-                        <View>
-                            <View className={`
-            border-b-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm`}>
-                                <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Médidas Corporales</Text>
-                            </View>
-
-                            <IconTextInputForm
-                                title='Circunferencia de cintura'
-                                icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                                inputKeyboardType='number-pad'
-                                inputPlaceholder='85'
-                                inputSecure={false}
-                                inputValue={undefined}
-                                inputOnChangeText={undefined} />
-
-                            <IconTextInputForm
-                                title='Circunferencia de cadera'
-                                icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                                inputKeyboardType='number-pad'
-                                inputPlaceholder='96'
-                                inputSecure={false}
-                                inputValue={undefined}
-                                inputOnChangeText={undefined} />
-
-                            <IconTextInputForm
-                                title='Circunferencia de brazo'
-                                icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                                inputKeyboardType='number-pad'
-                                inputPlaceholder='96'
-                                inputSecure={false}
-                                enabled={false}
-                                inputValue={undefined}
-                                inputOnChangeText={undefined} />
-
-                            <IconTextInputForm
-                                title='Circunferencia de muslo'
-                                icon={<Ionicons name="body-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                                inputKeyboardType='number-pad'
-                                inputPlaceholder='54'
-                                inputSecure={false}
-                                inputValue={undefined}
-                                inputOnChangeText={undefined} />
-
                         </View>
 
                         <View>

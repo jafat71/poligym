@@ -6,6 +6,8 @@ import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
 import { useTheme } from '@/context/ThemeContext';
 import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
 import { router } from 'expo-router';
+import { emptyUser } from '@/constants';
+import { useUser } from '@/context/UserContext';
 
 const Signin = () => {
 
@@ -18,6 +20,8 @@ const Signin = () => {
       password,
     });
   };
+
+  const {setUser} = useUser()
 
   return (
 
@@ -72,6 +76,7 @@ const Signin = () => {
 
         <CTAButtonPrimary
           onPress={() => {
+            setUser(emptyUser)
             router.push('/(root)/(tabs)/home')
           }}
           text='Ingresar'

@@ -6,6 +6,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { UserProvider } from '@/context/UserContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -36,22 +37,23 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider >
+      <UserProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
 
-      <GestureHandlerRootView style={{ flex: 1 }}>
-
-        <Stack
-        screenOptions={{
-          statusBarTranslucent: true
-        }} 
-        >
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
-          <Stack.Screen name="(animated)" options={{ headerShown: false }} />
-          <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'slide_from_right', animationTypeForReplace: 'pop' }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
-          <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-        </Stack>
-      </GestureHandlerRootView>
+          <Stack
+          screenOptions={{
+            statusBarTranslucent: true
+          }} 
+          >
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
+            <Stack.Screen name="(animated)" options={{ headerShown: false }} />
+            <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'slide_from_right', animationTypeForReplace: 'pop' }} />
+            <Stack.Screen name="(auth)" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
+            <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+          </Stack>
+        </GestureHandlerRootView>
+      </UserProvider>
     </ThemeProvider>
 
   );

@@ -15,14 +15,14 @@ const FormHeaderComponent = () => {
     
     const getHeader = () => {
         switch (pathname) {
-            case '/form06':
+            case '/form05':
                 return (
                     <>
                         <Text className={titleStyle}>Estamos cerca de terminar</Text>
                     </>
 
                 )
-            case '/form07':
+            case '/form06':
                 return (
                     <>
                         <Text className={titleStyle}>Completar perfil</Text>

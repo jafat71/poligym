@@ -5,7 +5,7 @@ import Checkbox from 'expo-checkbox';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 
-const ChecklistComponent = () => {
+const WeekChecklistComponent = () => {
     const { isDark } = useTheme()
 
     const [days, setDays] = useState({
@@ -95,4 +95,4 @@ const ChecklistComponent = () => {
     );
 };
 
-export default ChecklistComponent;
+export default WeekChecklistComponent;
