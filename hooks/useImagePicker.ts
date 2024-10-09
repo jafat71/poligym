@@ -19,6 +19,7 @@ export const useImagePicker = () => {
 
     return {
         image,
-        pickImage
+        pickImage,
+        setImage
     }
 }

@@ -1,7 +1,7 @@
 
 
 import { useTheme } from '@/context/ThemeContext';
-import { IconTextInputFormProps } from '@/types/interfaces/ui';
+import { NumericInputForm } from '@/types/interfaces/ui';
 import React, { ReactNode } from 'react';
 import { Text, TextInput, View } from 'react-native';
 
@@ -15,7 +15,7 @@ const IconTextInputForm = (
         inputValue =  undefined,
         inputSecure = false,
         enabled = true,
-    }: IconTextInputFormProps
+    }: NumericInputForm
 ) => {
     const { isDark } = useTheme()
     return (

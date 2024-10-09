@@ -4,40 +4,42 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 
-const RadioButton = ({ label, value, selected, onSelect,btnStyle, textStyle, icon }: any) => {
+const RadioButton = ({ label, value, selected, onSelect, btnStyle, textStyle, icon }: any) => {
     const { isDark } = useTheme();
+    const selectionColor = isDark ? 'bg-eBlue-200' : 'bg-eBlue-800'
     return (
         <TouchableOpacity
             className={`transition-all duration-200 
                 rounded-md  
                 ${btnStyle} 
-                ${isDark ? "bg-white text-darkGray-500": "bg-darkGray-500 text-white"} 
-                ${selected ? "scale-105 " : ""}`}
+                ${isDark ? "bg-white text-darkGray-500" : "bg-darkGray-500 text-white"} 
+                ${selected ? `${selectionColor} ` : ""}`}
             onPress={() => onSelect(value)}>
-                <View className='absolute w-full items-start'>
+            <View className='absolute w-full items-start'>
                 {
                     icon
                 }
-                </View>
-      
-                <Text className={`text-center
+            </View>
+            <Text className={`text-center
+                 ${selected ? "" : ""}
                     ${textStyle} font-ralewayBold`}>{label}</Text>
         </TouchableOpacity>
     );
 };
 
-interface RadioButtonIconComponentProps extends RadioButtonComponentProps{
+interface RadioButtonIconComponentProps extends RadioButtonComponentProps {
     icons: React.ReactNode[]
 }
 
-const RadioButtonIconComponent = ({ 
+const RadioButtonIconComponent = ({
     options = [],
     rbComponentStyle,
     rbIndividualRadioButtonStyle,
     rbIndividualTextBtnStyle,
-    icons = []
+    icons = [],
+    selectedValue,
+    setSelectedValue,
 }: RadioButtonIconComponentProps) => {
-    const [selectedValue, setSelectedValue] = useState(null);
     return (
         <View className={`${rbComponentStyle}`}>
             {

@@ -21,7 +21,7 @@ const Signin = () => {
     });
   };
 
-  const {setUser} = useUser()
+  const {set1InitUser} = useUser()
 
   return (
 
@@ -76,7 +76,7 @@ const Signin = () => {
 
         <CTAButtonPrimary
           onPress={() => {
-            setUser(emptyUser)
+            set1InitUser(emptyUser)
             router.push('/(root)/(tabs)/home')
           }}
           text='Ingresar'

@@ -1,13 +1,42 @@
 import { useTheme } from '@/context/ThemeContext';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Switch, Text, View } from 'react-native';
-import { useImagePicker } from '@/hooks/useImagePicker';
 import ImagePicker from '@/components/ui/image/ImagePicker';
+import { useUser } from '@/context/UserContext';
 
 const Form06 = () => {
     const { isDark } = useTheme()
+    const { tmpUser, set1InitUser } = useUser()
+    const [profileImage, setprofileImage] = useState('');
+
+    useEffect(() => {
+        set1InitUser({
+            ...tmpUser,
+            userProfileImgUrl: profileImage
+        })
+    }, [profileImage]);
+
+    useEffect(() => {
+        if(tmpUser){
+            setprofileImage(tmpUser.userProfileImgUrl)
+        }
+    }, []);
+
     const [notificationEnabled, setNotificationEnabled] = useState(false);
-    const { } = useImagePicker();
+
+    useEffect(() => {
+        setNotificationEnabled(
+            tmpUser?.userNotificationsEnabled!!
+        )        
+    }, []);
+
+    useEffect(() => {
+        set1InitUser({
+            ...tmpUser,
+            userNotificationsEnabled: notificationEnabled
+        })
+    }, [notificationEnabled])
+    
 
     return (
         <>
@@ -16,7 +45,10 @@ const Form06 = () => {
                     <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>Subir Foto de Perfil</Text>
                 </View>
                 <View className='w-full items-center my-3'>
-                    <ImagePicker />
+                    <ImagePicker 
+                        imgUrl={profileImage}
+                        setImg={setprofileImage}
+                    />
                 </View>
 
                 <View className='w-full items-center mt-3'>
@@ -27,8 +59,8 @@ const Form06 = () => {
                         style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
                         onValueChange={() => setNotificationEnabled(prevState => !prevState)}
                         value={notificationEnabled}
-                        thumbColor={isDark ? "#fff" : "#16243E"}
-                        trackColor={{ false: isDark ? "#ddds" : "#ddd", true: isDark ? "#fff" : "#16243E" }}
+                        thumbColor={isDark ? "#66a3ff" : "#16243E"}
+                        trackColor={{ false: isDark ? "#ddds" : "#ddd", true: isDark ? "#66a3ff" : "#16243E" }}
                         ios_backgroundColor={isDark ? "#333" : "#ddd"}
                     />
                 </View>

@@ -4,41 +4,49 @@ import React, { createContext, useContext, ReactNode, useState, useEffect } from
 
 interface UserContextType {
     userLogged: boolean;
-    user: User | null;
-    setUser: (updatedFields: Partial<User>) => void; 
+    tmpUser: User | null;
+    set1InitUser: (updatedFields: Partial<User>) => void;
+    setEmptyUser: () => void
 }
 
 const UserContext = createContext<UserContextType>({
     userLogged: false,
-    user: emptyUser,
-    setUser: function (updatedFields: Partial<User>): void {
+    tmpUser: emptyUser,
+    set1InitUser: function (updatedFields: Partial<User>): void {
+        throw new Error('Function not implemented.');
+    },
+    setEmptyUser: function (): void {
         throw new Error('Function not implemented.');
     }
 });
 
-interface UserProviderProps  {
+interface UserProviderProps {
     children: ReactNode;
 }
 
-export const UserProvider: React.FC<UserProviderProps > = ({ children }) => {
+export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [userLogged, setUserLogged] = useState(false);
-    const [user, setUserState] = useState<User | null>(emptyUser);
+    const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
 
     useEffect(() => {
-      console.log(user)
-    }, [user])
-    
-    const setUser = (updatedFields: Partial<User>|null) => {
-        if(updatedFields===null) {
-            setUserState(null)
+        console.log(tmpUser)
+    }, [tmpUser])
+
+    const setUser = (updatedFields: Partial<User> | null) => {
+        //TODO; Setear User directamente desde DB a estado de la
+    };
+
+    const set1InitUser = (updatedFields: Partial<User> | null) => {
+        if (updatedFields === null) {
+            setTmpUSer(null)
             return
         }
-        setUserState((prevUser) => {
+        setTmpUSer((prevUser) => {
             if (!prevUser) return null;
 
             return {
                 ...prevUser,
-                userId: updatedFields.userId ?? prevUser.userId, 
+                userId: updatedFields.userId ?? prevUser.userId,
                 userName: updatedFields.userName ?? prevUser.userName,
                 userEmail: updatedFields.userEmail ?? prevUser.userEmail,
                 userRole: updatedFields.userRole ?? prevUser.userRole,
@@ -60,17 +68,11 @@ export const UserProvider: React.FC<UserProviderProps > = ({ children }) => {
         });
     };
 
-    const setActualUser = (user: User) => {
-        setUserState(user);
-        setUserLogged(true);
-    };
+    const setEmptyUser = () => set1InitUser(emptyUser);
 
-    const unsetActualUser = () => {
-        setUserState(null);
-        setUserLogged(false);
-    };
+
     return (
-        <UserContext.Provider value={{ userLogged, user, setUser }}>
+        <UserContext.Provider value={{ userLogged, tmpUser, set1InitUser, setEmptyUser }}>
             {children}
         </UserContext.Provider>
     );

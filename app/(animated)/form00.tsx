@@ -1,15 +1,16 @@
 
 
 import React, { useEffect } from 'react';
-import { SafeAreaView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import MainLogoGradientComponent from '@/components/ui/logo/mainLogoGrandient';
 import { FloatingMessage } from '@/components/animatedUi/FloatingMessage';
 import { router } from 'expo-router';
-import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
 const Form00 = () => {
 
+    const {setEmptyUser} = useUser()
     useEffect(() => {
-
+        setEmptyUser()
         setTimeout(() => {
             router.replace('/(init)/form01')
         }, 2000);

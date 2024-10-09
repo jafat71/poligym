@@ -6,13 +6,15 @@ import { View, Text, TouchableOpacity } from 'react-native';
 
 const RadioButton = ({ label, value, selected, onSelect,btnStyle, textStyle }: any) => {
     const { isDark } = useTheme();
+    const selectionColor = isDark ? 'bg-eBlue-200' : 'bg-eBlue-800'
+
     return (
         <TouchableOpacity
             className={`transition-all duration-200 
                 rounded-md 
                 ${btnStyle}
                 ${isDark ? "bg-white text-darkGray-500": "bg-darkGray-500 text-white"} 
-                ${selected ? "scale-110 " : ""}`}
+                ${selected ? `${selectionColor} ` : ""}`}
             onPress={() => onSelect(value)}>
                 <Text className={`text-center
                     ${textStyle} font-ralewayBold`}>{label}</Text>
@@ -24,8 +26,9 @@ const RadioButtonComponent = ({
     options = [],
     rbComponentStyle,
     rbIndividualRadioButtonStyle,
-    rbIndividualTextBtnStyle}: RadioButtonComponentProps) => {
-    const [selectedValue, setSelectedValue] = useState(null);
+    rbIndividualTextBtnStyle,
+    selectedValue,
+    setSelectedValue,}: RadioButtonComponentProps) => {
     return (
         <View className={`${rbComponentStyle}`}>
             {

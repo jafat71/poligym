@@ -84,6 +84,7 @@ export const FAQs = [
 ];
 
 export let emptyUser: User = {
+  userNew: true,
   userId: '',
   userName: '',
   userEmail: '',

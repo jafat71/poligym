@@ -4,9 +4,9 @@ import { useTheme } from '@/context/ThemeContext';
 import React, { ReactNode } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import RadioButtonComponent from '../buttons/RadioButton';
-import { IconTextInputFormProps, RadioButtonComponentProps } from '@/types/interfaces/ui';
+import { NumericInputForm, RadioButtonComponentProps } from '@/types/interfaces/ui';
 
-interface Props extends IconTextInputFormProps, RadioButtonComponentProps{}
+interface Props extends NumericInputForm, RadioButtonComponentProps{}
 
 const IconTextInputRadioButtonForm = (
     {

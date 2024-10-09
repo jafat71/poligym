@@ -1,74 +1,118 @@
-import IconButton from '@/components/ui/buttons/IconButton';
-import RadioButtonComponent from '@/components/ui/buttons/RadioButton';
-import BigIconTextInputForm from '@/components/ui/form/BigIconTextInputForm';
+import NumericInputInitForm from '@/components/ui/form/NumericInputInitForm';
 import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
+import transformToValidZInput from '@/utils/transformToValidZInput';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { Text, TextInput, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
 
 const Form02 = () => {
     const { isDark } = useTheme()
+    const { tmpUser, set1InitUser } = useUser()
+    const [weightInput, setWeightINput] = useState('');
+
+    useEffect(() => {
+        let userweight = tmpUser?.userWeight
+        setWeightINput(String(userweight) || '')
+    }, []);
+
+    const validateWeightChange = useCallback(
+        (newWeightInput: string) => {
+            const validWeight = transformToValidZInput(newWeightInput)
+            setWeightINput(validWeight.toString());
+            set1InitUser({
+                ...tmpUser,
+                userWeight: validWeight
+            })
+        },
+        [weightInput],
+    )
+
+
+    const AddWeight = () => {
+        let newWeight = +weightInput
+        newWeight += 1
+        validateWeightChange(newWeight + "")
+        setWeightINput("" + newWeight)
+    }
+
+    const SubWeight = () => {
+        let newWeight = +weightInput
+        newWeight -= 1
+        validateWeightChange(newWeight + "")
+        setWeightINput("" + Math.max(0, newWeight))
+    }
+
+    const [heightInput, setHeightINput] = useState('');
+
+    useEffect(() => {
+        let userHeight = tmpUser?.userHeight
+        setHeightINput(String(userHeight) || '')
+    }, []);
+
+    const validateHeightChange = useCallback(
+        (newHeightInput: string) => {
+            const validHeight = transformToValidZInput(newHeightInput)
+            setHeightINput(validHeight.toString());
+            set1InitUser({
+                ...tmpUser,
+                userHeight: validHeight
+            })
+        },
+        [heightInput],
+    )
+
+
+    const AddHeight = () => {
+        let newHeight = +heightInput
+        newHeight += 1
+        validateHeightChange(newHeight + "")
+        setHeightINput("" + newHeight)
+    }
+
+    const SubHeight = () => {
+        let newHeight = +heightInput
+        newHeight -= 1
+        validateHeightChange(newHeight + "")
+        setHeightINput("" + Math.max(0, newHeight))
+    }
+
 
     return (
         <>
+
             <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
-                <BigIconTextInputForm
-                    title='¿Cuál es tu peso?'
+
+                <NumericInputInitForm
+                    title='¿Cuál es tu peso? (KG)'
                     icon={<Ionicons name="scale" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                     inputKeyboardType='number-pad'
                     inputPlaceholder='18'
                     inputSecure={false}
-                    inputValue={undefined}
-                    inputOnChangeText={undefined} />
-                <View className='flex flex-row items-center justify-between my-2'>
-                    <IconButton
-                        icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                        onPress={() => { }}
-                    />
-                    <IconButton
-                        icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                        onPress={() => { }}
-                    />
-                </View>
-                <View className='flex flex-row items-center justify-between '>
-                    <RadioButtonComponent
-                        options={["KG", "LB"]}
-                        rbComponentStyle='w-full flex flex-row items-center justify-between'
-                        rbIndividualRadioButtonStyle='w-1/3 h-12 text-white flex flex-col items-center justify-center'
-                        rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
-                    />
-                </View>
+                    inputValue={weightInput}
+                    maxLength={3}
+                    inputOnChangeText={validateWeightChange}
+                    subFn={SubWeight}
+                    addFn={AddWeight} />
 
             </View>
 
-            <View className={`py-5`}>
-                <BigIconTextInputForm
-                    title='¿Cuál es tu altura?'
+            <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                <NumericInputInitForm
+                    title='¿Cuál es tu altura? (CM)'
                     icon={<Ionicons name="resize-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                     inputKeyboardType='number-pad'
-                    inputPlaceholder='18'
+                    inputPlaceholder='170'
                     inputSecure={false}
-                    inputValue={undefined}
-                    inputOnChangeText={undefined} />
-                <View className='flex flex-row items-center justify-between my-2'>
-                    <IconButton
-                        icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                        onPress={() => { }}
-                    />
-                    <IconButton
-                        icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                        onPress={() => { }}
-                    />
-                </View>
-                <View className='flex flex-row items-center justify-between '>
-                    <RadioButtonComponent
-                        options={["CM", "PIES"]}
-                        rbComponentStyle='w-full flex flex-row items-center justify-between'
-                        rbIndividualRadioButtonStyle='w-1/3 h-12 text-white flex flex-col items-center justify-center'
-                        rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
-                    />
-                </View>
+                    inputValue={heightInput}
+                    inputOnChangeText={validateHeightChange}
+                    subFn={SubHeight}
+                    addFn={AddHeight} />
 
+            </View>
+
+            <View className={`${isDark ? "bg-blue-300" : "bg-blueEPN-500"} rounded-sm items-center py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                <Text className={`text-sm text-center  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}>Por favor, considera medidas sin decimales</Text>
             </View>
         </>
     );

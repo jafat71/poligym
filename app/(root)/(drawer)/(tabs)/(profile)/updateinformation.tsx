@@ -5,17 +5,15 @@ import IconTextInputRadioButtonForm from '@/components/ui/form/IconTextInputRadi
 import ImagePicker from '@/components/ui/image/ImagePicker';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
+import { Genre } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 
 const EditProfile = () => {
     const { isDark } = useTheme()
-    const {user, setUser} = useUser()
-    const [ageInput, setAgeInput] = useState(String(user?.userAge));
-
 
     return (
         <SafeAreaView className={`flex flex-1
@@ -68,23 +66,32 @@ const EditProfile = () => {
                             inputKeyboardType='number-pad'
                             inputPlaceholder='18'
                             inputSecure={false}
-                            inputValue={ageInput}
-                            inputOnChangeText={undefined} />
-                        <IconTextInputRadioButtonForm
-                            title="Género"
-                            icon={<Ionicons name="male-female-outline"
-                                size={35}
-                                color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                            inputPlaceholder={'Másculino'}
-                            inputKeyboardType='ascii-capable'
                             inputValue={undefined}
-                            inputOnChangeText={undefined}
-                            options={['M', 'F']}
-                            enabled={false}
-                            rbComponentStyle='flex-1 flex-row '
-                            rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center mx-1 translate-x-2'
-                            rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}  `}
-                        />
+                            inputOnChangeText={undefined} />
+                        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} flex flex-col items-center`}>
+                            <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu género?</Text>
+                            <RadioButtonIconComponent
+                                options={['Másculino', 'Femenino', 'Otro']}
+                                icons={[
+                                    <Ionicons name="male"
+                                        size={35}
+                                        color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
+                                    <Ionicons name="female"
+                                        size={35}
+                                        color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
+                                    <Ionicons name="male-female"
+                                        size={35}
+                                        color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
+                                ]}
+                                selectedValue={undefined}
+                                rbComponentStyle='w-full mt-2'
+                                rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2'
+                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `} 
+                                setSelectedValue={function (value: any): void {
+                                    throw new Error('Function not implemented.');
+                                } }                            />
+
+                        </View>
                         <IconTextInputRadioButtonForm
                             title="Peso"
                             icon={<Ionicons name="scale"
@@ -98,8 +105,9 @@ const EditProfile = () => {
                             enabled={true}
                             rbComponentStyle='flex-1 flex-row '
                             rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center mx-1 translate-x-2'
-                            rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
-                        />
+                            rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`} selectedValue={undefined} setSelectedValue={function (value: any): void {
+                                throw new Error('Function not implemented.');
+                            }} />
 
                         <IconTextInputRadioButtonForm
                             title="Altura"
@@ -114,8 +122,9 @@ const EditProfile = () => {
                             enabled={true}
                             rbComponentStyle='flex-1 flex-row '
                             rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center mx-1 translate-x-2'
-                            rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
-                        />
+                            rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`} selectedValue={undefined} setSelectedValue={function (value: any): void {
+                                throw new Error('Function not implemented.');
+                            }} />
 
                         <View>
                             <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>Objetivo</Text>
@@ -134,8 +143,9 @@ const EditProfile = () => {
                                 ]}
                                 rbComponentStyle='w-full '
                                 rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2'
-                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
-                            />
+                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `} selectedValue={undefined} setSelectedValue={function (value: any): void {
+                                    throw new Error('Function not implemented.');
+                                }} />
 
                         </View>
 
@@ -156,8 +166,9 @@ const EditProfile = () => {
                                 ]}
                                 rbComponentStyle='w-full '
                                 rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2'
-                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
-                            />
+                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `} selectedValue={undefined} setSelectedValue={function (value: any): void {
+                                    throw new Error('Function not implemented.');
+                                }} />
 
                         </View>
 
@@ -177,8 +188,9 @@ const EditProfile = () => {
                                     ]}
                                     rbComponentStyle='w-full '
                                     rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2 '
-                                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
-                                />
+                                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `} selectedValue={undefined} setSelectedValue={function (value: any): void {
+                                        throw new Error('Function not implemented.');
+                                    }} />
                                 <View className={`mt-2 border-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} rounded-lg text-white-100`}>
                                     <TextInput
                                         className={`flex-1 p-2 rounded-lg shadow-lg 
@@ -210,8 +222,9 @@ const EditProfile = () => {
                                 enabled={false}
                                 rbComponentStyle='flex-1 flex-row '
                                 rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center mx-1 translate-x-2'
-                                rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`}
-                            />
+                                rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`} selectedValue={undefined} setSelectedValue={function (value: any): void {
+                                    throw new Error('Function not implemented.');
+                                }} />
 
 
                             <WeekChecklistComponent />

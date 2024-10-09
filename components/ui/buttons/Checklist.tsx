@@ -1,24 +1,25 @@
-
-
 import { useTheme } from '@/context/ThemeContext';
+import { DaysWeek } from '@/types/interfaces/entities/user';
 import Checkbox from 'expo-checkbox';
-import React, { useState } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 
-const WeekChecklistComponent = () => {
+interface Props {
+    days: DaysWeek;
+    setDays: React.Dispatch<React.SetStateAction<DaysWeek>>
+}
+
+const WeekChecklistComponent = ({ days, setDays }: Props) => {
     const { isDark } = useTheme()
 
-    const [days, setDays] = useState({
-        "monday": false,
-        "tuesday": false,
-        "wednesday": false,
-        "thursday": false,
-        "friday": false,
-    });
+    const labelStyle = `text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`
+    const enabledStyle = `${isDark ? "#66A3FF" : "#16243E"}`
+    const disabledStyle = `${isDark ? "#fff" : "#1c1c1c"}`
+
     return (
         <View className='w-full'>
             <View className='flex flex-row items-center justify-between p-2'>
-                <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                <Text className={labelStyle}>
                     Lunes
                 </Text>
                 <Checkbox
@@ -28,12 +29,12 @@ const WeekChecklistComponent = () => {
                         ...days,
                         monday: !days.monday
                     })}
-                    color={days.monday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                    color={days.monday ? enabledStyle : disabledStyle}
                 />
             </View>
 
             <View className='flex flex-row items-center justify-between p-2'>
-                <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                <Text className={labelStyle}>
                     Martes
                 </Text>
                 <Checkbox
@@ -43,12 +44,12 @@ const WeekChecklistComponent = () => {
                         ...days,
                         tuesday: !days.tuesday
                     })}
-                    color={days.tuesday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                    color={days.tuesday ? enabledStyle : disabledStyle}
                 />
             </View>
 
             <View className='flex flex-row items-center justify-between p-2'>
-                <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                <Text className={labelStyle}>
                     Miercoles
                 </Text>
                 <Checkbox
@@ -58,12 +59,12 @@ const WeekChecklistComponent = () => {
                         ...days,
                         wednesday: !days.wednesday
                     })}
-                    color={days.wednesday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                    color={days.wednesday ? enabledStyle : disabledStyle}
                 />
             </View>
 
             <View className='flex flex-row items-center justify-between p-2'>
-                <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                <Text className={labelStyle}>
                     Jueves
                 </Text>
                 <Checkbox
@@ -73,12 +74,12 @@ const WeekChecklistComponent = () => {
                         ...days,
                         thursday: !days.thursday
                     })}
-                    color={days.thursday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                    color={days.thursday ? enabledStyle : disabledStyle}
                 />
             </View>
 
             <View className='flex flex-row items-center justify-between p-2'>
-                <Text className={`text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}>
+                <Text className={labelStyle}>
                     Viernes
                 </Text>
                 <Checkbox
@@ -88,7 +89,7 @@ const WeekChecklistComponent = () => {
                         ...days,
                         friday: !days.friday
                     })}
-                    color={days.friday ? `${isDark ? "#1c1c1c" : "#16243E"}` : `${isDark ? "#fff" : "#1c1c1c"}`}
+                    color={days.friday ? enabledStyle : disabledStyle}
                 />
             </View>
         </View>

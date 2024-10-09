@@ -1,12 +1,24 @@
 import { useTheme } from '@/context/ThemeContext'
 import { useImagePicker } from '@/hooks/useImagePicker'
 import { Ionicons } from '@expo/vector-icons'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image, TouchableOpacity, View } from 'react-native'
 
-const ImagePicker = () => {
-    const { pickImage, image } = useImagePicker()
+interface Props {
+    imgUrl: string;
+    setImg: React.Dispatch<React.SetStateAction<string>>
+}
+
+const ImagePicker = ({imgUrl, setImg}:Props) => {
+    const { pickImage, image, setImage} = useImagePicker()
     const {isDark} = useTheme()
+
+
+    useEffect(() => {
+        setImage(image)
+        setImg(image!)
+    }, [image]);
+
     return (
         <TouchableOpacity
             onPress={pickImage}
