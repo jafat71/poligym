@@ -27,7 +27,7 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen name="home" options={{
-        headerShown: true,
+        headerShown: false,
         tabBarIcon: ({ focused }) => (
           <Ionicons name="home" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),

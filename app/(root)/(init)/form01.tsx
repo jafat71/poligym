@@ -8,13 +8,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { Genre } from '../../../types/interfaces/entities/user';
 import transformToValidZInput from '@/utils/transformToValidZInput';
-
-const genreMapper: Record<Genre, number> = {
-    'MASCULINO': 0,
-    'FEMENINO': 1,
-    'OTRO': 2
-}
-const genresOptions = ['Másculino', 'Femenino', 'No Binario']
+import { genreMapper, genresOptions } from '@/constants';
 
 const Form01 = () => {
     const { isDark } = useTheme()

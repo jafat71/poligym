@@ -51,8 +51,9 @@ const IconTextInputRadioButtonForm = (
                         options={options}
                         rbComponentStyle={rbComponentStyle}
                         rbIndividualTextBtnStyle={rbIndividualTextBtnStyle}
-                        rbIndividualRadioButtonStyle={rbIndividualRadioButtonStyle}
-                    />
+                        rbIndividualRadioButtonStyle={rbIndividualRadioButtonStyle} selectedValue={undefined} setSelectedValue={function (value: any): void {
+                            throw new Error('Function not implemented.');
+                        } }                    />
                 </View>
 
             </View>

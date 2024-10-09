@@ -1,4 +1,4 @@
-import { User } from "@/types/interfaces/entities/user";
+import { Genre, User } from "@/types/interfaces/entities/user";
 
 export const termsContent = [
   {
@@ -110,3 +110,10 @@ export let emptyUser: User = {
   },
   userProfileImgUrl: '',
 }
+
+export const genreMapper: Record<Genre, number> = {
+  'MASCULINO': 0,
+  'FEMENINO': 1,
+  'OTRO': 2
+}
+export const genresOptions = ['Másculino', 'Femenino', 'No Binario']

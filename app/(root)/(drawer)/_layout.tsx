@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer'
-import { Pressable, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 const CustomDrawerContent = () => {
     const { isDark, toggleTheme } = useTheme()
@@ -16,7 +16,7 @@ const CustomDrawerContent = () => {
         fontFamily: 'Raleway-SemiBold',
         fontSize: 18,
     }
-    const {setUser} = useUser()
+    const {set1InitUser} = useUser()
 
     const iconStyle = `rounded-full w-10 h-10 
                         flex items-center justify-center mt-2
@@ -31,10 +31,11 @@ const CustomDrawerContent = () => {
                     `}>
                         <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>POLIGYM</Text>
                         <MainLogoCustomComponent
-                            height='30'
-                            width='30'
-                            principal={`${isDark ? "#fff" : "#1c1c1c"}`}
+                            height='25'
+                            width='25'
+                            principal={`${isDark ? "#fff" : "#1c1c1c" }`}
                         />
+
                     </View>
 
                     <View className={`flex flex-row items-center pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
@@ -148,7 +149,7 @@ const CustomDrawerContent = () => {
 
             <DrawerItem
                 onPress={() => {
-                    setUser(emptyUser)
+                    set1InitUser(emptyUser)
                     router.dismissAll()
                 }}
                 pressColor={"#d6d6d6"}

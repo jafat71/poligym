@@ -3,9 +3,10 @@ import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
 import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
 import IconTextInputRadioButtonForm from '@/components/ui/form/IconTextInputRadioButtonForm';
 import ImagePicker from '@/components/ui/image/ImagePicker';
+import { genreMapper } from '@/constants';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
-import { Genre } from '@/types/interfaces/entities/user';
+import { DaysWeek, Genre } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -14,6 +15,33 @@ import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-ha
 
 const EditProfile = () => {
     const { isDark } = useTheme()
+    const { tmpUser, set1InitUser } = useUser()
+    const [ageINput, setAgeINput] = useState('');
+    const [profileImage, setprofileImage] = useState('');
+    const [weightInput, setWeightINput] = useState('');
+    const [selectedGenre, setSelectedGenre] = useState<number>(0);
+
+    const [days, setDays] = useState<DaysWeek>({
+        "monday": false,
+        "tuesday": false,
+        "wednesday": false,
+        "thursday": false,
+        "friday": false,
+    });
+
+    useEffect(() => {
+        let userAge = tmpUser?.userAge
+        setAgeINput(String(userAge) || '')
+        setprofileImage(tmpUser?.userProfileImgUrl || '')
+        setWeightINput(tmpUser?.userWeight+"" || '')
+
+        let genreIndex = 0
+        if (tmpUser?.userGenre) {
+            genreIndex = genreMapper[tmpUser.userGenre]
+        } 
+        setSelectedGenre(genreIndex)
+
+    }, []);
 
     return (
         <SafeAreaView className={`flex flex-1
@@ -41,7 +69,10 @@ const EditProfile = () => {
 
                     <View className={`p-4 mt-2 rounded-lg border-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} `}>
                         <View className='w-full items-center mt-2'>
-                            <ImagePicker />
+                            <ImagePicker
+                                imgUrl={profileImage}
+                                setImg={setprofileImage}
+                            />
                         </View>
                         <IconTextInputForm
                             title='Email Institucional'
@@ -49,9 +80,9 @@ const EditProfile = () => {
                             inputKeyboardType='email-address'
                             inputPlaceholder='jhon.doe@epn.edu.ec'
                             inputSecure={false}
-                            enabled={false}
                             inputValue={undefined}
-                            inputOnChangeText={undefined} />
+                            inputOnChangeText={undefined}
+                            enabled={false}/>
                         <IconTextInputForm
                             title='Nombre'
                             icon={<Ionicons name="person-circle-sharp" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -59,18 +90,21 @@ const EditProfile = () => {
                             inputPlaceholder='Jhon Doe'
                             inputSecure={false}
                             inputValue={undefined}
-                            inputOnChangeText={undefined} />
+                            inputOnChangeText={undefined}
+                            enabled={false}/>
                         <IconTextInputForm
                             title='Edad'
                             icon={<Ionicons name="balloon-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                             inputKeyboardType='number-pad'
                             inputPlaceholder='18'
                             inputSecure={false}
-                            inputValue={undefined}
-                            inputOnChangeText={undefined} />
-                        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} flex flex-col items-center`}>
-                            <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu género?</Text>
-                            <RadioButtonIconComponent
+                            inputValue={ageINput}
+                            inputOnChangeText={undefined}
+                            enabled={false}/>
+                                                    
+                        <View className={`mt-2 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} flex flex-col items-start`}>
+                        <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Género</Text>
+                        <RadioButtonIconComponent
                                 options={['Másculino', 'Femenino', 'Otro']}
                                 icons={[
                                     <Ionicons name="male"
@@ -83,15 +117,16 @@ const EditProfile = () => {
                                         size={35}
                                         color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
                                 ]}
-                                selectedValue={undefined}
+                                selectedValue={selectedGenre}
                                 rbComponentStyle='w-full mt-2'
                                 rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2'
-                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `} 
+                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
                                 setSelectedValue={function (value: any): void {
                                     throw new Error('Function not implemented.');
-                                } }                            />
+                                }} />
 
                         </View>
+{/* 
                         <IconTextInputRadioButtonForm
                             title="Peso"
                             icon={<Ionicons name="scale"
@@ -106,6 +141,10 @@ const EditProfile = () => {
                             rbComponentStyle='flex-1 flex-row '
                             rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center mx-1 translate-x-2'
                             rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`} selectedValue={undefined} setSelectedValue={function (value: any): void {
+                                throw new Error('Function not implemented.');
+                            }} subFn={function (): void {
+                                throw new Error('Function not implemented.');
+                            }} addFn={function (): void {
                                 throw new Error('Function not implemented.');
                             }} />
 
@@ -123,6 +162,10 @@ const EditProfile = () => {
                             rbComponentStyle='flex-1 flex-row '
                             rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center mx-1 translate-x-2'
                             rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`} selectedValue={undefined} setSelectedValue={function (value: any): void {
+                                throw new Error('Function not implemented.');
+                            }} subFn={function (): void {
+                                throw new Error('Function not implemented.');
+                            }} addFn={function (): void {
                                 throw new Error('Function not implemented.');
                             }} />
 
@@ -224,12 +267,18 @@ const EditProfile = () => {
                                 rbIndividualRadioButtonStyle='w-12 h-12 text-white flex flex-col items-center justify-center mx-1 translate-x-2'
                                 rbIndividualTextBtnStyle={`${isDark ? "text-darkGray-500" : "text-white"}`} selectedValue={undefined} setSelectedValue={function (value: any): void {
                                     throw new Error('Function not implemented.');
+                                }} subFn={function (): void {
+                                    throw new Error('Function not implemented.');
+                                }} addFn={function (): void {
+                                    throw new Error('Function not implemented.');
                                 }} />
 
+                            <WeekChecklistComponent
+                                days={days}
+                                setDays={setDays}
+                            />
 
-                            <WeekChecklistComponent />
-
-                        </View>
+                        </View> */}
 
 
                     </View>

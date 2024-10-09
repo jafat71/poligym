@@ -17,6 +17,20 @@ export interface NumericInputForm {
     addFn: () => void;
 }
 
+export interface NumericInputNotBtnsForm {
+    title: string;
+    icon: ReactNode;
+    inputPlaceholder: string;
+    inputKeyboardType: KeyboardTypeOptions | undefined;
+    inputValue: string | undefined;
+    inputOnChangeText: ((text: string) => void) | undefined;
+    inputSecure?: boolean;
+    enabled?: boolean;
+    maxLength?: number;
+    alert?: boolean;
+    alertMessage?: string;
+}
+
 export interface DoubleNumericInputForm extends NumericInputForm{
     SecsubFn: () => void;
     SecaddFn: () => void;
