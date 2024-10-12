@@ -21,18 +21,17 @@ const Signin = () => {
     });
   };
 
-  const {set1InitUser} = useUser()
+  const { set1InitUser } = useUser()
 
   return (
 
-    <View className={`p-4 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm`}>
+    <View className='p-2 mt-2 rounded-lg '>
 
-      <View className='p-4 mt-2 rounded-lg '>
+      <View>
 
         <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
 
-          <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Login</Text>
-          <Text className={`text-lg font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>Ingresa tus credenciales para acceder a la plataforma</Text>
+          <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Iniciar Sesión</Text>
 
         </View>
 

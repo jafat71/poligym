@@ -1,7 +1,6 @@
 
-import { useTheme } from '@/context/ThemeContext';
 import React from 'react';
-import { GestureResponderEvent, Text, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
 
 interface Props {
     onPress: ((event: GestureResponderEvent) => void) | undefined,
@@ -9,14 +8,13 @@ interface Props {
 }
 
 const CTAButtonPrimary = ({ onPress, text}: Props) => {
-    const {isDark} = useTheme()
     return (
         <TouchableOpacity
             onPress={onPress}
         >
-            <Text className={`w-full rounded-xl text-lg text-center py-3 
-                ${isDark ? " bg-white text-darkGray-500": "bg-darkGray-500 text-white"} 
-                font-ralewayExtraBold`}>{text}</Text>
+            <Text className={`w-full rounded-xl text-base text-center
+                text-white my-1 
+                py-4 bg-eBlue-500 px-28 font-ralewayExtraBold`}>{text}</Text>
         </TouchableOpacity>
     );
 };

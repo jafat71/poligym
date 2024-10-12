@@ -1,23 +1,11 @@
+import { TrainingPlans } from '@/constants'
 import { useTheme } from '@/context/ThemeContext'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Swiper from 'react-native-swiper'
 
-const TrainingPlans = [
-  {
-    title: "Muscle Builder Pro",
-    image: 'https://img.freepik.com/free-photo/kettlebell-fitness-still-life_23-2151739205.jpg?t=st=1728466010~exp=1728469610~hmac=85441626c8ab165db4563db4380656b72316ddf129d048b5963ece3680e56b91&w=740',
-  },
-  {
-    title: "Fat Blaster Program",
-    image: 'https://img.freepik.com/free-photo/serious-sportswoman-dark-studio-holding-weight_23-2147752861.jpg?t=st=1728467277~exp=1728470877~hmac=a2892e5a7f587f7fb1c81bdfa612ba039443c3fffcd25efc7538d139d06533a3&w=826',
-  },
-  {
-    title: "Olympic Warrior",
-    image: 'https://img.freepik.com/premium-photo/closeup-gym-dumbbells-floor-bokeh-red-blue-fitness-gymnasium-background-wallpaper-copy_1162810-11138.jpg?w=740',
-  },
-];
+
 
 const Home = () => {
   const { isDark } = useTheme()

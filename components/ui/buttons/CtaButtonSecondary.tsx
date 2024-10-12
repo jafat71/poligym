@@ -1,26 +1,22 @@
 
-import { Href, router } from 'expo-router';
 import React from 'react';
-import { Text, TouchableHighlight } from 'react-native';
+import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
 
 interface Props {
-    route: Href<string | object>,
+    onPress: ((event: GestureResponderEvent) => void) | undefined,
     text: string,
 }
 
-const CTAButtonSecondary = ({ route, text}: Props) => {
+const CTAButtonSecondary = ({ onPress, text}: Props) => {
 
     return (
-        <TouchableHighlight
-            onPress={() => {
-                router.replace(route)
-            }}
+        <TouchableOpacity
+            onPress={onPress}
         >
-            <Text className={`w-full rounded-xl text-xl text-center
-                border-[1px] border-white
-                text-white
-                py-4 bg-darkGray-500 px-24 shadow-xl shadow-black font-ralewayExtraBold`}>{text}</Text>
-        </TouchableHighlight>
+            <Text className={`w-full rounded-xl text-base text-center
+                text-eBlue-500 my-1
+                py-4 bg-inherit px-24  font-ralewayExtraBold`}>{text}</Text>
+        </TouchableOpacity>
     );
 };
 
