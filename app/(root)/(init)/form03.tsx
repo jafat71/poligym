@@ -1,139 +1,134 @@
 import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
-import { Experience, Objetive } from '@/types/interfaces/entities/user';
+import { Experience, MedicalProblem, Objetive } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-
-const objetiveMapper: Record<Objetive, number> = {
-    'BAJAR_DE_PESO': 0,
-    'GANAR_MUSCULO': 1,
-    'MANTENERSE_EN_FORMA': 2
+import { TextInput } from 'react-native-gesture-handler';
+const medicProblemMapper: Record<MedicalProblem, number> = {
+    'NINGUNA': 0,
+    'LESION': 1,
+    'ALERGIA': 2
 }
-const objetiveOptions = ['Bajar de Peso', 'Ganar Músculo', 'Mantenerse en forma']
-
-const experienceMapper: Record<Experience, number> = {
-    'PRINCIPIANTE': 0,
-    'INTERMEDIO': 1,
-    'AVANZADO': 2
-}
-const experienceOptions = ['Principiante', 'Intermedio', 'Avanazado']
-
+const genresOptions = ['Ninguno', 'Lesión', 'Alergía']
 
 const Form03 = () => {
     const { isDark } = useTheme()
     const { tmpUser, set1InitUser } = useUser()
-    const [selectedObjetive, setSelectedObjetive] = useState<number>(0);
-    const [selectedExperience, setSelectedExperience] = useState<number>(0);
+    const [focused, setFocused] = useState(false);
 
-
-    useEffect(() => {
-        let objetiveIndex = 0
-        if (tmpUser?.userObjetive) {
-            objetiveIndex = objetiveMapper[tmpUser.userObjetive]
-        }
-        setSelectedObjetive(objetiveIndex)
-    }, []);
+    const [selectedMedicalProblem, setSelectedMedicalProblem] = useState<number>(0);
+    const [medicalDetail, setMedicalDetail] = useState('');
+    const [enableEdit, setenableEdit] = useState(false);
 
     useEffect(() => {
-        let experienceIndex = 0
-        if (tmpUser?.userPhisicStatus) {
-            experienceIndex = experienceMapper[tmpUser.userPhisicStatus]
-        }
-        setSelectedExperience(experienceIndex)
-    }, []);
-
-    useEffect(() => {
-        if (selectedObjetive === null) return
-        let tmpUserObjetive: Objetive = 'BAJAR_DE_PESO'
-        switch (selectedObjetive) {
+        if (selectedMedicalProblem === null) return
+        let tmpUserMedicalProblem: MedicalProblem = 'NINGUNA'
+        switch (selectedMedicalProblem) {
             case 0:
-                tmpUserObjetive = 'BAJAR_DE_PESO'
+                tmpUserMedicalProblem = 'NINGUNA'
+                setenableEdit(false)
                 break;
             case 1:
-                tmpUserObjetive = 'GANAR_MUSCULO'
+                tmpUserMedicalProblem = 'LESION'
+                setenableEdit(true)
+                setMedicalDetail('')
+                validateDetailInpuChange('')
                 break;
             case 2:
-                tmpUserObjetive = 'MANTENERSE_EN_FORMA'
+                tmpUserMedicalProblem = 'ALERGIA'
+                setenableEdit(true)
+                setMedicalDetail('')
                 break;
             default:
                 break;
         }
         set1InitUser({
             ...tmpUser,
-            userObjetive: tmpUserObjetive
+            userHasMedicalProblems: tmpUserMedicalProblem,
         })
-    }, [selectedObjetive]);
+    }, [selectedMedicalProblem]);
 
+    const validateDetailInpuChange = useCallback(
+        (newMedicalDetialInput: string) => {
+            setMedicalDetail(newMedicalDetialInput);
+            set1InitUser({
+                ...tmpUser,
+                userMedicalProblemDetail: newMedicalDetialInput
+            })
+        },
+        [medicalDetail],
+    )
     useEffect(() => {
-        if (selectedExperience === null) return
-        let tmpUserExp: Experience = 'PRINCIPIANTE'
-        switch (selectedExperience) {
-            case 0:
-                tmpUserExp = 'PRINCIPIANTE'
-                break;
-            case 1:
-                tmpUserExp = 'INTERMEDIO'
-                break;
-            case 2:
-                tmpUserExp = 'AVANZADO'
-                break;
-            default:
-                break;
+        let madicalProblemIndex = 0
+        if (tmpUser?.userHasMedicalProblems) {
+            madicalProblemIndex = medicProblemMapper[tmpUser.userHasMedicalProblems]
         }
-        set1InitUser({
-            ...tmpUser,
-            userPhisicStatus: tmpUserExp
-        })
-    }, [selectedExperience]);
-    
+        setSelectedMedicalProblem(madicalProblemIndex)
+
+        let userMedicalProblemDetail = tmpUser?.userMedicalProblemDetail!!
+        setMedicalDetail(userMedicalProblemDetail)
+    }, []);
+
     return (
         <>
-            <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} flex flex-col items-center`}>
-                <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu objetivo?</Text>
-                <RadioButtonIconComponent
-                    options={objetiveOptions}
-                    icons={[
-                        <Ionicons name="nutrition-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
-                        <Ionicons name="barbell-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
-                        <Ionicons name="fitness-sharp"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
-                    ]}
-                    selectedValue={selectedObjetive}
-                    setSelectedValue={setSelectedObjetive}
-                    rbComponentStyle='w-full mt-2'
-                    rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2'
-                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
-                />
+            <View className={`py-2`}>
 
-            </View>
-            <View className={`pt-5 flex flex-col items-center`}>
-                <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu experiencia?</Text>
-                <RadioButtonIconComponent
-                    options={experienceOptions}
-                    icons={[
-                        <Ionicons name="star-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
-                        <Ionicons name="star-half-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
-                        <Ionicons name="star"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
-                    ]}
-                    selectedValue={selectedExperience}
-                    setSelectedValue={setSelectedExperience}
-                    rbComponentStyle='w-full mt-2'
-                    rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2'
-                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `} 
-                />
+                <View className={`pb-5 `}>
+                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Tienes algún problema médico?</Text>
+                </View>
+
+                <View className='mt-1'>
+                    <RadioButtonIconComponent
+                        options={genresOptions}
+                        icons={[
+                            <Ionicons name="body-outline"
+                                size={35}
+                                color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                            <Ionicons name="bandage-outline"
+                                size={35}
+                                color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                            <Ionicons name="warning-outline"
+                                size={35}
+                                color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                        ]}
+                        rbComponentStyle='w-full '
+                        rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2 '
+                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold `}
+                        selectedValue={selectedMedicalProblem}
+                        setSelectedValue={setSelectedMedicalProblem}
+                    />
+
+                    {
+                        enableEdit && (
+                            <>
+                                <View className={` w-full items-start`}>
+                                    <Text className={`text-lg mb-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Cuéntanos un poco más...</Text>
+                                </View>
+                                <TextInput
+                                    className={`
+                                h-40 border-[2px] border-b-[2px] ${focused ? "border-eBlue-500" : isDark ? "border-white" : "border-darkGray-500"}
+                                rounded-lg p-4 
+                                ${isDark ? "text-white" : "text-darkGray-500"} font-ralewayBold`}
+                                    placeholder="Tengo una fractura en..."
+                                    placeholderTextColor="#a6a6a6"
+                                    keyboardType='ascii-capable'
+                                    maxLength={200}
+                                    multiline
+                                    numberOfLines={5}
+                                    value={medicalDetail}
+                                    onChangeText={validateDetailInpuChange}
+                                    editable={enableEdit}
+                                    onFocus={() => setFocused(true)}
+                                    onBlur={() => setFocused(false)}
+                                />
+                            </>
+                        )
+                    }
+
+
+                </View>
 
             </View>
         </>

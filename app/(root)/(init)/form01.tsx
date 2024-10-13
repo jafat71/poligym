@@ -20,7 +20,7 @@ const Form01 = () => {
         let genreIndex = 0
         if (tmpUser?.userGenre) {
             genreIndex = genreMapper[tmpUser.userGenre]
-        } 
+        }
         setSelectedGenre(genreIndex)
 
         let userAge = tmpUser?.userAge
@@ -75,11 +75,42 @@ const Form01 = () => {
         setAgeINput("" + Math.max(0, newAge))
     }
 
+    const [weightInput, setWeightINput] = useState('');
+
+    useEffect(() => {
+        let userweight = tmpUser?.userWeight
+        setWeightINput(String(userweight) || '')
+    }, []);
+
+    const validateWeightChange = useCallback(
+        (newWeightInput: string) => {
+            const validWeight = transformToValidZInput(newWeightInput)
+            setWeightINput(validWeight.toString());
+            set1InitUser({
+                ...tmpUser,
+                userWeight: validWeight
+            })
+        },
+        [weightInput],
+    )
+
+    const AddWeight = () => {
+        let newWeight = +weightInput
+        newWeight += 1
+        validateWeightChange(newWeight + "")
+        setWeightINput("" + newWeight)
+    }
+
+    const SubWeight = () => {
+        let newWeight = +weightInput
+        newWeight -= 1
+        validateWeightChange(newWeight + "")
+        setWeightINput("" + Math.max(0, newWeight))
+    }
+
     return (
         <>
-            <View
-                className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}
-            >
+            <View className={`py-2`} >
                 <NumericInputInitForm
                     title='¿Cuántos años tienes?'
                     icon={<Ionicons name="balloon-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -95,7 +126,7 @@ const Form01 = () => {
             </View>
 
             <View >
-                <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} flex flex-col items-center`}>
+                <View className={`flex flex-col items-start`}>
                     <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu género?</Text>
                     <RadioButtonIconComponent
                         options={genresOptions}
@@ -113,11 +144,27 @@ const Form01 = () => {
                         selectedValue={selectedGenre}
                         setSelectedValue={setSelectedGenre}
                         rbComponentStyle='w-full mt-2'
-                        rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2'
-                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
+                        rbIndividualRadioButtonStyle='h-10 p-1 flex flex-col items-center justify-center mb-2'
+                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `}
                     />
 
                 </View>
+            </View>
+
+            <View className={`py-2`} >
+
+                <NumericInputInitForm
+                    title='¿Cuál es tu peso? (KG)'
+                    icon={<Ionicons name="scale" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                    inputKeyboardType='number-pad'
+                    inputPlaceholder='18'
+                    inputSecure={false}
+                    inputValue={weightInput}
+                    maxLength={3}
+                    inputOnChangeText={validateWeightChange}
+                    subFn={SubWeight}
+                    addFn={AddWeight} />
+
             </View>
         </>
     );

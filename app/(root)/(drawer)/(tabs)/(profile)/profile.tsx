@@ -9,7 +9,7 @@ const Profile = () => {
   const { isDark } = useTheme()
   return (
     <SafeAreaView className={`flex flex-1
-    px-2 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm
+    px-2  rounded-sm
     ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
 
 
@@ -86,9 +86,6 @@ const Profile = () => {
         </View>
 
       </View>
-
-
-
 
 
     </SafeAreaView>

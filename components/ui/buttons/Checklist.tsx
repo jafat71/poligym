@@ -13,7 +13,7 @@ const WeekChecklistComponent = ({ days, setDays }: Props) => {
     const { isDark } = useTheme()
 
     const labelStyle = `text-lg ${isDark ? "text-white" : "text-darkGray-500"} font-raleway`
-    const enabledStyle = `${isDark ? "#66A3FF" : "#16243E"}`
+    const enabledStyle = "#0059ff"
     const disabledStyle = `${isDark ? "#fff" : "#1c1c1c"}`
 
     return (

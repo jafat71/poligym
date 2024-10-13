@@ -1,104 +1,74 @@
 import WeekChecklistComponent from '@/components/ui/buttons/Checklist';
 import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
+import ImagePicker from '@/components/ui/image/ImagePicker';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { DaysWeek, Schedule } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-const scheduleMapper: Record<Schedule, number> = {
-    'AM': 0,
-    'PM': 1,
-}
+import { Switch, Text, View } from 'react-native';
 
-const genresOptions = ['AM', 'PM']
 
 const Form05 = () => {
     const { isDark } = useTheme()
     const { tmpUser, set1InitUser } = useUser()
-    const [selectedSchedule, setSelectedSchedule] = useState<number>(0);
-    const [days, setDays] = useState<DaysWeek>({
-        "monday": false,
-        "tuesday": false,
-        "wednesday": false,
-        "thursday": false,
-        "friday": false,
-    });
+
+    const [profileImage, setprofileImage] = useState('');
 
     useEffect(() => {
-        let scheduleIndex = 0
-        if (tmpUser?.userGenre) {
-            scheduleIndex = scheduleMapper[tmpUser.userPreferedSchedule]
-        } 
-        setSelectedSchedule(scheduleIndex)
-    }, []);
+        set1InitUser({
+            ...tmpUser,
+            userProfileImgUrl: profileImage
+        })
+    }, [profileImage]);
 
     useEffect(() => {
-        if (selectedSchedule === null) return
-        let tmpUserSchedule: Schedule = 'AM'
-        switch (selectedSchedule) {
-            case 0:
-                tmpUserSchedule = 'AM'
-                break;
-            case 1:
-                tmpUserSchedule = 'PM'
-                break;
-            default:
-                break;
+        if (tmpUser) {
+            setprofileImage(tmpUser.userProfileImgUrl)
         }
-        set1InitUser({
-            ...tmpUser,
-            userPreferedSchedule: tmpUserSchedule
-        })
-    }, [selectedSchedule]);
+    }, []);
+
+    const [notificationEnabled, setNotificationEnabled] = useState(false);
 
     useEffect(() => {
-        setDays({
-            monday: tmpUser?.userTrainingDays.monday ?? false,
-            tuesday: tmpUser?.userTrainingDays.tuesday ?? false,
-            wednesday: tmpUser?.userTrainingDays.wednesday ?? false,
-            thursday: tmpUser?.userTrainingDays.thursday ?? false,
-            friday: tmpUser?.userTrainingDays.friday ?? false,
-        })
+        setNotificationEnabled(
+            tmpUser?.userNotificationsEnabled!!
+        )
     }, []);
 
     useEffect(() => {
         set1InitUser({
             ...tmpUser,
-            userTrainingDays: days
+            userNotificationsEnabled: notificationEnabled
         })
-    }, [days]);
-
+    }, [notificationEnabled])
 
     return (
         <>
-            <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
-                <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} w-full items-center`}>
-                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>¿Cuál es tu horario preferido de entrenamiento?</Text>
+            <View className={`py-2`}>
+                <View className={` w-full items-start`}>
+                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Subir Foto de Perfil</Text>
+                </View>
+                <View className='w-full items-center my-3'>
+                    <ImagePicker
+                        imgUrl={profileImage}
+                        setImg={setprofileImage}
+                    />
                 </View>
 
-                <RadioButtonIconComponent
-                    options={genresOptions}
-                    icons={[
-                        <Ionicons name="sunny-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
-                        <Ionicons name="partly-sunny-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
-                    ]}
-                    selectedValue={selectedSchedule}
-                    setSelectedValue={setSelectedSchedule}
-                    rbComponentStyle='w-full '
-                    rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2 '
-                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
-                />
-
-
-                <WeekChecklistComponent
-                    days={days}
-                    setDays={setDays}
-                />
+                <View className='w-full items-center mt-3'>
+                    <View className={`pb-2 items-start`}>
+                        <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`}>¿Deseas activar las notificaciones?</Text>
+                    </View>
+                    <Switch
+                        style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
+                        onValueChange={() => setNotificationEnabled(prevState => !prevState)}
+                        value={notificationEnabled}
+                        thumbColor="#0059ff"
+                        trackColor={{ false: isDark ? "#ddds" : "#ddd", true: isDark ? "#66a3ff" : "#16243E" }}
+                        ios_backgroundColor={isDark ? "#333" : "#ddd"}
+                    />
+                </View>
 
             </View>
         </>

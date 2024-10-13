@@ -5,58 +5,33 @@ import { Text, View } from 'react-native';
 import MainLogoCustomComponent from '../logo/mainLogo';
 import { useTheme } from '@/context/ThemeContext';
 import { usePathname } from 'expo-router';
-import LightDarkButton from '../buttons/LightDarkButton';
-const steps = ['/form01', '/form02', '/form03', '/form04', '/form05', '/form06'];
+import SkipButton from '../buttons/SkipButton';
+const steps = ['/form01', '/form02', '/form03', '/form04', '/form05'];
 
 const FormHeaderComponent = () => {
     const { isDark } = useTheme()
     const pathname = usePathname();
-    const titleStyle = `text-4xl font-ralewayExtraBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`
-    const subtitleStyle = `text-xl font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-center`
+    const titleStyle = `text-3xl font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-start`
     const currentIndex = steps.findIndex(step => step === pathname);
-
-    const getHeader = () => {
-        switch (pathname) {
-            case '/form05':
-                return (
-                    <>
-                        <Text className={titleStyle}>Estamos cerca de terminar</Text>
-                    </>
-
-                )
-            case '/form06':
-                return (
-                    <>
-                        <Text className={titleStyle}>Completar perfil</Text>
-                    </>
-                )
-            default:
-                return (
-                    <>
-                        <Text className={titleStyle}>Bienvenido</Text>
-                        <Text className={subtitleStyle}>Queremos saber más sobre ti...</Text>
-                    </>
-                )
-        }
-    }
-
     return (
-        <View className='w-full flex flex-col justify-center items-center mb-4'>
-            <LightDarkButton style="w-full items-end px-4" />
+        <View className='w-full px-2'>
+            <View className='flex flex-col justify-between items-center mb-4'>
+                <View className='w-full items-center'>
+                    <MainLogoCustomComponent width='40' height='40' principal={`${isDark ? "#fff" : "#1c1c1c"}`} />
+                </View>
+                <View className='w-full items-end mb-4'>
+                    <SkipButton />
+                </View>
+                <Text className={titleStyle}>Queremos saber de ti</Text>
 
-            <MainLogoCustomComponent
-                height='40'
-                width='40'
-                principal={`${isDark ? "#fff" : "#1c1c1c"}`}
-            />
+            </View>
 
-            {getHeader()}
 
-            <View className='flex flex-row items-center justify-center gap-2 pt-2'>
-            {steps.map((step, index) => (
+            <View className='flex flex-row items-center justify-between gap-2 pt-2 mb-2'>
+                {steps.map((step, index) => (
                     <View
                         key={index}
-                        className={`h-1 w-10 ${isDark ? (index <= currentIndex ? "bg-eBlue-300" : "bg-darkGray-500") : (index <= currentIndex ? "bg-eBlue-800" : "bg-darkGray-300")}`}
+                        className={`h-2 w-11 ${(index <= currentIndex ? "bg-eBlue-500" : `${isDark ? "bg-white" : "bg-darkGray-500"}`)}`}
                     />
                 ))}
             </View>

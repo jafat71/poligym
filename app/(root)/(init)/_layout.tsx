@@ -14,35 +14,27 @@ export default function RootLayout() {
   const actualPathname = usePathname()
   const { routeMapping } = useRouteMappinginitForm()
   return (
-    <SafeAreaView className={`p-4 pt-6 flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
+    <SafeAreaView className={`flex flex-col items-center justify-center w-full h-full ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
       <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <View className='flex-1 flex flex-col'>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          className='w-full '
 
+        >
           <FormHeaderComponent />
           <Slot />
 
-    
-        </View>
-      <View className={`py-3 px-2 w-full
-          border-t-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
-            <CTAButtonPrimary
-              onPress={() => {
-                router.push(routeMapping[actualPathname])
-              }}
-              text="Continuar"
-            />
-            <SkipButton />
-          </View>
-      </ScrollView>
-
-    </KeyboardAvoidingView>
+        </ScrollView>
+        <CTAButtonPrimary
+          onPress={() => {
+            router.push(routeMapping[actualPathname])
+          }}
+          text="Continuar"
+        />
+      </KeyboardAvoidingView>
     </SafeAreaView>
 
   );

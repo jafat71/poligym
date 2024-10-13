@@ -2,7 +2,7 @@
 
 import { useTheme } from '@/context/ThemeContext';
 import { NumericInputForm } from '@/types/interfaces/ui';
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import IconButton from '../buttons/IconButton';
 import { Ionicons } from '@expo/vector-icons';
@@ -25,15 +25,22 @@ const NumericInputInitForm = (
     }: NumericInputForm
 ) => {
     const { isDark } = useTheme()
-    return (
-        <View className='flex flex-col items-center w-full max-w-md mx-auto' >
-            <Text className={`text-xl  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>{title}</Text>
-            <View className={`w-full mt-2 border-[1px] 
-                border-${isDark ? "darkGray-400" : "darkGray-500"} rounded-lg 
-                text-white-100`}>
+    const [focused, setFocused] = useState(false);
 
-                <View className='flex flex-row items-center '>
-                    <View className={`border-r-[1px]  border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+    return (
+        <View className='flex flex-col items-start w-full max-w-md mx-auto' >
+            <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>{title}</Text>
+            <View
+                className={`mt-2 border-[2px] rounded-lg ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
+                    isDark ? "border-darkGray-400" : "border-darkGray-500"
+                    }`}
+            >
+                <View className="flex flex-row items-center justify-center w-full">
+                    <View
+                        className={`border-r-[1px] ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
+                            isDark ? "border-darkGray-400" : "border-darkGray-500"
+                            }`}
+                    >
                         {icon}
                     </View>
                     <TextInput
@@ -51,6 +58,8 @@ const NumericInputInitForm = (
                         secureTextEntry={inputSecure}
                         editable={enabled}
                         maxLength={maxLength}
+                        onFocus={() => setFocused(true)}
+                        onBlur={() => setFocused(false)}
                     />
 
                 </View>
@@ -62,18 +71,18 @@ const NumericInputInitForm = (
                     onPress={subFn}
                 />
                 <View className='flex-1 items-center'>
-                {
-                    alert &&
-                    <Text className={`mt-1 font-ralewaySemiBold text-xs
+                    {
+                        alert &&
+                        <Text className={`mt-1 font-ralewaySemiBold text-xs
                     ${isDark ? "text-white" : "text-darkGray-500"}
                 `}>
-                        {
-                            alertMessage
-                        }
-                    </Text>
-                }
+                            {
+                                alertMessage
+                            }
+                        </Text>
+                    }
                 </View>
-                
+
                 <IconButton
                     icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
                     onPress={addFn}

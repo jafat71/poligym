@@ -9,8 +9,7 @@ const useRouteMappinginitForm = () => {
     '/form02': '/form03',
     '/form03': '/form04',
     '/form04': '/form05',
-    '/form05': '/form06',
-    '/form06': '/(root)/(tabs)/home',
+    '/form05': '/(root)/(tabs)/home',
   };
 
     return {

@@ -1,126 +1,108 @@
+import WeekChecklistComponent from '@/components/ui/buttons/Checklist';
 import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
-import { MedicalProblem } from '@/types/interfaces/entities/user';
+import { DaysWeek, MedicalProblem, Schedule } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 
-const medicProblemMapper: Record<MedicalProblem, number> = {
-    'NINGUNA': 0,
-    'LESION': 1,
-    'ALERGIA': 2
+const scheduleMapper: Record<Schedule, number> = {
+    'AM': 0,
+    'PM': 1,
 }
-const genresOptions = ['Ninguno', 'Lesión', 'Alergía']
+
+const genresOptions = ['AM', 'PM']
 
 const Form04 = () => {
     const { isDark } = useTheme()
     const { tmpUser, set1InitUser } = useUser()
-    const [selectedMedicalProblem, setSelectedMedicalProblem] = useState<number>(0);
-    const [medicalDetail, setMedicalDetail] = useState('');
-    const [enableEdit, setenableEdit] = useState(false);
+
+    const [selectedSchedule, setSelectedSchedule] = useState<number>(0);
+    const [days, setDays] = useState<DaysWeek>({
+        "monday": false,
+        "tuesday": false,
+        "wednesday": false,
+        "thursday": false,
+        "friday": false,
+    });
 
     useEffect(() => {
-        if (selectedMedicalProblem === null) return
-        let tmpUserMedicalProblem: MedicalProblem = 'NINGUNA'
-        switch (selectedMedicalProblem) {
+        let scheduleIndex = 0
+        if (tmpUser?.userGenre) {
+            scheduleIndex = scheduleMapper[tmpUser.userPreferedSchedule]
+        }
+        setSelectedSchedule(scheduleIndex)
+    }, []);
+
+    useEffect(() => {
+        if (selectedSchedule === null) return
+        let tmpUserSchedule: Schedule = 'AM'
+        switch (selectedSchedule) {
             case 0:
-                tmpUserMedicalProblem = 'NINGUNA'
-                setenableEdit(false)
+                tmpUserSchedule = 'AM'
                 break;
             case 1:
-                tmpUserMedicalProblem = 'LESION'
-                setenableEdit(true)
-                setMedicalDetail('')
-                validateDetailInpuChange('')
-                break;
-            case 2:
-                tmpUserMedicalProblem = 'ALERGIA'
-                setenableEdit(true)
-                setMedicalDetail('')
+                tmpUserSchedule = 'PM'
                 break;
             default:
                 break;
         }
         set1InitUser({
             ...tmpUser,
-            userHasMedicalProblems: tmpUserMedicalProblem,
+            userPreferedSchedule: tmpUserSchedule
         })
-    }, [selectedMedicalProblem]);
+    }, [selectedSchedule]);
 
-    const validateDetailInpuChange = useCallback(
-        (newMedicalDetialInput: string) => {
-            setMedicalDetail(newMedicalDetialInput);
-            set1InitUser({
-                ...tmpUser,
-                userMedicalProblemDetail: newMedicalDetialInput
-            })
-        },
-        [medicalDetail],
-    )
     useEffect(() => {
-        let madicalProblemIndex = 0
-        if (tmpUser?.userHasMedicalProblems) {
-            madicalProblemIndex = medicProblemMapper[tmpUser.userHasMedicalProblems]
-        }
-        setSelectedMedicalProblem(madicalProblemIndex)
-
-        let userMedicalProblemDetail = tmpUser?.userMedicalProblemDetail!!
-        setMedicalDetail(userMedicalProblemDetail)
+        setDays({
+            monday: tmpUser?.userTrainingDays.monday ?? false,
+            tuesday: tmpUser?.userTrainingDays.tuesday ?? false,
+            wednesday: tmpUser?.userTrainingDays.wednesday ?? false,
+            thursday: tmpUser?.userTrainingDays.thursday ?? false,
+            friday: tmpUser?.userTrainingDays.friday ?? false,
+        })
     }, []);
 
+    useEffect(() => {
+        set1InitUser({
+            ...tmpUser,
+            userTrainingDays: days
+        })
+    }, [days]);
+
     return (
-        <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+        <>
+            <View className={`py-2`}>
+                <View className={` w-full items-start`}>
+                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu horario preferido de entrenamiento?</Text>
+                </View>
 
-            <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} w-full items-center`}>
-                <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Tienes algún problema médico?</Text>
-            </View>
-
-            <View className='mt-1'>
                 <RadioButtonIconComponent
                     options={genresOptions}
                     icons={[
-                        <Ionicons name="body-outline"
+                        <Ionicons name="sunny-outline"
                             size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
-                        <Ionicons name="bandage-outline"
+                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                        <Ionicons name="partly-sunny-outline"
                             size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />,
-                        <Ionicons name="warning-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#a6a6a6"}`} />
+                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
                     ]}
-                    rbComponentStyle='w-full '
-                    rbIndividualRadioButtonStyle='h-12 flex flex-col items-center justify-center mb-2 '
-                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}
-                    selectedValue={selectedMedicalProblem}
-                    setSelectedValue={setSelectedMedicalProblem}
+                    selectedValue={selectedSchedule}
+                    setSelectedValue={setSelectedSchedule}
+                    rbComponentStyle='w-full mt-2'
+                    rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2'
+                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `} 
                 />
-                <View className={`py-5 border-t-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} w-full items-center`}>
-                    <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Cuéntanos un poco más...</Text>
-                </View>
-                <View className={`mt-2 border-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} rounded-lg text-white-100`}>
-                    <TextInput
-                        id="detail-area"
-                        className={`flex-1 p-2 rounded-lg shadow-lg 
-                                        pl-3 ${isDark ? "text-white" : "text-darkGray-500"}  
-                                        ${enableEdit == false && `${isDark ? "bg-gray-800" : "bg-gray-300"}`}
-                                        ml-2 font-ralewayBold`}
-                        placeholder={`${enableEdit == false ? "" : "Tengo una fractura en..."}`}
-                        placeholderTextColor="#a6a6a6"
-                        keyboardType='ascii-capable'
-                        maxLength={200}
-                        multiline
-                        numberOfLines={5}
-                        value={medicalDetail}
-                        onChangeText={validateDetailInpuChange}
-                        editable={enableEdit}
-                    />
-                </View>
+
+
+                <WeekChecklistComponent
+                    days={days}
+                    setDays={setDays}
+                />
 
             </View>
-
-        </View>
+        </>
     );
 };
 

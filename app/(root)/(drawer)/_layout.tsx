@@ -18,32 +18,26 @@ const CustomDrawerContent = () => {
     }
     const {set1InitUser} = useUser()
 
-    const iconStyle = `rounded-full w-10 h-10 
-                        flex items-center justify-center mt-2
-                        border-[1px] 
-                        ${isDark ? "border-darkGray-400" : "bg-darkGray-200 border-darkGray-500"}`
     return (
         <DrawerContentScrollView>
-            <View className={`p-2 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm`}>
+            <View className={`p-2 `}>
                 <View className='p-2 rounded-lg '>
-                    <View className={`pb-2 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-300"}
+                    <View className={`pb-2 
                     flex flex-row items-center justify-between
                     `}>
                         <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>POLIGYM</Text>
                         <MainLogoCustomComponent
                             height='25'
                             width='25'
-                            principal={`${isDark ? "#fff" : "#1c1c1c" }`}
+                            principal="#0055f9"
                         />
-
                     </View>
-
                     <View className={`flex flex-row items-center pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
                         <View className={`rounded-full w-16 h-16 
                         flex items-center justify-center mt-2
                         border-[1px] 
                         ${isDark ? "border-darkGray-400" : "bg-darkGray-200 border-darkGray-500"}`}>
-                            <Text className={` text-2xl font-raleway ${isDark ? "text-white" : "text-darkGray-400"} `}>JD</Text>
+                            <Text className={` text-2xl font-raleway text-eBlue-500 `}>JD</Text>
                         </View>
                         <View className={`pl-3`}>
                             <Text className={`text-lg font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Jhon Doe</Text>
@@ -56,12 +50,9 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     router.push('/(profile)/profile')
                 }}
-                pressColor={"#d6d6d6"}
                 label={'Mi Perfil'}
                 icon={() => (
-                    <View className={iconStyle}>
                         <Ionicons name="person-sharp" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
-                    </View>
                 )}
                 labelStyle={labelStyle}
             />
@@ -69,12 +60,9 @@ const CustomDrawerContent = () => {
             <DrawerItem
                 onPress={() => {
                 }}
-                pressColor={"#d6d6d6"}
                 label={'Mi Plan'}
                 icon={() => (
-                    <View className={iconStyle}>
                         <Ionicons name="calendar-clear-outline" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
-                    </View>
                 )}
                 labelStyle={labelStyle}
             />
@@ -82,13 +70,9 @@ const CustomDrawerContent = () => {
             <DrawerItem
                 onPress={() => {
                 }}
-                pressColor={"#d6d6d6"}
                 label={'Mi Progreso'}
                 icon={() => (
-                    <View className={iconStyle}>
-
                         <Ionicons name="star-half" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
-                    </View>
                 )}
                 labelStyle={labelStyle}
             />
@@ -96,12 +80,9 @@ const CustomDrawerContent = () => {
             <DrawerItem
                 onPress={() => {
                 }}
-                pressColor={"#d6d6d6"}
                 label={'Historial'}
                 icon={() => (
-                    <View className={iconStyle}>
                         <Ionicons name="reload-circle-outline" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
-                    </View>
                 )}
                 labelStyle={labelStyle}
             />
@@ -109,12 +90,9 @@ const CustomDrawerContent = () => {
             <DrawerItem
                 onPress={() => {
                 }}
-                pressColor={"#d6d6d6"}
                 label={'Favoritos'}
                 icon={() => (
-                    <View className={iconStyle}>
                         <Ionicons name="heart-circle" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
-                    </View>
                 )}
                 labelStyle={labelStyle}
             />
@@ -123,12 +101,9 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     router.push('/(profile)/config')
                 }}
-                pressColor={"#d6d6d6"}
                 label={'Configuración'}
                 icon={() => (
-                    <View className={iconStyle}>
                         <Ionicons name="settings-outline" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
-                    </View>
                 )}
                 labelStyle={labelStyle}
             />
@@ -137,12 +112,9 @@ const CustomDrawerContent = () => {
                 onPress={() => {
                     toggleTheme()
                 }}
-                pressColor={"#d6d6d6"}
                 label={`Activar Tema ${isDark ? "Claro" : "Oscuro"}`}
                 icon={() => (
-                    <View className={iconStyle}>
                         <Ionicons name={isDark ? "sunny-outline" : "moon-outline"} size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-                    </View>
                 )}
                 labelStyle={labelStyle}
             />
@@ -152,16 +124,10 @@ const CustomDrawerContent = () => {
                     set1InitUser(emptyUser)
                     router.dismissAll()
                 }}
-                pressColor={"#d6d6d6"}
-
                 label={'Salir'}
                 icon={() => (
-                    <View className={`rounded-full w-10 h-10 
-                        flex items-center justify-center mt-2
-                        border-[1px] bg-[#e11a1a]
-                        ${isDark ? "border-darkGray-400" : " border-darkGray-500"}`}>
-                        <Ionicons name="exit-outline" size={24} color={`#fff`} />
-                    </View>
+
+                        <Ionicons name="exit-sharp" size={24} color={`#E11F1C`} />
                 )}
                 labelStyle={{ color: `#E11F1C`, fontFamily: 'Raleway-Bold', fontSize: 18 }}
             />
@@ -195,7 +161,7 @@ export default function RootLayout() {
                 headerTitleAlign: 'center',
                 drawerStyle: {
                     backgroundColor: isDark ? '#1c1c1c' : '#fff',
-                    width: '90%'
+                    width: '87%'
                 },
                 drawerLabelStyle: {
                     color: isDark ? '#1c1c1c' : '#fff',

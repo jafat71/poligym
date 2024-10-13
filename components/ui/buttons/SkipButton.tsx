@@ -9,7 +9,6 @@ const SkipButton = () => {
     const {isDark} = useTheme();
     return (
         <TouchableOpacity
-        className='w-full items-center mt-4'
             onPress={ ()=> {
                 router.replace('/(root)/(tabs)/home')
             }}

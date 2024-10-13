@@ -38,7 +38,7 @@ const Config = () => {
 
     return (
         <SafeAreaView className={`flex flex-1
-            border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm
+            
             ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
 
             <View className='p-4'>

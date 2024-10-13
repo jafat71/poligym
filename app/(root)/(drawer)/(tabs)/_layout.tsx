@@ -7,20 +7,22 @@ export default function TabsLayout() {
   const { isDark } = useTheme()
   const tabBarBackgroundColor = isDark ? "#1c1c1c": "#fff";
   const tabBarIconColor = isDark ? "#fff": "#1c1c1c";
-  const tabBarActiveIconColor = isDark ? "#fff": "#1c1c1c";
-  const tabBarTextColor =  isDark ? "#1c1c1c": "#fff";
-  const tabBarActiveColor = isDark ? "#1c1c1c": "#fff";
-  const tabBarInactiveColor = isDark ? '#999' : '#aaa';
+  const tabBarActiveIconColor = isDark ? "#1c1c1c": "#fff";
+  const tabBarTextColor =  isDark ? "#fff": "#1c1c1c";
+  const tabBarActiveColor = "#0055f4";
+  const tabBarInactiveColor = isDark ? '#fff' : '#1c1c1c';
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
           backgroundColor: tabBarBackgroundColor,
           height: 60,
+          borderColor: isDark ? '#1c1c1c' : '#fff',
+          
         },
         tabBarLabelStyle: {
           fontSize: 16, 
-          fontWeight: '600', 
+          fontWeight: '800', 
         },
         tabBarActiveTintColor: tabBarActiveColor,
         tabBarInactiveTintColor: tabBarInactiveColor,
@@ -33,7 +35,7 @@ export default function TabsLayout() {
         ),
         tabBarActiveBackgroundColor: tabBarActiveIconColor,
         tabBarLabel: 'Home',
-        tabBarLabelStyle: { color: tabBarTextColor },
+        tabBarLabelStyle: { color: tabBarTextColor},
       }} />
       <Tabs.Screen name="exercises" options={{
         headerShown: true,

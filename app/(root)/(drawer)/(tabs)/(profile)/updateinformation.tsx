@@ -45,7 +45,7 @@ const EditProfile = () => {
 
     return (
         <SafeAreaView className={`flex flex-1
-            border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-500"}  rounded-sm
+            
             ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -67,7 +67,7 @@ const EditProfile = () => {
                     </View>
 
 
-                    <View className={`p-4 mt-2 rounded-lg border-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"} `}>
+                    <View className={`p-4 mt-2 rounded-lg`}>
                         <View className='w-full items-center mt-2'>
                             <ImagePicker
                                 imgUrl={profileImage}

@@ -26,7 +26,6 @@ const TopHeaderComponent = () => {
                 </Pressable>
             </View>
 
-            <LightDarkButton style='absolute right-0'/>
         </View>
     );
 };

@@ -1,47 +1,98 @@
+import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
 import NumericInputInitForm from '@/components/ui/form/NumericInputInitForm';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
+import { Experience, Objetive } from '@/types/interfaces/entities/user';
 import transformToValidZInput from '@/utils/transformToValidZInput';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
+
+const objetiveMapper: Record<Objetive, number> = {
+    'BAJAR_DE_PESO': 0,
+    'GANAR_MUSCULO': 1,
+    'MANTENERSE_EN_FORMA': 2
+}
+const objetiveOptions = ['Bajar de Peso', 'Ganar Músculo', 'Mantenerse en forma']
+
+const experienceMapper: Record<Experience, number> = {
+    'PRINCIPIANTE': 0,
+    'INTERMEDIO': 1,
+    'AVANZADO': 2
+}
+const experienceOptions = ['Principiante', 'Intermedio', 'Avanzado']
+
+
 const Form02 = () => {
     const { isDark } = useTheme()
     const { tmpUser, set1InitUser } = useUser()
-    const [weightInput, setWeightINput] = useState('');
+
+    const [selectedObjetive, setSelectedObjetive] = useState<number>(0);
+    const [selectedExperience, setSelectedExperience] = useState<number>(0);
+
 
     useEffect(() => {
-        let userweight = tmpUser?.userWeight
-        setWeightINput(String(userweight) || '')
+        let objetiveIndex = 0
+        if (tmpUser?.userObjetive) {
+            objetiveIndex = objetiveMapper[tmpUser.userObjetive]
+        }
+        setSelectedObjetive(objetiveIndex)
     }, []);
 
-    const validateWeightChange = useCallback(
-        (newWeightInput: string) => {
-            const validWeight = transformToValidZInput(newWeightInput)
-            setWeightINput(validWeight.toString());
-            set1InitUser({
-                ...tmpUser,
-                userWeight: validWeight
-            })
-        },
-        [weightInput],
-    )
+    useEffect(() => {
+        let experienceIndex = 0
+        if (tmpUser?.userPhisicStatus) {
+            experienceIndex = experienceMapper[tmpUser.userPhisicStatus]
+        }
+        setSelectedExperience(experienceIndex)
+    }, []);
 
+    useEffect(() => {
+        if (selectedObjetive === null) return
+        let tmpUserObjetive: Objetive = 'BAJAR_DE_PESO'
+        switch (selectedObjetive) {
+            case 0:
+                tmpUserObjetive = 'BAJAR_DE_PESO'
+                break;
+            case 1:
+                tmpUserObjetive = 'GANAR_MUSCULO'
+                break;
+            case 2:
+                tmpUserObjetive = 'MANTENERSE_EN_FORMA'
+                break;
+            default:
+                break;
+        }
+        set1InitUser({
+            ...tmpUser,
+            userObjetive: tmpUserObjetive
+        })
+    }, [selectedObjetive]);
 
-    const AddWeight = () => {
-        let newWeight = +weightInput
-        newWeight += 1
-        validateWeightChange(newWeight + "")
-        setWeightINput("" + newWeight)
-    }
+    useEffect(() => {
+        if (selectedExperience === null) return
+        let tmpUserExp: Experience = 'PRINCIPIANTE'
+        switch (selectedExperience) {
+            case 0:
+                tmpUserExp = 'PRINCIPIANTE'
+                break;
+            case 1:
+                tmpUserExp = 'INTERMEDIO'
+                break;
+            case 2:
+                tmpUserExp = 'AVANZADO'
+                break;
+            default:
+                break;
+        }
+        set1InitUser({
+            ...tmpUser,
+            userPhisicStatus: tmpUserExp
+        })
+    }, [selectedExperience]);
+    
 
-    const SubWeight = () => {
-        let newWeight = +weightInput
-        newWeight -= 1
-        validateWeightChange(newWeight + "")
-        setWeightINput("" + Math.max(0, newWeight))
-    }
 
     const [heightInput, setHeightINput] = useState('');
 
@@ -80,24 +131,7 @@ const Form02 = () => {
 
     return (
         <>
-
-            <View className={`py-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
-
-                <NumericInputInitForm
-                    title='¿Cuál es tu peso? (KG)'
-                    icon={<Ionicons name="scale" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                    inputKeyboardType='number-pad'
-                    inputPlaceholder='18'
-                    inputSecure={false}
-                    inputValue={weightInput}
-                    maxLength={3}
-                    inputOnChangeText={validateWeightChange}
-                    subFn={SubWeight}
-                    addFn={AddWeight} />
-
-            </View>
-
-            <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+            <View className={`py-2`}>
                 <NumericInputInitForm
                     title='¿Cuál es tu altura? (CM)'
                     icon={<Ionicons name="resize-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -111,9 +145,53 @@ const Form02 = () => {
 
             </View>
 
-            <View className={`${isDark ? "bg-blue-300" : "bg-blueEPN-500"} rounded-sm items-center py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
-                <Text className={`text-sm text-center  font-ralewayBold ${isDark ? "text-darkGray-500" : "text-white"} `}>Por favor, considera medidas sin decimales</Text>
+            <View className={`py-2`}>
+                <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu objetivo?</Text>
+                <RadioButtonIconComponent
+                    options={objetiveOptions}
+                    icons={[
+                        <Ionicons name="nutrition-outline"
+                            size={35}
+                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                            <Ionicons name="barbell-outline"
+                            size={35}
+                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                            <Ionicons name="fitness-sharp"
+                            size={35}
+                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                        ]}
+                    selectedValue={selectedObjetive}
+                    setSelectedValue={setSelectedObjetive}
+                    rbComponentStyle='w-full mt-2'
+                    rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2'
+                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold `}
+                />
+
             </View>
+            <View className={`py-2`}>
+                <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu experiencia?</Text>
+                <RadioButtonIconComponent
+                    options={experienceOptions}
+                    icons={[
+                        <Ionicons name="star-outline"
+                            size={35}
+                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                            <Ionicons name="star-half-outline"
+                            size={35}
+                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                            <Ionicons name="star"
+                            size={35}
+                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                        ]}
+                    selectedValue={selectedExperience}
+                    setSelectedValue={setSelectedExperience}
+                    rbComponentStyle='w-full mt-2'
+                    rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2'
+                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `} 
+                />
+
+            </View>
+
         </>
     );
 };
