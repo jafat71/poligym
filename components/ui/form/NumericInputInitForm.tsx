@@ -65,29 +65,6 @@ const NumericInputInitForm = (
                 </View>
             </View>
 
-            <View className='flex flex-row items-center justify-between my-2'>
-                <IconButton
-                    icon={<Ionicons name="remove" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                    onPress={subFn}
-                />
-                <View className='flex-1 items-center'>
-                    {
-                        alert &&
-                        <Text className={`mt-1 font-ralewaySemiBold text-xs
-                    ${isDark ? "text-white" : "text-darkGray-500"}
-                `}>
-                            {
-                                alertMessage
-                            }
-                        </Text>
-                    }
-                </View>
-
-                <IconButton
-                    icon={<Ionicons name="add" size={35} color={`${isDark ? "#1c1c1c" : "#fff"}`} />}
-                    onPress={addFn}
-                />
-            </View>
         </View>
     );
 };

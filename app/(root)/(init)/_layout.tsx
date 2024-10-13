@@ -14,16 +14,17 @@ export default function RootLayout() {
   const actualPathname = usePathname()
   const { routeMapping } = useRouteMappinginitForm()
   return (
-    <SafeAreaView className={`flex flex-col items-center justify-center w-full h-full ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      >
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}>
+      <SafeAreaView className={`flex flex-col items-center justify-center w-full h-full ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          className='w-full '
+          className='w-full px-2'
 
         >
+
           <FormHeaderComponent />
           <Slot />
 
@@ -34,8 +35,10 @@ export default function RootLayout() {
           }}
           text="Continuar"
         />
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
+
+
 
   );
 }

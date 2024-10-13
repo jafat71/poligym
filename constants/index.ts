@@ -1,4 +1,4 @@
-import { Genre, User } from "@/types/interfaces/entities/user";
+import { Experience, Genre, MedicalProblem, Objetive, Schedule, User } from "@/types/interfaces/entities/user";
 
 export const termsContent = [
   {
@@ -117,6 +117,37 @@ export const genreMapper: Record<Genre, number> = {
   'OTRO': 2
 }
 export const genresOptions = ['Másculino', 'Femenino', 'No Binario']
+
+
+export const objetiveMapper: Record<Objetive, number> = {
+  'BAJAR_DE_PESO': 0,
+  'GANAR_MUSCULO': 1,
+  'MANTENERSE_EN_FORMA': 2
+}
+export const objetiveOptions = ['Bajar de Peso', 'Ganar Músculo', 'Mantenerse en forma']
+
+export const experienceMapper: Record<Experience, number> = {
+  'PRINCIPIANTE': 0,
+  'INTERMEDIO': 1,
+  'AVANZADO': 2
+}
+export const experienceOptions = ['Principiante', 'Intermedio', 'Avanzado']
+
+export const medicProblemMapper: Record<MedicalProblem, number> = {
+  'NINGUNA': 0,
+  'LESION': 1,
+  'ALERGIA': 2
+}
+export const medicalProblemsOptions = ['Ninguno', 'Lesión', 'Alergía']
+
+
+export const scheduleMapper: Record<Schedule, number> = {
+  'AM': 0,
+  'PM': 1,
+}
+
+export const scheduleOptions = ['AM', 'PM']
+
 
 export const TrainingPlans = [
   {

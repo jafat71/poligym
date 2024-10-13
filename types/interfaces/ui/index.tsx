@@ -13,8 +13,8 @@ export interface NumericInputForm {
     maxLength?: number;
     alert?: boolean;
     alertMessage?: string;
-    subFn: () => void;
-    addFn: () => void;
+    subFn?: () => void;
+    addFn?: () => void;
 }
 
 export interface NumericInputNotBtnsForm {

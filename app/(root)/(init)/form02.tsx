@@ -1,28 +1,12 @@
 import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
-import NumericInputInitForm from '@/components/ui/form/NumericInputInitForm';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { Experience, Objetive } from '@/types/interfaces/entities/user';
-import transformToValidZInput from '@/utils/transformToValidZInput';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-
-
-const objetiveMapper: Record<Objetive, number> = {
-    'BAJAR_DE_PESO': 0,
-    'GANAR_MUSCULO': 1,
-    'MANTENERSE_EN_FORMA': 2
-}
-const objetiveOptions = ['Bajar de Peso', 'Ganar Músculo', 'Mantenerse en forma']
-
-const experienceMapper: Record<Experience, number> = {
-    'PRINCIPIANTE': 0,
-    'INTERMEDIO': 1,
-    'AVANZADO': 2
-}
-const experienceOptions = ['Principiante', 'Intermedio', 'Avanzado']
-
+import { experienceMapper, experienceOptions, genreMapper, genresOptions, objetiveMapper, objetiveOptions } from '@/constants';
+import { Genre } from '../../../types/interfaces/entities/user';
 
 const Form02 = () => {
     const { isDark } = useTheme()
@@ -30,17 +14,19 @@ const Form02 = () => {
 
     const [selectedObjetive, setSelectedObjetive] = useState<number>(0);
     const [selectedExperience, setSelectedExperience] = useState<number>(0);
-
+    const [selectedGenre, setSelectedGenre] = useState<number>(0);
 
     useEffect(() => {
+        let genreIndex = 0
+        if (tmpUser?.userGenre) {
+            genreIndex = genreMapper[tmpUser.userGenre]
+        }
+        setSelectedGenre(genreIndex)
         let objetiveIndex = 0
         if (tmpUser?.userObjetive) {
             objetiveIndex = objetiveMapper[tmpUser.userObjetive]
         }
         setSelectedObjetive(objetiveIndex)
-    }, []);
-
-    useEffect(() => {
         let experienceIndex = 0
         if (tmpUser?.userPhisicStatus) {
             experienceIndex = experienceMapper[tmpUser.userPhisicStatus]
@@ -91,106 +77,106 @@ const Form02 = () => {
             userPhisicStatus: tmpUserExp
         })
     }, [selectedExperience]);
-    
-
-
-    const [heightInput, setHeightINput] = useState('');
 
     useEffect(() => {
-        let userHeight = tmpUser?.userHeight
-        setHeightINput(String(userHeight) || '')
-    }, []);
-
-    const validateHeightChange = useCallback(
-        (newHeightInput: string) => {
-            const validHeight = transformToValidZInput(newHeightInput)
-            setHeightINput(validHeight.toString());
-            set1InitUser({
-                ...tmpUser,
-                userHeight: validHeight
-            })
-        },
-        [heightInput],
-    )
-
-
-    const AddHeight = () => {
-        let newHeight = +heightInput
-        newHeight += 1
-        validateHeightChange(newHeight + "")
-        setHeightINput("" + newHeight)
-    }
-
-    const SubHeight = () => {
-        let newHeight = +heightInput
-        newHeight -= 1
-        validateHeightChange(newHeight + "")
-        setHeightINput("" + Math.max(0, newHeight))
-    }
+        if (selectedGenre === null) return
+        let tmpUserGenre: Genre = 'MASCULINO'
+        switch (selectedGenre) {
+            case 0:
+                tmpUserGenre = 'MASCULINO'
+                break;
+            case 1:
+                tmpUserGenre = 'FEMENINO'
+                break;
+            case 2:
+                tmpUserGenre = 'OTRO'
+                break;
+            default:
+                break;
+        }
+        set1InitUser({
+            ...tmpUser,
+            userGenre: tmpUserGenre
+        })
+    }, [selectedGenre]);
 
 
     return (
         <>
-            <View className={`py-2`}>
-                <NumericInputInitForm
-                    title='¿Cuál es tu altura? (CM)'
-                    icon={<Ionicons name="resize-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                    inputKeyboardType='number-pad'
-                    inputPlaceholder='170'
-                    inputSecure={false}
-                    inputValue={heightInput}
-                    inputOnChangeText={validateHeightChange}
-                    subFn={SubHeight}
-                    addFn={AddHeight} />
+            <View className={`mt-2 pb-5 border-t-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                <View className='py-2'>
+                        <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu género?</Text>
+                        <RadioButtonIconComponent
+                            options={genresOptions}
+                            icons={[
+                                <Ionicons name="male"
+                                    size={35}
+                                    color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
+                                <Ionicons name="female"
+                                    size={35}
+                                    color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
+                                <Ionicons name="male-female"
+                                    size={35}
+                                    color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
+                            ]}
+                            selectedValue={selectedGenre}
+                            setSelectedValue={setSelectedGenre}
+                            rbComponentStyle='w-full mt-2'
+                            rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
+                            rbIndividualTextBtnStyle={`text-base  font-ralewayBold`}
+                        />
+                </View>
 
-            </View>
 
-            <View className={`py-2`}>
-                <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu objetivo?</Text>
-                <RadioButtonIconComponent
-                    options={objetiveOptions}
-                    icons={[
-                        <Ionicons name="nutrition-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
-                            <Ionicons name="barbell-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
-                            <Ionicons name="fitness-sharp"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
-                        ]}
-                    selectedValue={selectedObjetive}
-                    setSelectedValue={setSelectedObjetive}
-                    rbComponentStyle='w-full mt-2'
-                    rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2'
-                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold `}
-                />
+                <View className={`py-2`}>
+                    <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu objetivo principal?</Text>
+                    <RadioButtonIconComponent
+                        options={objetiveOptions}
+                        icons={[
+                            <Ionicons name="nutrition-outline"
+                                size={35}
+                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
+                                <Ionicons name="barbell-outline"
+                                size={35}
+                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
+                                <Ionicons name="fitness-sharp"
+                                size={35}
+                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
+                            ]}
+                        selectedValue={selectedObjetive}
+                        setSelectedValue={setSelectedObjetive}
+                        rbComponentStyle='w-full mt-2'
+                        rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
+                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold `}
+                    />
+                </View>
 
-            </View>
-            <View className={`py-2`}>
-                <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu experiencia?</Text>
-                <RadioButtonIconComponent
-                    options={experienceOptions}
-                    icons={[
-                        <Ionicons name="star-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                <View className={`py-2`}>
+                    <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu experiencia?</Text>
+                    <RadioButtonIconComponent
+                        options={experienceOptions}
+                        icons={[
+                            <Ionicons name="star-outline"
+                                size={35}
+                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
                             <Ionicons name="star-half-outline"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                                size={35}
+                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
                             <Ionicons name="star"
-                            size={35}
-                            color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
+                                size={35}
+                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
                         ]}
-                    selectedValue={selectedExperience}
-                    setSelectedValue={setSelectedExperience}
-                    rbComponentStyle='w-full mt-2'
-                    rbIndividualRadioButtonStyle='h-10 flex flex-col items-center justify-center mb-2'
-                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `} 
-                />
+                        selectedValue={selectedExperience}
+                        setSelectedValue={setSelectedExperience}
+                        rbComponentStyle='w-full mt-2'
+                        rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
+                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `}
+                    />
 
+                </View>
             </View>
+
+
 
         </>
     );

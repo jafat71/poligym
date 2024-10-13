@@ -1,30 +1,29 @@
 
-import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
 import NumericInputInitForm from '@/components/ui/form/NumericInputInitForm';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { Genre } from '../../../types/interfaces/entities/user';
 import transformToValidZInput from '@/utils/transformToValidZInput';
-import { genreMapper, genresOptions } from '@/constants';
 
 const Form01 = () => {
     const { isDark } = useTheme()
     const { tmpUser, set1InitUser } = useUser()
-    const [selectedGenre, setSelectedGenre] = useState<number>(0);
+
     const [ageINput, setAgeINput] = useState('');
+    const [weightInput, setWeightINput] = useState('');
+    const [heightInput, setHeightINput] = useState('');
 
     useEffect(() => {
-        let genreIndex = 0
-        if (tmpUser?.userGenre) {
-            genreIndex = genreMapper[tmpUser.userGenre]
-        }
-        setSelectedGenre(genreIndex)
+        let userweight = tmpUser?.userWeight
+        setWeightINput(String(userweight) || '')
 
         let userAge = tmpUser?.userAge
         setAgeINput(String(userAge) || '')
+
+        let userHeight = tmpUser?.userHeight
+        setHeightINput(String(userHeight) || '')
     }, []);
 
     const validateAgeInpuChange = useCallback(
@@ -39,49 +38,6 @@ const Form01 = () => {
         [ageINput],
     )
 
-    useEffect(() => {
-        if (selectedGenre === null) return
-        let tmpUserGenre: Genre = 'MASCULINO'
-        switch (selectedGenre) {
-            case 0:
-                tmpUserGenre = 'MASCULINO'
-                break;
-            case 1:
-                tmpUserGenre = 'FEMENINO'
-                break;
-            case 2:
-                tmpUserGenre = 'OTRO'
-                break;
-            default:
-                break;
-        }
-        set1InitUser({
-            ...tmpUser,
-            userGenre: tmpUserGenre
-        })
-    }, [selectedGenre]);
-
-    const AddAge = () => {
-        let newAge = +ageINput
-        newAge += 1
-        validateAgeInpuChange(newAge + "")
-        setAgeINput("" + newAge)
-    }
-
-    const SubAge = () => {
-        let newAge = +ageINput
-        newAge -= 1
-        validateAgeInpuChange(newAge + "")
-        setAgeINput("" + Math.max(0, newAge))
-    }
-
-    const [weightInput, setWeightINput] = useState('');
-
-    useEffect(() => {
-        let userweight = tmpUser?.userWeight
-        setWeightINput(String(userweight) || '')
-    }, []);
-
     const validateWeightChange = useCallback(
         (newWeightInput: string) => {
             const validWeight = transformToValidZInput(newWeightInput)
@@ -94,78 +50,66 @@ const Form01 = () => {
         [weightInput],
     )
 
-    const AddWeight = () => {
-        let newWeight = +weightInput
-        newWeight += 1
-        validateWeightChange(newWeight + "")
-        setWeightINput("" + newWeight)
-    }
-
-    const SubWeight = () => {
-        let newWeight = +weightInput
-        newWeight -= 1
-        validateWeightChange(newWeight + "")
-        setWeightINput("" + Math.max(0, newWeight))
-    }
+    const validateHeightChange = useCallback(
+        (newHeightInput: string) => {
+            const validHeight = transformToValidZInput(newHeightInput)
+            setHeightINput(validHeight.toString());
+            set1InitUser({
+                ...tmpUser,
+                userHeight: validHeight
+            })
+        },
+        [heightInput],
+    )
 
     return (
         <>
-            <View className={`py-2`} >
-                <NumericInputInitForm
-                    title='¿Cuántos años tienes?'
-                    icon={<Ionicons name="balloon-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                    inputKeyboardType='number-pad'
-                    inputPlaceholder='0'
-                    inputSecure={false}
-                    inputValue={ageINput}
-                    inputOnChangeText={validateAgeInpuChange}
-                    maxLength={2}
-                    addFn={AddAge}
-                    subFn={SubAge}
-                />
-            </View>
 
-            <View >
-                <View className={`flex flex-col items-start`}>
-                    <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu género?</Text>
-                    <RadioButtonIconComponent
-                        options={genresOptions}
-                        icons={[
-                            <Ionicons name="male"
-                                size={35}
-                                color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
-                            <Ionicons name="female"
-                                size={35}
-                                color={`${isDark ? "#1c1c1c" : "#fff"}`} />,
-                            <Ionicons name="male-female"
-                                size={35}
-                                color={`${isDark ? "#1c1c1c" : "#fff"}`} />
-                        ]}
-                        selectedValue={selectedGenre}
-                        setSelectedValue={setSelectedGenre}
-                        rbComponentStyle='w-full mt-2'
-                        rbIndividualRadioButtonStyle='h-10 p-1 flex flex-col items-center justify-center mb-2'
-                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `}
+            <View className={`mt-2 pb-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                <View className={`py-2`} >
+                    <NumericInputInitForm
+                        title='¿Cuántos años tienes?'
+                        icon={<Ionicons name="balloon-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                        inputKeyboardType='number-pad'
+                        inputPlaceholder='0'
+                        inputSecure={false}
+                        inputValue={ageINput}
+                        inputOnChangeText={validateAgeInpuChange}
+                        maxLength={2}
+                    />
+                </View>
+
+                <View className={`py-2`} >
+
+                    <NumericInputInitForm
+                        title='¿Cuál es tu peso? (KG)'
+                        icon={<Ionicons name="scale" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                        inputKeyboardType='number-pad'
+                        inputPlaceholder='18'
+                        inputSecure={false}
+                        inputValue={weightInput}
+                        maxLength={3}
+                        inputOnChangeText={validateWeightChange}
                     />
 
                 </View>
+
+                <View className={`py-2`}>
+                    <NumericInputInitForm
+                        title='¿Cuál es tu altura? (CM)'
+                        icon={<Ionicons name="resize-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                        inputKeyboardType='number-pad'
+                        inputPlaceholder='170'
+                        inputSecure={false}
+                        inputValue={heightInput}
+                        inputOnChangeText={validateHeightChange}
+                    />
+                </View>
             </View>
 
-            <View className={`py-2`} >
-
-                <NumericInputInitForm
-                    title='¿Cuál es tu peso? (KG)'
-                    icon={<Ionicons name="scale" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                    inputKeyboardType='number-pad'
-                    inputPlaceholder='18'
-                    inputSecure={false}
-                    inputValue={weightInput}
-                    maxLength={3}
-                    inputOnChangeText={validateWeightChange}
-                    subFn={SubWeight}
-                    addFn={AddWeight} />
-
-            </View>
+            <Text className={`text-sm font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} my-2 `}>
+                POLIGYM APP utiliza kilogramos (kg) para el peso y centímetros (cm) para la altura. Por favor, introduce solo números enteros en estos campos. Esto nos ayuda a procesar tus datos de manera más rápida y eficiente, asegurando que la experiencia sea lo más fluida posible.
+            </Text>
         </>
     );
 };

@@ -31,7 +31,7 @@ const Signup = () => {
   return (
     <View>
 
-      <View className='p-2 mt-2 rounded-lg '>
+      <View className='mt-2 rounded-lg '>
 
         <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
 

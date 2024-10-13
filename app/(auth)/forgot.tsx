@@ -17,7 +17,7 @@ const Forgot = () => {
     });
   };
   return (
-    <View className='p-2 mt-2 rounded-lg '>
+    <View className='mt-2 rounded-lg '>
 
       <View >
 

@@ -11,6 +11,7 @@ const CTAButtonPrimary = ({ onPress, text}: Props) => {
     return (
         <TouchableOpacity
             onPress={onPress}
+            className='w-full items-center px-2'
         >
             <Text className={`w-full rounded-xl text-base text-center
                 text-white my-1 

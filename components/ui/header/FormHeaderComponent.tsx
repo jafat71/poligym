@@ -1,41 +1,47 @@
-
-
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 import MainLogoCustomComponent from '../logo/mainLogo';
 import { useTheme } from '@/context/ThemeContext';
-import { usePathname } from 'expo-router';
 import SkipButton from '../buttons/SkipButton';
-const steps = ['/form01', '/form02', '/form03', '/form04', '/form05'];
+import { router } from 'expo-router';
+import TermsModal from '../modal/TermsModal';
 
 const FormHeaderComponent = () => {
-    const { isDark } = useTheme()
-    const pathname = usePathname();
-    const titleStyle = `text-3xl font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} text-start`
-    const currentIndex = steps.findIndex(step => step === pathname);
+    const { isDark } = useTheme();
+    const [termsVisible, setTermsVisible] = useState(false);
+    const toggleTermseModal = () => {
+        setTermsVisible(!termsVisible);
+    };
+
     return (
-        <View className='w-full px-2'>
-            <View className='flex flex-col justify-between items-center mb-4'>
+        <>
+            <View className='flex flex-col justify-between items-center'>
                 <View className='w-full items-center'>
                     <MainLogoCustomComponent width='40' height='40' principal={`${isDark ? "#fff" : "#1c1c1c"}`} />
                 </View>
-                <View className='w-full items-end mb-4'>
+                <View className='absolute w-full items-end my-4'>
                     <SkipButton />
                 </View>
-                <Text className={titleStyle}>Queremos saber de ti</Text>
-
+                <Text className={`w-full items-start text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Queremos saber de ti</Text>
             </View>
 
-
-            <View className='flex flex-row items-center justify-between gap-2 pt-2 mb-2'>
-                {steps.map((step, index) => (
-                    <View
-                        key={index}
-                        className={`h-2 w-11 ${(index <= currentIndex ? "bg-eBlue-500" : `${isDark ? "bg-white" : "bg-darkGray-500"}`)}`}
-                    />
-                ))}
+            <View >
+                <Text className={`text-sm font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>
+                    La información que nos proporciones nos permite personalizar tu experiencia en POLIGYM APP
+                </Text>
+                <Pressable
+                    className='mt-2 '
+                    onPress={toggleTermseModal}
+                >
+                    <Text className={`text-eBlue-500 font-ralewaySemiBold`}>Más información sobre el uso de mis datos</Text>
+                </Pressable>
             </View>
-        </View>
+
+            <TermsModal
+                modalVisible={termsVisible}
+                toggleModal={() => toggleTermseModal()}
+            />
+        </>
     );
 };
 
