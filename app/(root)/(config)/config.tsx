@@ -28,44 +28,34 @@ const Config = () => {
         setAboutVisible(!aboutVisible);
     };
 
-
-    const iconStyle = `rounded-full w-10 h-10 
-    flex items-center justify-center mt-2
-    border-[1px] ${isDark ? "border-darkGray-400 bg-white" : "bg-darkGray-200 border-darkGray-500"}`
-    const textStyle = `text-lg ml-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `
-    const textRedStyle = `text-lg ml-2  font-ralewayBold text-red-500 `
-    const itemStyle = 'flex flex-row items-center justify-start w-full my-2'
+    const textStyle = `text-lg ml-2  font-raleway ${isDark ? "text-white" : "text-darkGray-500"} `
+    const itemStyle = 'justify-start w-full my-2'
 
     return (
-        <SafeAreaView className={`flex flex-1
-            
-            ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
+        <SafeAreaView className={`flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"} p-2 py-6`}>
 
-            <View className='p-4'>
-                <View className={`py-1 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
-                    <View className='flex flex-row items-center justify-between'>
+            <View className='px-2'>
+                <View className={`py-1 `}>
+                    <View className='flex flex-row items-center '>
                         <TouchableOpacity
                             onPress={() => {
-                                router.push('/(drawer)/(profile)/profile')
+                                router.back()
                             }}
                         >
                             <Ionicons name="arrow-back" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
                         </TouchableOpacity>
-                        <Text className={`text-2xl mr-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Configuración</Text>
+                        <Text className={`text-2xl ml-4 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Configuración</Text>
                     </View>
 
                 </View>
 
-                <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+                <View className={`pb-5 }`}>
                     <TouchableOpacity
                         onPress={() => {
-                            router.navigate('/(profile)/updateinformation')
+                            router.navigate('/(root)/(config)/updateinformation')
                         }}
                         className={itemStyle}
                     >
-                        <View className={iconStyle}>
-                            <Ionicons name="person-sharp" size={24} color={`#1c1c1c`} />
-                        </View>
                         <Text className={textStyle}>Actualizar Información</Text>
                     </TouchableOpacity>
 
@@ -75,53 +65,28 @@ const Config = () => {
                             router.push('/(auth)/update')
                         }}
                     >
-                        <View className={iconStyle}>
-                            <Ionicons name="shield-checkmark-outline" size={24} color={`#1c1c1c`} />
-                        </View>
                         <Text className={textStyle}>Actualizar Contraseña</Text>
                     </TouchableOpacity>
 
                     <View className={itemStyle}>
-                        <View className={iconStyle}>
-                            <Ionicons name="alarm" size={24} color={`#1c1c1c`} />
-                        </View>
                         <Text className={textStyle}>Notificaciones</Text>
-                        <Switch
-                            className='flex-1'
-                            style={{ transform: [{ scaleX: 1 }, { scaleY: 1 }] }}
-                            onValueChange={() => setNotificationEnabled(prevState => !prevState)}
-                            value={notificationEnabled}
-                            thumbColor={isDark ? "#fff" : "#16243E"}
-                            trackColor={{ false: isDark ? "#ddds" : "#ddd", true: isDark ? "#fff" : "#16243E" }}
-                            ios_backgroundColor={isDark ? "#333" : "#ddd"}
-                        />
                     </View>
 
                     <TouchableOpacity className={itemStyle}
                         onPress={toggleTermsModal}
                     >
-                        <View className={iconStyle}>
-                            <Ionicons name="document-sharp" size={24} color={`#1c1c1c`} />
-                        </View>
                         <Text className={textStyle}>Términos y Condiciones</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity className={itemStyle}
                         onPress={toggleFaqModal}
                     >
-                        <View className={iconStyle}>
-                            <Ionicons name="documents" size={24} color={`#1c1c1c`} />
-                        </View>
                         <Text className={textStyle}>FAQs</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity className={itemStyle}
                         onPress={() => toggleAboutModal()}
                     >
-                        <View className={iconStyle}>
-                            <Ionicons name="text" size={24} color={`#1c1c1c`} />
-
-                        </View>
                         <Text className={textStyle}>Acerca de</Text>
                     </TouchableOpacity>
 
@@ -132,13 +97,7 @@ const Config = () => {
                         }}
                     >
 
-                        <View className={`rounded-full w-10 h-10 
-                        flex items-center justify-center mt-2
-                        border-[1px] bg-[#e11a1a]
-                        ${isDark ? "border-darkGray-400" : " border-darkGray-500"}`}>
-                            <Ionicons name="flash-off-sharp" size={24} color={`#fff`} />
-                        </View>
-                        <Text className={textRedStyle}>Eliminar Cuenta</Text>
+                        <Text className={textStyle}>Eliminar Cuenta</Text>
                     </TouchableOpacity>
 
 
@@ -148,13 +107,7 @@ const Config = () => {
                             router.replace('/(auth)/signin')
                         }}
                     >
-                        <View className={`rounded-full w-10 h-10 
-                        flex items-center justify-center mt-2
-                        border-[1px] bg-[#e11a1a]
-                        ${isDark ? "border-darkGray-400" : " border-darkGray-500"}`}>
-                            <Ionicons name="exit-outline" size={24} color={`#fff`} />
-                        </View>
-                        <Text className={textRedStyle}>Salir</Text>
+                        <Text className={textStyle}>Salir</Text>
                     </TouchableOpacity>
 
                 </View>

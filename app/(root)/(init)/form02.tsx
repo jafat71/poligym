@@ -103,7 +103,7 @@ const Form02 = () => {
 
     return (
         <>
-            <View className={`mt-2 pb-5 border-t-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+            <View className={`mt-2 pb-5 `}>
                 <View className='py-2'>
                         <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu género?</Text>
                         <RadioButtonIconComponent

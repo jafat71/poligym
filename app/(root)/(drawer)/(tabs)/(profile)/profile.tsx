@@ -23,13 +23,7 @@ const Profile = () => {
               <Text className={` text-2xl font-raleway ${isDark ? "text-white" : "text-darkGray-400"} `}>JD</Text>
             </View>
             <View className='h-full'>
-              <Pressable
-                onPress={() => {
-                  router.navigate('/(profile)/config')
-                }}
-              >
-                <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-              </Pressable>
+
             </View>
           </View>
 

@@ -33,13 +33,13 @@ const Signup = () => {
 
       <View className='mt-2 rounded-lg '>
 
-        <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+        <View className={`pb-5 `}>
 
           <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
 
         </View>
 
-        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+        <View className={`py-5`}>
           <IconTextInputForm
             title='Email Institucional'
             icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}

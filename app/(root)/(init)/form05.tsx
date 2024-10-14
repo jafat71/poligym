@@ -42,7 +42,7 @@ const Form05 = () => {
     return (
         <>
 
-            <View className={`mt-2 pb-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+            <View className={`mt-2 pb-5 `}>
                 <View className={`py-2`}>
                     <View className={` w-full items-start`}>
                         <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Subir Foto de Perfil</Text>

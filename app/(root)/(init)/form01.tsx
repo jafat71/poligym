@@ -65,7 +65,7 @@ const Form01 = () => {
     return (
         <>
 
-            <View className={`mt-2 pb-5 border-y-[1px] border-${isDark ? "darkGray-400" : "darkGray-500"}`}>
+            <View className={`mt-2 pb-5 `}>
                 <View className={`py-2`} >
                     <NumericInputInitForm
                         title='¿Cuántos años tienes?'
