@@ -1,13 +1,15 @@
 
+import LightDarkButton from '@/components/ui/buttons/LightDarkButton';
 import AboutModal from '@/components/ui/modal/AboutModal';
 import FaqModal from '@/components/ui/modal/FaqModal';
 import TermsModal from '@/components/ui/modal/TermsModal';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
+import Checkbox from 'expo-checkbox';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { SafeAreaView, Text, View } from 'react-native';
-import { Switch, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Config = () => {
     const { isDark } = useTheme()
@@ -28,28 +30,18 @@ const Config = () => {
         setAboutVisible(!aboutVisible);
     };
 
-    const textStyle = `text-lg ml-2  font-raleway ${isDark ? "text-white" : "text-darkGray-500"} `
+    const textStyle = `text-lg ml-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `
+    const subtextStyle = `text-sm ml-2  font-raleway ${isDark ? "text-white" : "text-darkGray-500"} `
+    const titleStyle = `text-xs ml-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `
     const itemStyle = 'justify-start w-full my-2'
 
     return (
-        <SafeAreaView className={`flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"} p-2 py-6`}>
+        <SafeAreaView className={`flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"} py-6`}>
+            <View className='pr-2'>
 
-            <View className='px-2'>
-                <View className={`py-1 `}>
-                    <View className='flex flex-row items-center '>
-                        <TouchableOpacity
-                            onPress={() => {
-                                router.back()
-                            }}
-                        >
-                            <Ionicons name="arrow-back" size={24} color={`${isDark ? "white" : "#1c1c1c"}`} />
-                        </TouchableOpacity>
-                        <Text className={`text-2xl ml-4 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Configuración</Text>
-                    </View>
+                <View className={`pb-5`}>
 
-                </View>
-
-                <View className={`pb-5 }`}>
+                    <Text className={titleStyle}>Cuenta</Text>
                     <TouchableOpacity
                         onPress={() => {
                             router.navigate('/(root)/(config)/updateinformation')
@@ -57,6 +49,7 @@ const Config = () => {
                         className={itemStyle}
                     >
                         <Text className={textStyle}>Actualizar Información</Text>
+                        <Text className={subtextStyle}>Actualiza tu información para obtener los mejores resultados de nuestras recomendaciones personalizadas</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
@@ -66,11 +59,38 @@ const Config = () => {
                         }}
                     >
                         <Text className={textStyle}>Actualizar Contraseña</Text>
+                        <Text className={subtextStyle}>Actualiza tu contraseña cada cierto tiempo para incrementar la seguridad de tu cuenta</Text>
                     </TouchableOpacity>
 
+                    <Text className={`${titleStyle} mt-2`}>Preferencias</Text>
+
                     <View className={itemStyle}>
-                        <Text className={textStyle}>Notificaciones</Text>
+                        <View className='flex flex-row items-center justify-between'>
+                            <Text className={textStyle}>Notificaciones</Text>
+                            <Checkbox
+                                className='w-6 h-6'
+                                value={notificationEnabled}
+                                onValueChange={() => setNotificationEnabled(!notificationEnabled)}
+                                color={notificationEnabled ? '#0055f9' : isDark ? "#fff" : "#1c1c1c"}
+                            />
+                        </View>
+                        <Text className={subtextStyle}>
+                            Habilitar las notificaciones te permite recibir información clave y personalizada, como:
+                            recordatorios de tus sesiones de entrenamiento,
+                            consejos de bienestar y salud, entre otras.
+                        </Text>
+
                     </View>
+
+                    <View className={itemStyle}>
+                        <View className='flex flex-row items-center justify-between'>
+                            <Text className={textStyle}>Aspecto</Text>
+                            <LightDarkButton
+                            />
+                        </View>
+                    </View>
+
+                    <Text className={`${titleStyle} mt-2`}>Información</Text>
 
                     <TouchableOpacity className={itemStyle}
                         onPress={toggleTermsModal}
@@ -81,7 +101,7 @@ const Config = () => {
                     <TouchableOpacity className={itemStyle}
                         onPress={toggleFaqModal}
                     >
-                        <Text className={textStyle}>FAQs</Text>
+                        <Text className={textStyle}>Preguntas Frecuentes</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity className={itemStyle}

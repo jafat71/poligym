@@ -1,12 +1,37 @@
+import { useTheme } from '@/context/ThemeContext';
 import { Stack } from 'expo-router';
+import { Pressable, Text, View } from 'react-native';
 
 export default function RootLayout() {
+    const {isDark} = useTheme()
     return (
         <Stack 
         initialRouteName='profile'
-        screenOptions={{ headerShown: false, animation: 'none'}}>
-            <Stack.Screen name="config" options={{headerShown: false, animation: 'slide_from_right'}} />
-            <Stack.Screen name="updateinformation" options={{headerShown: false, animation: 'slide_from_right'}} />
+        screenOptions={{  
+            animation: 'none',
+            headerStyle: {
+                backgroundColor: isDark ? '#171717' : '#fff',
+            },
+            headerTintColor: isDark ? '#fff' : '#1c1c1c', 
+            headerTitleStyle: {
+                fontFamily: 'Raleway-Bold', 
+                fontSize: 20, 
+                color: isDark ? '#fff' : '#1c1c1c', 
+            },
+
+        }}>
+            <Stack.Screen name="config" options={{animation: 'slide_from_right', headerTitle: 'Configuración'}} />
+            <Stack.Screen name="updateinformation" 
+            options={{
+                animation: 'slide_from_right', 
+                headerTitle: 'Actualizar Información',
+                headerRight: () => (
+                    <Pressable>
+                            <Text className='font-ralewayBold text-eBlue-500'>
+                                Guardar
+                            </Text>
+                    </Pressable>
+                )}} />
         </Stack>
     );
 }

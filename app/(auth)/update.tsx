@@ -19,16 +19,14 @@ const Update = () => {
   };
 
   return (
-    <View className={`p-4 border-[1px] ${isDark ? "border-darkGray-400" : "border-darkGray-200"}  rounded-sm`}>
-
-      <View className='p-4 mt-2 rounded-lg '>
-        <View className={`pb-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
+      <View className='mt-2 rounded-lg '>
+        <View className={`pb-5 `}>
 
           <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Actualizar Contraseña</Text>
           <Text className={`text-lg font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>Ingresa tu contraseña actual para confirmar tu identidad</Text>
 
         </View>
-        <View className={`py-5 border-b-[1px] border-${isDark ? "darkGray-400" : "darkGray-200"}`}>
+        <View className={`py-5`}>
 
           <IconTextInputForm
             title='Contraseña Actual'
@@ -80,7 +78,6 @@ const Update = () => {
           text='Actualizar'
         />
       </View>
-    </View>
   )
 }
 

@@ -35,7 +35,6 @@ export const FloatingMessage = ({ text, distance, duration}: Props) => {
                         borderRadius: 50,
                         fontSize: 20,
                         fontFamily: 'Raleway-Bold',
-                        backgroundColor: '#1c1c1c',
                         color: '#fff',
                         padding: 12
                     },

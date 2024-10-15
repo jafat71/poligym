@@ -4,13 +4,13 @@ import React from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { useTheme } from '@/context/ThemeContext';
 import MainLogoCustomComponent from '../logo/mainLogo';
-import LightDarkButton from '../buttons/LightDarkButton';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router} from 'expo-router';
+import { useRouter, useSegments } from 'expo-router';
 
 const TopHeaderComponent = () => {
     const { isDark } = useTheme()
+    const segments = useSegments(); 
 
     return (
         <View className='w-full flex flex-row justify-between items-center mb-4'>
@@ -19,7 +19,14 @@ const TopHeaderComponent = () => {
             </View>
             <View className='absolute '>
                 <Pressable
-                    onPress={() => { router.replace('/welcome') }}
+                    onPress={() => { 
+                        const currentRoute = segments[segments.length - 1];
+                        if (currentRoute === 'delete' || currentRoute === 'update') {
+                            router.back(); 
+                        } else {
+                            router.push('/welcome'); 
+                        }
+                    }}
                 >
                     <Ionicons name="arrow-back" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
 

@@ -31,8 +31,9 @@ const NumericInputInitForm = (
         <View className='flex flex-col items-start w-full max-w-md mx-auto' >
             <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>{title}</Text>
             <View
-                className={`mt-2 border-[2px] rounded-lg ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
-                    isDark ? "border-darkGray-400" : "border-darkGray-500"
+                className={`mt-2 border-[2px]  rounded-lg 
+                    ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
+                    isDark ? "border-darkGray-400 opacity-70" : "border-darkGray-500 opacity-70"
                     }`}
             >
                 <View className="flex flex-row items-center justify-center w-full">

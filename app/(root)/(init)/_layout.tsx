@@ -29,12 +29,15 @@ export default function RootLayout() {
           <Slot />
 
         </ScrollView>
-        <CTAButtonPrimary
-          onPress={() => {
-            router.push(routeMapping[actualPathname])
-          }}
-          text="Continuar"
-        />
+        <View className='w-full px-2'>
+          <CTAButtonPrimary
+            onPress={() => {
+              router.push(routeMapping[actualPathname])
+            }}
+            text="Continuar"
+          />
+
+        </View>
       </SafeAreaView>
     </KeyboardAvoidingView>
 

@@ -3,7 +3,6 @@ import { Pressable, Text, TouchableOpacity, View } from 'react-native';
 import MainLogoCustomComponent from '../logo/mainLogo';
 import { useTheme } from '@/context/ThemeContext';
 import SkipButton from '../buttons/SkipButton';
-import { router } from 'expo-router';
 import TermsModal from '../modal/TermsModal';
 
 const FormHeaderComponent = () => {
