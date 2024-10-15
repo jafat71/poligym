@@ -1,11 +1,97 @@
-import { Stack } from 'expo-router';
+import {
+    MaterialTopTabNavigationEventMap,
+    MaterialTopTabNavigationOptions,
+    createMaterialTopTabNavigator,
+} from "@react-navigation/material-top-tabs";
+import { router, withLayoutContext } from "expo-router";
+import { ParamListBase, TabNavigationState } from "@react-navigation/native";
+import { Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "@/context/ThemeContext";
+import { Ionicons } from "@expo/vector-icons";
 
-export default function ProfileLayout() {
+const { Navigator } = createMaterialTopTabNavigator();
+
+export const MaterialTopTabs = withLayoutContext<
+    MaterialTopTabNavigationOptions,
+    typeof Navigator,
+    TabNavigationState<ParamListBase>,
+    MaterialTopTabNavigationEventMap
+>(Navigator);
+
+export default function TabLayout() {
+    const { isDark } = useTheme()
+
     return (
-        <Stack 
-        initialRouteName='profile'
-        screenOptions={{ headerShown: false, animation: 'none'}}>
-            <Stack.Screen name="profile" options={{headerShown: false, animation: 'slide_from_bottom'}} />
-        </Stack>
+        <SafeAreaView className={`flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
+            <View className="px-4">
+                <View className={`flex flex-row items-center`}>
+                    <View className={`rounded-full w-16 h-16 
+                        flex items-center justify-center mt-2
+                        border-[2px] border-eBlue-500 
+                        ${isDark ? "" : "bg-darkGray-200"}`}>
+                        <Text className={` text-xl font-raleway text-eBlue-500 `}>JD</Text>
+                    </View>
+                    <View className={`pl-3 w-full items-start`}>
+                        <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Jhon Doe</Text>
+                        <Text className={`text-base font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>jhon.doe@epn.edu.ec</Text>
+
+                    </View>
+                </View>
+
+                <View className="flex flex-row items-center justify-between py-2">
+                        <View className="flex flex-row items-center justify-center gap-2">
+                            <Text className={`text-base font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Posts</Text>
+                            <Text className={`text-lg font-ralewayExtraBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>0</Text>
+                        </View>
+
+                        <View className="h-full">
+                            <Pressable 
+                            onPress={() => {
+                                router.push('/updateinformation')
+                            }}
+                            className="flex flex-col items-center justify-center">
+                                <View className="flex flex-row items-center justify-center rounded-2xl border-[2px] border-eBlue-500 px-2 py-1">
+                                    <Ionicons name="pencil" size={18} color={"#0055f9"}/>
+                                    <Text className={`text-sm font-ralewayBold text-start text-eBlue-500 `}>Editar</Text>
+                                </View>
+                            </Pressable>
+                        </View>
+                </View>
+            </View>
+
+            <MaterialTopTabs>
+                <MaterialTopTabs.Screen name="public" options={{ 
+                    title: "Público",
+                    tabBarStyle: {
+                        backgroundColor: isDark ? "#1c1c1c" : "#fff",
+                    },
+                    tabBarActiveTintColor: '#0055f9',
+                    tabBarLabelStyle: {
+                        color: '#0055f9',
+                        fontFamily: 'Raleway-Bold'
+                    },
+                    tabBarIndicatorStyle: {
+                        backgroundColor: '#0055f9',
+                        padding: 2
+                    }
+                    }} />
+                <MaterialTopTabs.Screen name="private" options={{ 
+                    title: "Privado",
+                    tabBarStyle: {
+                        backgroundColor: isDark ? "#1c1c1c" : "#fff",
+                    },
+                    tabBarActiveTintColor: '#0055f9',
+                    tabBarLabelStyle: {
+                        color: '#0055f9',
+                        fontFamily: 'Raleway-Bold'
+                    },
+                    tabBarIndicatorStyle: {
+                        backgroundColor: '#0055f9',
+                        padding: 2
+                    }
+                    }} />
+            </MaterialTopTabs>
+        </SafeAreaView>
     );
 }

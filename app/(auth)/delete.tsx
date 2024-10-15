@@ -6,6 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
 import { router } from 'expo-router';
 import { StackActions } from '@react-navigation/native';
+import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
 const Delete = () => {
   const { isDark } = useTheme()
   const [password, setPassword] = useState('');
@@ -39,6 +40,17 @@ const Delete = () => {
         />
 
       </View>
+
+      <View className='mb-5'>
+          <AuthSupportButton
+            title='Regresar'
+            onPress={() => {
+              router.back()
+            }}          
+            />
+
+
+        </View>
 
       <CTAButtonPrimary
         onPress={() => {

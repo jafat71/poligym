@@ -23,8 +23,8 @@ const CustomDrawerContent = () => {
                     <View className={`flex flex-col items-start pb-5 `}>
                         <View className={`rounded-full w-12 h-12 
                         flex items-center justify-center mt-2
-                        border-[1px] 
-                        ${isDark ? "border-darkGray-400" : "bg-darkGray-200 border-darkGray-500"}`}>
+                        border-[2px] border-eBlue-500 
+                        ${isDark ? "" : "bg-darkGray-200 "}`}>
                             <Text className={` text-xl font-raleway text-eBlue-500 `}>JD</Text>
                         </View>
                         <View >
@@ -36,7 +36,7 @@ const CustomDrawerContent = () => {
             </View>
             <DrawerItem
                 onPress={() => {
-                    router.push('/(profile)/profile')
+                    router.push('/(profile)')
                 }}
                 label={'Perfil'}
                 style={itemStyle}
@@ -117,29 +117,7 @@ export default function RootLayout() {
     return (
         <Drawer
             screenOptions={{
-                headerTitle: () => (
-                    <View className='w-full items-center p-4'>
-                        <MainLogoCustomComponent
-                            height='24'
-                            principal={isDark ? "#fff" : "#1c1c1c"}
-                        />
-                    </View>
-                ),
-                headerRight: () => (
-                    <Pressable
-                        onPress={() => {
-                            router.navigate('/(root)/(config)/config')
-                        }}
-                        className='p-4'
-                    >
-                        <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-                    </Pressable>
-                ),
-                headerStyle: {
-                    backgroundColor: isDark ? '#1c1c1c' : '#fff',
-                },
-                headerTintColor: isDark ? "#fff" : "#1c1c1c",
-                headerTitleAlign: 'center',
+                headerShown: false,
                 drawerStyle: {
                     backgroundColor: isDark ? '#1c1c1c' : '#fff',
                     width: '87%'
