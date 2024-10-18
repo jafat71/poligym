@@ -10,7 +10,7 @@ import { Text, View } from 'react-native';
 
 const Form04 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, set1InitUser } = useUser()
+    const { tmpUser, updateInitUserShell } = useUser()
 
     const [selectedSchedule, setSelectedSchedule] = useState<number>(0);
     const [days, setDays] = useState<DaysWeek>({
@@ -42,7 +42,7 @@ const Form04 = () => {
             default:
                 break;
         }
-        set1InitUser({
+        updateInitUserShell({
             ...tmpUser,
             userPreferedSchedule: tmpUserSchedule
         })
@@ -59,7 +59,7 @@ const Form04 = () => {
     }, []);
 
     useEffect(() => {
-        set1InitUser({
+        updateInitUserShell({
             ...tmpUser,
             userTrainingDays: days
         })

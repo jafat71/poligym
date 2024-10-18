@@ -10,7 +10,7 @@ import { TextInput } from 'react-native-gesture-handler';
 
 const Form03 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, set1InitUser } = useUser()
+    const { tmpUser, updateInitUserShell } = useUser()
     const [focused, setFocused] = useState(false);
 
     const [selectedMedicalProblem, setSelectedMedicalProblem] = useState<number>(0);
@@ -39,7 +39,7 @@ const Form03 = () => {
             default:
                 break;
         }
-        set1InitUser({
+        updateInitUserShell({
             ...tmpUser,
             userHasMedicalProblems: tmpUserMedicalProblem,
         })
@@ -48,7 +48,7 @@ const Form03 = () => {
     const validateDetailInpuChange = useCallback(
         (newMedicalDetialInput: string) => {
             setMedicalDetail(newMedicalDetialInput);
-            set1InitUser({
+            updateInitUserShell({
                 ...tmpUser,
                 userMedicalProblemDetail: newMedicalDetialInput
             })

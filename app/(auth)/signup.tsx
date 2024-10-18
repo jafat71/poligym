@@ -1,43 +1,62 @@
+import FormErrorAlert from '@/components/ui/alerts/FormErrorAlert';
 import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
 import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
 import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
 import TermsModal from '@/components/ui/modal/TermsModal';
 import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
+import { signUp } from '@/lib/api/api';
+import { saveToken } from '@/lib/token/store';
+import { transformEmailToName } from '@/lib/utils/transform';
+import { validateSignup } from '@/lib/utils/validateAuthForm';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
-import React, { useState } from 'react'
-import { Pressable, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, Pressable, Text, View } from 'react-native'
 
 const Signup = () => {
 
   const { isDark } = useTheme()
+  const { setToken } = useUser()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errors, setErrors] = useState<string[]>([]);
   const [termsVisible, setTermsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const toggleTermseModal = () => {
     setTermsVisible(!termsVisible);
   };
 
-  const handleSubmit = () => {
-    console.log({
-      email,
-      password,
-      confirmPassword,
-    });
-  };
+  const handleSubmit = async () => {
+    let { errors } = validateSignup(email, password, confirmPassword)
+    setErrors(errors)
+    if (errors.length > 0) return
+
+    setIsLoading(true)
+    let name = transformEmailToName(email)
+    try {
+      const response = await signUp(name, email, password)
+      saveToken('accessToken', response.accessToken)
+      setToken(response.accessToken)
+      console.log(response)
+      router.push('/(animated)/form00')
+    } catch (error) {
+      console.error('Error details:', error)
+      setErrors(["Error al registrar el usuario. Intentelo más tarde"])
+    } finally {
+      setIsLoading(false)
+    }
+
+  }
 
   return (
     <View>
 
       <View className='mt-2 rounded-lg '>
 
-        <View className={`pb-5 `}>
-
-          <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
-
-        </View>
+        <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
 
         <View className={`py-5`}>
           <IconTextInputForm
@@ -65,14 +84,11 @@ const Signup = () => {
             icon={<Ionicons name="shield-checkmark-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
             inputKeyboardType='ascii-capable'
             inputPlaceholder='*********'
-            inputValue={password}
-            inputOnChangeText={setPassword}
+            inputValue={confirmPassword}
+            inputOnChangeText={setConfirmPassword}
             inputSecure={true}
           />
 
-          <Text className={`text-base font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>
-            Tu contraseña debe contener mínimo 8 carácteres
-          </Text>
 
         </View>
 
@@ -88,11 +104,18 @@ const Signup = () => {
         </View>
 
         <CTAButtonPrimary
-          onPress={() => {
-            router.push('/(animated)/form00')
-          }}
-          text='Registrarse'
-        />
+          onPress={handleSubmit}
+          text={isLoading ? 'Procesando...' : 'Registrarse'}
+          disabled={isLoading}
+        >
+          {isLoading && (
+            <ActivityIndicator
+              size="small"
+              color="white"
+              style={{ marginLeft: 10 }}
+            />
+          )}
+        </CTAButtonPrimary>
       </View>
 
       <View className='w-full items-center'>
@@ -112,6 +135,11 @@ const Signup = () => {
         modalVisible={termsVisible}
         toggleModal={() => toggleTermseModal()}
       />
+
+      <FormErrorAlert
+        errors={errors}
+      />
+
 
     </View>
   )

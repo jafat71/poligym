@@ -1,23 +1,26 @@
 import { emptyUser } from '@/constants';
+import { getUserInfo, verifyToken } from '@/lib/api/api';
+import { getToken } from '@/lib/token/store';
 import { User } from '@/types/interfaces/entities/user';
-import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
+import { mapUserFromApiToUser } from '@/types/mappers';
+import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 interface UserContextType {
     userLogged: boolean;
     tmpUser: User | null;
-    set1InitUser: (updatedFields: Partial<User>) => void;
-    setEmptyUser: () => void
+    updateInitUserShell: (updatedFields: Partial<User>) => void;
+    setEmptyUser: () => void;
+    setToken: Dispatch<SetStateAction<string | null>>;
+    loggedUserInfo: User | null;
 }
 
 const UserContext = createContext<UserContextType>({
     userLogged: false,
     tmpUser: emptyUser,
-    set1InitUser: function (updatedFields: Partial<User>): void {
-        throw new Error('Function not implemented.');
-    },
-    setEmptyUser: function (): void {
-        throw new Error('Function not implemented.');
-    }
+    updateInitUserShell: () => { },
+    setEmptyUser: () => { },
+    setToken: () => { },
+    loggedUserInfo: null
 });
 
 interface UserProviderProps {
@@ -27,16 +30,52 @@ interface UserProviderProps {
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [userLogged, setUserLogged] = useState(false);
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
+    const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
+    const [token, setToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        getToken('accessToken')
+        .then((token) => {
+            if (token) {
+                setToken(token)
+            }else{
+                setToken(null)
+            }
+        }).catch((error) => {
+            console.error('Error al obtener el token:', error);
+        })
+    }, [])
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (token) {
+                try {
+                    const response = await verifyToken(token)
+                    const userResponse = await getUserInfo(response.user.id)
+                    console.log(userResponse)
+                    const userMapped = mapUserFromApiToUser(userResponse)
+                    console.log(userMapped)
+                    setLoggedUserInfo(userMapped)
+                    setUserLogged(true)
+                } catch (error) {
+                    setLoggedUserInfo(null)
+                    setUserLogged(false);
+                }
+            } else {
+                setLoggedUserInfo(null)
+                setUserLogged(false);
+            }
+        };
+
+        fetchUser();
+    }, [token]);
+
 
     useEffect(() => {
         console.log(tmpUser)
     }, [tmpUser])
 
-    const setUser = (updatedFields: Partial<User> | null) => {
-        //TODO; Setear User directamente desde DB a estado de la
-    };
-
-    const set1InitUser = (updatedFields: Partial<User> | null) => {
+    const updateInitUserShell = (updatedFields: Partial<User> | null) => {
         if (updatedFields === null) {
             setTmpUSer(null)
             return
@@ -68,11 +107,17 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         });
     };
 
-    const setEmptyUser = () => set1InitUser(emptyUser);
-
+    const setEmptyUser = () => setLoggedUserInfo(null);
 
     return (
-        <UserContext.Provider value={{ userLogged, tmpUser, set1InitUser, setEmptyUser }}>
+        <UserContext.Provider value={{ 
+            userLogged, 
+            tmpUser, 
+            updateInitUserShell, 
+            setEmptyUser, 
+            setToken,
+            loggedUserInfo: loggedUserInfo ?? null 
+            }}>
             {children}
         </UserContext.Provider>
     );

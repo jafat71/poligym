@@ -1,5 +1,6 @@
 import { TrainingPlans } from '@/constants'
 import { useTheme } from '@/context/ThemeContext'
+import { useUser } from '@/context/UserContext'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,6 +10,8 @@ import Swiper from 'react-native-swiper'
 
 const Home = () => {
   const { isDark } = useTheme()
+  const { loggedUserInfo } = useUser()
+  console.log(loggedUserInfo)
   return (
     <SafeAreaView className={`flex flex-1
       px-2  rounded-sm

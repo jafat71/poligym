@@ -39,7 +39,7 @@ const IconTextInputForm = ({
                     <View
                         className={`border-r-[1px] ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
                             isDark ? "border-darkGray-400" : "border-darkGray-500"
-                            }`}
+                            } transition-all duration-300`}
                     >
                         {icon}
                     </View>

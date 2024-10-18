@@ -10,7 +10,7 @@ import { Genre } from '../../../types/interfaces/entities/user';
 
 const Form02 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, set1InitUser } = useUser()
+    const { tmpUser, updateInitUserShell } = useUser()
 
     const [selectedObjetive, setSelectedObjetive] = useState<number>(0);
     const [selectedExperience, setSelectedExperience] = useState<number>(0);
@@ -50,7 +50,7 @@ const Form02 = () => {
             default:
                 break;
         }
-        set1InitUser({
+        updateInitUserShell({
             ...tmpUser,
             userObjetive: tmpUserObjetive
         })
@@ -72,7 +72,7 @@ const Form02 = () => {
             default:
                 break;
         }
-        set1InitUser({
+        updateInitUserShell({
             ...tmpUser,
             userPhisicStatus: tmpUserExp
         })
@@ -94,7 +94,7 @@ const Form02 = () => {
             default:
                 break;
         }
-        set1InitUser({
+        updateInitUserShell({
             ...tmpUser,
             userGenre: tmpUserGenre
         })

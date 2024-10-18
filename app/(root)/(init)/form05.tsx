@@ -7,11 +7,11 @@ import { Switch, Text, View } from 'react-native';
 
 const Form05 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, set1InitUser } = useUser()
+    const { tmpUser, updateInitUserShell } = useUser()
     const [profileImage, setprofileImage] = useState('');
 
     useEffect(() => {
-        set1InitUser({
+        updateInitUserShell({
             ...tmpUser,
             userProfileImgUrl: profileImage
         })
@@ -33,7 +33,7 @@ const Form05 = () => {
     }, []);
 
     useEffect(() => {
-        set1InitUser({
+        updateInitUserShell({
             ...tmpUser,
             userNotificationsEnabled: notificationEnabled
         })

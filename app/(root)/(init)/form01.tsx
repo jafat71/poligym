@@ -5,11 +5,10 @@ import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import transformToValidZInput from '@/utils/transformToValidZInput';
-
+import { transformToValidZInput } from '@/lib/utils/transform';
 const Form01 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, set1InitUser } = useUser()
+    const { tmpUser, updateInitUserShell } = useUser()
 
     const [ageINput, setAgeINput] = useState('');
     const [weightInput, setWeightINput] = useState('');
@@ -30,7 +29,7 @@ const Form01 = () => {
         (newAgeInput: string) => {
             const validAge = transformToValidZInput(newAgeInput)
             setAgeINput(validAge.toString());
-            set1InitUser({
+            updateInitUserShell({
                 ...tmpUser,
                 userAge: validAge ? validAge : 18
             })
@@ -42,7 +41,7 @@ const Form01 = () => {
         (newWeightInput: string) => {
             const validWeight = transformToValidZInput(newWeightInput)
             setWeightINput(validWeight.toString());
-            set1InitUser({
+            updateInitUserShell({
                 ...tmpUser,
                 userWeight: validWeight
             })
@@ -54,7 +53,7 @@ const Form01 = () => {
         (newHeightInput: string) => {
             const validHeight = transformToValidZInput(newHeightInput)
             setHeightINput(validHeight.toString());
-            set1InitUser({
+            updateInitUserShell({
                 ...tmpUser,
                 userHeight: validHeight
             })
