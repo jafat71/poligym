@@ -17,3 +17,13 @@ export const saveToken = async (key: string, value: string) => {
         return;
     }
 }
+
+export const deleteToken = async (key: string) => {
+    try {
+        return SecureStore.deleteItemAsync(key);
+    } catch (err) {
+        return;
+    }
+}
+
+

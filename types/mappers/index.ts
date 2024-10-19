@@ -2,27 +2,25 @@ import { User } from "../interfaces/entities/user"
 
 export const mapUserFromApiToUser = (user: any) : User => {
     
-    
-    let newUser : User = {
-        userNew: user.userNew,
-        userId: user.userId,
-        userName: user.userName,
-        userEmail: user.userEmail,
-        userRole: user.userRole,
-        userAge: user.userAge,
-        userGenre: user.userGenre,
-        userNumberActivityDays: user.userNumberActivityDays,
-        userWeight: user.userWeight,
-        userHeight: user.userHeight,
-        userObjetive: user.userObjetive,
-        userPhisicStatus: user.userPhisicStatus,
-        userNumberComents: user.userNumberComents,
-        userNotificationsEnabled: user.userNotificationsEnabled,
-        userHasMedicalProblems: user.userHasMedicalProblems,
-        userMedicalProblemDetail: user.userMedicalProblemDetail,
-        userPreferedSchedule: user.userPreferedSchedule,
-        userProfileImgUrl: user.userProfileImgUrl,
-        userTrainingDays: user.userTrainingDays,
+    let userLogged : User = {
+        userId: user.id || "",
+        userName: user.name || "",
+        userEmail: user.email || "",
+        userRole: user.roles[0] || "",
+        userAge: user.userAge || 0,
+        userGenre: user.userGenre || null,
+        userNumberActivityDays: user.userNumberActivityDays || 0,
+        userWeight: user.userWeight || 0,
+        userHeight: user.userHeight || 0,
+        userObjetive: user.userObjetive || null,
+        userPhisicStatus: user.userPhisicStatus || null,
+        userNumberComents: user.userNumberComents || 0,
+        userNotificationsEnabled: user.userNotificationsEnabled || false,
+        userHasMedicalProblems: user.userHasMedicalProblems || false,
+        userMedicalProblemDetail: user.userMedicalProblemDetail || null,
+        userPreferedSchedule: user.userPreferedSchedule || null,
+        userProfileImgUrl: user.userProfileImgUrl || "",
+        userTrainingDays: user.userTrainingDays || [],
     }
-    return newUser
+    return userLogged
 }

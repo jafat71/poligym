@@ -3,6 +3,7 @@ import { getUserInfo, verifyToken } from '@/lib/api/api';
 import { getToken } from '@/lib/token/store';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
+import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 
 interface UserContextType {
@@ -51,7 +52,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             if (token) {
                 try {
                     const response = await verifyToken(token)
-                    const userResponse = await getUserInfo(response.user.id)
+                    const userResponse = await getUserInfo(response.user.id, token)
+                    console.log("RESPONSE USER")
                     console.log(userResponse)
                     const userMapped = mapUserFromApiToUser(userResponse)
                     console.log(userMapped)
@@ -70,9 +72,20 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         fetchUser();
     }, [token]);
 
+    useEffect(() => {
+        console.log("USER LOGGED", userLogged)
+        if (userLogged) {
+            console.log("USER LOGGED")
+            router.replace('/(root)/(drawer)/(tabs)/home')
+        }else{ 
+            console.log("USER NOT LOGGED")
+            router.replace('/welcome')
+        }
+    }, [userLogged])
+
 
     useEffect(() => {
-        console.log(tmpUser)
+        // console.log(tmpUser)
     }, [tmpUser])
 
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {

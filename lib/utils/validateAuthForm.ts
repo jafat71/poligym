@@ -1,7 +1,9 @@
+
+const emailRegex = /^[a-zA-Z0-9._%+-]+@epn\.edu\.ec$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*\-_])[A-Za-z\d!@#$%^&*\-_]{8,}$/;
+
 export const validateSignup = (email: string, password: string, confirmPassword: string) => {
     const errors: string[] = [];
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@epn\.edu\.ec$/;
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*\-_])[A-Za-z\d!@#$%^&*\-_]{8,}$/;
 
     if (!emailRegex.test(email)) {
         errors.push("El email debe ser un correo institucional válido (@epn.edu.ec)");
@@ -19,3 +21,18 @@ export const validateSignup = (email: string, password: string, confirmPassword:
     }
 }
 
+export const validateSignIn = (email: string, password: string) => {
+    const errors: string[] = [];
+
+    if (!emailRegex.test(email)) {
+        errors.push("El email debe ser un correo institucional válido (@epn.edu.ec)");
+    }
+
+    if (!(password)) {
+        errors.push("Por favor ingrese su contraseña");
+    }
+
+    return {
+        errors
+    }
+}

@@ -4,7 +4,7 @@ import AboutModal from '@/components/ui/modal/AboutModal';
 import FaqModal from '@/components/ui/modal/FaqModal';
 import TermsModal from '@/components/ui/modal/TermsModal';
 import { useTheme } from '@/context/ThemeContext';
-import { Ionicons } from '@expo/vector-icons';
+import { deleteToken } from '@/lib/token/store';
 import Checkbox from 'expo-checkbox';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
@@ -29,6 +29,16 @@ const Config = () => {
     const toggleAboutModal = () => {
         setAboutVisible(!aboutVisible);
     };
+
+    const handleSignOut = () => {
+        deleteToken('accessToken')
+            .then(() => {
+                router.replace('/(auth)/signin')
+            })
+            .catch((error) => {
+                console.error('Error al cerrar sesión:', error);
+            });
+    }
 
     const textStyle = `text-lg ml-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `
     const subtextStyle = `text-sm ml-2  font-raleway ${isDark ? "text-white" : "text-darkGray-500"} `
@@ -123,9 +133,7 @@ const Config = () => {
 
                     <TouchableOpacity
                         className={itemStyle}
-                        onPress={() => {
-                            router.replace('/(auth)/signin')
-                        }}
+                        onPress={handleSignOut}
                     >
                         <Text className={textStyle}>Salir</Text>
                     </TouchableOpacity>

@@ -11,7 +11,7 @@ import { transformEmailToName } from '@/lib/utils/transform';
 import { validateSignup } from '@/lib/utils/validateAuthForm';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ActivityIndicator, Pressable, Text, View } from 'react-native'
 
 const Signup = () => {
@@ -37,13 +37,11 @@ const Signup = () => {
     setIsLoading(true)
     let name = transformEmailToName(email)
     try {
-      const response = await signUp(name, email, password)
+      const response = await signUp(name, email.toLowerCase(), password)
       saveToken('accessToken', response.accessToken)
       setToken(response.accessToken)
-      console.log(response)
       router.push('/(animated)/form00')
     } catch (error) {
-      console.error('Error details:', error)
       setErrors(["Error al registrar el usuario. Intentelo más tarde"])
     } finally {
       setIsLoading(false)

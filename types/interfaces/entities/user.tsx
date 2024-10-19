@@ -15,7 +15,6 @@ export interface DaysWeek {
 }
 
 export interface User {
-    userNew: boolean;
     userId: string,
     userName: string,
     userEmail: string,

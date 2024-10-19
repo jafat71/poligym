@@ -1,14 +1,15 @@
 import LightDarkButton from '@/components/ui/buttons/LightDarkButton';
-import MainLogoCustomComponent from '@/components/ui/logo/mainLogo';
 import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer'
-import { Pressable, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
 const CustomDrawerContent = () => {
     const { isDark } = useTheme()
+    const { loggedUserInfo} = useUser()
     const labelStyle = {
         color: isDark ? "#fff" : '#1c1c1c',
         fontFamily: 'Raleway-Bold',
@@ -25,11 +26,24 @@ const CustomDrawerContent = () => {
                         flex items-center justify-center mt-2
                         border-[2px] border-eBlue-500 
                         ${isDark ? "" : "bg-darkGray-200 "}`}>
-                            <Text className={` text-xl font-raleway text-eBlue-500 `}>JD</Text>
+                            {
+                                loggedUserInfo?.userProfileImgUrl ? (
+                                    <Image source={{ uri: loggedUserInfo.userProfileImgUrl }} className='w-12 h-12 rounded-full' resizeMode='contain' />
+                                ) : (
+                                    <Text className={` text-xl font-raleway text-eBlue-500 `}>
+                                        {loggedUserInfo?.userName?.split(' ').map(name => name[0]).join('')}
+                                    </Text>
+                                )
+                            }
+
                         </View>
                         <View >
-                            <Text className={`text-lg font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Jhon Doe</Text>
-                            <Text className={`text-lg font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>jhon.doe@epn.edu.ec</Text>
+                            <Text className={`text-lg font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>
+                                {loggedUserInfo?.userName}
+                            </Text>
+                            <Text className={`text-lg font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>
+                                {loggedUserInfo?.userEmail}
+                            </Text>
                         </View>
                     </View>
                 </View>
