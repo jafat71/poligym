@@ -1,5 +1,5 @@
 import { emptyUser } from '@/constants';
-import { getUserInfo, verifyToken } from '@/lib/api/api';
+import { getUserInfo, verifyToken } from '@/lib/api/auth';
 import { getToken } from '@/lib/token/store';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
@@ -11,7 +11,7 @@ interface UserContextType {
     tmpUser: User | null;
     updateInitUserShell: (updatedFields: Partial<User>) => void;
     setEmptyUser: () => void;
-    setToken: Dispatch<SetStateAction<string | null>>;
+    setAccessToken: Dispatch<SetStateAction<string | null>>;
     loggedUserInfo: User | null;
 }
 
@@ -20,7 +20,7 @@ const UserContext = createContext<UserContextType>({
     tmpUser: emptyUser,
     updateInitUserShell: () => { },
     setEmptyUser: () => { },
-    setToken: () => { },
+    setAccessToken: () => { },
     loggedUserInfo: null
 });
 
@@ -32,61 +32,54 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [userLogged, setUserLogged] = useState(false);
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
     const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
-    const [token, setToken] = useState<string | null>(null);
+    const [accessToken, setAccessToken] = useState<string | null>(null);
 
     useEffect(() => {
         getToken('accessToken')
-        .then((token) => {
-            if (token) {
-                setToken(token)
-            }else{
-                setToken(null)
-            }
-        }).catch((error) => {
-            console.error('Error al obtener el token:', error);
-        })
+            .then((token) => {
+                if (token) {
+                    setAccessToken(token)
+                } else {
+                    setAccessToken(null)
+                }
+            }).catch((error) => {
+                console.error('Error al obtener el token:', error);
+            })
     }, [])
+
 
     useEffect(() => {
         const fetchUser = async () => {
-            if (token) {
-                try {
-                    const response = await verifyToken(token)
-                    const userResponse = await getUserInfo(response.user.id, token)
-                    console.log("RESPONSE USER")
-                    console.log(userResponse)
-                    const userMapped = mapUserFromApiToUser(userResponse)
-                    console.log(userMapped)
-                    setLoggedUserInfo(userMapped)
-                    setUserLogged(true)
-                } catch (error) {
-                    setLoggedUserInfo(null)
-                    setUserLogged(false);
-                }
-            } else {
+            try {
+                const response = await verifyToken(accessToken!)
+                const userResponse = await getUserInfo(response.user.id, accessToken!)
+                const userMapped = mapUserFromApiToUser(userResponse)
+                setLoggedUserInfo(userMapped)
+                setUserLogged(true)
+            } catch (error) {
                 setLoggedUserInfo(null)
                 setUserLogged(false);
             }
         };
-
-        fetchUser();
-    }, [token]);
+        if (accessToken) fetchUser();
+    }, [accessToken]);
 
     useEffect(() => {
-        console.log("USER LOGGED", userLogged)
+        const fetchRefreshToken = async () => {
+            console.log("ACCESS TOKEN", accessToken)
+            const refreshToken = await getToken('refreshToken')
+            console.log("REFRESH TOKEN", refreshToken)
+        }
+        fetchRefreshToken()
+    }, [accessToken])
+
+    useEffect(() => {
         if (userLogged) {
-            console.log("USER LOGGED")
             router.replace('/(root)/(drawer)/(tabs)/home')
-        }else{ 
-            console.log("USER NOT LOGGED")
+        } else {
             router.replace('/welcome')
         }
     }, [userLogged])
-
-
-    useEffect(() => {
-        // console.log(tmpUser)
-    }, [tmpUser])
 
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
         if (updatedFields === null) {
@@ -123,14 +116,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const setEmptyUser = () => setLoggedUserInfo(null);
 
     return (
-        <UserContext.Provider value={{ 
-            userLogged, 
-            tmpUser, 
-            updateInitUserShell, 
-            setEmptyUser, 
-            setToken,
-            loggedUserInfo: loggedUserInfo ?? null 
-            }}>
+        <UserContext.Provider value={{
+            userLogged,
+            tmpUser,
+            updateInitUserShell,
+            setEmptyUser,
+            setAccessToken,
+            loggedUserInfo: loggedUserInfo ?? null
+        }}>
             {children}
         </UserContext.Provider>
     );

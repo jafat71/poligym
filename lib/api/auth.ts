@@ -1,10 +1,25 @@
 import axiosInstance from "./config";
+import { getToken, saveToken } from '@/lib/token/store';
+
+const extractRefreshToken = async (cookies: string[]) => {
+    const refreshTokenCookie = cookies.find(cookie => cookie.startsWith('refreshToken='));
+    if (refreshTokenCookie) {
+        let refreshToken = refreshTokenCookie.split(';')[0].split('=')[1];
+        await saveToken('refreshToken', refreshToken);
+    }
+    return null;
+}
 
 export const signUp = async (name: string, email: string, password: string) => {
     try {
         const body = { name, email, password }
         const response = await axiosInstance.post('/auth/register', body);
-        return response.data;
+        const { accessToken } = response.data;
+        const cookies = response.headers['set-cookie'];
+        if (cookies && Array.isArray(cookies)) {
+            await extractRefreshToken(cookies);
+        }
+        return { accessToken };
     } catch (error) {
         console.error('Error al registrar el usuario:');
         throw error;
@@ -14,8 +29,17 @@ export const signUp = async (name: string, email: string, password: string) => {
 export const signin = async (email: string, password: string) => {
     try {
         const body = { email, password }
-        const response = await axiosInstance.post('/auth/login', body);
-        return response.data;
+        const response = await axiosInstance.post('/auth/login', body, {
+            headers: {
+                Authorization: 'none'
+            }
+        });
+        const { accessToken } = response.data;
+        const cookies = response.headers['set-cookie'];
+        if (cookies && Array.isArray(cookies)) {
+            await extractRefreshToken(cookies);
+        }
+        return { accessToken };
     } catch (error: any) {
         console.error('Login error:', error);
 
@@ -48,6 +72,28 @@ export const verifyToken = async (token: string) => {
         return response.data;
     } catch (error) {
         console.error('Error al verificar el token');
+        throw error;
+    }
+};
+
+export const refreshAccessToken = async () => {
+    console.log("REFRESHING ACCESS TOKEN")
+    try {
+        const refreshToken = await getToken('refreshToken');
+        const response = await axiosInstance.post(`/auth/refresh`, {}, {
+            headers: {
+                'Authorization': `Bearer ${refreshToken}`
+            }
+        });
+        const { accessToken, refreshToken: newRefreshToken } = response.data;
+        console.log("NEW ACCESS TOKEN", accessToken)
+
+        await saveToken('accessToken', accessToken);
+        if (newRefreshToken) {
+            await saveToken('refreshToken', newRefreshToken);
+        }
+        return accessToken;
+    } catch (error) {
         throw error;
     }
 };

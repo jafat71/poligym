@@ -5,7 +5,7 @@ import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
 import TermsModal from '@/components/ui/modal/TermsModal';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
-import { signUp } from '@/lib/api/api';
+import { signUp } from '@/lib/api/auth';
 import { saveToken } from '@/lib/token/store';
 import { transformEmailToName } from '@/lib/utils/transform';
 import { validateSignup } from '@/lib/utils/validateAuthForm';
@@ -18,7 +18,7 @@ import { ActivityIndicator, Pressable, Text, View } from 'react-native'
 const Signup = () => {
 
   const { isDark } = useTheme()
-  const { setToken } = useUser()
+  const { setAccessToken } = useUser()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,9 +28,12 @@ const Signup = () => {
   const signupMutation = useMutation({
     mutationFn: ({ name, email, password }: { name: string, email: string, password: string }) =>
       signUp(name, email, password),
-    onSuccess: (response) => {
-      saveToken('accessToken', response.accessToken)
-      setToken(response.accessToken)
+    onSuccess: (data) => {
+      if (!data) return
+      if (data.accessToken) {
+        saveToken('accessToken', data.accessToken);
+        setAccessToken(data.accessToken);
+      }
       router.push('/(animated)/form00')
     },
     onError: (error: any) => {

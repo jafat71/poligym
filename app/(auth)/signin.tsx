@@ -13,13 +13,13 @@ import { useMutation } from '@tanstack/react-query';
 import { useTheme } from '@/context/ThemeContext';
 
 import { validateSignIn } from '@/lib/utils/validateAuthForm';
-import { signin } from '@/lib/api/api';
+import { signin } from '@/lib/api/auth';
 import { saveToken } from '@/lib/token/store';
 
 const Signin = () => {
 
   const { isDark } = useTheme()
-  const { setToken } = useUser()
+  const { setAccessToken } = useUser()
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,8 +30,11 @@ const Signin = () => {
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       signin(email.toLowerCase(), password),
     onSuccess: (data) => {
-      saveToken('accessToken', data.accessToken);
-      setToken(data.accessToken);
+      if (!data) return
+      if (data.accessToken) {
+        saveToken('accessToken', data.accessToken);
+        setAccessToken(data.accessToken);
+      }
       router.push('/(root)/(tabs)/home');
     },
     onError: (error: any) => {

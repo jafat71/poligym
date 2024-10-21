@@ -4,6 +4,7 @@ import AboutModal from '@/components/ui/modal/AboutModal';
 import FaqModal from '@/components/ui/modal/FaqModal';
 import TermsModal from '@/components/ui/modal/TermsModal';
 import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
 import { deleteToken } from '@/lib/token/store';
 import Checkbox from 'expo-checkbox';
 import { router } from 'expo-router';
@@ -13,6 +14,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Config = () => {
     const { isDark } = useTheme()
+    const { setAccessToken } = useUser()
     const [notificationEnabled, setNotificationEnabled] = useState(false);
     const [termsVisible, setTermsVisible] = useState(false);
     const [faqVisible, setFAQVisible] = useState(false);
@@ -30,14 +32,11 @@ const Config = () => {
         setAboutVisible(!aboutVisible);
     };
 
-    const handleSignOut = () => {
-        deleteToken('accessToken')
-            .then(() => {
-                router.replace('/(auth)/signin')
-            })
-            .catch((error) => {
-                console.error('Error al cerrar sesión:', error);
-            });
+    const handleSignOut = async () => {
+        await deleteToken('accessToken')
+        await deleteToken('refreshToken')
+        setAccessToken(null)
+        router.replace('/(auth)/signin')
     }
 
     const textStyle = `text-lg ml-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `
