@@ -1,35 +1,47 @@
 import { BodyColors, MuscleGroups } from '@/components/ui/body/bodyConstants';
 import FemaleBack from '@/components/ui/body/FemaleBack';
+import FemaleFront from '@/components/ui/body/FemaleFront';
+import MaleBack from '@/components/ui/body/MaleBack';
+import MaleFront from '@/components/ui/body/MaleFront';
 import { useTheme } from '@/context/ThemeContext';
-import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 
 export const Exercises = () => {
     const { isDark } = useTheme()
-    const { defaultColor, recentColor, oldColor, hoverColor } = BodyColors;
-    const [muscleColors, setMuscleColors] = useState<MuscleGroups>({
+    const { defaultColor, selectedColor} = BodyColors;
+    
+    let backExercises : MuscleGroups = {
+        abdominals: defaultColor,
         calves: defaultColor,
         quads: defaultColor,
         obliques: defaultColor,
-        abdominals: defaultColor,
         forearms: defaultColor,
         biceps: defaultColor,
         chest: defaultColor,
         shoulders: defaultColor,
         traps: defaultColor,
-        lowerback: defaultColor,
+        lowerback: selectedColor,
         triceps: defaultColor,
         hamstrings: defaultColor,
         glutes: defaultColor,
         lats: defaultColor,
-        "traps-middle": defaultColor,
-    });
+        trapsmiddle: defaultColor
+    }
 
     return (
         <View className={`flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
-            <Text>Exercises</Text>
 
-            <FemaleBack width={400} height={500} muscleColors={muscleColors} />
+            <View className='flex flex-row items-center justify-center'>
+                <FemaleBack width={150} height={250} muscleColors={backExercises} />
+                <FemaleFront width={150} height={250} muscleColors={backExercises} />
+            </View>
+
+            
+            <View className='flex flex-row items-center justify-center '>
+                <MaleBack width={150} height={250} muscleColors={backExercises} />
+                <MaleFront width={150} height={250} muscleColors={backExercises} />
+            </View>
         </View>
     );
 }

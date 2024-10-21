@@ -1,9 +1,7 @@
 
 export const BodyColors = {
-    defaultColor: "#d6d", 
-    recentColor: "#dc2626",
-    oldColor: "#f59e0b",
-    hoverColor: "#8b5cf6"
+    defaultColor: "#0055f9", 
+    selectedColor: "#E11F1C",
 }
 
 export interface MuscleGroups {
@@ -21,5 +19,12 @@ export interface MuscleGroups {
     hamstrings: string;
     glutes: string;
     lats: string;
-    "traps-middle": string;
+    trapsmiddle: string;
+}
+
+export interface BodyProps {
+    width: number;
+    height: number;
+    muscleColors: MuscleGroups;
+    className?: string;
 }

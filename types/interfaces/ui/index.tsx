@@ -1,3 +1,4 @@
+import { MuscleGroups } from "@/components/ui/body/bodyConstants";
 import { ReactNode } from "react";
 import { KeyboardTypeOptions } from "react-native";
 
@@ -57,3 +58,4 @@ export interface FloatingModalProps {
     modalVisible: boolean;
     toggleModal: () => void;
 }
+
