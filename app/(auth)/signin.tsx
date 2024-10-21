@@ -1,17 +1,20 @@
 import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
 import React, { useState } from 'react'
-import { ActivityIndicator, Text, TextInput, View } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
-import { useTheme } from '@/context/ThemeContext';
 import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
+import FormErrorAlert from '@/components/ui/alerts/FormErrorAlert';
+
+import { ActivityIndicator, Text, View } from 'react-native'
 import { router } from 'expo-router';
-import { emptyUser } from '@/constants';
+
 import { useUser } from '@/context/UserContext';
+import { useMutation } from '@tanstack/react-query';
+import { useTheme } from '@/context/ThemeContext';
+
 import { validateSignIn } from '@/lib/utils/validateAuthForm';
 import { signin } from '@/lib/api/api';
 import { saveToken } from '@/lib/token/store';
-import FormErrorAlert from '@/components/ui/alerts/FormErrorAlert';
 
 const Signin = () => {
 
@@ -22,27 +25,26 @@ const Signin = () => {
   const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false)
+  
+  const signinMutation = useMutation({
+    mutationFn: ({ email, password }: { email: string; password: string }) =>
+      signin(email.toLowerCase(), password),
+    onSuccess: (data) => {
+      saveToken('accessToken', data.accessToken);
+      setToken(data.accessToken);
+      router.push('/(root)/(tabs)/home');
+    },
+    onError: (error: any) => {
+      setErrors([error.message]);
+    },
+  });
 
   const handleSubmit = async () => {
-    let { errors } = validateSignIn(email,password)
+    const { errors } = validateSignIn(email, password)
     setErrors(errors)
     if (errors.length > 0) return
-
-    setIsLoading(true)
-    try {
-      const response = await signin(email.toLowerCase(), password)
-      saveToken('accessToken', response.accessToken)
-      setToken(response.accessToken)
-      router.push('/(root)/(tabs)/home')
-    } catch (error: any) {
-      setErrors([error.message])
-    } finally {
-      setIsLoading(false)
-    }
-
+    signinMutation.mutate({ email, password });
   }
-
 
   return (
 
@@ -96,10 +98,10 @@ const Signin = () => {
 
         <CTAButtonPrimary
           onPress={handleSubmit}
-          text={isLoading ? 'Procesando...' : 'Ingresar'}
-          disabled={isLoading}
+          text={signinMutation.isPending ? 'Procesando...' : 'Ingresar'}
+          disabled={signinMutation.isPending}
         >
-          {isLoading && (
+          {signinMutation.isPending && (
             <ActivityIndicator
               size="small"
               color="white"

@@ -10,6 +10,7 @@ import { saveToken } from '@/lib/token/store';
 import { transformEmailToName } from '@/lib/utils/transform';
 import { validateSignup } from '@/lib/utils/validateAuthForm';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useMutation } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import React, { useState } from 'react'
 import { ActivityIndicator, Pressable, Text, View } from 'react-native'
@@ -23,7 +24,19 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<string[]>([]);
   const [termsVisible, setTermsVisible] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+
+  const signupMutation = useMutation({
+    mutationFn: ({ name, email, password }: { name: string, email: string, password: string }) =>
+      signUp(name, email, password),
+    onSuccess: (response) => {
+      saveToken('accessToken', response.accessToken)
+      setToken(response.accessToken)
+      router.push('/(animated)/form00')
+    },
+    onError: (error: any) => {
+      setErrors([error.message || "Error al registrar el usuario. Inténtelo más tarde"])
+    },
+  });
 
   const toggleTermseModal = () => {
     setTermsVisible(!termsVisible);
@@ -34,19 +47,8 @@ const Signup = () => {
     setErrors(errors)
     if (errors.length > 0) return
 
-    setIsLoading(true)
     let name = transformEmailToName(email)
-    try {
-      const response = await signUp(name, email.toLowerCase(), password)
-      saveToken('accessToken', response.accessToken)
-      setToken(response.accessToken)
-      router.push('/(animated)/form00')
-    } catch (error) {
-      setErrors(["Error al registrar el usuario. Intentelo más tarde"])
-    } finally {
-      setIsLoading(false)
-    }
-
+    signupMutation.mutate({ name, email: email.toLowerCase(), password });
   }
 
   return (
@@ -103,10 +105,10 @@ const Signup = () => {
 
         <CTAButtonPrimary
           onPress={handleSubmit}
-          text={isLoading ? 'Procesando...' : 'Registrarse'}
-          disabled={isLoading}
+          text={signupMutation.isPending ? 'Procesando...' : 'Registrarse'}
+          disabled={signupMutation.isPending}
         >
-          {isLoading && (
+          {signupMutation.isPending && (
             <ActivityIndicator
               size="small"
               color="white"
