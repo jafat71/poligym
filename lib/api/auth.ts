@@ -110,3 +110,17 @@ export const getUserInfo = async (id: string, token: string) => {
     }
 };
 
+export const updatePassword = async (userId: string, currentPassword: string, newPassword: string, confirmPassword: string, token: string) => {
+    console.log("UPDATE PASSWORD", userId, currentPassword, newPassword, confirmPassword, token)
+    try {
+        const body = { userId, currentPassword, newPassword, confirmNewPassword: confirmPassword }
+        const response = await axiosInstance.patch(`/auth/change-password`,
+            body, 
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error al actualizar la contraseña');
+        throw error;
+    }
+}

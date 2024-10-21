@@ -36,3 +36,27 @@ export const validateSignIn = (email: string, password: string) => {
         errors
     }
 }
+
+export const validateUpdatePassword = (currentPassword: string, newPassword: string, confirmPassword: string) => {
+    const errors: string[] = [];
+
+    if (!passwordRegex.test(newPassword)) {
+        errors.push("La nueva contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales");
+    }
+
+    if (newPassword !== confirmPassword) {
+        errors.push("Las contraseñas no coinciden");
+    }
+
+    if (!currentPassword) {
+        errors.push("Por favor ingrese su contraseña actual");
+    }
+
+    if (currentPassword === newPassword) {
+        errors.push("La nueva contraseña no puede ser igual a la contraseña actual");
+    }
+
+    return {
+        errors
+    }
+}

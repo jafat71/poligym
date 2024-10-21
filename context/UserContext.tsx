@@ -13,6 +13,7 @@ interface UserContextType {
     setEmptyUser: () => void;
     setAccessToken: Dispatch<SetStateAction<string | null>>;
     loggedUserInfo: User | null;
+    accessToken: string | null;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -21,7 +22,8 @@ const UserContext = createContext<UserContextType>({
     updateInitUserShell: () => { },
     setEmptyUser: () => { },
     setAccessToken: () => { },
-    loggedUserInfo: null
+    loggedUserInfo: null,
+    accessToken: null
 });
 
 interface UserProviderProps {
@@ -122,7 +124,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             updateInitUserShell,
             setEmptyUser,
             setAccessToken,
-            loggedUserInfo: loggedUserInfo ?? null
+            loggedUserInfo: loggedUserInfo ?? null,
+            accessToken
         }}>
             {children}
         </UserContext.Provider>
