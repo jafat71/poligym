@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Text, TextInput, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
-import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
+import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
+import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
 import { useTheme } from '@/context/ThemeContext';
-import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
+import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
 import { router } from 'expo-router';
 
 const Forgot = () => {

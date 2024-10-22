@@ -51,7 +51,6 @@ export const termsContent = [
   }
 ];
 
-
 export const FAQs = [
   {
     title: "¿Puedo encontrar ejercicios específicos en la app?",
@@ -84,7 +83,6 @@ export const FAQs = [
 ];
 
 export let emptyUser: User = {
-  userNew: true,
   userId: '',
   userName: '',
   userEmail: '',
@@ -118,7 +116,6 @@ export const genreMapper: Record<Genre, number> = {
 }
 export const genresOptions = ['Másculino', 'Femenino', 'No Binario']
 
-
 export const objetiveMapper: Record<Objetive, number> = {
   'BAJAR_DE_PESO': 0,
   'GANAR_MUSCULO': 1,
@@ -140,14 +137,11 @@ export const medicProblemMapper: Record<MedicalProblem, number> = {
 }
 export const medicalProblemsOptions = ['Ninguno', 'Lesión', 'Alergía']
 
-
 export const scheduleMapper: Record<Schedule, number> = {
   'AM': 0,
   'PM': 1,
 }
-
 export const scheduleOptions = ['AM', 'PM']
-
 
 export const TrainingPlans = [
   {
@@ -178,3 +172,177 @@ export const OnboardingItems = [
     image: 'https://img.freepik.com/premium-photo/closeup-gym-dumbbells-floor-bokeh-red-blue-fitness-gymnasium-background-wallpaper-copy_1162810-11138.jpg?w=740',
   },
 ];
+
+const defaultProfilePic = 'https://api.dicebear.com/9.x/initials/svg?seed=User';
+
+export const socialPosts = [
+  {
+      id: 1,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Carlos',
+      fecha: '2024-10-15',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 70 kg',
+      likes: 12,
+      ejercicio: 'Press de Banca con Barra',
+      peso: 70,
+      repeticiones: 10,
+  },
+  {
+      id: 2,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Ana',
+      fecha: '2024-10-16',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 100 kg',
+      likes: 5,
+      ejercicio: 'Sentadillas con Barra',
+      peso: 100,
+      repeticiones: 10,
+  },
+  {
+      id: 3,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Pedro',
+      fecha: '2024-10-17',
+      publico: true,
+      oculto: true,
+      mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barra con un peso de 120 kg',
+      likes: 3,
+      ejercicio: 'Peso Muerto con Barra',
+      peso: 120,
+      repeticiones: 10,
+  },
+  {
+      id: 4,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Sofía',
+      fecha: '2024-10-18',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 80 kg',
+      likes: 8,
+      ejercicio: 'Press de Banca con Barra',
+      peso: 80,
+      repeticiones: 10,
+    },
+  {
+      id: 5,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Javier',
+      fecha: '2024-10-19',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 110 kg',
+      likes: 2,
+      ejercicio: 'Sentadillas con Barra',
+      peso: 110,
+      repeticiones: 10,
+  },
+  {
+      id: 6,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'María',
+      fecha: '2024-10-20',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barra con un peso de 130 kg',
+      likes: 10,
+      ejercicio: 'Peso Muerto con Barra',
+      peso: 130,
+      repeticiones: 10,
+  },
+  {
+      id: 7,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Luis',
+      fecha: '2024-10-21',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 90 kg',
+      likes: 6,
+      ejercicio: 'Press de Banca con Barra',
+        peso: 90,
+      repeticiones: 10,
+  },
+  {
+      id: 8,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Elena',
+      fecha: '2024-10-22',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 120 kg',
+      likes: 4,
+      ejercicio: 'Sentadillas con Barra',
+        peso: 120,
+      repeticiones: 10,
+  },
+  {
+      id: 9,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Miguel',
+      fecha: '2024-10-23',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barra con un peso de 140 kg',
+      likes: 7,
+      ejercicio: 'Peso Muerto con Barra',
+      peso: 140,
+      repeticiones: 10,
+    },
+  {
+      id: 10,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Laura',
+      fecha: '2024-10-24',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 100 kg',
+      likes: 9,
+      ejercicio: 'Press de Banca con Barra',
+      peso: 100,
+      repeticiones: 10,
+  },
+  {
+      id: 11,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Raul',
+      fecha: '2024-10-25',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 130 kg',
+      likes: 11,
+      ejercicio: 'Sentadillas con Barra',
+      peso: 130,
+      repeticiones: 10,
+  },
+  {
+      id: 12,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Carmen',
+      fecha: '2024-10-26',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barras con un peso de 150 kg',
+      likes: 1,
+      ejercicio: 'Peso Muerto con Barras',
+      peso: 150,
+      repeticiones: 10, 
+  },
+  {
+      id: 13,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Jorge',
+      fecha: '2024-10-27',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 110 kg',
+      likes: 13,
+      ejercicio: 'Press de Banca con Barra',
+      peso: 110,
+      repeticiones: 10,
+  }
+]

@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
-import MainLogoGradientComponent from '@/components/ui/logo/mainLogoGrandient';
+import MainLogoGradientComponent from '@/components/ui/common/logo/mainLogoGrandient';
 import { FloatingMessage } from '@/components/animatedUi/FloatingMessage';
 import { router } from 'expo-router';
 import { useUser } from '@/context/UserContext';

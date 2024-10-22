@@ -1,7 +1,7 @@
-import WeekChecklistComponent from '@/components/ui/buttons/Checklist';
-import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
-import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
-import ImagePicker from '@/components/ui/image/ImagePicker';
+import WeekChecklistComponent from '@/components/ui/common/buttons/Checklist';
+import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
+import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
+import ImagePicker from '@/components/ui/common/image/ImagePicker';
 import { experienceOptions, genreMapper, genresOptions, medicalProblemsOptions, objetiveOptions, scheduleOptions } from '@/constants';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';

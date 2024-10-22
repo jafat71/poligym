@@ -10,6 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
 import { useUser } from "@/context/UserContext";
+import SearchBar from "@/components/ui/common/searchbar/SearchBar";
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -76,8 +77,15 @@ export default function TabLayout() {
                         </Pressable>
                     </View>
                 </View>
-            </View>
 
+            </View>
+            <SearchBar
+                placeholder='Buscar en tu perfil'
+                onSearch={() => { }}
+                onClear={() => { }}
+                value=''
+                onChangeText={() => { }}
+            />
             <MaterialTopTabs>
                 <MaterialTopTabs.Screen name="public" options={{
                     title: "Público",

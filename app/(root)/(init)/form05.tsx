@@ -1,4 +1,4 @@
-import ImagePicker from '@/components/ui/image/ImagePicker';
+import ImagePicker from '@/components/ui/common/image/ImagePicker';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import React, { useEffect, useState } from 'react';

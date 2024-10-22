@@ -1,5 +1,5 @@
-import WeekChecklistComponent from '@/components/ui/buttons/Checklist';
-import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
+import WeekChecklistComponent from '@/components/ui/common/buttons/Checklist';
+import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
 import { scheduleMapper, scheduleOptions } from '@/constants';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';

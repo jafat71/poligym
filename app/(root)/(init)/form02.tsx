@@ -1,4 +1,4 @@
-import RadioButtonIconComponent from '@/components/ui/buttons/RadioButtonIcon';
+import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { Experience, Objetive } from '@/types/interfaces/entities/user';

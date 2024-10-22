@@ -2,7 +2,7 @@ import { router, Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from '@/context/ThemeContext';
 import { Pressable, Text, View } from 'react-native';
-import MainLogoCustomComponent from '@/components/ui/logo/mainLogo';
+import MainLogoCustomComponent from '@/components/ui/common/logo/mainLogo';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 export default function TabsLayout() {
 
@@ -126,7 +126,36 @@ export default function TabsLayout() {
         tabBarLabelStyle: { color: tabBarTextColor },
       }} />
       <Tabs.Screen name="feed" options={{
-        headerShown: true,
+        headerTitle: () => (
+          <View className='w-full items-center p-4'>
+            <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Comunidad</Text>
+          </View>
+        ),
+        headerLeft: () => (
+          <Pressable
+            onPress={() => {
+              router.navigate('/(drawer)/(tabs)/home');
+            }}
+            className='ml-4'
+          >
+            <Ionicons name="arrow-back" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+          </Pressable>
+        ),
+        headerRight: () => (
+          <Pressable
+            onPress={() => {
+              router.navigate('/(config)/config')
+            }}
+            className='mr-4'
+          >
+            <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+          </Pressable>
+        ),
+        headerStyle: {
+          backgroundColor: isDark ? '#1c1c1c' : '#fff',
+        },
+        headerTintColor: isDark ? "#fff" : "#1c1c1c",
+        headerTitleAlign: 'center',
         tabBarIcon: ({ focused }) => (
           <Ionicons name="people-sharp" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
@@ -140,10 +169,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="(profile)" options={{
         headerTitle: () => (
           <View className='w-full items-center p-4'>
-            <MainLogoCustomComponent
-              height='24'
-              principal={isDark ? "#fff" : "#1c1c1c"}
-            />
+            <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Perfil</Text>
           </View>
         ),
         headerLeft: () => (

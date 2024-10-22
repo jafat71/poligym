@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { Text, TextInput, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
+import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import { useTheme } from '@/context/ThemeContext';
-import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
+import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
 import { router } from 'expo-router';
 import { StackActions } from '@react-navigation/native';
-import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
+import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
 const Delete = () => {
   const { isDark } = useTheme()
   const [password, setPassword] = useState('');

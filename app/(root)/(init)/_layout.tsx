@@ -1,13 +1,11 @@
-import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
-import SkipButton from '@/components/ui/buttons/SkipButton';
-import FormHeaderComponent from '@/components/ui/header/FormHeaderComponent';
+import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
+import FormHeaderComponent from '@/components/ui/common/header/FormHeaderComponent';
 import { useTheme } from '@/context/ThemeContext';
 import useRouteMappinginitForm from '@/hooks/useRouteMappinginitForm';
 import { router, Slot, usePathname } from 'expo-router';
 import { KeyboardAvoidingView, Platform, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 
 export default function RootLayout() {
   const { isDark } = useTheme()
@@ -22,7 +20,6 @@ export default function RootLayout() {
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
           className='w-full px-2'
-
         >
 
           <FormHeaderComponent />

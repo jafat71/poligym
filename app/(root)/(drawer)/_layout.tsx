@@ -1,4 +1,4 @@
-import LightDarkButton from '@/components/ui/buttons/LightDarkButton';
+import LightDarkButton from '@/components/ui/common/buttons/LightDarkButton';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';

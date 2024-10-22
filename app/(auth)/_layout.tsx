@@ -1,4 +1,4 @@
-import TopHeaderComponent from '@/components/ui/header/TopHeaderComponent';
+import TopHeaderComponent from '@/components/ui/common/header/TopHeaderComponent';
 import { useTheme } from '@/context/ThemeContext';
 import { Slot } from 'expo-router';
 import { ScrollView } from 'react-native-gesture-handler';

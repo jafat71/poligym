@@ -1,8 +1,8 @@
-import FormErrorAlert from '@/components/ui/alerts/FormErrorAlert';
-import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
-import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
-import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
-import TermsModal from '@/components/ui/modal/TermsModal';
+import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
+import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
+import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
+import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
+import TermsModal from '@/components/ui/common/modal/TermsModal';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { signUp } from '@/lib/api/auth';

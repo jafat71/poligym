@@ -1,8 +1,8 @@
 
-import LightDarkButton from '@/components/ui/buttons/LightDarkButton';
-import AboutModal from '@/components/ui/modal/AboutModal';
-import FaqModal from '@/components/ui/modal/FaqModal';
-import TermsModal from '@/components/ui/modal/TermsModal';
+import LightDarkButton from '@/components/ui/common/buttons/LightDarkButton';
+import AboutModal from '@/components/ui/common/modal/AboutModal';
+import FaqModal from '@/components/ui/common/modal/FaqModal';
+import TermsModal from '@/components/ui/common/modal/TermsModal';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { deleteToken } from '@/lib/token/store';

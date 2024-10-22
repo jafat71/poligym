@@ -1,9 +1,9 @@
-import CTAButtonPrimary from '@/components/ui/buttons/CtaButtonPrimary';
+import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import React, { useState } from 'react'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import AuthSupportButton from '@/components/ui/buttons/AuthSupportButton';
-import IconTextInputForm from '@/components/ui/form/IconTextInputForm';
-import FormErrorAlert from '@/components/ui/alerts/FormErrorAlert';
+import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
+import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
+import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
 
 import { ActivityIndicator, Text, View } from 'react-native'
 import { router } from 'expo-router';

@@ -1,8 +1,8 @@
-import { BodyColors, MuscleGroups } from '@/components/ui/body/bodyConstants';
-import FemaleBack from '@/components/ui/body/FemaleBack';
-import FemaleFront from '@/components/ui/body/FemaleFront';
-import MaleBack from '@/components/ui/body/MaleBack';
-import MaleFront from '@/components/ui/body/MaleFront';
+import { BodyColors, MuscleGroups } from '@/components/ui/common/body/bodyConstants';
+import FemaleBack from '@/components/ui/common/body/FemaleBack';
+import FemaleFront from '@/components/ui/common/body/FemaleFront';
+import MaleBack from '@/components/ui/common/body/MaleBack';
+import MaleFront from '@/components/ui/common/body/MaleFront';
 import { useTheme } from '@/context/ThemeContext';
 import React from 'react';
 import { View } from 'react-native';

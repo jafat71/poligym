@@ -1,5 +1,5 @@
 
-import NumericInputInitForm from '@/components/ui/form/NumericInputInitForm';
+import NumericInputInitForm from '@/components/ui/common/form/NumericInputInitForm';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
