@@ -1,21 +1,43 @@
 import React, { useState } from 'react'
-import { Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Text, TextInput, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
 import { useTheme } from '@/context/ThemeContext';
 import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
 import { router } from 'expo-router';
+import { forgotPassword } from '@/lib/api/auth';
+import { useMutation } from '@tanstack/react-query';
+import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
+import FormSuccessAlert from '@/components/ui/common/alerts/FormSuccesAlert';
+import { validateForgotPassword } from '@/lib/utils/validateAuthForm';
 
 const Forgot = () => {
   const { isDark } = useTheme()
   const [email, setEmail] = useState('');
+  const [errors, setErrors] = useState<string[]>([]);
+  const [successMessage, setSuccessMessage] = useState('');
 
+  const forgotPasswordMutation = useMutation({
+    mutationFn: ({ email }: { email: string }) => forgotPassword(email),
+    onSuccess: (data) => {
+      console.log('success', data)
+      setSuccessMessage('Se ha enviado un correo con las instrucciones para recuperar la contraseña');
+      setTimeout(() => {
+        router.push('/(auth)/signin')
+      }, 3000);
+    },
+    onError: (error: any) => {
+      setErrors([error.message]);
+    },
+  })
   const handleSubmit = () => {
-    console.log({
-      email,
-    });
+    const { errors } = validateForgotPassword(email)
+    setErrors(errors)
+    if (errors.length > 0) return
+    forgotPasswordMutation.mutate({ email });
   };
+
   return (
     <View className='mt-2 rounded-lg '>
 
@@ -53,11 +75,27 @@ const Forgot = () => {
         </View>
 
         <CTAButtonPrimary
-          onPress={() => {
-            router.push('/(auth)/signin')
-          }} text='Enviar'
-        />
+          onPress={handleSubmit}
+          text={forgotPasswordMutation.isPending ? 'Procesando...' : 'Enviar'}
+          disabled={forgotPasswordMutation.isPending}
+        >
+          {forgotPasswordMutation.isPending && (
+            <ActivityIndicator
+              size="small"
+              color="white"
+              style={{ marginLeft: 10 }}
+            />
+          )}
+        </CTAButtonPrimary>
       </View>
+
+      <FormSuccessAlert
+        message={successMessage}
+      />
+      <FormErrorAlert
+        errors={errors}
+      />
+
     </View>
   )
 }

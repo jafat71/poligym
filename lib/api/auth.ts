@@ -124,3 +124,13 @@ export const updatePassword = async (userId: string, currentPassword: string, ne
         throw error;
     }
 }
+
+export const forgotPassword = async (email: string) => {
+    try {
+        const response = await axiosInstance.post(`/auth/forgot-password`, { email });
+        return response.data;
+    } catch (error) {
+        console.error('Error al enviar el correo para restablecer la contraseña');
+        throw error;
+    }
+}

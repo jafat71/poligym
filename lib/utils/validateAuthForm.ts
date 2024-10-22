@@ -60,3 +60,15 @@ export const validateUpdatePassword = (currentPassword: string, newPassword: str
         errors
     }
 }
+
+export const validateForgotPassword = (email: string) => {
+    const errors: string[] = [];
+
+    if (!emailRegex.test(email)) {
+        errors.push("El email debe ser un correo institucional válido (@epn.edu.ec)");
+    }
+
+    return {
+        errors
+    }
+}
