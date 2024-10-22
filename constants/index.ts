@@ -346,3 +346,25 @@ export const socialPosts = [
       repeticiones: 10,
   }
 ]
+
+export const exampleUser = {
+  id: 1,
+  nombre: 'Carlos',
+  correo: 'carlos@example.com',
+  rol: 'Usuario',
+  edad: 25,
+  oculto: false,
+  genero: 'Masculino',
+  diasActividad: 5,
+  peso: 55,
+  altura: 163,
+  objetivo: 'Ganar Músculo',
+  estadoFisico: 'Principiante',
+  comentarios: 10,
+  notificaciones: true,
+  problemasMedicos: 'Ninguno',
+  detalleProblemasMedicos: '',
+  horario: 'AM',
+  diasSeleccionados: ['Lunes', 'Martes', 'Viernes'],
+  imagenPerfil: defaultProfilePic,
+}

@@ -115,7 +115,36 @@ export default function TabsLayout() {
         tabBarLabelStyle: { color: tabBarTextColor },
       }} />
       <Tabs.Screen name="stats" options={{
-        headerShown: true,
+        headerTitle: () => (
+          <View className='w-full items-center p-4'>
+            <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Estadísticas</Text>
+          </View>
+        ),
+        headerLeft: () => (
+          <Pressable
+            onPress={() => {
+              router.navigate('/(drawer)/(tabs)/home');
+            }}
+            className='ml-4'
+          >
+            <Ionicons name="arrow-back" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+          </Pressable>
+        ),
+        headerRight: () => (
+          <Pressable
+            onPress={() => {
+              router.navigate('/(config)/config')
+            }}
+            className='mr-4'
+          >
+            <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+          </Pressable>
+        ),
+        headerStyle: {
+          backgroundColor: isDark ? '#1c1c1c' : '#fff',
+        },
+        headerTintColor: isDark ? "#fff" : "#1c1c1c",
+        headerTitleAlign: 'center',
         tabBarIcon: ({ focused }) => (
           <Ionicons name="bar-chart" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
