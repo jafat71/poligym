@@ -79,13 +79,7 @@ export default function TabLayout() {
                 </View>
 
             </View>
-            <SearchBar
-                placeholder='Buscar en tu perfil'
-                onSearch={() => { }}
-                onClear={() => { }}
-                value=''
-                onChangeText={() => { }}
-            />
+
             <MaterialTopTabs>
                 <MaterialTopTabs.Screen name="public" options={{
                     title: "Público",
@@ -118,6 +112,16 @@ export default function TabLayout() {
                     }
                 }} />
             </MaterialTopTabs>
+
+            <Pressable 
+                onPress={() => {
+                    //TODO: OPEN SEARCHBAR
+                }}
+            className="absolute bottom-0 right-0 w-1/4 p-4">
+                <View className="flex flex-row items-center justify-center rounded-2xl bg-eBlue-500 p-2">
+                    <Ionicons name="search" size={34} color={"#fff"} />
+                </View>
+            </Pressable>
         </SafeAreaView>
     );
 }
