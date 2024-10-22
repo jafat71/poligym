@@ -57,10 +57,6 @@ export const FAQs = [
     description: "Sí, en la sección 'Ejercicios' puedes buscar ejercicios por categoría (cardio, fuerza, estiramientos, etc.) o por grupo muscular. Cada ejercicio incluye una descripción y video tutorial."
   },
   {
-    title: "¿Cómo me uno a la comunidad de la universidad en la app?",
-    description: "Puedes unirte a la comunidad seleccionando la opción 'Comunidad' en la app. Ahí podrás compartir tus logros, comentar en publicaciones de otros usuarios y unirte a grupos de interés dentro de la comunidad universitaria."
-  },
-  {
     title: "¿Puedo seguir el progreso de mis entrenamientos?",
     description: "Sí, la app registra tu actividad cada vez que completas una rutina o ejercicio. En la sección 'Mi progreso' puedes ver estadísticas de tus entrenamientos, incluyendo tiempo invertido, ejercicios completados y calorías estimadas."
   },
@@ -73,12 +69,8 @@ export const FAQs = [
     description: "Sí, la app te puede recomendar ejercicios basados en tus objetivos de fitness. Solo tienes que ingresar tus preferencias en el apartado 'Mis objetivos', y recibirás sugerencias personalizadas."
   },
   {
-    title: "¿Puedo modificar mis rutinas después de crearlas?",
-    description: "Sí, puedes modificar cualquier rutina que hayas creado en la app. Solo ve a 'Mis rutinas', selecciona la que deseas editar y ajusta los ejercicios, series o repeticiones según tus necesidades."
-  },
-  {
-    title: "¿La app ofrece soporte técnico o ayuda?",
-    description: "Si tienes algún problema con la app, puedes acceder a la sección 'Soporte' desde el menú principal. Ahí encontrarás preguntas frecuentes y la opción de contactar con el equipo de soporte de la universidad."
+    title: "¿Cómo puedo eliminar mi cuenta?",
+    description: "Si deseas eliminar o desactivar tu cuenta, por favor ponte en contacto con un administrador."
   }
 ];
 

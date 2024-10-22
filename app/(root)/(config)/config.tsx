@@ -119,17 +119,6 @@ const Config = () => {
                         <Text className={textStyle}>Acerca de</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity className={itemStyle}
-
-                        onPress={() => {
-                            router.push('/(auth)/delete')
-                        }}
-                    >
-
-                        <Text className={textStyle}>Eliminar Cuenta</Text>
-                    </TouchableOpacity>
-
-
                     <TouchableOpacity
                         className={itemStyle}
                         onPress={handleSignOut}

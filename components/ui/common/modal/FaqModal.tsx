@@ -33,7 +33,7 @@ const FaqModal = ({
                     <View className={`flex items-start justify-center `}>
                         <Text className={`text-2xl font-ralewayBold text-center
                 ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                            FAQ
+                            Preguntas Frecuentes
                         </Text>
 
                         {FAQs.map((term, index) => (
