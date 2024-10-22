@@ -72,3 +72,26 @@ export const validateForgotPassword = (email: string) => {
         errors
     }
 }
+
+export const validateResetPassword = (code: string, newPassword: string, confirmNewPassword: string) => {
+
+    const errors: string[] = [];
+
+    if (!code) {
+        errors.push("Por favor ingrese su codigo de recuperación");
+    }
+
+    if (!passwordRegex.test(newPassword)) {
+        errors.push("La nueva contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales");
+    }
+
+    if (newPassword !== confirmNewPassword) {
+        errors.push("Las contraseñas no coinciden");
+    }
+
+
+
+    return {
+        errors
+    }
+}

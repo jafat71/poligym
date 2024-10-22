@@ -6,24 +6,43 @@ import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton'
 import { useTheme } from '@/context/ThemeContext';
 import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
 import { router } from 'expo-router';
-import { forgotPassword } from '@/lib/api/auth';
+import { forgotPassword, resetPassword } from '@/lib/api/auth';
 import { useMutation } from '@tanstack/react-query';
 import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
 import FormSuccessAlert from '@/components/ui/common/alerts/FormSuccesAlert';
-import { validateForgotPassword } from '@/lib/utils/validateAuthForm';
+import { validateForgotPassword, validateResetPassword } from '@/lib/utils/validateAuthForm';
 
 const Forgot = () => {
   const { isDark } = useTheme()
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('')
+  const [code, setCode] = useState('');
+  const [newPassword, setnewPassword] = useState('')
+  const [confirmNewPassword, setconfirmNewPassword] = useState('');
+
   const [errors, setErrors] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState('');
+  const [resetSent, setResetSent] = useState(false);
 
   const forgotPasswordMutation = useMutation({
     mutationFn: ({ email }: { email: string }) => forgotPassword(email),
-    onSuccess: (data) => {
-      console.log('success', data)
+    onSuccess: () => {
       setSuccessMessage('Se ha enviado un correo con las instrucciones para recuperar la contraseña');
+      setResetSent(true);
       setTimeout(() => {
+        setSuccessMessage('');
+      }, 5000);
+    },
+    onError: (error: any) => {
+      setErrors([error.message]);
+    },
+  })
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: ({ code, newPassword }: { code: string; newPassword: string }) => resetPassword(code, newPassword),
+    onSuccess: (data) => {
+      setSuccessMessage('Contraseña restablecida correctamente');
+      setTimeout(() => {
+        setSuccessMessage('');
         router.push('/(auth)/signin')
       }, 3000);
     },
@@ -31,11 +50,19 @@ const Forgot = () => {
       setErrors([error.message]);
     },
   })
-  const handleSubmit = () => {
+
+  const handleSendMailSubmit = () => {
     const { errors } = validateForgotPassword(email)
     setErrors(errors)
     if (errors.length > 0) return
     forgotPasswordMutation.mutate({ email });
+  };
+
+  const handleResetPasswordSubmit = () => {
+    const { errors } = validateResetPassword(code, newPassword, confirmNewPassword)
+    setErrors(errors)
+    if (errors.length > 0) return
+    resetPasswordMutation.mutate({ code, newPassword });
   };
 
   return (
@@ -51,33 +78,89 @@ const Forgot = () => {
         </View>
 
         <View className={`py-5 `}>
-          <IconTextInputForm
-            title='Email Institucional'
-            icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-            inputKeyboardType='email-address'
-            inputPlaceholder='tu.nombre@epn.edu.ec'
-            inputValue={email}
-            inputOnChangeText={setEmail}
-            inputSecure={false}
-          />
+
+          {
+            !resetSent ? (
+              <>
+                <IconTextInputForm
+                  title='Email Institucional'
+                  icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                  inputKeyboardType='email-address'
+                  inputPlaceholder='tu.nombre@epn.edu.ec'
+                  inputValue={email}
+                  inputOnChangeText={setEmail}
+                  inputSecure={false}
+                />
+
+                <View className='mb-5'>
+                  <AuthSupportButton
+                    title='Regresar al login'
+                    onPress={() => {
+                      router.push('/(auth)/signin')
+                    }}
+                  />
+
+                  <AuthSupportButton
+                    title='Ya tengo mi código'
+                    onPress={() => {
+                      setResetSent(true);
+                    }}
+                  />
+
+
+                </View>
+              </>
+            ) : (
+              <>
+                <IconTextInputForm
+                  title='Código de recuperación'
+                  icon={<Ionicons name="key-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                  inputKeyboardType='default'
+                  inputPlaceholder='***********************************'
+                  inputValue={code}
+                  inputOnChangeText={setCode}
+                  inputSecure={false}
+                />
+
+                <IconTextInputForm
+                  title='Nueva Contraseña'
+                  icon={<Ionicons name="shield-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                  inputKeyboardType='ascii-capable'
+                  inputPlaceholder='*********'
+                  inputValue={newPassword}
+                  inputOnChangeText={setnewPassword}
+                  inputSecure={true}
+                />
+
+                <IconTextInputForm
+                  title='Confirmar Nueva Contraseña'
+                  icon={<Ionicons name="shield-checkmark-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                  inputKeyboardType='ascii-capable'
+                  inputPlaceholder='*********'
+                  inputValue={confirmNewPassword}
+                  inputOnChangeText={setconfirmNewPassword}
+                  inputSecure={true}
+                />
+              </>
+            )
+          }
 
         </View>
 
-        <View className='mb-5'>
-          <AuthSupportButton
-            title='Regresar al login'
-            onPress={() => {
-              router.push('/(auth)/signin')
-            }}
-          />
-
-
-        </View>
 
         <CTAButtonPrimary
-          onPress={handleSubmit}
-          text={forgotPasswordMutation.isPending ? 'Procesando...' : 'Enviar'}
-          disabled={forgotPasswordMutation.isPending}
+          onPress={() => {
+            resetSent ? handleResetPasswordSubmit() : handleSendMailSubmit()
+          }}
+          text={
+            resetSent
+              ?
+              resetPasswordMutation.isPending ? 'Procesando...' : 'Restablecer'
+              :
+              forgotPasswordMutation.isPending ? 'Procesando...' : 'Enviar'}
+          disabled={
+            forgotPasswordMutation.isPending || resetPasswordMutation.isPending
+          }
         >
           {forgotPasswordMutation.isPending && (
             <ActivityIndicator
