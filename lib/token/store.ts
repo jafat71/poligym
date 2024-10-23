@@ -10,7 +10,7 @@ export const getToken = async (key: string) => {
     }
 }
 
-export const saveToken = async (key: string, value: string) => {
+export const saveToken = async (key: string, value: string ) => {
     try {
         return SecureStore.setItemAsync(key, value);
     } catch (err) {

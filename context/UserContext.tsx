@@ -1,8 +1,9 @@
 import { emptyUser } from '@/constants';
-import { getUserInfo, verifyToken } from '@/lib/api/auth';
-import { getToken } from '@/lib/token/store';
+import { getUserInfo, refreshAccessToken, verifyToken } from '@/lib/api/auth';
+import { getToken, saveToken } from '@/lib/token/store';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 
@@ -11,7 +12,7 @@ interface UserContextType {
     tmpUser: User | null;
     updateInitUserShell: (updatedFields: Partial<User>) => void;
     setEmptyUser: () => void;
-    setAccessToken: Dispatch<SetStateAction<string | null>>;
+    setAccessToken: (newToken: string|null) => Promise<void>;
     loggedUserInfo: User | null;
     accessToken: string | null;
 }
@@ -21,7 +22,7 @@ const UserContext = createContext<UserContextType>({
     tmpUser: emptyUser,
     updateInitUserShell: () => { },
     setEmptyUser: () => { },
-    setAccessToken: () => { },
+    setAccessToken: async () => { },
     loggedUserInfo: null,
     accessToken: null
 });
@@ -34,53 +35,95 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [userLogged, setUserLogged] = useState(false);
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
     const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
-    const [accessToken, setAccessToken] = useState<string | null>(null);
+    const queryClient = useQueryClient();
 
-    useEffect(() => {
-        getToken('accessToken')
-            .then((token) => {
-                if (token) {
-                    setAccessToken(token)
-                } else {
-                    setAccessToken(null)
-                }
-            }).catch((error) => {
-                console.error('Error al obtener el token:', error);
-            })
-    }, [])
+    const {
+        data: accessToken,
+        refetch: refetchAccessToken,
+        isLoading: isTokenLoading,
+    } = useQuery({
+        queryKey: ['accessToken'],
+        queryFn: async () => {
+            const token = await getToken('accessToken');
+            if (!token) return null;
 
-
-    useEffect(() => {
-        const fetchUser = async () => {
             try {
-                const response = await verifyToken(accessToken!)
-                const userResponse = await getUserInfo(response.user.id, accessToken!)
-                const userMapped = mapUserFromApiToUser(userResponse)
-                setLoggedUserInfo(userMapped)
-                setUserLogged(true)
+                await verifyToken(token);
+                return token;
             } catch (error) {
-                setLoggedUserInfo(null)
-                setUserLogged(false);
+                console.log("ACCESS TOKEN EXPIRED/UNAUTHORIZED");
+                return null;
             }
-        };
-        if (accessToken) fetchUser();
-    }, [accessToken]);
+        },
+        staleTime: 15 * 60 * 1000, // 14 minutes
+        refetchInterval: 15 * 60 * 1000, // 14 minutes
+    });
+
+    const refreshTokenMutation = useMutation({
+        mutationFn: async () => {
+            const refreshToken = await getToken('refreshToken');
+            if (!refreshToken) throw new Error('No refresh token available');
+
+            try {
+                console.log("REFRESHING ACCESS TOKEN");
+                const newAccessToken = await refreshAccessToken();
+                if (newAccessToken) {
+                    await saveToken('accessToken', newAccessToken);
+                    return newAccessToken;
+                } else {
+                    throw new Error('Failed to refresh access token');
+                }
+            } catch (refreshError) {
+                console.log("REFRESH ERROR", refreshError);
+                throw refreshError;
+            }
+        },
+        onSuccess: (newAccessToken) => {
+            queryClient.setQueryData(['accessToken'], newAccessToken);
+        },
+        onError: () => {
+            setUserLogged(false);
+            setLoggedUserInfo(null);
+        },
+    });
+
+    useEffect(() => {
+        if (!isTokenLoading) {
+            if (accessToken) {
+                fetchUser(accessToken);
+            } else {
+                refreshTokenMutation.mutate();
+            }
+        }
+    }, [accessToken, isTokenLoading]);
+
+    const fetchUser = async (token: string) => {
+        try {
+            const response = await verifyToken(token);
+            const userResponse = await getUserInfo(response.user.id, token);
+            const userMapped = mapUserFromApiToUser(userResponse);
+            setLoggedUserInfo(userMapped);
+            setUserLogged(true);
+        } catch (error) {
+            console.error('Failed to fetch user info:', error);
+            setLoggedUserInfo(null);
+            setUserLogged(false);
+            refreshTokenMutation.mutate();
+        }
+    };
 
     useEffect(() => {
         const fetchRefreshToken = async () => {
             console.log("ACCESS TOKEN", accessToken)
-            const refreshToken = await getToken('refreshToken')
-            console.log("REFRESH TOKEN", refreshToken)
+            console.log("REFRESF TOKEN", await getToken('refreshToken'))
         }
         fetchRefreshToken()
     }, [accessToken])
 
     useEffect(() => {
-        if (userLogged) {
-            router.replace('/(root)/(drawer)/(tabs)/home')
-        } else {
-            router.replace('/welcome')
-        }
+        (userLogged) 
+        ? router.replace('/(root)/(drawer)/(tabs)/home')
+        : router.replace('/welcome')
     }, [userLogged])
 
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
@@ -117,6 +160,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     const setEmptyUser = () => setLoggedUserInfo(null);
 
+    const setAccessToken = async (newToken: string|null) => {
+        await saveToken('accessToken', newToken ?? '');
+        queryClient.invalidateQueries({ queryKey: ['accessToken'] });
+
+    };
+
     return (
         <UserContext.Provider value={{
             userLogged,
@@ -125,7 +174,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             setEmptyUser,
             setAccessToken,
             loggedUserInfo: loggedUserInfo ?? null,
-            accessToken
+            accessToken: accessToken ?? null
         }}>
             {children}
         </UserContext.Provider>

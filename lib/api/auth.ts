@@ -94,7 +94,21 @@ export const refreshAccessToken = async () => {
         }
         return accessToken;
     } catch (error) {
-        throw error;
+        console.error("REFRESH ACCESS TOKEN ERROR", error);
+        console.log(error)
+        if (error && typeof error === 'object' && 'response' in error) {
+            const axiosError = error as { response?: { status?: number; data?: any } };
+            if (axiosError.response) {
+                console.log('Error status:', axiosError.response.status);
+                console.log('Error data:', axiosError.response.data);
+            }
+        } else if (error && typeof error === 'object' && 'request' in error) {
+            throw new Error('No se recibió respuesta del servidor. Por favor, verifique su conexión a internet.');
+        } else if (error instanceof Error) {
+            throw new Error(`Error al realizar la solicitud: ${error.message}`);
+        } else {
+            throw new Error('Error desconocido al realizar la solicitud');
+        }
     }
 };
 
