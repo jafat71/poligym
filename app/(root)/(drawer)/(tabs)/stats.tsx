@@ -1,4 +1,4 @@
-import { BodyColors, MuscleGroups } from '@/components/ui/common/body/bodyConstants';
+import { BodyColors, MuscleGroupsColors } from '@/components/ui/common/body/bodyConstants';
 import FemaleBack from '@/components/ui/common/body/FemaleBack';
 import FemaleFront from '@/components/ui/common/body/FemaleFront';
 import MaleBack from '@/components/ui/common/body/MaleBack';
@@ -17,7 +17,7 @@ export const Stats = () => {
     ...scaleColors
   } = BodyColors;
 
-  let muscleGroups: MuscleGroups = {
+  let muscleGroups: MuscleGroupsColors = {
     abdominals: scaleColors.workedColor01,
     calves: scaleColors.workedColor01,
     quads: scaleColors.workedColor04,
