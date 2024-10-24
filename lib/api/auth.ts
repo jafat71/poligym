@@ -13,7 +13,11 @@ const extractRefreshToken = async (cookies: string[]) => {
 export const signUp = async (name: string, email: string, password: string) => {
     try {
         const body = { name, email, password }
-        const response = await axiosInstance.post('/auth/register', body);
+        const response = await axiosInstance.post('/auth/register', body, {
+            headers: {
+                Authorization: 'none'
+            }
+        });
         const { accessToken } = response.data;
         const cookies = response.headers['set-cookie'];
         if (cookies && Array.isArray(cookies)) {

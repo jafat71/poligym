@@ -26,11 +26,8 @@ const Forgot = () => {
   const forgotPasswordMutation = useMutation({
     mutationFn: ({ email }: { email: string }) => forgotPassword(email),
     onSuccess: () => {
-      setSuccessMessage('Se ha enviado un correo con las instrucciones para recuperar la contraseña');
+      setSuccessMessage('Se ha enviado un correo con un codigo de recuperación');
       setResetSent(true);
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 5000);
     },
     onError: (error: any) => {
       setErrors([error.message]);
@@ -73,7 +70,6 @@ const Forgot = () => {
         <View className={`pb-5 `}>
 
           <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
-          <Text className={`text-lg font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>Ingresa tu correo electónico para recibir las instrucciones necesarias para recuperar el acceso a tu cuenta</Text>
 
         </View>
 
@@ -82,6 +78,8 @@ const Forgot = () => {
           {
             !resetSent ? (
               <>
+                <Text className={`text-lg font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>Ingresa tu correo electónico para recibir las instrucciones necesarias para recuperar el acceso a tu cuenta</Text>
+
                 <IconTextInputForm
                   title='Email Institucional'
                   icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -106,7 +104,6 @@ const Forgot = () => {
                       setResetSent(true);
                     }}
                   />
-
 
                 </View>
               </>
@@ -141,6 +138,23 @@ const Forgot = () => {
                   inputOnChangeText={setconfirmNewPassword}
                   inputSecure={true}
                 />
+
+                <View className='mb-5'>
+                  <AuthSupportButton
+                    title='Regresar al login'
+                    onPress={() => {
+                      router.push('/(auth)/signin')
+                    }}
+                  />
+
+                  <AuthSupportButton
+                    title='No tengo mi código'
+                    onPress={() => {
+                      setResetSent(false);
+                    }}
+                  />
+
+                </View>
               </>
             )
           }

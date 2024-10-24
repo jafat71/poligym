@@ -49,7 +49,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             })
     }, [])
 
-
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -63,16 +62,18 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 setUserLogged(false);
             }
         };
-        if (accessToken) fetchUser();
+
+        accessToken ? fetchUser() : setUserLogged(false)
     }, [accessToken]);
 
+
     useEffect(() => {
-        const fetchRefreshToken = async () => {
+        const getTokens = async () => {
             console.log("ACCESS TOKEN", accessToken)
             const refreshToken = await getToken('refreshToken')
             console.log("REFRESH TOKEN", refreshToken)
         }
-        fetchRefreshToken()
+        getTokens()
     }, [accessToken])
 
     useEffect(() => {
