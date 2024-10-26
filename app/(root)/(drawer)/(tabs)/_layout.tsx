@@ -154,7 +154,7 @@ export default function TabsLayout() {
         tabBarShowLabel: false,
         tabBarLabelStyle: { color: tabBarTextColor },
       }} />
-      <Tabs.Screen name="feed" options={{
+      <Tabs.Screen name="(community)" options={{
         headerTitle: () => (
           <View className='w-full items-center p-4'>
             <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Comunidad</Text>
@@ -189,11 +189,9 @@ export default function TabsLayout() {
           <Ionicons name="people-sharp" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
         tabBarActiveBackgroundColor: tabBarActiveIconColor,
-
         tabBarLabel: 'Feed',
         tabBarShowLabel: false,
         tabBarLabelStyle: { color: tabBarTextColor },
-
       }} />
       <Tabs.Screen name="(profile)" options={{
         headerTitle: () => (

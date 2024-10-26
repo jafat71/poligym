@@ -10,10 +10,12 @@ interface SearchBarProps {
     onClear: () => void,
     value: string,
     onChangeText: (text: string) => void
+    isVisible: boolean 
 }
 
-const SearchBar = ({ placeholder, onSearch, onClear, value, onChangeText }: SearchBarProps) => {
+const SearchBar = ({ placeholder, onSearch, onClear, value, onChangeText, isVisible }: SearchBarProps) => {
     const { isDark } = useTheme()
+    if (!isVisible) return null
     return (
         <View
             className={`w-full px-2 ${isDark ? "bg-darkGray-500" : "bg-white"}`}

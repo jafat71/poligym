@@ -3,7 +3,7 @@ import { SocialPost } from '@/types/interfaces/entities/post';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
-
+import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from 'react-native-reanimated';
 
 export const Post = ({
     imagenPerfil,
@@ -20,6 +20,24 @@ export const Post = ({
 }: SocialPost) => {
     const { isDark } = useTheme()
     const [postlikes, setPostLikes] = useState(likes)
+
+    const scale = useSharedValue(1);
+    const [isLiked, setIsLiked] = useState(false)
+
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+            transform: [{ scale: scale.value }],
+        };
+    });
+
+    const handleLike = () => {
+        setIsLiked(!isLiked);
+        setPostLikes(isLiked ? postlikes - 1 : postlikes + 1);
+        scale.value = withSpring(1.2, {}, () => {
+            scale.value = withSpring(1);
+        });
+    };
+
     return (
         <View className={`my-3 p-2
             ${isDark ? "bg-darkGray-500" : "bg-white"}  rounded-sm`}>
@@ -85,16 +103,16 @@ export const Post = ({
 
             <View className={`flex flex-row items-center justify-center`}>
 
-                    <Pressable
-                        className='flex flex-row items-center '
-                        onPress={() => {
-                            setPostLikes(postlikes + 1)
-                        }}>
-                        <Text className={`text-xl font-ralewayExtraBold  ${isDark ? "text-white" : "text-darkGray-500"} `} >
-                            {postlikes}
-                        </Text>
-                        <Ionicons name="heart-outline" size={24} color={`#0055f9`} />
-                    </Pressable>
+                <Pressable
+                    className='flex flex-row items-center '
+                    onPress={handleLike}>
+                    <Text className={`text-xl font-ralewayExtraBold  ${isDark ? "text-white" : "text-darkGray-500"} `} >
+                        {postlikes}
+                    </Text>
+                    <Animated.View style={animatedStyle}>
+                        <Ionicons name={isLiked ? "heart" : "heart-outline"} size={24} color={`#0055f9`} />
+                    </Animated.View>
+                </Pressable>
 
             </View>
 
