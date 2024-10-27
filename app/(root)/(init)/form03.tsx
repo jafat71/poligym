@@ -5,7 +5,7 @@ import { useUser } from '@/context/UserContext';
 import { MedicalProblem } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Text, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
 const Form03 = () => {
@@ -67,7 +67,11 @@ const Form03 = () => {
     }, []);
 
     return (
-        <>
+        <KeyboardAvoidingView   
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={100}
+        >
             <View className={`mt-2 pb-5 `}>
                 <View className={`py-2`}>
 
@@ -126,7 +130,7 @@ const Form03 = () => {
                 </View>
             </View>
 
-        </>
+        </KeyboardAvoidingView>
     );
 };
 

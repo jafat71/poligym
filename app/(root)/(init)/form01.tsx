@@ -107,7 +107,7 @@ const Form01 = () => {
             </View>
 
             <Text className={`text-sm font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} my-2 `}>
-                POLIGYM APP utiliza kilogramos (kg) para el peso y centímetros (cm) para la altura. Por favor, introduce solo números enteros en estos campos. Esto nos ayuda a procesar tus datos de manera más rápida y eficiente, asegurando que la experiencia sea lo más fluida posible.
+                POLIGYM APP utiliza kilogramos (kg) para el peso y centímetros (cm) para la altura. Por favor, introduce solo números enteros en estos campos. Esto nos ayuda a procesar tus datos de manera más rápida y eficiente.
             </Text>
         </>
     );

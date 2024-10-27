@@ -29,7 +29,13 @@ export default function RootLayout() {
         <View className='w-full px-2'>
           <CTAButtonPrimary
             onPress={() => {
-              router.push(routeMapping[actualPathname])
+              
+              if (actualPathname === '/form05') {
+                router.replace('/(root)/(drawer)/(tabs)/home')
+              } else {
+                router.push(routeMapping[actualPathname])
+              }
+              
             }}
             text="Continuar"
           />

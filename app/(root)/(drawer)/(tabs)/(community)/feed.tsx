@@ -11,6 +11,8 @@ const SEARCH_BAR_HEIGHT = 50
 type AnimatedFlatListType = Animated.AnimatedComponent<typeof FlatList<SocialPost>>
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList) as AnimatedFlatListType
 
+
+
 const Feed = () => {
   const { isDark } = useTheme()
   const [refreshing, setRefreshing] = useState(false)
@@ -104,6 +106,7 @@ const Feed = () => {
         onEndReachedThreshold={0.1}
         onScroll={handleScroll}
         scrollEventThrottle={16}
+        keyboardDismissMode={'on-drag'}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

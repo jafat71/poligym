@@ -3,6 +3,7 @@ import { getUserInfo, verifyToken } from '@/lib/api/auth';
 import { getToken } from '@/lib/token/store';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
+import { usePathname } from 'expo-router';
 import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 
@@ -35,7 +36,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
     const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
     const [accessToken, setAccessToken] = useState<string | null>(null);
-
+    const pathname = usePathname()
     useEffect(() => {
         getToken('accessToken')
             .then((token) => {
@@ -78,7 +79,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     useEffect(() => {
         if (userLogged) {
-            router.replace('/(root)/(drawer)/(tabs)/home')
+            if (pathname !== '/form01') {
+                router.replace('/(root)/(drawer)/(tabs)/home')
+            } 
         } else {
             router.replace('/welcome')
         }

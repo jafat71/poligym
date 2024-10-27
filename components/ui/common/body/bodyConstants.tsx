@@ -4,15 +4,15 @@ import MaleFront from './MaleFront';
 export const BodyColors = {
     defaultColor: "#0055f9",
     selectedColor: "#E11F1C",
-    workedColor01: "#CCE0FF",
-    workedColor02: "#99C2FF",
-    workedColor03: "#66A3FF",
-    workedColor04: "#3385FF",
-    workedColor05: "#0059FF",
-    workedColor06: "#004ECC",
-    workedColor07: "#004299",
-    workedColor08: "#003666",
-    workedColor09: "#002933",
+    workedColor01: "#FDECEC",
+    workedColor02: "#FDECEC",
+    workedColor03: "#F7AAAA",
+    workedColor04: "#F7AAAA",
+    workedColor05: "#F16969",
+    workedColor06: "#F16969",
+    workedColor07: "#EB2828",
+    workedColor08: "#EB2828",
+    workedColor09: "#E11F1C",
 }
 
 export enum MuscleGroups {
