@@ -1,13 +1,12 @@
 import ImagePicker from '@/components/ui/common/image/ImagePicker';
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
 import { useTheme } from '@/context/ThemeContext';
-import { useUser } from '@/context/UserContext';
 import React, { useEffect, useState } from 'react';
 import { Switch, Text, View } from 'react-native';
 
-
 const Form05 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, updateInitUserShell } = useUser()
+    const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
     const [profileImage, setprofileImage] = useState('');
 
     useEffect(() => {

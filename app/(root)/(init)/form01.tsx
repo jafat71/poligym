@@ -1,14 +1,14 @@
 
 import NumericInputInitForm from '@/components/ui/common/form/NumericInputInitForm';
 import { useTheme } from '@/context/ThemeContext';
-import { useUser } from '@/context/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { transformToValidZInput } from '@/lib/utils/transform';
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
 const Form01 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, updateInitUserShell } = useUser()
+    const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
 
     const [ageINput, setAgeINput] = useState('');
     const [weightInput, setWeightINput] = useState('');

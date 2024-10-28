@@ -1,3 +1,4 @@
+import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import React, { Component, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
@@ -9,7 +10,7 @@ interface FormErrorAlertProps {
 
 export const FormErrorAlert = ({ errors }: FormErrorAlertProps) => {
     const [visible, setVisible] = useState(true);
-
+    const {isDark} = useTheme()
     const errorOpacity = useSharedValue(0);
     const errorTranslateY = useSharedValue(50);
 
@@ -42,23 +43,23 @@ export const FormErrorAlert = ({ errors }: FormErrorAlertProps) => {
     return (
         <Animated.View style={[animatedErrorStyle]} className='w-full mt-4'>
             {errors.length > 0 && visible && (
-                <View className='bg-redEPN-500 w-full rounded-lg'>
-                    <View className='flex flex-row items-center justify-between border-b-[2px] border-white'>
+                <View className={`bg-${isDark ? 'white' : 'darkGray-500'} w-full rounded-2xl p-2`}>
+                    <View className={`flex flex-row items-center justify-between border-b-[2px] border-${isDark ? 'black' : 'white'}`}>
                         <View className='flex flex-row items-center'>
-                            <Ionicons name='warning' size={20} color='white' />
-                            <Text className='text-white font-ralewayBold p-2'>Atención</Text>
+                            <Ionicons name='warning-outline' size={20} color='red' />
+                            <Text className={`text-${isDark ? 'black' : 'white'} font-ralewayExtraBold p-2`}>Atención</Text>
                         </View>
                         <Ionicons
                             name='close'
                             size={20}
-                            color='white'
+                            color={isDark ? 'black' : 'white'}
                             onPress={() => setVisible(false)}
                             className='p-2'
                         />
                     </View>
                     <View className='p-2'>
                         {errors.map((err, index) => (
-                            <Text className='text-white font-ralewayBold' key={index}>{err}</Text>
+                            <Text className={`text-${isDark ? 'black' : 'white'} font-ralewayBold`} key={index}>{err}</Text>
                         ))}
                     </View>
                 </View>

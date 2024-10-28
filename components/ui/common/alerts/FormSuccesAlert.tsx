@@ -1,3 +1,4 @@
+import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import React, { Component, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
@@ -5,9 +6,11 @@ import Animated, { useSharedValue, useAnimatedStyle, withSpring, withTiming, Eas
 
 interface FormSuccessAlertProps {
     message: string;
+    title: string;
 }
 
-export const FormSuccessAlert = ({ message }: FormSuccessAlertProps) => {
+export const FormSuccessAlert = ({ message, title }: FormSuccessAlertProps) => {
+    const { isDark } = useTheme();
     const [visible, setVisible] = useState(true);
     const messageOpacity = useSharedValue(0);
     const messageTranslateY = useSharedValue(50);
@@ -41,11 +44,11 @@ export const FormSuccessAlert = ({ message }: FormSuccessAlertProps) => {
     return (
         <Animated.View style={[animatedSuccessStyle]} className='w-full mt-4'>
             {message.length > 0 && visible && (
-                <View className='bg-lightGreen w-full rounded-lg'>
-                    <View className='flex flex-row items-center justify-between border-b-[2px] border-darkGray-500'>
+                <View className={`bg-${isDark ? 'white' : 'darkGray-500'} w-full rounded-2xl p-2`}>
+                    <View className={`flex flex-row items-center justify-between border-b-[2px] border-${isDark ? 'black' : 'white'}`}>
                         <View className='flex flex-row items-center'>
-                            <Ionicons name='checkmark' size={20} color='black' />
-                            <Text className='text-darkGray-500 font-ralewayBold p-2'>Solicitud exitosa</Text>
+                            <Ionicons name='checkmark-circle-outline' size={20} color='green' />
+                            <Text className={`text-${isDark ? 'black' : 'white'} font-ralewayExtraBold p-2`}>{title}</Text>
                         </View>
                         <Ionicons
                             name='close'
@@ -57,7 +60,7 @@ export const FormSuccessAlert = ({ message }: FormSuccessAlertProps) => {
                     </View>
 
                     <View className='p-2'>
-                        <Text className='text-darkGray-500 font-ralewayBold'>{message}</Text>
+                        <Text className={`text-${isDark ? 'black' : 'white'} font-ralewayBold`}>{message}</Text>
                     </View>
                 </View>
             )}

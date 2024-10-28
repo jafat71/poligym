@@ -139,16 +139,35 @@ export const TrainingPlans = [
   {
     title: "Muscle Builder Pro",
     image: 'https://img.freepik.com/free-photo/kettlebell-fitness-still-life_23-2151739205.jpg?t=st=1728466010~exp=1728469610~hmac=85441626c8ab165db4563db4380656b72316ddf129d048b5963ece3680e56b91&w=740',
+    duration: '30 días',
+    description: 'Conquista tu meta de masa muscular con este plan de entrenamiento. Lleva tu cuerpo a niveles de rendimiento que te permitirán alcanzar tus objetivos.',
+    users: 100,
+    rating: 4.5,
+    isCurrentPlan: true,
+    level: 'Intermedio',
   },
   {
     title: "Fat Blaster Program",
     image: 'https://img.freepik.com/free-photo/serious-sportswoman-dark-studio-holding-weight_23-2147752861.jpg?t=st=1728467277~exp=1728470877~hmac=a2892e5a7f587f7fb1c81bdfa612ba039443c3fffcd25efc7538d139d06533a3&w=826',
+    duration: '30 días',
+    description: "Tu meta es quemar grasa? Este plan es para ti. Mejora tu resistencia cardiovascular y reduce grasa corporal para un cuerpo más delgado y tonificado.",
+    users: 70,
+    rating: 4.2,
+    isCurrentPlan: false,
+    level: 'Principiante',
   },
   {
     title: "Olympic Warrior",
     image: 'https://img.freepik.com/premium-photo/closeup-gym-dumbbells-floor-bokeh-red-blue-fitness-gymnasium-background-wallpaper-copy_1162810-11138.jpg?w=740',
+    duration: '30 días',
+    description: "¿Buscas un plan que te desafíe y te prepare para el éxito? Este plan es para ti. Mejora tu resistencia física y aumenta tu masa muscular para un cuerpo más fuerte y resistente.",
+    users: 50,
+    rating: 4.8,
+    isCurrentPlan: false,
+    level: 'Avanzado',
   },
 ];
+
 
 export const OnboardingItems = [
   {

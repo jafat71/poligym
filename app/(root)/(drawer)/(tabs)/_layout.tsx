@@ -33,7 +33,7 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: tabBarInactiveColor,
       }}
     >
-      <Tabs.Screen name="home" options={{
+      <Tabs.Screen name="(home)" options={{
         headerTitle: () => (
           <View className='w-full items-center p-4'>
             <MainLogoCustomComponent

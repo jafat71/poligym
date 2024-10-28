@@ -1,7 +1,7 @@
 import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
 import { medicalProblemsOptions, medicProblemMapper } from '@/constants';
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
 import { useTheme } from '@/context/ThemeContext';
-import { useUser } from '@/context/UserContext';
 import { MedicalProblem } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ import { TextInput } from 'react-native-gesture-handler';
 
 const Form03 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, updateInitUserShell } = useUser()
+    const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
     const [focused, setFocused] = useState(false);
 
     const [selectedMedicalProblem, setSelectedMedicalProblem] = useState<number>(0);

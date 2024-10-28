@@ -131,11 +131,29 @@ export const updatePassword = async (userId: string, currentPassword: string, ne
 
 export const forgotPassword = async (email: string) => {
     try {
-        const response = await axiosInstance.post(`/auth/forgot-password`, { email });
+        const response = await axiosInstance.post(`/auth/forgot-password`, { email }, {
+            headers: {
+                'Authorization': 'none'
+            }
+        });
         return response.data;
-    } catch (error) {
-        console.error('Error al enviar el correo para restablecer la contraseña');
-        throw error;
+    } catch (error: any) {
+        if (error.response) {
+            switch (error.response.status) {
+                case 502:
+                    throw new Error('El servidor no está disponible en este momento. Por favor, inténtelo más tarde.');
+                case 404:
+                    throw new Error('El correo electrónico no está registrado.');
+                case 400:
+                    throw new Error(error.response.data.message || 'Datos inválidos.');
+                default:
+                    throw new Error(`Error al enviar el correo: ${error.response.data.message || 'Error del servidor'}`);
+            }
+        } else if (error.request) {
+            throw new Error('No se pudo conectar con el servidor. Verifique su conexión a internet.');
+        } else {
+            throw new Error(`Error en la solicitud: ${error.message}`);
+        }
     }
 }
 

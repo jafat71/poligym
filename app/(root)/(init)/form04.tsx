@@ -1,8 +1,8 @@
 import WeekChecklistComponent from '@/components/ui/common/buttons/Checklist';
 import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
 import { scheduleMapper, scheduleOptions } from '@/constants';
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
 import { useTheme } from '@/context/ThemeContext';
-import { useUser } from '@/context/UserContext';
 import { DaysWeek, Schedule } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
@@ -10,7 +10,7 @@ import { Text, View } from 'react-native';
 
 const Form04 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, updateInitUserShell } = useUser()
+    const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
 
     const [selectedSchedule, setSelectedSchedule] = useState<number>(0);
     const [days, setDays] = useState<DaysWeek>({

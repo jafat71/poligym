@@ -1,16 +1,16 @@
 import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
 import { useTheme } from '@/context/ThemeContext';
-import { useUser } from '@/context/UserContext';
 import { Experience, Objetive } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import { experienceMapper, experienceOptions, genreMapper, genresOptions, objetiveMapper, objetiveOptions } from '@/constants';
 import { Genre } from '../../../types/interfaces/entities/user';
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
 
 const Form02 = () => {
     const { isDark } = useTheme()
-    const { tmpUser, updateInitUserShell } = useUser()
+    const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
 
     const [selectedObjetive, setSelectedObjetive] = useState<number>(0);
     const [selectedExperience, setSelectedExperience] = useState<number>(0);

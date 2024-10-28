@@ -26,7 +26,7 @@ const Forgot = () => {
   const forgotPasswordMutation = useMutation({
     mutationFn: ({ email }: { email: string }) => forgotPassword(email),
     onSuccess: () => {
-      setSuccessMessage('Se ha enviado un correo con un codigo de recuperación');
+      setSuccessMessage('Se ha enviado un correo con un código de recuperación');
       setResetSent(true);
     },
     onError: (error: any) => {
@@ -44,6 +44,7 @@ const Forgot = () => {
       }, 3000);
     },
     onError: (error: any) => {
+      setSuccessMessage('');
       setErrors([error.message]);
     },
   })
@@ -57,6 +58,7 @@ const Forgot = () => {
 
   const handleResetPasswordSubmit = () => {
     const { errors } = validateResetPassword(code, newPassword, confirmNewPassword)
+    setSuccessMessage('');
     setErrors(errors)
     if (errors.length > 0) return
     resetPasswordMutation.mutate({ code, newPassword });
@@ -95,6 +97,8 @@ const Forgot = () => {
                     title='Regresar al login'
                     onPress={() => {
                       router.push('/(auth)/signin')
+                      setSuccessMessage('');
+                      setErrors([]);
                     }}
                   />
 
@@ -102,7 +106,9 @@ const Forgot = () => {
                     title='Ya tengo mi código'
                     onPress={() => {
                       setResetSent(true);
-                    }}
+                      setSuccessMessage('');
+                      setErrors([]);
+                    }}  
                   />
 
                 </View>
@@ -188,6 +194,7 @@ const Forgot = () => {
 
       <FormSuccessAlert
         message={successMessage}
+        title='Correo enviado'
       />
       <FormErrorAlert
         errors={errors}

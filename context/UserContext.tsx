@@ -1,4 +1,4 @@
-import { emptyUser } from '@/constants';
+import { Plan } from '@/components/ui/plans/PlanConstants';
 import { getUserInfo, verifyToken } from '@/lib/api/auth';
 import { getToken } from '@/lib/token/store';
 import { User } from '@/types/interfaces/entities/user';
@@ -9,22 +9,20 @@ import React, { createContext, useContext, ReactNode, useState, useEffect, Dispa
 
 interface UserContextType {
     userLogged: boolean;
-    tmpUser: User | null;
-    updateInitUserShell: (updatedFields: Partial<User>) => void;
-    setEmptyUser: () => void;
     setAccessToken: Dispatch<SetStateAction<string | null>>;
     loggedUserInfo: User | null;
     accessToken: string | null;
+    userSelectedPlan: Plan | null;
+    setUserSelectedPlan: Dispatch<SetStateAction<Plan | null>>;
 }
 
 const UserContext = createContext<UserContextType>({
     userLogged: false,
-    tmpUser: emptyUser,
-    updateInitUserShell: () => { },
-    setEmptyUser: () => { },
     setAccessToken: () => { },
     loggedUserInfo: null,
-    accessToken: null
+    accessToken: null,
+    userSelectedPlan: null,
+    setUserSelectedPlan: () => { }
 });
 
 interface UserProviderProps {
@@ -33,10 +31,11 @@ interface UserProviderProps {
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [userLogged, setUserLogged] = useState(false);
-    const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
     const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const pathname = usePathname()
+    const [userSelectedPlan, setUserSelectedPlan] = useState<Plan | null>(null)
+   
     useEffect(() => {
         getToken('accessToken')
             .then((token) => {
@@ -67,16 +66,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         accessToken ? fetchUser() : setUserLogged(false)
     }, [accessToken]);
 
-
-    useEffect(() => {
-        const getTokens = async () => {
-            console.log("ACCESS TOKEN", accessToken)
-            const refreshToken = await getToken('refreshToken')
-            console.log("REFRESH TOKEN", refreshToken)
-        }
-        getTokens()
-    }, [accessToken])
-
     useEffect(() => {
         if (userLogged) {
             if (pathname !== '/form01') {
@@ -87,49 +76,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     }, [userLogged])
 
-    const updateInitUserShell = (updatedFields: Partial<User> | null) => {
-        if (updatedFields === null) {
-            setTmpUSer(null)
-            return
-        }
-        setTmpUSer((prevUser) => {
-            if (!prevUser) return null;
-
-            return {
-                ...prevUser,
-                userId: updatedFields.userId ?? prevUser.userId,
-                userName: updatedFields.userName ?? prevUser.userName,
-                userEmail: updatedFields.userEmail ?? prevUser.userEmail,
-                userRole: updatedFields.userRole ?? prevUser.userRole,
-                userAge: updatedFields.userAge ?? prevUser.userAge,
-                userGenre: updatedFields.userGenre ?? prevUser.userGenre,
-                userNumberActivityDays: updatedFields.userNumberActivityDays ?? prevUser.userNumberActivityDays,
-                userWeight: updatedFields.userWeight ?? prevUser.userWeight,
-                userHeight: updatedFields.userHeight ?? prevUser.userHeight,
-                userObjetive: updatedFields.userObjetive ?? prevUser.userObjetive,
-                userPhisicStatus: updatedFields.userPhisicStatus ?? prevUser.userPhisicStatus,
-                userNumberComents: updatedFields.userNumberComents ?? prevUser.userNumberComents,
-                userNotificationsEnabled: updatedFields.userNotificationsEnabled ?? prevUser.userNotificationsEnabled,
-                userHasMedicalProblems: updatedFields.userHasMedicalProblems ?? prevUser.userHasMedicalProblems,
-                userMedicalProblemDetail: updatedFields.userMedicalProblemDetail ?? prevUser.userMedicalProblemDetail,
-                userPreferedSchedule: updatedFields.userPreferedSchedule ?? prevUser.userPreferedSchedule,
-                userTrainingDays: updatedFields.userTrainingDays ?? prevUser.userTrainingDays,
-                userProfileImgUrl: updatedFields.userProfileImgUrl ?? prevUser.userProfileImgUrl,
-            };
-        });
-    };
-
-    const setEmptyUser = () => setLoggedUserInfo(null);
-
     return (
         <UserContext.Provider value={{
             userLogged,
-            tmpUser,
-            updateInitUserShell,
-            setEmptyUser,
             setAccessToken,
             loggedUserInfo: loggedUserInfo ?? null,
-            accessToken
+            accessToken,
+            userSelectedPlan,
+            setUserSelectedPlan
         }}>
             {children}
         </UserContext.Provider>
