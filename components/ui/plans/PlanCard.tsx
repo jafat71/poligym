@@ -3,7 +3,7 @@ import React from 'react'
 import { Pressable } from 'react-native'
 import { Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { Level, levelColors, Plan } from './PlanConstants'
+import { levelColors, Plan } from './PlanConstants'
 import { useNavigationFlowContext } from '@/context/NavFlowContext'
 import { router } from 'expo-router'
 
@@ -13,7 +13,8 @@ const PlanCard = (plan: Plan) => {
         <Pressable
             key={plan.title}
             onPress={() => {
-                setScreenPlan(plan)
+                console.log(plan)
+                setScreenPlan({...plan})
                 router.push('/(drawer)/(tabs)/(home)/plandetail')
             }}
             className={`w-72 h-72 mr-2 rounded-lg overflow-hidden bg-eBlue-500`}>

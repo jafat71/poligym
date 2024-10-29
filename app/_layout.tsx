@@ -3,12 +3,14 @@ import useIcons from '@/hooks/useIcons';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { ThemeProvider} from '@/context/ThemeContext';
 import { UserProvider } from '@/context/UserContext';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient/queryClient';
+import { NavigationFlowProvider } from '@/context/NavFlowContext';
+import Loading from '@/components/animatedUi/Loading';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,42 +27,51 @@ export default function RootLayout() {
   });
 
   const { iconsloaded } = useIcons() //Preload Icons
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     if (loaded && iconsloaded) {
+      setReady(true)
       SplashScreen.hideAsync();
     }
+    if (!loaded || !iconsloaded) {
+      setReady(false)
+    }
+    
   }, [loaded, iconsloaded]);
-
-  if (!loaded && !iconsloaded) {
-    //TODO: Loading animation
-    return null;
+  
+  if(!ready){
+    return (
+      <Loading/>
+    )
   }
 
   return (
     <ThemeProvider >
       <QueryClientProvider client={queryClient}>
-        <UserProvider>
-          <GestureHandlerRootView style={{ flex: 1 }}>
+        <NavigationFlowProvider>
+          <UserProvider>
+            <GestureHandlerRootView style={{ flex: 1 }}>
 
-            <Stack
-              screenOptions={{
-                statusBarTranslucent: true
-              }}
-            >
-              <Stack.Screen name="index" options={{ headerShown: false }} />
-              <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
-              <Stack.Screen name="(animated)" options={{ headerShown: false }} />
-              <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'slide_from_right', animationTypeForReplace: 'pop' }} />
-              <Stack.Screen name="(auth)" options={{
-                animation: 'fade_from_bottom',
-                animationTypeForReplace: 'push',
-                headerShown: false
-              }} />
-              <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-            </Stack>
-          </GestureHandlerRootView>
-        </UserProvider>
+              <Stack
+                screenOptions={{
+                  statusBarTranslucent: true
+                }}
+              >
+                <Stack.Screen name="index" options={{ headerShown: false }} />
+                <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
+                <Stack.Screen name="(animated)" options={{ headerShown: false }} />
+                <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'slide_from_right', animationTypeForReplace: 'pop' }} />
+                <Stack.Screen name="(auth)" options={{
+                  animation: 'fade_from_bottom',
+                  animationTypeForReplace: 'push',
+                  headerShown: false
+                }} />
+                <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+              </Stack>
+            </GestureHandlerRootView>
+          </UserProvider>
+        </NavigationFlowProvider>
       </QueryClientProvider>
     </ThemeProvider>
 

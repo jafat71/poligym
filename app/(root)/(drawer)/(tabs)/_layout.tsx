@@ -2,8 +2,7 @@ import { router, Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from '@/context/ThemeContext';
 import { Pressable, Text, View } from 'react-native';
-import MainLogoCustomComponent from '@/components/ui/common/logo/mainLogo';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+
 export default function TabsLayout() {
 
   const { isDark } = useTheme()
@@ -14,16 +13,13 @@ export default function TabsLayout() {
   const tabBarActiveColor = "#0055f4";
   const tabBarInactiveColor = isDark ? '#fff' : '#1c1c1c';
 
-  const navigation = useNavigation();
-
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
           backgroundColor: tabBarBackgroundColor,
-          height: 60,
+          height: 50,
           borderColor: isDark ? '#1c1c1c' : '#fff',
-
         },
         tabBarLabelStyle: {
           fontSize: 16,
@@ -34,39 +30,7 @@ export default function TabsLayout() {
       }}
     >
       <Tabs.Screen name="(home)" options={{
-        headerTitle: () => (
-          <View className='w-full items-center p-4'>
-            <MainLogoCustomComponent
-              height='24'
-              principal={isDark ? "#fff" : "#1c1c1c"}
-            />
-          </View>
-        ),
-        headerLeft: () => (
-          <Pressable
-            onPress={() => {
-              navigation.dispatch(DrawerActions.openDrawer());
-            }}
-            className='ml-4'
-          >
-            <Ionicons name="menu" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-          </Pressable>
-        ),
-        headerRight: () => (
-          <Pressable
-            onPress={() => {
-              router.navigate('/(config)/config')
-            }}
-            className='mr-4'
-          >
-            <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-          </Pressable>
-        ),
-        headerStyle: {
-          backgroundColor: isDark ? '#1c1c1c' : '#fff',
-        },
-        headerTintColor: isDark ? "#fff" : "#1c1c1c",
-        headerTitleAlign: 'center',
+        headerShown: false,
         tabBarIcon: ({ focused }) => (
           <Ionicons name="barbell-outline" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),

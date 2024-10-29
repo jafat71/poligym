@@ -1,7 +1,7 @@
 import { Plan } from '@/components/ui/plans/PlanConstants';
 import { emptyUser } from '@/constants';
 import { User } from '@/types/interfaces/entities/user';
-import React, { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction } from 'react';
+import React, { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction, useEffect } from 'react';
 
 interface NavigationFlowContextType {
     screenPlan: Plan | null;
@@ -56,6 +56,10 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
             };
         });
     };
+
+    useEffect(() => {
+        console.log(screenPlan)
+    }, [screenPlan])
 
     return (
         <NavigationFlowContext.Provider value={{
