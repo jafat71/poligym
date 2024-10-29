@@ -11,14 +11,15 @@ interface SearchBarProps {
     value: string,
     onChangeText: (text: string) => void
     isVisible: boolean 
+    className?: string
 }
 
-const SearchBar = ({ placeholder, onSearch, onClear, value, onChangeText, isVisible }: SearchBarProps) => {
+const SearchBar = ({ placeholder, onSearch, onClear, value, onChangeText, isVisible, className }: SearchBarProps) => {
     const { isDark } = useTheme()
     if (!isVisible) return null
     return (
         <View
-            className={`w-full px-2 ${isDark ? "bg-darkGray-500" : "bg-white"}`}
+            className={`w-full px-2 bg-inherit ${className}`}
         >
             <View className='flex flex-row justify-center items-center'>
                 <TextInput

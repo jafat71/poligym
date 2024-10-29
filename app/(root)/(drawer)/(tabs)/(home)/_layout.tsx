@@ -6,14 +6,24 @@ import { Ionicons } from '@expo/vector-icons';
 import MainLogoCustomComponent from '@/components/ui/common/logo/mainLogo';
 import { useTheme } from '@/context/ThemeContext';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { useUser } from '@/context/UserContext';
+import Loading from '@/components/animatedUi/Loading';
 const _layout = () => {
     const { isDark } = useTheme()
     const navigation = useNavigation();
+    const { loggedUserInfo } = useUser()
+
+    if (!loggedUserInfo) return <Loading />
 
     return (
-        <Stack>
+        <Stack
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
             <Stack.Screen name="home"
                 options={{
+                    headerShown: true,
                     headerTitle: () => (
                         <View >
                             <MainLogoCustomComponent

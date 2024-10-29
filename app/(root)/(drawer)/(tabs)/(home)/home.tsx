@@ -5,14 +5,12 @@ import { TrainingPlans } from '@/constants'
 
 import { useTheme } from '@/context/ThemeContext'
 import { useUser } from '@/context/UserContext'
-import React, { useRef, useState } from 'react'
-import { useWindowDimensions, View } from 'react-native'
+import React, { useRef } from 'react'
+import { View } from 'react-native'
 
 import { FlatList, Text, Animated, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
-
-import Loading from '@/components/animatedUi/Loading'
 
 const Home = () => {
   const { isDark } = useTheme()
@@ -20,7 +18,7 @@ const Home = () => {
   //Todo: fetch suggested plans
   const suggestedPlans = TrainingPlans.slice(0, 3)
 
-  const scrollX = React.useRef(new Animated.Value(0)).current;
+  const scrollX = useRef(new Animated.Value(0)).current;
 
   const getActualMonth = () => {
     const date = new Date()
@@ -32,36 +30,8 @@ const Home = () => {
     return date.toLocaleString('es-ES', { day: '2-digit' })
   }
 
-  const { height: SCREEN_HEIGHT } = useWindowDimensions()
-  const [isExpanded, setIsExpanded] = useState(false)
-  const heightAnim = useRef(new Animated.Value(180)).current
-  const rotateAnim = useRef(new Animated.Value(0)).current
-
-  const toggleExpand = () => {
-    setIsExpanded(!isExpanded)
-    Animated.parallel([
-      Animated.spring(heightAnim, {
-        toValue: isExpanded ? 180 : SCREEN_HEIGHT * 0.6,
-        useNativeDriver: false,
-        damping: 15
-      }),
-      Animated.timing(rotateAnim, {
-        toValue: isExpanded ? 0 : 1,
-        duration: 300,
-        useNativeDriver: true
-      })
-    ]).start()
-  }
-
-  const spin = rotateAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '180deg']
-  })
-
-  if (!loggedUserInfo) return <Loading />
-
   return (
-    <SafeAreaView className={`flex flex-1 rounded-sm
+    <SafeAreaView className={`flex flex-1 rounded-sm 
       ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
 
       <View className='px-2'>
@@ -144,38 +114,36 @@ const Home = () => {
         decelerationRate="normal"
       />
 
-      <View className='bg-eBlue-500 rounded-lg px-2'>
-        <View className='flex flex-row justify-between items-center p-2'>
-          <Text className={`text-lg font-ralewayBold text-white `}>
-            Explora otros planes
+      <View className=' rounded-lg px-1 h-56'>
+
+        <View className='flex flex-row justify-between items-center px-1 py-1'>
+          <Text className={`text-lg font-ralewayBold ${isDark ? 'text-white' : 'text-darkGray-500'} `}>
+            Te pueden interesar
           </Text>
-          <Pressable onPress={toggleExpand}>
-            <Animated.View style={{ transform: [{ rotate: spin }] }}>
-              <Ionicons
-                name="chevron-down"
-                size={24}
-                color={"white"}
-              />
-            </Animated.View>
+          <Pressable className='flex flex-row items-center justify-center'>
+            <Text className={`${isDark ? 'text-white' : 'text-darkGray-500'} font-ralewayBold`}>Ver más</Text>
+            <Ionicons
+              name="add-circle-outline"
+              size={22}
+              color={isDark ? "white" : "#1c1c1c"}
+            />
           </Pressable>
         </View>
 
-        <Animated.View style={{ height: heightAnim }}>
-          <FlatList
-            className='my-2 '
-            data={[...TrainingPlans]}
-            renderItem={({ item }) => (
-              <PlanSmallCard
-                key={item.title}
-                {...item}
-                level={item.level as Level}
-              />
-            )}
-            keyExtractor={(item) => item.title}
-            horizontal={false}
-            showsVerticalScrollIndicator={false}
-          />
-        </Animated.View>
+        <FlatList
+          className='my-1'
+          data={[...TrainingPlans, ...TrainingPlans]}
+          renderItem={({ item }) => (
+            <PlanSmallCard
+              key={item.title}
+              {...item}
+              level={item.level as Level}
+            />
+          )}
+          keyExtractor={(item, index) => item.title + "" + index}
+          horizontal={false}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
 
     </SafeAreaView>
