@@ -43,6 +43,8 @@ export const Stats = () => {
 
   return (
     <ScrollView className={`flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"} px-2`}>
+
+      
       <View className='flex flex-row items-center justify-between mb-2'>
         <View >
           <Text className={`text-sm font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>PESO (KG)</Text>
