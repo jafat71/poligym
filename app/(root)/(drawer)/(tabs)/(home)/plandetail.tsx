@@ -79,11 +79,11 @@ const plandetail = () => {
                 className='absolute top-0 left-0 right-0'
                 style={[{ height: HEADER_HEIGHT }, imageAnimatedStyle]}>
                 <Animated.Image
-                    source={{ uri: screenPlan?.image }}
-                    className='absolute inset-0 w-full h-full'
+                    source={{ uri: screenPlan?.imagenPlanEntrenamiento }}
+                    className='absolute inset-0 w-full h-full opacity-75'
                     style={{ resizeMode: 'cover' }}
                 />
-                <View className='absolute inset-0 bg-black/40' />
+                <View className='inset-0 flex-1 bg-eBlue-500/40 p-4' />
             </Animated.View>
 
             <Animated.View
@@ -94,7 +94,7 @@ const plandetail = () => {
                     justifyContent: 'center',
                 }]}>
                 <Text className={`${textStyle} text-center text-2xl font-ralewayExtraBold`}>
-                    {screenPlan?.title}
+                    {screenPlan?.nombre}
                 </Text>
 
                 <View
@@ -132,13 +132,13 @@ const plandetail = () => {
                         </Text>
                     </Pressable>
 
-                    <View className='flex-row justify-between'>
+                    <View className='flex-row gap-2'>
                         <View className='flex flex-col items-start justify-center'>
                             <Text className={`${textStyle}`}>
                                 Duración
                             </Text>
                             <Text className={`${textStyle}`}>
-                                {screenPlan?.duration}
+                                {screenPlan?.duracion} semanas
                             </Text>
                         </View>
                         <View>
@@ -146,23 +146,7 @@ const plandetail = () => {
                                 Dificultad
                             </Text>
                             <Text className={`${textStyle}`}>
-                                {screenPlan?.level}
-                            </Text>
-                        </View>
-                        <View>
-                            <Text className={`${textStyle}`}>
-                                Usuarios
-                            </Text>
-                            <Text className={`${textStyle}`}>
-                                {screenPlan?.users}
-                            </Text>
-                        </View>
-                        <View>
-                            <Text className={`${textStyle}`}>
-                                Valoración
-                            </Text>
-                            <Text className={`${textStyle}`}>
-                                {screenPlan?.rating}/5
+                                {screenPlan?.dificultad}
                             </Text>
                         </View>
                     </View>
@@ -171,7 +155,7 @@ const plandetail = () => {
                             ${textStyle}
                          my-2
                         `}>
-                            {screenPlan?.description}
+                            {screenPlan?.descripcion}
                         </Text>
 
                         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((item) => (

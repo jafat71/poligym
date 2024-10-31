@@ -1,3 +1,4 @@
+import { IndividualExercise, RoutinePlan, TrainingPlan } from "../interfaces/entities/plan"
 import { User } from "../interfaces/entities/user"
 
 export const mapUserFromApiToUser = (user: any) : User => {
@@ -23,4 +24,38 @@ export const mapUserFromApiToUser = (user: any) : User => {
         userTrainingDays: user.userTrainingDays || [],
     }
     return userLogged
+}
+
+export const mapToTrainingPlanFromApiToTrainingPlan = (data: any): TrainingPlan => {
+    const mapDiaRutina = (dia: any): RoutinePlan => ({
+        id: dia.id,
+        nombre: dia.nombre,
+        dificultad: dia.dificultad,
+        oculto: dia.oculto,
+        musculos: dia.musculos,
+        ejercicios: dia.ejercicios.map((ejercicio: any): IndividualExercise => ({
+            id: ejercicio.id,
+            nombre: ejercicio.nombre,
+            series: ejercicio.series,
+            repeticiones: ejercicio.repeticiones,
+            tiempoDescanso: ejercicio.tiempoDescanso
+        }))
+    });
+
+    return {
+        id: data.id,
+        nombre: data.nombre,
+        imagenPlanEntrenamiento: data.imagenPlanEntrenamiento,
+        descripcion: data.descripcion,
+        duracion: data.duracion,
+        dificultad: data.dificultad,
+        oculto: data.oculto,
+        detalleDias: {
+            lunes: typeof data.detalleDias.lunes === "string" ? "Descanso" : mapDiaRutina(data.detalleDias.lunes),
+            martes: typeof data.detalleDias.martes === "string" ? "Descanso" : mapDiaRutina(data.detalleDias.martes),
+            miércoles: typeof data.detalleDias.miércoles === "string" ? "Descanso" : mapDiaRutina(data.detalleDias.miércoles),
+            jueves: typeof data.detalleDias.jueves === "string" ? "Descanso" : mapDiaRutina(data.detalleDias.jueves),
+            viernes: typeof data.detalleDias.viernes === "string" ? "Descanso" : mapDiaRutina(data.detalleDias.viernes),
+        }
+    };
 }

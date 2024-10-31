@@ -3,13 +3,10 @@ import {
     MaterialTopTabNavigationOptions,
     createMaterialTopTabNavigator,
 } from "@react-navigation/material-top-tabs";
-import { router, withLayoutContext } from "expo-router";
+import {  withLayoutContext } from "expo-router";
 import { ParamListBase, TabNavigationState } from "@react-navigation/native";
-import { Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/context/ThemeContext";
-import { Ionicons } from "@expo/vector-icons";
-import { useUser } from "@/context/UserContext";
 
 const { Navigator } = createMaterialTopTabNavigator();
 

@@ -1,6 +1,7 @@
 import BodyCardComponent from '@/components/ui/common/body/bodyCardComponent';
-import { getMuscleImage, MuscleGroups } from '@/components/ui/common/body/bodyConstants';
+import { getMuscleImage} from '@/components/ui/common/body/bodyConstants';
 import { useTheme } from '@/context/ThemeContext';
+import { MuscleGroups } from '@/types/types/muscles';
 import React from 'react';
 import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';

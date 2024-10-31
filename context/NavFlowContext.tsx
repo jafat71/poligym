@@ -1,11 +1,11 @@
-import { Plan } from '@/components/ui/plans/PlanConstants';
 import { emptyUser } from '@/constants';
+import { TrainingPlan } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import React, { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction, useEffect } from 'react';
 
 interface NavigationFlowContextType {
-    screenPlan: Plan | null;
-    setScreenPlan: Dispatch<SetStateAction<Plan | null>>;
+    screenPlan: TrainingPlan | null;
+    setScreenPlan: Dispatch<SetStateAction<TrainingPlan | null>>;
     tmpUser: User | null;
     updateInitUserShell: (updatedFields: Partial<User>) => void;
 }
@@ -22,7 +22,7 @@ interface NavigationFlowProviderProps {
 }
 
 export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ children }) => {
-    const [screenPlan, setScreenPlan] = useState<Plan | null>(null)
+    const [screenPlan, setScreenPlan] = useState<TrainingPlan | null>(null)
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
 
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
@@ -56,10 +56,6 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
             };
         });
     };
-
-    useEffect(() => {
-        console.log(screenPlan)
-    }, [screenPlan])
 
     return (
         <NavigationFlowContext.Provider value={{

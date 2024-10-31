@@ -1,5 +1,6 @@
 import MaleBack from '@/components/ui/common/body/MaleBack';
 import MaleFront from './MaleFront';
+import { MuscleGroups } from '@/types/types/muscles';
 
 export const BodyColors = {
     defaultColor: "#0055f9",
@@ -13,24 +14,6 @@ export const BodyColors = {
     workedColor07: "#EB2828",
     workedColor08: "#EB2828",
     workedColor09: "#E11F1C",
-}
-
-export enum MuscleGroups {
-    calves = "pantorrillas", 
-    quads = "cuádriceps",
-    obliques = "oblicuos",
-    abdominals = "abdominales",
-    forearms = "antebrazos",
-    biceps = "bíceps",
-    chest = "pecho",
-    shoulders = "hombros",
-    traps = "trapecios",
-    lowerback = "zona lumbar",
-    triceps = "tríceps",
-    hamstrings = "isquiotibiales",
-    glutes = "glúteos",
-    lats = "dorsales",
-    trapsmiddle = "trapecio medio"
 }
 
 export interface MuscleGroupsColors {

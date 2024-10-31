@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { Animated } from 'react-native'
 import PlanCard from './PlanCard';
-import { Level } from './PlanConstants';
+import { Dificultad } from './PlanConstants';
 
 interface Props {
     data: Animated.WithAnimatedObject<ArrayLike<any>> | null | undefined
@@ -50,7 +50,7 @@ export const HomePlanFlatlist = ({ data }: Props) => {
                             <PlanCard
                                 key={item.title}
                                 {...item}
-                                level={item.level as Level}
+                                level={item.level as Dificultad}
                             />
 
                         </Animated.View>
