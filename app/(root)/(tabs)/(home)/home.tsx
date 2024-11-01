@@ -1,4 +1,3 @@
-import PlanSmallCard from '@/components/ui/plans/PlanSmallCard'
 import { TrainingPlans } from '@/constants'
 
 import { useTheme } from '@/context/ThemeContext'
@@ -11,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { HomePlanFlatlist } from '@/components/ui/plans/HomePlanFlatlist'
 import WeekCalendar from '@/components/ui/history/weekCalendar'
 import { RoutinePlan } from '@/types/interfaces/entities/plan'
+import { HomeRoutineFlatlist } from '@/components/ui/plans/HomeRoutineFlatList'
 
 const Home = () => {
   const { isDark } = useTheme()
@@ -75,18 +75,8 @@ const Home = () => {
         </Pressable>
       </View>
 
-      <FlatList
-        className='my-1 px-1'
-        data={[...suggestedRoutines]}
-        renderItem={({ item }) => (
-          <PlanSmallCard
-            key={item.id}
-            {...item}
-          />
-        )}
-        keyExtractor={(item, index) => item.id + "" + index}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
+      <HomeRoutineFlatlist
+        data={suggestedRoutines}
       />
     </SafeAreaView>
   )

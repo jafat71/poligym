@@ -1,4 +1,4 @@
-import { Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import { Pressable, Text, TouchableOpacity, View } from 'react-native'
 import React, { useRef } from 'react'
 import { useNavigationFlowContext } from '@/context/NavFlowContext'
 import { useTheme } from '@/context/ThemeContext'
@@ -6,16 +6,19 @@ import { Animated } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
+import { useUser } from '@/context/UserContext'
 
-const HEADER_HEIGHT = 300
-const HEADER_MIN_HEIGHT = 110
-const STICKY_HEADER_HEIGHT = 110
+const HEADER_HEIGHT = 200
+const HEADER_MIN_HEIGHT = 100
+const STICKY_HEADER_HEIGHT = 100
 
 const plandetail = () => {
     const { screenPlan } = useNavigationFlowContext()
     const { isDark } = useTheme()
     const scrollY = useRef(new Animated.Value(0)).current
-    const textStyle = `${isDark ? 'text-white' : 'text-darkGray-500'} text-base font-raleway`
+    const textStyle = `${isDark ? 'text-white' : 'text-darkGray-500'} text-xs font-raleway`
+    const { userSelectedPlan, setUserSelectedPlan } = useUser()
+
     const imageAnimatedStyle = {
         transform: [
             {
@@ -55,6 +58,9 @@ const plandetail = () => {
         outputRange: [0, 0],
         extrapolate: 'clamp'
     })
+
+    const isUserActualPlan = userSelectedPlan?.nombre === screenPlan?.nombre
+
     return (
         <SafeAreaView className={`flex-1 ${isDark ? 'bg-darkGray-500' : 'bg-white'}`}>
 
@@ -98,7 +104,7 @@ const plandetail = () => {
                 </Text>
 
                 <View
-                    className={`absolute bottom-0 right-0 left-0 py-1 h-
+                    className={`absolute bottom-0 right-0 left-0 py-1 
                     border-2 border-${isDark ? 'white' : 'darkGray-500'} 
                      ${isDark ? 'bg-white' : 'bg-darkGray-500'}
                      flex-row justify-center items-center
@@ -117,48 +123,53 @@ const plandetail = () => {
                 <View style={{ height: HEADER_HEIGHT + STICKY_HEADER_HEIGHT }} />
 
                 <Animated.View
-                    className={`px-4 ${isDark ? 'bg-darkGray-500' : 'bg-white'} py-2`}
+                    className={`px-4 ${isDark ? 'bg-darkGray-500' : 'bg-white'}`}
                     style={{
                         transform: [{ translateY: contentTranslateY }],
                         minHeight: '100%',
 
                     }}
                 >
-                    <Pressable className='w-full bg-eBlue-500 rounded-full p-2 my-2'>
-                        <Text className={`text-white text-center 
-                            font-ralewayBold text-lg
-                        `}>
-                            Seleccionar
-                        </Text>
-                    </Pressable>
+                    <View className='my-2'>
 
-                    <View className='flex-row gap-2'>
-                        <View className='flex flex-col items-start justify-center'>
-                            <Text className={`${textStyle}`}>
-                                Duración
-                            </Text>
-                            <Text className={`${textStyle}`}>
-                                {screenPlan?.duracion} semanas
-                            </Text>
+                        <View className={`border-2 border-${isDark ? "white" : "darkGray-500"} p-2
+                            rounded-md
+                        `}>
+                            <Text className={`${textStyle} text-lg`}>Información del Plan</Text>
+
+                            <View className='flex flex-row items-start justify-center'>
+                                <View className='w-1/4'>
+                                    <Ionicons name='time-outline' size={22} color={isDark ? "white" : "#1c1c1c"} />
+                                    <Text className={`${textStyle}`}>Duración</Text>
+                                </View>
+                                <Text className={`${textStyle} w-3/4`}>{screenPlan?.duracion} Semanas</Text>
+                            </View>
+
+                            <View className='flex flex-row items-start justify-center'>
+                                <View className='w-1/4'>
+                                    <Ionicons name='walk-outline' size={22} color={isDark ? "white" : "#1c1c1c"} />
+                                    <Text className={`${textStyle}`}>Dificultad</Text>
+                                </View>
+                                <Text className={`${textStyle} w-3/4`}>
+                                    {screenPlan?.dificultad}
+                                </Text>
+                            </View>
+
+                            <View className='flex flex-row items-start justify-center'>
+                                <View className='w-1/4'>
+                                    <Ionicons name='book-outline' size={22} color={isDark ? "white" : "#1c1c1c"} />
+                                    <Text className={`${textStyle}`}>Descripción</Text>
+                                </View>
+                                <Text className={`${textStyle} w-3/4`}>
+                                    {screenPlan?.descripcion}
+                                </Text>
+                            </View>
                         </View>
-                        <View>
-                            <Text className={`${textStyle}`}>
-                                Dificultad
-                            </Text>
-                            <Text className={`${textStyle}`}>
-                                {screenPlan?.dificultad}
-                            </Text>
-                        </View>
+
                     </View>
-                    <View >
-                        <Text className={`
-                            ${textStyle}
-                         my-2
-                        `}>
-                            {screenPlan?.descripcion}
-                        </Text>
 
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((item) => (
+                    <View >
+                        {[1, 2, 3, 4, 5, 6].map((item) => (
                             <View
                                 key={item}
                                 className={`flex-1
@@ -177,6 +188,30 @@ const plandetail = () => {
                     </View>
                 </Animated.View>
             </Animated.ScrollView>
+
+            {
+                isUserActualPlan
+                    ? (
+                        <View  className='w-full border-2 border-eBlue-500 rounded-md p-4 my-2'>
+                            <Text className={`
+                                    ${isDark ? 'text-white' : 'text-darkGray-500'}
+                                    text-base font-ralewayMedium
+                                `}>
+                                    Progreso
+                                </Text>
+                        </View>
+                    )
+                    : (
+                        <Pressable className='w-full bg-eBlue-500 rounded-md p-4 my-2'>
+                            <Text className={`text-white text-center 
+                                font-ralewayBold text-lg
+                            `}>
+                                Seleccionar
+                            </Text>
+                        </Pressable>
+                    )
+            }
+
         </SafeAreaView>
     )
 }

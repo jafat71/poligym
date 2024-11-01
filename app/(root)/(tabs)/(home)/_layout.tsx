@@ -1,13 +1,14 @@
 import React from "react";
 import { router, Stack } from "expo-router";
-import { View } from "react-native";
 import { Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import MainLogoCustomComponent from "@/components/ui/common/logo/mainLogo";
+
 import { useTheme } from "@/context/ThemeContext";
 import { useUser } from "@/context/UserContext";
+
+import MainLogoCustomComponent from "@/components/ui/common/logo/mainLogo";
 import Loading from "@/components/animatedUi/Loading";
-import { Text } from "react-native";
+
 const _layout = () => {
     const { isDark } = useTheme();
     const { loggedUserInfo } = useUser();
@@ -26,17 +27,11 @@ const _layout = () => {
                     headerShown: true,
                     headerTitle: () => <></>,
                     headerLeft: () => (
-                        <Pressable
-                            onPress={() => {
-                                router.navigate("/(tabs)/home");
-                            }}
-                        >
                             <MainLogoCustomComponent
                                 height="30"
                                 width="30"
                                 principal={`${isDark ? "#fff" : "#1c1c1c"}`}
                             />
-                        </Pressable>
                     ),
                     headerRight: () => (
                         <Pressable

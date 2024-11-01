@@ -2,21 +2,23 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { Pressable } from 'react-native'
 import { Image } from 'react-native'
-import { levelColors } from './PlanConstants'
 import { useNavigationFlowContext } from '@/context/NavFlowContext'
 import { router } from 'expo-router'
 import { TrainingPlan } from '@/types/interfaces/entities/plan'
-import { difficultyMapper } from '@/lib/utils/dificultymapper'
+import { useUser } from '@/context/UserContext'
 
 const PlanCard = (plan: TrainingPlan) => {
     const { setScreenPlan } = useNavigationFlowContext()
+    const { setUserSelectedPlan, userSelectedPlan} = useUser()
+    const handleNavigation = () => {
+        setScreenPlan({...plan})
+        router.push('/(tabs)/(home)/plandetail')
+    }
+    const isUserActualPlan = userSelectedPlan?.nombre === plan.nombre
     return (
         <Pressable
             key={plan.id}
-            onPress={() => {
-                setScreenPlan({...plan})
-                router.push('/(drawer)/(tabs)/(home)/plandetail')
-            }}
+            onPress={handleNavigation}
             className={`w-72 h-72 mr-2 rounded-lg overflow-hidden bg-eBlue-500`}>
             <Image
                 source={{ uri: plan.imagenPlanEntrenamiento }}
@@ -48,6 +50,21 @@ const PlanCard = (plan: TrainingPlan) => {
                     <Text className="text-white font-ralewayLight">
                         {plan.descripcion}
                     </Text>
+
+                    <Pressable 
+                    onPress={()=>{
+                        setUserSelectedPlan(plan)
+                        handleNavigation()
+                    }}
+                    className='border-2 border-white p-2 w-full rounded-md my-1'>
+                        <Text className='text-white font-ralewayBold text-center'> 
+                            {
+                                isUserActualPlan
+                                ? "CONTINUAR"
+                                : "EMPEZAR"
+                            }
+                        </Text>
+                    </Pressable>
                 </View>
             </View>
         </Pressable>
