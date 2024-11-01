@@ -1,5 +1,6 @@
 import { MuscleGroups } from "@/types/types/muscles";
 
+export type PlanRoutineLevel = 'Baja' | 'Media' | 'Alta'
 export interface IndividualExercise {
     id: number;
     nombre: string;
@@ -11,7 +12,7 @@ export interface IndividualExercise {
 export interface RoutinePlan {
     id: number;
     nombre: string;
-    dificultad: 'Baja' | 'Media' | 'Alta';
+    dificultad: PlanRoutineLevel;
     oculto: boolean;
     musculos: MuscleGroups[];
     ejercicios: IndividualExercise[];
@@ -26,7 +27,7 @@ export interface TrainingPlan {
     imagenPlanEntrenamiento: string;
     descripcion: string;
     duracion: number;
-    dificultad: 'Baja' | 'Media' | 'Alta';
+    dificultad: PlanRoutineLevel;
     oculto: boolean;
     detalleDias: {
         lunes: DayRoutinePlan;

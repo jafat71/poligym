@@ -31,7 +31,7 @@ export default function RootLayout() {
             onPress={() => {
               
               if (actualPathname === '/form05') {
-                router.replace('/(root)/(drawer)/(tabs)/home')
+                router.replace('/(root)/(tabs)/home')
               } else {
                 router.push(routeMapping[actualPathname])
               }

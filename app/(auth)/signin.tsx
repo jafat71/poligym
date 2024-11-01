@@ -35,7 +35,7 @@ const Signin = () => {
         saveToken('accessToken', data.accessToken);
         setAccessToken(data.accessToken);
       }
-      router.push('/(root)/(tabs)/home');
+      router.push('/(root)/(tabs)/(home)/home');
     },
     onError: (error: any) => {
       setErrors([error.message]);

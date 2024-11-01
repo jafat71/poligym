@@ -48,7 +48,7 @@ export default function TabsLayout() {
         headerLeft: () => (
           <Pressable
             onPress={() => {
-              router.navigate('/(drawer)/(tabs)/home');
+              router.navigate('/(tabs)/home');
             }}
             className='ml-4'
           >
@@ -87,7 +87,7 @@ export default function TabsLayout() {
         headerLeft: () => (
           <Pressable
             onPress={() => {
-              router.navigate('/(drawer)/(tabs)/home');
+              router.navigate('/(tabs)/home');
             }}
             className='ml-4'
           >
@@ -127,7 +127,7 @@ export default function TabsLayout() {
         headerLeft: () => (
           <Pressable
             onPress={() => {
-              router.navigate('/(drawer)/(tabs)/home');
+              router.navigate('/(tabs)/home');
             }}
             className='ml-4'
           >
@@ -166,7 +166,7 @@ export default function TabsLayout() {
         headerLeft: () => (
           <Pressable
             onPress={() => {
-              router.navigate('/(drawer)/(tabs)/home');
+              router.navigate('/(tabs)/home');
             }}
             className='ml-4'
           >

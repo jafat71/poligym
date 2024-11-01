@@ -1,6 +1,6 @@
-import { Plan } from '@/components/ui/plans/PlanConstants';
 import { getUserInfo, verifyToken } from '@/lib/api/auth';
 import { getToken } from '@/lib/token/store';
+import { TrainingPlan } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
 import { usePathname } from 'expo-router';
@@ -12,8 +12,8 @@ interface UserContextType {
     setAccessToken: Dispatch<SetStateAction<string | null>>;
     loggedUserInfo: User | null;
     accessToken: string | null;
-    userSelectedPlan: Plan | null;
-    setUserSelectedPlan: Dispatch<SetStateAction<Plan | null>>;
+    userSelectedPlan: TrainingPlan | null;
+    setUserSelectedPlan: Dispatch<SetStateAction<TrainingPlan | null>>;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -34,7 +34,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const pathname = usePathname()
-    const [userSelectedPlan, setUserSelectedPlan] = useState<Plan | null>(null)
+    const [userSelectedPlan, setUserSelectedPlan] = useState<TrainingPlan | null>(null)
    
     useEffect(() => {
         getToken('accessToken')
@@ -69,7 +69,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     useEffect(() => {
         if (userLogged) {
             if (pathname !== '/form01') {
-                router.replace('/(root)/(drawer)/(tabs)/home')
+                router.replace('/(root)/(tabs)/home')
             } 
         } else {
             router.replace('/welcome')

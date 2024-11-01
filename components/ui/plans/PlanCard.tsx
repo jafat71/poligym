@@ -6,6 +6,7 @@ import { levelColors } from './PlanConstants'
 import { useNavigationFlowContext } from '@/context/NavFlowContext'
 import { router } from 'expo-router'
 import { TrainingPlan } from '@/types/interfaces/entities/plan'
+import { difficultyMapper } from '@/lib/utils/dificultymapper'
 
 const PlanCard = (plan: TrainingPlan) => {
     const { setScreenPlan } = useNavigationFlowContext()
@@ -31,18 +32,19 @@ const PlanCard = (plan: TrainingPlan) => {
                             className='bg-darkGray-500 rounded-full px-2 py-1 w-1/2 flex items-center'>
                             <Text className='text-white text-sm font-ralewayExtraBold'>{plan.duracion} semanas</Text>
                         </View>
-                        <View className={`${levelColors[plan.dificultad]} 
-                rounded-full px-2 py-1  flex items-center w-1/4`}>
-                            <Text className='text-darkGray-500 text-sm font-ralewayExtraBold'>{plan.dificultad}</Text>
-                        </View>
+        
                     </View>
 
                 
                 </View>
                 <View>
                     <Text className="text-white text-xl font-ralewayBold">
-                            {plan.nombre}
-                        </Text>
+                        {plan.nombre}
+                    </Text>
+                    <View className='flex flex-row items-center justify-start'>
+                        <Text className="text-white font-ralewayBold">Dificultad: </Text>
+                        <Text className="text-white font-raleway">{plan.dificultad}</Text>
+                    </View>
                     <Text className="text-white font-ralewayLight">
                         {plan.descripcion}
                     </Text>
