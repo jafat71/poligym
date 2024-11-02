@@ -9,12 +9,10 @@ import { useUser } from '@/context/UserContext'
 
 const PlanCard = (plan: TrainingPlan) => {
     const { setScreenPlan } = useNavigationFlowContext()
-    const { setUserSelectedPlan, userSelectedPlan} = useUser()
     const handleNavigation = () => {
         setScreenPlan({...plan})
         router.push('/(tabs)/(home)/plandetail')
     }
-    const isUserActualPlan = userSelectedPlan?.nombre === plan.nombre
     return (
         <Pressable
             key={plan.id}
@@ -51,20 +49,6 @@ const PlanCard = (plan: TrainingPlan) => {
                         {plan.descripcion}
                     </Text>
 
-                    <Pressable 
-                    onPress={()=>{
-                        setUserSelectedPlan(plan)
-                        handleNavigation()
-                    }}
-                    className='border-2 border-white p-2 w-full rounded-md my-1'>
-                        <Text className='text-white font-ralewayBold text-center'> 
-                            {
-                                isUserActualPlan
-                                ? "CONTINUAR"
-                                : "EMPEZAR"
-                            }
-                        </Text>
-                    </Pressable>
                 </View>
             </View>
         </Pressable>

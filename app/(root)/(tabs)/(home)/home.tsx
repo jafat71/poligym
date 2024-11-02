@@ -14,7 +14,7 @@ import { HomeRoutineFlatlist } from '@/components/ui/plans/HomeRoutineFlatList'
 
 const Home = () => {
   const { isDark } = useTheme()
-  const { loggedUserInfo } = useUser()
+  const { loggedUserInfo, userSelectedPlan } = useUser()
   //Todo: fetch suggested plans
   const suggestedPlans = TrainingPlans.slice(0, 3)
   const suggestedRoutines: RoutinePlan[] = [
@@ -38,18 +38,15 @@ const Home = () => {
           </Pressable>
         </View>
         <WeekCalendar />
-        <View className='flex flex-row items-center justify-between my-2'>
-          <View>
-            <Text className={`text-sm font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Plan Actual</Text>
-            <Text className={`text-2xl font-ralewaySemiBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>--</Text>
-          </View>
+        <View className='flex flex-row items-start justify-between my-2'>
+
           <View >
             <Text className={`font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Tiempo Trabajado</Text>
-            <Text className={`text-2xl font-ralewaySemiBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>00h00m</Text>
+            <Text className={`text-xl font-ralewaySemiBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>00h00m</Text>
           </View>
-          <View>
+          <View >
             <Text className={`text-sm font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Dias Activo</Text>
-            <Text className={`text-2xl font-ralewaySemiBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{loggedUserInfo?.userNumberActivityDays}</Text>
+            <Text className={`text-xl font-ralewaySemiBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{loggedUserInfo?.userNumberActivityDays}</Text>
           </View>
 
         </View>

@@ -1,4 +1,4 @@
-import { Pressable, Text, TouchableOpacity, View } from 'react-native'
+import { Dimensions, Pressable, Text, TouchableOpacity, View } from 'react-native'
 import React, { useRef } from 'react'
 import { useNavigationFlowContext } from '@/context/NavFlowContext'
 import { useTheme } from '@/context/ThemeContext'
@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { router } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons'
 import { useUser } from '@/context/UserContext'
+import * as Progress from 'react-native-progress';
 
 const HEADER_HEIGHT = 200
 const HEADER_MIN_HEIGHT = 100
@@ -61,6 +62,46 @@ const plandetail = () => {
 
     const isUserActualPlan = userSelectedPlan?.nombre === screenPlan?.nombre
 
+    const handleSelectPlan = () => {
+        setUserSelectedPlan(screenPlan)
+    }
+
+    const getPlanRoutines = () => {
+        const weeks = []
+        for (let i = 0; i < screenPlan?.duracion!; i++) {
+            weeks[i] = screenPlan?.detalleDias
+        }
+        return (
+            <>
+                {
+                    weeks.map((wk, index) => (
+                        <View
+                            key={index}
+                            className={`w-full p-2 my-2
+                        flex flex-row items-start justify-start
+                        border-l border-${isDark ? "white" : "darkGray-500"}
+                        `}>
+                            <View className='flex flex-col items-center'>
+                                <Text className={`${textStyle} text-base my-2`}>Semana {index + 1}</Text>
+                                <Progress.Pie progress={0.4} size={50} color={isDark ? "white" : "#1c1c1c"} />
+                            </View>
+
+                            <View
+                                className={`w-full p-2 my-2 mx-2
+                                    flex flex-row items-start justify-start
+                                    border-l border-${isDark ? "white" : "darkGray-500"}
+                                    `}
+                            >
+                                <View>
+                                 
+                                </View>
+                            </View>
+                        </View>
+                    ))
+                }
+            </>
+        )
+    }
     return (
         <SafeAreaView className={`flex-1 ${isDark ? 'bg-darkGray-500' : 'bg-white'}`}>
 
@@ -99,7 +140,7 @@ const plandetail = () => {
                     height: STICKY_HEADER_HEIGHT,
                     justifyContent: 'center',
                 }]}>
-                <Text className={`${textStyle} text-center text-2xl font-ralewayExtraBold`}>
+                <Text className={`${textStyle} text-center text-xl font-ralewayExtraBold`}>
                     {screenPlan?.nombre}
                 </Text>
 
@@ -169,48 +210,17 @@ const plandetail = () => {
                     </View>
 
                     <View >
-                        {[1, 2, 3, 4, 5, 6].map((item) => (
-                            <View
-                                key={item}
-                                className={`flex-1
-                                    ${isDark ? 'bg-darkGray-400' : 'bg-gray-100'}
-                                    p-4 mb-4 rounded-lg
-                                `}
-                            >
-                                <Text className={`
-                                    ${isDark ? 'text-white' : 'text-darkGray-500'}
-                                    text-base font-ralewayMedium
-                                `}>
-                                    Rutina {item}
-                                </Text>
-                            </View>
-                        ))}
+                        {getPlanRoutines()}
                     </View>
                 </Animated.View>
             </Animated.ScrollView>
 
-            {
-                isUserActualPlan
-                    ? (
-                        <View  className='w-full border-2 border-eBlue-500 rounded-md p-4 my-2'>
-                            <Text className={`
-                                    ${isDark ? 'text-white' : 'text-darkGray-500'}
-                                    text-base font-ralewayMedium
-                                `}>
-                                    Progreso
-                                </Text>
-                        </View>
-                    )
-                    : (
-                        <Pressable className='w-full bg-eBlue-500 rounded-md p-4 my-2'>
-                            <Text className={`text-white text-center 
-                                font-ralewayBold text-lg
-                            `}>
-                                Seleccionar
-                            </Text>
-                        </Pressable>
-                    )
-            }
+
+            <Pressable onPress={handleSelectPlan} className='w-full bg-eBlue-500 rounded-md p-4 my-2'>
+                <Text className='text-white text-center font-ralewayBold text-lg'>
+                    Empezar
+                </Text>
+            </Pressable>
 
         </SafeAreaView>
     )

@@ -5,12 +5,14 @@ import MaleBack from '@/components/ui/common/body/MaleBack';
 import MaleFront from '@/components/ui/common/body/MaleFront';
 import { exampleUser } from '@/constants';
 import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
 import React from 'react';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export const Stats = () => {
   const { isDark } = useTheme()
+  const {userSelectedPlan} = useUser()
   const {
     defaultColor,
     selectedColor,
@@ -44,7 +46,7 @@ export const Stats = () => {
   return (
     <ScrollView className={`flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"} px-2`}>
 
-      
+
       <View className='flex flex-row items-center justify-between mb-2'>
         <View >
           <Text className={`text-sm font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>PESO (KG)</Text>
@@ -70,6 +72,13 @@ export const Stats = () => {
           <Text className={`text-2xl font-ralewaySemiBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{exampleUser.objetivo}</Text>
         </View>
 
+      </View>
+
+      <View>
+        <Text className={`text-sm font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Plan Actual</Text>
+        <Text className={`text-2xl font-ralewaySemiBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{
+          userSelectedPlan?.nombre ?? "--"
+        }</Text>
       </View>
 
       <Text className={`text-sm mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>GRUPO MUSCULAR MÁS TRABAJADO</Text>
