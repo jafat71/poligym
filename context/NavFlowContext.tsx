@@ -1,11 +1,15 @@
 import { emptyUser } from '@/constants';
-import { TrainingPlan } from '@/types/interfaces/entities/plan';
+import { IndividualExercise, RoutinePlan, TrainingPlan } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import React, { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction, useEffect } from 'react';
 
 interface NavigationFlowContextType {
     screenPlan: TrainingPlan | null;
     setScreenPlan: Dispatch<SetStateAction<TrainingPlan | null>>;
+    screenRoutine: RoutinePlan | null;
+    setScreenRoutine: Dispatch<SetStateAction<RoutinePlan | null>>;
+    screenExercise: IndividualExercise | null;
+    setScreenExercise: Dispatch<SetStateAction<IndividualExercise | null>>;
     tmpUser: User | null;
     updateInitUserShell: (updatedFields: Partial<User>) => void;
 }
@@ -13,6 +17,10 @@ interface NavigationFlowContextType {
 const NavigationFlowContext = createContext<NavigationFlowContextType>({
     screenPlan: null,
     setScreenPlan: () => { },
+    screenRoutine: null,
+    setScreenRoutine: () => { },
+    screenExercise: null,
+    setScreenExercise: () => { },
     tmpUser: emptyUser,
     updateInitUserShell: () => { },
 });
@@ -23,6 +31,8 @@ interface NavigationFlowProviderProps {
 
 export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ children }) => {
     const [screenPlan, setScreenPlan] = useState<TrainingPlan | null>(null)
+    const [screenRoutine, setScreenRoutine] = useState<RoutinePlan | null>(null);
+    const [screenExercise, setScreenExercise] = useState<IndividualExercise | null>(null);
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
 
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
@@ -63,6 +73,10 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
             updateInitUserShell,
             screenPlan,
             setScreenPlan,
+            screenRoutine,
+            setScreenRoutine,
+            screenExercise,
+            setScreenExercise,
         }}>
             {children}
         </NavigationFlowContext.Provider>

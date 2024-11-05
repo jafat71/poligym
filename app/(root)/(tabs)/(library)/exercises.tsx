@@ -13,13 +13,13 @@ export const Exercises = () => {
     return (
         <ScrollView className={`flex-1 p-2 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
             <View className="flex-row flex-wrap">
-                {muscleGroups.map((muscle, index) => (
+                {/* {muscleGroups.map((muscle, index) => (
                     <BodyCardComponent
                         key={index}
                         muscleName={muscle}
-                        muscleImage={getMuscleImage(muscle)}
+                        muscleImage={getMuscleImage(muscle,100,100)}
                     />
-                ))}
+                ))} */}
             </View>
         </ScrollView>
     );

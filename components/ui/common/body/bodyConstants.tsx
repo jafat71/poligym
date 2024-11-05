@@ -300,38 +300,38 @@ export const MuscleFocusColored = {
     }
 }
 
-export const getMuscleImage = (muscleName: MuscleGroups) => {
+export const getMuscleImage = (muscleName: MuscleGroups, width: number, height: number) => {
     switch (muscleName) {
         case MuscleGroups.calves:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.calves} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.calves} />)
         case MuscleGroups.quads:
-            return (<MaleFront width={100} height={100} muscleColors={MuscleFocusColored.quads} />)
+            return (<MaleFront width={width} height={height} muscleColors={MuscleFocusColored.quads} />)
         case MuscleGroups.obliques:
-            return (<MaleFront width={100} height={100} muscleColors={MuscleFocusColored.obliques} />)
+            return (<MaleFront width={width} height={height} muscleColors={MuscleFocusColored.obliques} />)
         case MuscleGroups.abdominals:
-            return (<MaleFront width={100} height={100} muscleColors={MuscleFocusColored.abdominals} />)
+            return (<MaleFront width={width} height={height} muscleColors={MuscleFocusColored.abdominals} />)
         case MuscleGroups.forearms:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.forearms} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.forearms} />)
         case MuscleGroups.biceps:
-            return (<MaleFront width={100} height={100} muscleColors={MuscleFocusColored.biceps} />)
+            return (<MaleFront width={width} height={height} muscleColors={MuscleFocusColored.biceps} />)
         case MuscleGroups.chest:
-            return (<MaleFront width={100} height={100} muscleColors={MuscleFocusColored.chest} />)
+            return (<MaleFront width={width} height={height} muscleColors={MuscleFocusColored.chest} />)
         case MuscleGroups.shoulders:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.shoulders} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.shoulders} />)
         case MuscleGroups.traps:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.traps} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.traps} />)
         case MuscleGroups.lowerback:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.lowerback} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.lowerback} />)
         case MuscleGroups.triceps:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.triceps} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.triceps} />)
         case MuscleGroups.hamstrings:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.hamstrings} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.hamstrings} />)
         case MuscleGroups.glutes:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.glutes} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.glutes} />)
         case MuscleGroups.lats:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.lats} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.lats} />)
         case MuscleGroups.trapsmiddle:
-            return (<MaleBack width={100} height={100} muscleColors={MuscleFocusColored.trapsmiddle} />)
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.trapsmiddle} />)
         default:
             return null; 
     }

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Animated } from 'react-native'
+import { Animated} from 'react-native'
 import PlanCard from './PlanCard';
 import { Dificultad } from './PlanConstants';
 
@@ -8,10 +8,11 @@ interface Props {
 }
 
 export const HomePlanFlatlist = ({ data }: Props) => {
-
     const scrollX = useRef(new Animated.Value(0)).current;
+
     return (
         <>
+    
             <Animated.FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -60,6 +61,7 @@ export const HomePlanFlatlist = ({ data }: Props) => {
                 snapToInterval={300}
                 decelerationRate="normal"
             />
+
         </>
     )
 }

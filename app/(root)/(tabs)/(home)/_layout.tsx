@@ -11,9 +11,6 @@ import Loading from "@/components/animatedUi/Loading";
 
 const _layout = () => {
     const { isDark } = useTheme();
-    const { loggedUserInfo } = useUser();
-
-    if (!loggedUserInfo) return <Loading />;
 
     return (
         <Stack
@@ -27,11 +24,11 @@ const _layout = () => {
                     headerShown: true,
                     headerTitle: () => <></>,
                     headerLeft: () => (
-                            <MainLogoCustomComponent
-                                height="30"
-                                width="30"
-                                principal={`${isDark ? "#fff" : "#1c1c1c"}`}
-                            />
+                        <MainLogoCustomComponent
+                            height="30"
+                            width="30"
+                            principal={`${isDark ? "#fff" : "#1c1c1c"}`}
+                        />
                     ),
                     headerRight: () => (
                         <Pressable
@@ -55,6 +52,18 @@ const _layout = () => {
             />
             <Stack.Screen
                 name="plandetail"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="routinedetail"
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="exercisedetail"
                 options={{
                     headerShown: false,
                 }}

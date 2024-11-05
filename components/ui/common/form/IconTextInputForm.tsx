@@ -32,7 +32,7 @@ const IconTextInputForm = ({
             </Text>
             <View
                 className={`mt-2 border-[2px] rounded-lg ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
-                    isDark ? "border-darkGray-400 opacity-70" : "border-darkGray-500"
+                    isDark ? "border-darkGray-400 " : "border-darkGray-500"
                     }`}
             >
                 <View className="flex flex-row items-center justify-center w-full">

@@ -1,13 +1,13 @@
-import { Dimensions, Pressable, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Pressable, Text, View } from 'react-native'
 import React, { useRef } from 'react'
 import { useNavigationFlowContext } from '@/context/NavFlowContext'
 import { useTheme } from '@/context/ThemeContext'
 import { Animated } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { router } from 'expo-router'
-import { Ionicons } from '@expo/vector-icons'
 import { useUser } from '@/context/UserContext'
-import * as Progress from 'react-native-progress';
+import RoutineWeekPlanCard from '@/components/ui/routines/RoutineWeekPlanCard'
+import GoBackUpButton from '@/components/ui/common/buttons/GoBackUpButton'
+import PLanDetailedInfo from '@/components/ui/plans/PLanDetailedInfo'
 
 const HEADER_HEIGHT = 200
 const HEADER_MIN_HEIGHT = 100
@@ -67,60 +67,24 @@ const plandetail = () => {
     }
 
     const getPlanRoutines = () => {
-        const weeks = []
-        for (let i = 0; i < screenPlan?.duracion!; i++) {
-            weeks[i] = screenPlan?.detalleDias
-        }
-        return (
-            <>
-                {
-                    weeks.map((wk, index) => (
-                        <View
-                            key={index}
-                            className={`w-full p-2 my-2
-                        flex flex-row items-start justify-start
-                        border-l border-${isDark ? "white" : "darkGray-500"}
-                        `}>
-                            <View className='flex flex-col items-center'>
-                                <Text className={`${textStyle} text-base my-2`}>Semana {index + 1}</Text>
-                                <Progress.Pie progress={0.4} size={50} color={isDark ? "white" : "#1c1c1c"} />
-                            </View>
+        const weeks = Array.from({ length: screenPlan?.duracion! }, (_, i) => screenPlan?.detalleDias);
 
-                            <View
-                                className={`w-full p-2 my-2 mx-2
-                                    flex flex-row items-start justify-start
-                                    border-l border-${isDark ? "white" : "darkGray-500"}
-                                    `}
-                            >
-                                <View>
-                                 
-                                </View>
-                            </View>
-                        </View>
-                    ))
-                }
-            </>
-        )
+        return (
+            <FlatList
+                scrollEnabled={false}
+                data={weeks}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => (
+                    <RoutineWeekPlanCard key={index} index={index} wk={item!} />
+                )}
+            />
+        );
     }
+
     return (
         <SafeAreaView className={`flex-1 ${isDark ? 'bg-darkGray-500' : 'bg-white'}`}>
 
-            <TouchableOpacity
-                onPress={() => router.back()}
-                className='absolute top-8 left-2 z-20 p-2 rounded-full bg-black/30'
-                style={{
-                    shadowColor: "#000",
-                    shadowOffset: {
-                        width: 0,
-                        height: 2,
-                    },
-                    shadowOpacity: 0.25,
-                    shadowRadius: 3.84,
-                    elevation: 5,
-                }}
-            >
-                <Ionicons name="arrow-back" size={24} color="white" />
-            </TouchableOpacity>
+            <GoBackUpButton />
 
             <Animated.View
                 className='absolute top-0 left-0 right-0'
@@ -147,8 +111,8 @@ const plandetail = () => {
                 <View
                     className={`absolute bottom-0 right-0 left-0 py-1 
                     border-2 border-${isDark ? 'white' : 'darkGray-500'} 
-                     ${isDark ? 'bg-white' : 'bg-darkGray-500'}
-                     flex-row justify-center items-center
+                    ${isDark ? 'bg-white' : 'bg-darkGray-500'}
+                    flex-row justify-center items-center
                     `}
                 />
 
@@ -171,50 +135,12 @@ const plandetail = () => {
 
                     }}
                 >
-                    <View className='my-2'>
-
-                        <View className={`border-2 border-${isDark ? "white" : "darkGray-500"} p-2
-                            rounded-md
-                        `}>
-                            <Text className={`${textStyle} text-lg`}>Información del Plan</Text>
-
-                            <View className='flex flex-row items-start justify-center'>
-                                <View className='w-1/4'>
-                                    <Ionicons name='time-outline' size={22} color={isDark ? "white" : "#1c1c1c"} />
-                                    <Text className={`${textStyle}`}>Duración</Text>
-                                </View>
-                                <Text className={`${textStyle} w-3/4`}>{screenPlan?.duracion} Semanas</Text>
-                            </View>
-
-                            <View className='flex flex-row items-start justify-center'>
-                                <View className='w-1/4'>
-                                    <Ionicons name='walk-outline' size={22} color={isDark ? "white" : "#1c1c1c"} />
-                                    <Text className={`${textStyle}`}>Dificultad</Text>
-                                </View>
-                                <Text className={`${textStyle} w-3/4`}>
-                                    {screenPlan?.dificultad}
-                                </Text>
-                            </View>
-
-                            <View className='flex flex-row items-start justify-center'>
-                                <View className='w-1/4'>
-                                    <Ionicons name='book-outline' size={22} color={isDark ? "white" : "#1c1c1c"} />
-                                    <Text className={`${textStyle}`}>Descripción</Text>
-                                </View>
-                                <Text className={`${textStyle} w-3/4`}>
-                                    {screenPlan?.descripcion}
-                                </Text>
-                            </View>
-                        </View>
-
-                    </View>
-
-                    <View >
+                    <PLanDetailedInfo screenPlan={screenPlan!} />
+                    <View className=''>
                         {getPlanRoutines()}
                     </View>
                 </Animated.View>
             </Animated.ScrollView>
-
 
             <Pressable onPress={handleSelectPlan} className='w-full bg-eBlue-500 rounded-md p-4 my-2'>
                 <Text className='text-white text-center font-ralewayBold text-lg'>
