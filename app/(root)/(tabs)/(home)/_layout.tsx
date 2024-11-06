@@ -4,10 +4,8 @@ import { Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { useTheme } from "@/context/ThemeContext";
-import { useUser } from "@/context/UserContext";
 
 import MainLogoCustomComponent from "@/components/ui/common/logo/mainLogo";
-import Loading from "@/components/animatedUi/Loading";
 
 const _layout = () => {
     const { isDark } = useTheme();
@@ -21,6 +19,7 @@ const _layout = () => {
             <Stack.Screen
                 name="home"
                 options={{
+                    animation: "fade",
                     headerShown: true,
                     headerTitle: () => <></>,
                     headerLeft: () => (
@@ -54,18 +53,32 @@ const _layout = () => {
                 name="plandetail"
                 options={{
                     headerShown: false,
+                    animation: "fade",
+
                 }}
             />
             <Stack.Screen
                 name="routinedetail"
                 options={{
                     headerShown: false,
+                    animation: "fade",
+
                 }}
             />
             <Stack.Screen
-                name="exercisedetail"
+                name="playexercise"
                 options={{
                     headerShown: false,
+                    animation: "fade",
+
+                }}
+            />
+            <Stack.Screen
+                name="exerciseDetail"
+                options={{
+                    headerShown: false,
+                    animation: "fade_from_bottom",
+                    animationTypeForReplace: 'pop'
                 }}
             />
         </Stack>

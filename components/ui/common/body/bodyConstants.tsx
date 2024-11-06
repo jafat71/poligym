@@ -333,6 +333,6 @@ export const getMuscleImage = (muscleName: MuscleGroups, width: number, height: 
         case MuscleGroups.trapsmiddle:
             return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.trapsmiddle} />)
         default:
-            return null; 
+            return (<MaleBack width={width} height={height} muscleColors={MuscleFocusColored.calves} />)
     }
 }

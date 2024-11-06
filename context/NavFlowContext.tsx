@@ -10,6 +10,8 @@ interface NavigationFlowContextType {
     setScreenRoutine: Dispatch<SetStateAction<RoutinePlan | null>>;
     screenExercise: IndividualExercise | null;
     setScreenExercise: Dispatch<SetStateAction<IndividualExercise | null>>;
+    screenPlayExercises: IndividualExercise[] | null;
+    setScreenPlayExercises: Dispatch<SetStateAction<IndividualExercise[] | null>>;
     tmpUser: User | null;
     updateInitUserShell: (updatedFields: Partial<User>) => void;
 }
@@ -21,6 +23,8 @@ const NavigationFlowContext = createContext<NavigationFlowContextType>({
     setScreenRoutine: () => { },
     screenExercise: null,
     setScreenExercise: () => { },
+    screenPlayExercises: null,
+    setScreenPlayExercises: () => { },
     tmpUser: emptyUser,
     updateInitUserShell: () => { },
 });
@@ -34,7 +38,8 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
     const [screenRoutine, setScreenRoutine] = useState<RoutinePlan | null>(null);
     const [screenExercise, setScreenExercise] = useState<IndividualExercise | null>(null);
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
-
+    const [screenPlayExercises, setScreenPlayExercises] = useState<IndividualExercise[] | null>(null);
+    
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
         if (updatedFields === null) {
             setTmpUSer(null)
@@ -77,6 +82,8 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
             setScreenRoutine,
             screenExercise,
             setScreenExercise,
+            screenPlayExercises,
+            setScreenPlayExercises,
         }}>
             {children}
         </NavigationFlowContext.Provider>

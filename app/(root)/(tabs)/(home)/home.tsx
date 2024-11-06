@@ -1,18 +1,38 @@
 import { TrainingPlans } from '@/constants'
 
 import { useTheme } from '@/context/ThemeContext'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { HomePlanFlatlist } from '@/components/ui/plans/HomePlanFlatlist'
 import { RoutinePlan } from '@/types/interfaces/entities/plan'
 import WeekResumeHome from '@/components/ui/history/weekResumeHome'
-import { Pressable, Text } from 'react-native'
+import { BackHandler, Pressable, Text } from 'react-native'
 import { View } from 'react-native'
 import { HomeRoutineFlatlist } from '@/components/ui/plans/HomeRoutineFlatList'
+import { useUser } from '@/context/UserContext'
+import { usePathname } from 'expo-router'
 
 const Home = () => {
   const { isDark } = useTheme()
+  const { userLogged } = useUser()
+
+  const pathname = usePathname(); 
+
+  const handleBackPress = () => {
+      if (pathname === '/home' && userLogged) {
+          BackHandler.exitApp(); 
+          return true; 
+      }
+      return false; 
+  };
+
+  useEffect(() => {
+      BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+      return () => {
+          BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+      };
+    }, [pathname]); 
 
   //Todo: fetch suggested plans
   const suggestedPlans = TrainingPlans.slice(0, 3)
@@ -43,6 +63,7 @@ const Home = () => {
         </Pressable>
       </View>
 
+      {/* //TODO: Small FlatList Animation */}
       <HomeRoutineFlatlist
         data={suggestedRoutines}
       />

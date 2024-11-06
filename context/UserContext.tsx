@@ -69,7 +69,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     useEffect(() => {
         if (userLogged) {
             if (pathname !== '/form01') {
-                router.replace('/(root)/(tabs)/home')
+                if(pathname !== '/home'){
+                    router.replace('/(root)/(tabs)/home')
+                }
             } 
         } else {
             router.replace('/welcome')

@@ -24,7 +24,7 @@ const TopHeaderComponent = () => {
                         if (currentRoute === 'delete' || currentRoute === 'update') {
                             router.back(); 
                         } else {
-                            router.push('/welcome'); 
+                            router.replace('/welcome'); 
                         }
                     }}
                 >

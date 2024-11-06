@@ -38,7 +38,9 @@ export default function TabsLayout() {
         tabBarLabel: 'Home',
         tabBarShowLabel: false,
         tabBarLabelStyle: { color: tabBarTextColor },
-      }} />
+        
+      }} 
+      />
       <Tabs.Screen name="(library)" options={{
         headerTitle: () => (
           <View className='w-full items-center p-4'>

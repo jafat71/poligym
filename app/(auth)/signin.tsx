@@ -33,9 +33,9 @@ const Signin = () => {
       if (!data) return
       if (data.accessToken) {
         saveToken('accessToken', data.accessToken);
+        router.replace('/(root)/(tabs)/(home)/home');
         setAccessToken(data.accessToken);
       }
-      router.push('/(root)/(tabs)/(home)/home');
     },
     onError: (error: any) => {
       setErrors([error.message]);

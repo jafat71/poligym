@@ -1,5 +1,5 @@
 import { FlatList, Pressable, Text, View } from 'react-native'
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useNavigationFlowContext } from '@/context/NavFlowContext'
 import { useTheme } from '@/context/ThemeContext'
 import { Animated } from 'react-native'
@@ -8,6 +8,7 @@ import { useUser } from '@/context/UserContext'
 import RoutineWeekPlanCard from '@/components/ui/routines/RoutineWeekPlanCard'
 import GoBackUpButton from '@/components/ui/common/buttons/GoBackUpButton'
 import PLanDetailedInfo from '@/components/ui/plans/PLanDetailedInfo'
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const HEADER_HEIGHT = 200
 const HEADER_MIN_HEIGHT = 100
@@ -19,7 +20,7 @@ const plandetail = () => {
     const scrollY = useRef(new Animated.Value(0)).current
     const textStyle = `${isDark ? 'text-white' : 'text-darkGray-500'} text-xs font-raleway`
     const { userSelectedPlan, setUserSelectedPlan } = useUser()
-
+    const [infoOpen, setinfoOpen] = useState(false);
     const imageAnimatedStyle = {
         transform: [
             {
@@ -135,7 +136,26 @@ const plandetail = () => {
 
                     }}
                 >
-                    <PLanDetailedInfo screenPlan={screenPlan!} />
+                    {
+                        infoOpen ? (
+                            <>
+                                <Pressable onPress={() => setinfoOpen(false)}>
+                                    <Ionicons name='close-circle-outline' size={24} color={isDark ? 'white' : 'darkGray-500'} />
+                                </Pressable>
+                                <PLanDetailedInfo screenPlan={screenPlan!} />
+                            </>
+                        ) : (
+                            <View className='flex-row items-center justify-end'>
+                                <Pressable 
+                                className='flex flex-row items-center justify-center'
+                                onPress={() => setinfoOpen(true)}>
+                                    <Ionicons name='add-circle-outline' size={24} color={isDark ? 'white' : 'darkGray-500'} />
+                                    <Text className={`${textStyle} text-center font-ralewayExtraLight text-base`}>Conocer Detalles</Text>
+                                </Pressable>
+                            </View>
+                        )
+                    }
+
                     <View className=''>
                         {getPlanRoutines()}
                     </View>

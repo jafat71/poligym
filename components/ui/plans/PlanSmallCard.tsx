@@ -5,12 +5,20 @@ import { Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { RoutinePlan } from '@/types/interfaces/entities/plan'
 import { getBannerImages } from './PlanConstants'
+import { useNavigationFlowContext } from '@/context/NavFlowContext'
+import { useRouter } from 'expo-router'
 
 const PlanSmallCard = (routine: RoutinePlan) => {
     const iconColor = "white"
+    const { setScreenRoutine } = useNavigationFlowContext()
+    const router = useRouter()
     return (
         <Pressable
             key={routine.id}
+            onPress={() => {
+                setScreenRoutine(routine)
+                router.push("/(tabs)/(home)/routinedetail")
+            }}
             className={`w-40 h-28 mr-2 mb-1 
             overflow-hidden flex flex-row justify-start rounded-xl`}>
             <Image
