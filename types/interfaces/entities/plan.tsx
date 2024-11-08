@@ -1,4 +1,5 @@
 import { MuscleGroups } from "@/types/types/muscles";
+import LibraryIndex from '../../../app/(root)/(tabs)/(library)/info';
 
 export type PlanRoutineLevel = 'Baja' | 'Media' | 'Alta'
 export interface IndividualExercise {
@@ -7,6 +8,16 @@ export interface IndividualExercise {
     series: number;
     repeticiones: number;
     tiempoDescanso: number; 
+}
+
+export interface LibraryExercise {
+    id: number;
+    nombre: string;
+    url: string;
+    dificultad: PlanRoutineLevel;
+    categoria: string;
+    implemento: string;
+    musculos: MuscleGroups[];
 }
 
 export interface RoutinePlan {
@@ -41,4 +52,25 @@ export interface TrainingPlan {
         jueves: DayRoutinePlan;
         viernes: DayRoutinePlan;
     };
+}
+
+
+export interface AlimentaciónDetalleDias {
+    [dia: string]: {
+        desayuno: string;
+        almuerzo: string;
+        cena: string;
+    };
+}
+
+export interface PlanAlimentacion {
+    id: number;
+    nombre: string;
+    imagenPlanAlimentacion: string;
+    descripcion: string;
+    usos: number;
+    duracion: number; // en semanas
+    categoria: string;
+    oculto: boolean;
+    detalleDias: AlimentaciónDetalleDias;
 }

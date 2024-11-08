@@ -5,21 +5,9 @@ import React, { useState } from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from 'react-native-reanimated';
 
-export const Post = ({
-    imagenPerfil,
-    nombre,
-    fecha,
-    mensaje,
-    likes,
-    publico,
-    oculto,
-    id,
-    ejercicio,
-    peso,
-    repeticiones,
-}: SocialPost) => {
+export const Post = (post: SocialPost) => {
     const { isDark } = useTheme()
-    const [postlikes, setPostLikes] = useState(likes)
+    const [postlikes, setPostLikes] = useState(post.likes)
 
     const scale = useSharedValue(1);
     const [isLiked, setIsLiked] = useState(false)
@@ -49,21 +37,21 @@ export const Post = ({
                             border-[2px] border-eBlue-500
                             ${isDark ? "" : "bg-darkGray-200 "}`}>
                         {
-                            !imagenPerfil ? (
+                            !post.imagenPerfil ? (
                                 <Image
-                                    source={{ uri: imagenPerfil }}
+                                    source={{ uri: post.imagenPerfil }}
                                     className='w-full h-full rounded-full'
                                 />
                             ) : (
                                 <Text className={` text-lg font-raleway text-eBlue-500 `}>
-                                    {nombre.split(" ").map((n) => n[0]).join("")}
+                                    {post.nombre.split(" ").map((n) => n[0]).join("")}
                                 </Text>
                             )
                         }
                     </View>
                     <View className={`pl-3`}>
-                        <Text className={`text-base font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{nombre}</Text>
-                        <Text className={`text-base font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>{fecha}</Text>
+                        <Text className={`text-base font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{post.nombre}</Text>
+                        <Text className={`text-base font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>{post.fecha}</Text>
                     </View>
                 </View>
                 <View >
@@ -71,9 +59,15 @@ export const Post = ({
                 </View>
             </View>
 
+            {
+                post.imagenComentario && (
+                    <Image source={{ uri: post.imagenComentario }} className='w-full h-40 rounded-md' />
+                )
+            }
+
             <View className='pb-2'>
                 <Text className={`text-xl font-raleway text-start ${isDark ? "text-white" : "text-darkGray-500"} `} >
-                    {mensaje}
+                    {post.mensaje}
                 </Text>
             </View>
 
@@ -81,21 +75,21 @@ export const Post = ({
                 <View className='flex flex-col items-start justify-center w-1/3'>
                     <Text className={`text-xs font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>Ejercicio</Text>
                     <Text className={`text-sm font-raleway text-start ${isDark ? "text-white" : "text-darkGray-500"} `} >
-                        {ejercicio}
+                        {post.rutina}
                     </Text>
                 </View>
 
                 <View className='flex flex-col items-start justify-center w-1/3'>
-                    <Text className={`text-xs font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>PESO</Text>
+                    <Text className={`text-xs font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>Dificultad</Text>
                     <Text className={`text-sm font-raleway text-start ${isDark ? "text-white" : "text-darkGray-500"} `} >
-                        {peso} KG
+                        {post.dificultad}
                     </Text>
                 </View>
 
                 <View className='flex flex-col items-start justify-center w-1/3'>
-                    <Text className={`text-xs font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>Repeticiones</Text>
+                    <Text className={`text-xs font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>Duración</Text>
                     <Text className={`text-sm font-raleway text-start ${isDark ? "text-white" : "text-darkGray-500"} `} >
-                        {repeticiones !== 0 ? repeticiones : "--"}
+                        {post.duracion}
                     </Text>
                 </View>
 

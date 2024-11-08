@@ -1,5 +1,5 @@
 import { emptyUser } from '@/constants';
-import { IndividualExercise, RoutinePlan, TrainingPlan } from '@/types/interfaces/entities/plan';
+import { IndividualExercise, LibraryExercise, PlanAlimentacion, RoutinePlan, TrainingPlan } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import { MuscleGroups } from '@/types/types/muscles';
 import React, { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction, useEffect } from 'react';
@@ -13,6 +13,10 @@ interface NavigationFlowContextType {
     setScreenExercise: Dispatch<SetStateAction<IndividualExercise | null>>;
     screenPlayExercises: IndividualExercise[] | null;
     setScreenPlayExercises: Dispatch<SetStateAction<IndividualExercise[] | null>>;
+    screenLibExercise: LibraryExercise | null;
+    setScreenLibExercise: Dispatch<SetStateAction<LibraryExercise | null>>;
+    screenLibAlimentacion: PlanAlimentacion | null;
+    setScreenLibAlimentacion: Dispatch<SetStateAction<PlanAlimentacion | null>>;
     tmpUser: User | null;
     updateInitUserShell: (updatedFields: Partial<User>) => void;
 }
@@ -28,6 +32,10 @@ const NavigationFlowContext = createContext<NavigationFlowContextType>({
     setScreenPlayExercises: () => { },
     tmpUser: emptyUser,
     updateInitUserShell: () => { },
+    screenLibExercise: null,
+    setScreenLibExercise: () => { },
+    screenLibAlimentacion: null,
+    setScreenLibAlimentacion: () => { },
 });
 
 interface NavigationFlowProviderProps {
@@ -40,7 +48,9 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
     const [screenExercise, setScreenExercise] = useState<IndividualExercise | null>(null);
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
     const [screenPlayExercises, setScreenPlayExercises] = useState<IndividualExercise[] | null>(null);
-    
+    const [screenLibExercise, setScreenLibExercise] = useState<LibraryExercise | null>(null);
+    const [screenLibAlimentacion, setScreenLibAlimentacion] = useState<PlanAlimentacion | null>(null);
+
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
         if (updatedFields === null) {
             setTmpUSer(null)
@@ -85,6 +95,10 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
             setScreenExercise,
             screenPlayExercises,
             setScreenPlayExercises,
+            screenLibExercise,
+            setScreenLibExercise,
+            screenLibAlimentacion,
+            setScreenLibAlimentacion,
         }}>
             {children}
         </NavigationFlowContext.Provider>

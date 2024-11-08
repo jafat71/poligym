@@ -42,36 +42,7 @@ export default function TabsLayout() {
       }} 
       />
       <Tabs.Screen name="(library)" options={{
-        headerTitle: () => (
-          <View className='w-full items-center p-4'>
-            <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Biblioteca</Text>
-          </View>
-        ),
-        headerLeft: () => (
-          <Pressable
-            onPress={() => {
-              router.navigate('/(tabs)/home');
-            }}
-            className='ml-4'
-          >
-            <Ionicons name="arrow-back" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-          </Pressable>
-        ),
-        headerRight: () => (
-          <Pressable
-            onPress={() => {
-              router.navigate('/(config)/config')
-            }}
-            className='mr-4'
-          >
-            <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-          </Pressable>
-        ),
-        headerStyle: {
-          backgroundColor: isDark ? '#1c1c1c' : '#fff',
-        },
-        headerTintColor: isDark ? "#fff" : "#1c1c1c",
-        headerTitleAlign: 'center',
+        headerShown: false,
         tabBarIcon: ({ focused }) => (
           <Ionicons name="library-outline" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
         ),
@@ -80,7 +51,7 @@ export default function TabsLayout() {
         tabBarShowLabel: false,
         tabBarLabelStyle: { color: tabBarTextColor },
       }} />
-      <Tabs.Screen name="stats" options={{
+      <Tabs.Screen name="(stats)" options={{
         headerTitle: () => (
           <View className='w-full items-center p-4'>
             <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Estadísticas</Text>
@@ -162,7 +133,7 @@ export default function TabsLayout() {
       <Tabs.Screen name="(profile)" options={{
         headerTitle: () => (
           <View className='w-full items-center p-4'>
-            <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Perfil</Text>
+            <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Tus Posts</Text>
           </View>
         ),
         headerLeft: () => (

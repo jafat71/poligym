@@ -1,3 +1,4 @@
+import { SocialPost } from "@/types/interfaces/entities/post";
 import { Experience, Genre, MedicalProblem, Objetive, Schedule, User } from "@/types/interfaces/entities/user";
 
 export const termsContent = [
@@ -356,178 +357,193 @@ export const OnboardingItems = [
 ];
 
 const defaultProfilePic = 'https://api.dicebear.com/9.x/initials/svg?seed=User';
+const defaultCommentPic = 'https://images.pexels.com/photos/1092878/pexels-photo-1092878.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
 
-export const socialPosts = [
+export const socialPosts  = [
   {
-    id: 1,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Carlos',
-    fecha: '2024-10-15',
-    publico: true,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 70 kg',
-    likes: 12,
-    ejercicio: 'Press de Banca con Barra',
-    peso: 70,
-    repeticiones: 10,
+      id: 1,
+      imagenPerfil: defaultProfilePic,
+      imagenComentario: defaultCommentPic,
+      nombre: 'Carlos',
+      fecha: '2024-10-15',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 70 kg',
+      likes: 12,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
   },
   {
-    id: 2,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Ana',
-    fecha: '2024-10-16',
-    publico: false,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 100 kg',
-    likes: 5,
-    ejercicio: 'Sentadillas con Barra',
-    peso: 100,
-    repeticiones: 10,
+      id: 2,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Ana',
+      fecha: '2024-10-16',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 100 kg',
+      likes: 5,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Media',
+      duracion: '40m 33s'
+
   },
   {
-    id: 3,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Pedro',
-    fecha: '2024-10-17',
-    publico: true,
-    oculto: true,
-    mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barra con un peso de 120 kg',
-    likes: 3,
-    ejercicio: 'Peso Muerto con Barra',
-    peso: 120,
-    repeticiones: 10,
+      id: 3,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Pedro',
+      fecha: '2024-10-17',
+      publico: true,
+      oculto: true,
+      mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barra con un peso de 120 kg',
+      likes: 3,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Alta',
+      duracion: '40m 33s'
+
   },
   {
-    id: 4,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Sofía',
-    fecha: '2024-10-18',
-    publico: false,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 80 kg',
-    likes: 8,
-    ejercicio: 'Press de Banca con Barra',
-    peso: 80,
-    repeticiones: 10,
+      id: 4,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Sofía',
+      fecha: '2024-10-18',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 80 kg',
+      likes: 8,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   },
   {
-    id: 5,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Javier',
-    fecha: '2024-10-19',
-    publico: true,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 110 kg',
-    likes: 2,
-    ejercicio: 'Sentadillas con Barra',
-    peso: 110,
-    repeticiones: 10,
+      id: 5,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Javier',
+      fecha: '2024-10-19',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 110 kg',
+      likes: 2,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   },
   {
-    id: 6,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'María',
-    fecha: '2024-10-20',
-    publico: true,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barra con un peso de 130 kg',
-    likes: 10,
-    ejercicio: 'Peso Muerto con Barra',
-    peso: 130,
-    repeticiones: 10,
+      id: 6,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'María',
+      fecha: '2024-10-20',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barra con un peso de 130 kg',
+      likes: 10,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   },
   {
-    id: 7,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Luis',
-    fecha: '2024-10-21',
-    publico: false,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 90 kg',
-    likes: 6,
-    ejercicio: 'Press de Banca con Barra',
-    peso: 90,
-    repeticiones: 10,
+      id: 7,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Luis',
+      fecha: '2024-10-21',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 90 kg',
+      likes: 6,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   },
   {
-    id: 8,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Elena',
-    fecha: '2024-10-22',
-    publico: true,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 120 kg',
-    likes: 4,
-    ejercicio: 'Sentadillas con Barra',
-    peso: 120,
-    repeticiones: 10,
+      id: 8,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Elena',
+      fecha: '2024-10-22',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 120 kg',
+      likes: 4,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   },
   {
-    id: 9,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Miguel',
-    fecha: '2024-10-23',
-    publico: true,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barra con un peso de 140 kg',
-    likes: 7,
-    ejercicio: 'Peso Muerto con Barra',
-    peso: 140,
-    repeticiones: 10,
+      id: 9,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Miguel',
+      fecha: '2024-10-23',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barra con un peso de 140 kg',
+      likes: 7,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   },
   {
-    id: 10,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Laura',
-    fecha: '2024-10-24',
-    publico: false,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 100 kg',
-    likes: 9,
-    ejercicio: 'Press de Banca con Barra',
-    peso: 100,
-    repeticiones: 10,
+      id: 10,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Laura',
+      fecha: '2024-10-24',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 100 kg',
+      likes: 9,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   },
   {
-    id: 11,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Raul',
-    fecha: '2024-10-25',
-    publico: true,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 130 kg',
-    likes: 11,
-    ejercicio: 'Sentadillas con Barra',
-    peso: 130,
-    repeticiones: 10,
+      id: 11,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Raul',
+      fecha: '2024-10-25',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Sentadillas con Barra con un peso de 130 kg',
+      likes: 11,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   },
   {
-    id: 12,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Carmen',
-    fecha: '2024-10-26',
-    publico: true,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barras con un peso de 150 kg',
-    likes: 1,
-    ejercicio: 'Peso Muerto con Barras',
-    peso: 150,
-    repeticiones: 10,
+      id: 12,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Carmen',
+      fecha: '2024-10-26',
+      publico: true,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Peso Muerto con Barras con un peso de 150 kg',
+      likes: 1,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   },
   {
-    id: 13,
-    imagenPerfil: defaultProfilePic,
-    nombre: 'Jorge',
-    fecha: '2024-10-27',
-    publico: false,
-    oculto: false,
-    mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 110 kg',
-    likes: 13,
-    ejercicio: 'Press de Banca con Barra',
-    peso: 110,
-    repeticiones: 10,
+      id: 13,
+      imagenPerfil: defaultProfilePic,
+      nombre: 'Jorge',
+      fecha: '2024-10-27',
+      publico: false,
+      oculto: false,
+      mensaje: 'ha completado exitosamente la rutina de Press de Banca con Barra con un peso de 110 kg',
+      likes: 13,
+      rutina: 'Rutina de Tren superior',
+      dificultad: 'Baja',
+      duracion: '40m 33s'
+
   }
-]
+];
+
 
 export const exampleUser = {
   id: 1,
@@ -550,3 +566,304 @@ export const exampleUser = {
   diasSeleccionados: ['Lunes', 'Martes', 'Viernes'],
   imagenPerfil: defaultProfilePic,
 }
+
+export const LibExercises = [
+  {
+    "id": 1,
+    "url": "https://example.com/exercise1",
+    "nombre": "Press de banca",
+    "dificultad": "Media",
+    "categoria": "Fuerza",
+    "implemento": "Máquina de press de banca",
+    "musculos": ["chest", "triceps", "shoulders"],
+  },
+  {
+    "id": 2,
+    "url": "https://example.com/exercise2",
+    "nombre": "Sentadilla",
+    "dificultad": "Alta",
+    "categoria": "Fuerza",
+    "implemento": "Máquina de prensa de piernas",
+    "musculos": ["quads", "hamstrings", "glutes"],
+  },
+  {
+    "id": 3,
+    "url": "https://example.com/exercise3",
+    "nombre": "Deadlift",
+    "dificultad": "Alta",
+    "categoria": "Fuerza",
+    "implemento": "Barra de pesas",
+    "musculos": ["lowerback", "hamstrings", "glutes"],
+  },
+  {
+    "id": 4,
+    "url": "https://example.com/exercise4",
+    "nombre": "Jumping Jacks",
+    "dificultad": "Baja",
+    "categoria": "Cardio",
+    "implemento": "Ninguno",
+    "musculos": ["calves", "shoulders"],
+  },
+  {
+    "id": 5,
+    "url": "https://example.com/exercise5",
+    "nombre": "Yoga",
+    "dificultad": "Baja",
+    "categoria": "Estiramiento",
+    "implemento": "Pelota de yoga",
+    "musculos": ["hamstrings", "lowerback"],
+  },
+  {
+    "id": 6,
+    "url": "https://example.com/exercise6",
+    "nombre": "Dominadas",
+    "dificultad": "Alta",
+    "categoria": "Fuerza",
+    "implemento": "Barra de dominadas",
+    "musculos": ["lats", "biceps", "shoulders"],
+  },
+  {
+    "id": 7,
+    "url": "https://example.com/exercise7",
+    "nombre": "Estocadas",
+    "dificultad": "Media",
+    "categoria": "Fuerza",
+    "implemento": "Ninguno",
+    "musculos": ["quads", "glutes"],
+  }
+];
+
+export const LibAlimentacion = [
+  {
+    id: 1,
+    nombre: "Plan Básico de Pérdida de Peso",
+    imagenPlanAlimentacion: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    descripcion: "Un plan de alimentación diseñado para reducir la ingesta calórica y favorecer la pérdida de peso.",
+    usos: 32,
+    duracion: 4,  // semanas
+    categoria: "Pérdida de Peso",
+    oculto: false,
+    detalleDias: {
+        lunes: {
+            desayuno: "Avena con frutas y miel",
+            almuerzo: "Ensalada de pollo con aguacate",
+            cena: "Pescado a la plancha con verduras al vapor"
+        },
+        martes: {
+            desayuno: "Tostadas integrales con aguacate y huevo",
+            almuerzo: "Sopa de verduras y pechuga de pollo",
+            cena: "Ensalada de atún con espinacas"
+        },
+        miércoles: {
+            desayuno: "Smoothie verde con espinacas, manzana y avena",
+            almuerzo: "Quinoa con vegetales y pollo",
+            cena: "Salmón con brócoli al vapor"
+        },
+        jueves: {
+            desayuno: "Tostadas integrales con crema de almendras y plátano",
+            almuerzo: "Pechuga de pavo con ensalada mixta",
+            cena: "Pechuga de pollo a la parrilla con calabacines"
+        },
+        viernes: {
+            desayuno: "Yogur natural con frutas y nueces",
+            almuerzo: "Arroz integral con vegetales y tofu",
+            cena: "Tortilla de espinacas con champiñones"
+        },
+        sábado: {
+            desayuno: "Batido de proteínas con leche de almendras y avena",
+            almuerzo: "Ensalada César con pechuga de pollo",
+            cena: "Filete de ternera con ensalada verde"
+        },
+        domingo: {
+            desayuno: "Pan integral con queso cottage y fresas",
+            almuerzo: "Pollo asado con papas y brócoli",
+            cena: "Sopa de lentejas y verduras"
+        }
+    }
+},
+{
+    id: 2,
+    nombre: "Plan de Ganancia Muscular",
+    imagenPlanAlimentacion: 'https://images.pexels.com/photos/3872365/pexels-photo-3872365.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    descripcion: "Un plan alto en proteínas y calorías para promover el desarrollo muscular.",
+    usos: 22,
+    duracion: 6,  // semanas
+    categoria: "Volumen",
+    oculto: true,
+    detalleDias: {
+        lunes: {
+            desayuno: "Huevos revueltos con jamón y espinacas",
+            almuerzo: "Pollo a la parrilla con arroz integral y brócoli",
+            cena: "Salmón al horno con quinoa y espárragos"
+        },
+        martes: {
+            desayuno: "Panqueques de avena con frutas y miel",
+            almuerzo: "Carne de res con batatas y espinacas",
+            cena: "Ensalada de atún con aguacate y pan integral"
+        },
+        miércoles: {
+            desayuno: "Batido de proteínas con plátano y avena",
+            almuerzo: "Pechuga de pollo con arroz integral y verduras",
+            cena: "Filete de ternera con ensalada de garbanzos"
+        },
+        jueves: {
+            desayuno: "Tostadas de pan integral con mantequilla de maní y plátano",
+            almuerzo: "Ensalada de quinoa con pollo y espárragos",
+            cena: "Pescado a la plancha con papas asadas"
+        },
+        viernes: {
+            desayuno: "Avena con nueces, pasas y proteína en polvo",
+            almuerzo: "Pechuga de pavo con arroz y espinacas",
+            cena: "Salmón a la parrilla con batatas"
+        },
+        sábado: {
+            desayuno: "Tortilla de huevo con jamón y queso",
+            almuerzo: "Lomo de cerdo con puré de papas y brócoli",
+            cena: "Pollo al horno con ensalada mixta"
+        },
+        domingo: {
+            desayuno: "Smoothie de proteína con frutos rojos",
+            almuerzo: "Pollo a la parrilla con arroz y ensalada",
+            cena: "Lasaña de carne con espinacas"
+        }
+    }
+},
+{
+    id: 3,
+    nombre: "Plan de Mantenimiento",
+    imagenPlanAlimentacion: 'https://images.pexels.com/photos/3872373/pexels-photo-3872373.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    descripcion: "Un plan balanceado para mantener el peso y llevar una alimentación saludable.",
+    usos: 14,
+    duracion: 8,  // semanas
+    categoria: 'Definición',
+    oculto: false,
+    detalleDias: {
+        lunes: {
+            desayuno: "Batido de frutas con yogur y avena",
+            almuerzo: "Sándwich de pollo con aguacate y ensalada",
+            cena: "Pescado al horno con verduras"
+        },
+        martes: {
+            desayuno: "Tostadas de aguacate con huevo",
+            almuerzo: "Ensalada de atún con vegetales",
+            cena: "Pollo asado con papas al horno"
+        },
+        miércoles: {
+            desayuno: "Avena con frutas y nueces",
+            almuerzo: "Wrap de pavo con vegetales",
+            cena: "Salmón a la parrilla con espinacas"
+        },
+        jueves: {
+            desayuno: "Tortilla de espinacas y champiñones",
+            almuerzo: "Quinoa con pollo y ensalada",
+            cena: "Pechuga de pavo con brócoli al vapor"
+        },
+        viernes: {
+            desayuno: "Yogur natural con frutas y granola",
+            almuerzo: "Pasta integral con salsa de tomate y pavo",
+            cena: "Ensalada de pollo con aguacate"
+        },
+        sábado: {
+            desayuno: "Tostadas integrales con mantequilla de maní",
+            almuerzo: "Arroz con pollo y vegetales",
+            cena: "Tacos de pescado con ensalada"
+        },
+        domingo: {
+            desayuno: "Batido de frutas con avena",
+            almuerzo: "Salmón a la plancha con quinoa",
+            cena: "Pollo a la parrilla con ensalada verde"
+        }
+    }
+}
+];
+
+
+export const LastRoutines = [
+  {
+    "rutina": "Full Body",
+    "duracion": "45 min",
+    "fecha": "2024-10-13",
+    "musculos": ['biceps', 'chest', 'quads']
+},
+{
+    "rutina": "Piernas y Glúteos",
+    "duracion": "50 min",
+    "fecha": "2024-10-10",
+    "musculos": ['glutes', 'quads', 'calves']
+},
+{
+    "rutina": "Pecho y Tríceps",
+    "duracion": "40 min",
+    "fecha": "2024-10-09",
+    "musculos": ['chest', 'triceps', 'shoulders']
+},
+{
+    "rutina": "Cardio Intensivo",
+    "duracion": "30 min",
+    "fecha": "2024-10-05",
+    "musculos": ['calves', 'quads']
+},
+{
+    "rutina": "Espalda y Bíceps",
+    "duracion": "55 min",
+    "fecha": "2024-10-03",
+    "musculos": ['biceps', 'lats', 'traps']
+}
+]
+
+export const LastAlimentationPlans = [
+  {
+      "plan": "Plan Básico de Pérdida de Peso",
+      "fecha": "2024-10-01",
+      "estado": "Activo"
+  },
+  {
+      "plan": "Plan de Ganancia Muscular",
+      "fecha": "2024-09-15",
+      "estado": "Finalizado"
+  },
+  {
+      "plan": "Plan de Mantenimiento",
+      "fecha": "2024-08-25",
+      "estado": "Activo"
+  }
+]
+
+export const LastExercisePlans = [
+  {
+      "plan": "Entrenamiento de fuerza",
+      "dificultad": "Alta",
+      "fecha": "2024-10-01",
+      "estado": "Activo"
+  },
+  {
+      "plan": "Entrenamiento HIIT",
+      "dificultad": "Media",
+      "fecha": "2024-09-20",
+      "estado": "Finalizado"
+  },
+  {
+      "plan": "Entrenamiento de cuerpo completo",
+      "dificultad": "Baja",
+      "fecha": "2024-09-05",
+      "estado": "Finalizado"
+  },
+  {
+      "plan": "Plan Inicial",
+      "dificultad": "Baja",
+      "fecha": "2024-09-25",
+      "estado": "Finalizado"
+  },
+  {
+      "plan": "Plan Intermedio",
+      "dificultad": "Media",
+      "fecha": "2024-09-05",
+      "estado": "Activo"
+  },
+  {
+      "plan": "Plan Avanzado",
+      "dificultad": "Alta",
+      "fecha": "2024-09-15",
+      "estado": "Finalizado"
+  },
+]

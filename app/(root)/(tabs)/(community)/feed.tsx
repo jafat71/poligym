@@ -97,7 +97,7 @@ const Feed = () => {
       <AnimatedFlatList
         className={`w-full px-2 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
         contentContainerStyle={{ paddingTop: SEARCH_BAR_HEIGHT }}
-        data={socialPosts}
+        data={socialPosts as SocialPost[]}
         renderItem={({ item }) => (
           <Post {...item as SocialPost} />
         )}

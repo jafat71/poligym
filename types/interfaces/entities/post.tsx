@@ -1,3 +1,4 @@
+import { PlanRoutineLevel } from "./plan";
 
 export interface SocialPost {
     id: number;
@@ -8,7 +9,8 @@ export interface SocialPost {
     oculto: boolean;
     mensaje: string;
     likes: number;
-    ejercicio: string;
-    peso: number;
-    repeticiones: number;
+    rutina: string;
+    imagenComentario?: string,
+    duracion: string,
+    dificultad: PlanRoutineLevel,
 }
