@@ -3,18 +3,21 @@ import React from 'react'
 import WeekCalendar from './weekCalendar'
 import { useTheme } from '@/context/ThemeContext'
 import { useUser } from '@/context/UserContext'
-
+import { Ionicons } from '@expo/vector-icons'
 const WeekResumeHome = () => {
     const { isDark } = useTheme()
     const { loggedUserInfo } = useUser()
     return (
-        <View className='px-4'>
-            <View className='flex flex-row items-center justify-between mb-3'>
-                <Text className={`${isDark ? "text-white" : "text-darkGray-500"}
-        font-ralewayBold 
-          `}>
-                    Tu semana
-                </Text>
+        <View className={`px-4`}>
+            <View className='flex flex-row items-center justify-between my-1'>
+                <View className='flex flex-row items-center justify-center gap-x-1'>
+                    <Ionicons name="calendar-outline" size={14} color={isDark ? "white" : "black"} />
+                    <Text className={`${isDark ? "text-white" : "text-darkGray-500"}
+            font-ralewayBold 
+            `}>
+                        Tu semana
+                    </Text>
+                </View>
                 <Pressable className='flex flex-row items-center justify-center'>
                     <Text className={`text-eBlue-500 font-ralewayBold`}>Ver más</Text>
                 </Pressable>

@@ -1,54 +1,121 @@
-import { Pressable, Text, View } from 'react-native'
-import React from 'react'
-import { useTheme } from '@/context/ThemeContext'
-import { RoutinePlan } from '@/types/interfaces/entities/plan'
-import * as Progress from 'react-native-progress';
-import { router } from 'expo-router'
-import { useNavigationFlowContext } from '@/context/NavFlowContext'
-import { Ionicons } from '@expo/vector-icons'
+import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { useTheme } from '@/context/ThemeContext';
+import { useRouter } from 'expo-router';
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
+import { Ionicons } from '@expo/vector-icons';
 
 interface RoutineWeekDayPlanCardProps {
-    day: string
-    routine: RoutinePlan
+    day: string;
+    routine: any;
+    status?: 'pending' | 'completed' | 'in-progress';
+    onComplete?: (isCompleted: boolean) => void;
+
 }
 
-const RoutineWeekDayPlanCard = ({ day, routine }: RoutineWeekDayPlanCardProps) => {
-    const { isDark } = useTheme()
-    const textStyle = `${isDark ? 'text-white' : 'text-darkGray-500'} text-xs font-raleway`
-    const { setScreenRoutine} = useNavigationFlowContext()
+const RoutineWeekDayPlanCard = ({ 
+    day, 
+    routine, 
+    status = 'pending' ,
+    onComplete
+}: RoutineWeekDayPlanCardProps) => {
+    const { isDark } = useTheme();
+    const router = useRouter();
+    const { setScreenRoutine, screenRoutine } = useNavigationFlowContext();
+    const textStyle = `${isDark ? 'text-white' : 'text-darkGray-500'} font-raleway`;
+    const [isCompleted, setIsCompleted] = useState(status === 'completed');
+
+    const handlePress = () => {
+        setScreenRoutine(routine);
+        router.push('/routinedetail');
+    };
+
+    const toggleComplete = (e: any) => {
+        e.stopPropagation();
+        setIsCompleted(!isCompleted);
+        onComplete && onComplete(!isCompleted);
+    };
+
+    const isNextRoutine = true
 
     return (
-        <View className='flex flex-row items-center justify-start '>
-            <View className='p-2 justify-center'>
-                <Ionicons name="chevron-forward-outline" size={24} color={isDark ? "white" : "#1c1c1c"} />
+        <TouchableOpacity
+            disabled={!isNextRoutine}
+            onPress={handlePress}
+            className={`
+                my-2 p-4 rounded-xl
+                ${isDark ? 'bg-darkGray-600' : 'bg-darkGray-100'}
+                border-l-4 ${isCompleted ? 'border-eBlue-500' : 'border-darkGray-200'}
+                flex flex-row items-center justify-between
+                active:opacity-80
+            `}
+        >
+            <View className="mr-3">
+                <TouchableOpacity 
+                    onPress={toggleComplete}
+                    className={`
+                        w-6 h-6 rounded-full 
+                        ${isCompleted ? 'bg-eBlue-500' : 'bg-gray-300'}
+                        items-center justify-center
+                    `}
+                >
+                    {isCompleted && (
+                        <Ionicons 
+                            name="checkmark" 
+                            size={16} 
+                            color="white" 
+                        />
+                    )}
+                </TouchableOpacity>
             </View>
 
-            <Pressable 
-                onPress={() => {
-                    setScreenRoutine(routine)
-                    router.push("/(tabs)/(home)/routinedetail")
-                }}
-                className={`mb-2 ${isDark ? 'bg-darkGray-500' : 'bg-white'}
-            border-2 ${isDark ? 'border-white' : 'border-darkGray-500'}
-            rounded-md p-2 flex flex-col  flex-1`}>
-                <View className='flex flex-row items-center justify-start gap-x-2'>
-                    <Progress.Pie progress={0.0} size={18} color={isDark ? "white" : "#1c1c1c"} />
-                    <Text className={`${textStyle} text-base`}>
-                        {day.slice(0, 3).toUpperCase()}
+            <View className="flex-1">
+                <View className="flex-row items-center space-x-2">
+                    <Text className={`${textStyle} text-sm font-ralewayBold uppercase mb-1`}>
+                        {day}
                     </Text>
                 </View>
-                <Text className={`${textStyle} 
-                        font-ralewayBold `}>
+
+                <Text 
+                    numberOfLines={1} 
+                    className={`${textStyle} text-base font-ralewayMedium`}
+                >
                     {routine.nombre}
                 </Text>
-                <View className='flex flex-row items-center justify-between w-full'>
-
+                
+                <View className="flex-row items-center mt-2 space-x-4">
+                    <View className="flex-row items-center">
+                        <Ionicons 
+                            name="time-outline" 
+                            size={16} 
+                            color={isDark ? '#fff' : '#374151'} 
+                        />
+                        <Text className={`${textStyle} text-xs ml-1`}>
+                            30 min
+                        </Text>
+                    </View>
+                    <View className="flex-row items-center">
+                        <Ionicons 
+                            name="barbell-outline" 
+                            size={16} 
+                            color={isDark ? '#fff' : '#374151'} 
+                        />
+                        <Text className={`${textStyle} text-xs ml-1`}>
+                            {routine.dificultad}
+                        </Text>
+                    </View>
                 </View>
+            </View>
 
-            </Pressable>
-        </View>
-    )
+            <View className="ml-4">
+                <Ionicons 
+                    name="chevron-forward" 
+                    size={24} 
+                    color={isDark ? '#fff' : '#374151'} 
+                />
+            </View>
+        </TouchableOpacity>
+    );
+};
 
-}
-
-export default RoutineWeekDayPlanCard
+export default RoutineWeekDayPlanCard;

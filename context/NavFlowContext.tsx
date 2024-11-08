@@ -1,6 +1,7 @@
 import { emptyUser } from '@/constants';
 import { IndividualExercise, RoutinePlan, TrainingPlan } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
+import { MuscleGroups } from '@/types/types/muscles';
 import React, { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction, useEffect } from 'react';
 
 interface NavigationFlowContextType {

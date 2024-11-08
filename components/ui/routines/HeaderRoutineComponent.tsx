@@ -27,7 +27,7 @@ const HeaderRoutineComponent = ({ screenRoutine }: HeaderRoutineComponentProps) 
                     <View>
 
                         <Text className={`${textStyle} text-center text-base font-ralewayExtraBold`}>
-                            Grupos musculares
+                            Enfoque
                         </Text>
                         {
                             screenRoutine?.musculos.map((muscle, index) => (
@@ -62,6 +62,5 @@ const HeaderRoutineComponent = ({ screenRoutine }: HeaderRoutineComponentProps) 
     );
 }
 
-const styles = StyleSheet.create({})
 
 export default HeaderRoutineComponent;

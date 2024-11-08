@@ -1,5 +1,5 @@
 import { FlatList, Pressable, Text, View } from 'react-native'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigationFlowContext } from '@/context/NavFlowContext'
 import { useTheme } from '@/context/ThemeContext'
 import { Animated } from 'react-native'
@@ -7,9 +7,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useUser } from '@/context/UserContext'
 import RoutineWeekPlanCard from '@/components/ui/routines/RoutineWeekPlanCard'
 import GoBackUpButton from '@/components/ui/common/buttons/GoBackUpButton'
-import PLanDetailedInfo from '@/components/ui/plans/PLanDetailedInfo'
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import PlanModal from '@/components/ui/plans/PlanModal'
+import { RoutinePlanUser } from '@/types/interfaces/entities/plan'
+import * as Progress from 'react-native-progress';
+import { Alert } from 'react-native'
+import { router } from 'expo-router'
+import { useExerciseExecution } from '@/context/ExerciseExecutionContext'
 const HEADER_HEIGHT = 200
 const HEADER_MIN_HEIGHT = 100
 const STICKY_HEADER_HEIGHT = 100
@@ -20,7 +24,8 @@ const plandetail = () => {
     const scrollY = useRef(new Animated.Value(0)).current
     const textStyle = `${isDark ? 'text-white' : 'text-darkGray-500'} text-xs font-raleway`
     const { userSelectedPlan, setUserSelectedPlan } = useUser()
-    const [infoOpen, setinfoOpen] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
     const imageAnimatedStyle = {
         transform: [
             {
@@ -63,20 +68,45 @@ const plandetail = () => {
 
     const isUserActualPlan = userSelectedPlan?.nombre === screenPlan?.nombre
 
+    const showPlanDetails = () => {
+        setIsModalVisible(true);
+    };
+
+    const PlanDetailsModal = () => (
+        <PlanModal
+            isModalVisible={isModalVisible}
+            setIsModalVisible={setIsModalVisible}
+            screenPlan={screenPlan!} />
+    );
+
     const handleSelectPlan = () => {
-        setUserSelectedPlan(screenPlan)
+        if (isUserActualPlan) {
+            router.push('/(tabs)/(home)/routinedetail')
+        } else {
+            Alert.alert('Seleccionar Plan', '¿Estás seguro de querer seleccionar este plan?', [
+                { text: 'Cancelar', style: 'cancel' },
+                {
+                    text: 'Seleccionar', onPress: () => {
+                        setUserSelectedPlan(screenPlan)
+                    }
+                }
+            ])
+        }
     }
-
+    
+    const weeks = Array.from({ length: screenPlan?.duracion! }, (_, i) => screenPlan?.detalleDias);
+    
     const getPlanRoutines = () => {
-        const weeks = Array.from({ length: screenPlan?.duracion! }, (_, i) => screenPlan?.detalleDias);
-
         return (
             <FlatList
                 scrollEnabled={false}
                 data={weeks}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item, index }) => (
-                    <RoutineWeekPlanCard key={index} index={index} wk={item!} />
+                    <RoutineWeekPlanCard 
+                        key={index} 
+                        index={index} 
+                        wk={item!} />
                 )}
             />
         );
@@ -86,6 +116,7 @@ const plandetail = () => {
         <SafeAreaView className={`flex-1 ${isDark ? 'bg-darkGray-500' : 'bg-white'}`}>
 
             <GoBackUpButton />
+            <PlanDetailsModal />
 
             <Animated.View
                 className='absolute top-0 left-0 right-0'
@@ -95,19 +126,34 @@ const plandetail = () => {
                     className='absolute inset-0 w-full h-full opacity-75'
                     style={{ resizeMode: 'cover' }}
                 />
-                <View className='inset-0 flex-1 bg-eBlue-500/40 p-4' />
+                <View className='inset-0 flex-1 bg-eBlue-500/70 p-4' />
             </Animated.View>
 
             <Animated.View
-                className='absolute left-0 right-0 px-4 z-10'
+                className='absolute left-0 right-0  z-10'
                 style={[titleAnimatedStyle, {
                     top: HEADER_HEIGHT - HEADER_MIN_HEIGHT,
                     height: STICKY_HEADER_HEIGHT,
                     justifyContent: 'center',
                 }]}>
-                <Text className={`${textStyle} text-center text-xl font-ralewayExtraBold`}>
+                <Text
+                    numberOfLines={1}
+                    className={`
+                        ${textStyle} 
+                        text-center 
+                        w-3/5 mx-auto 
+                        text-xl
+                        font-ralewayExtraBold
+                    `}
+                >
                     {screenPlan?.nombre}
                 </Text>
+
+                <Pressable
+                    className='absolute right-2 z-20 p-2 rounded-full border-2 border-eBlue-500'
+                    onPress={showPlanDetails}>
+                    <Ionicons name='information-sharp' size={24} color={isDark ? 'white' : '#1c1c1c'} />
+                </Pressable>
 
                 <View
                     className={`absolute bottom-0 right-0 left-0 py-1 
@@ -129,42 +175,21 @@ const plandetail = () => {
                 <View style={{ height: HEADER_HEIGHT + STICKY_HEADER_HEIGHT }} />
 
                 <Animated.View
-                    className={`px-4 ${isDark ? 'bg-darkGray-500' : 'bg-white'}`}
+                    className={`${isDark ? 'bg-darkGray-500' : 'bg-white'}`}
                     style={{
                         transform: [{ translateY: contentTranslateY }],
                         minHeight: '100%',
 
                     }}
                 >
-                    {
-                        infoOpen ? (
-                            <>
-                                <Pressable onPress={() => setinfoOpen(false)}>
-                                    <Ionicons name='close-circle-outline' size={24} color={isDark ? 'white' : 'darkGray-500'} />
-                                </Pressable>
-                                <PLanDetailedInfo screenPlan={screenPlan!} />
-                            </>
-                        ) : (
-                            <View className='flex-row items-center justify-end'>
-                                <Pressable 
-                                className='flex flex-row items-center justify-center'
-                                onPress={() => setinfoOpen(true)}>
-                                    <Ionicons name='add-circle-outline' size={24} color={isDark ? 'white' : 'darkGray-500'} />
-                                    <Text className={`${textStyle} text-center font-ralewayExtraLight text-base`}>Conocer Detalles</Text>
-                                </Pressable>
-                            </View>
-                        )
-                    }
 
-                    <View className=''>
-                        {getPlanRoutines()}
-                    </View>
+                    {getPlanRoutines()}
                 </Animated.View>
             </Animated.ScrollView>
 
             <Pressable onPress={handleSelectPlan} className='w-full bg-eBlue-500 rounded-md p-4 my-2'>
                 <Text className='text-white text-center font-ralewayBold text-lg'>
-                    Empezar
+                    {isUserActualPlan ? 'Continuar' : 'Seleccionar Plan'}
                 </Text>
             </Pressable>
 

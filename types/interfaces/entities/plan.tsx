@@ -19,7 +19,12 @@ export interface RoutinePlan {
     imagenPortada?:string;
 }
 
-type DayRoutinePlan = RoutinePlan | "Descanso";
+export interface RoutinePlanUser extends RoutinePlan {
+    isCompleted?: boolean;
+    onComplete?: (isCompleted: boolean) => void;
+}
+
+type DayRoutinePlan = RoutinePlanUser | "Descanso";
 
 export interface TrainingPlan {
     id: number;
