@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@/context/ThemeContext';
 
 const exerciseData: Record<number, boolean> = {
     0: false,
@@ -22,8 +21,6 @@ interface Date {
 }
 
 const WeekCalendar = () => {
-
-    const { isDark } = useTheme()
 
     const getWeekDays = () => {
         const days: Date[] = [];
@@ -50,9 +47,9 @@ const WeekCalendar = () => {
 
     const getIcon = (date: Date) => {
         return (date.didExercise) ?  (
-            <Ionicons name='barbell-outline' size={12} color={`${isDark ? "white" : "#1c1c1c"}`} />
+            <Ionicons name='barbell-outline' size={12} color={`white`} />
         ) : (
-            <Text className={`text-xs font-ralewayExtraBold ${isDark ? "text-white" : "text-darkGray-500"}`}>.</Text>
+            <Text className={`text-xs font-ralewayExtraBold text-white`}>.</Text>
         )
 
     }
@@ -61,14 +58,14 @@ const WeekCalendar = () => {
             {weekDays.map((date, index) => (
                 <View
                     key={index}
-                    className={`rounded-full p-2 border-2 
+                    className={`rounded-full px-4 py-2   bg-eBlue-400
                         flex flex-col items-center justify-center
-                        border-${isDark ? "white" : "darkGray-500"}
-                    ${date.isToday ? "border-eBlue-500" : ""}
+                        
+                    ${date.isToday ? "bg-eBlue-800" : ""}
                     `}
                 >
                     <Text
-                        className={`${isDark ? "text-white" : "text-darkGray-500"} font-raleway`}
+                        className={`text-white font-ralewaySemiBold`}
                     >
                         {date.day}
                     </Text>

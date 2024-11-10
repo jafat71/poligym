@@ -1,6 +1,5 @@
 
 
-import { useTheme } from '@/context/ThemeContext';
 import React from 'react';
 import { GestureResponderEvent, TouchableOpacity } from 'react-native';
 
@@ -10,7 +9,6 @@ interface Props {
 }
 
 const IconButton = ({ icon, onPress }: Props) => {
-    const { isDark } = useTheme()
     return (
         <TouchableOpacity
             className={`transition-all duration-200 

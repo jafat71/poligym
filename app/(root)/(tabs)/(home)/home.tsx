@@ -1,15 +1,16 @@
-import { TrainingPlans } from '@/constants'
+import React, { useRef } from 'react'
+import { Pressable, Text, ScrollView, View } from 'react-native'
+
 import { useTheme } from '@/context/ThemeContext'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { HomePlanFlatlist } from '@/components/ui/plans/HomePlanFlatlist'
 import { RoutinePlan } from '@/types/interfaces/entities/plan'
-import WeekResumeHome from '@/components/ui/history/weekResumeHome'
-import { Pressable, Text, ScrollView } from 'react-native'
-import { View } from 'react-native'
-import { HomeRoutineFlatlist } from '@/components/ui/plans/HomeRoutineFlatList'
+
 import { useBackBehaviour } from '@/hooks/useBackBehaviour'
-import HomeCurrentPlan from '@/components/ui/plans/HomeCurrentPlan'
+
+import { TrainingPlans } from '@/constants'
+
+import { HomePlanFlatlist } from '@/components/ui/plans/HomePlanFlatlist'
+import { HomeRoutineFlatlist } from '@/components/ui/plans/HomeRoutineFlatList'
+import MainHomeResume from '@/components/ui/home/HomeMainResume'
 
 const Home = () => {
   useBackBehaviour()
@@ -23,20 +24,28 @@ const Home = () => {
     TrainingPlans[0].detalleDias.viernes as RoutinePlan
   ]
 
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const scrollDown = () => {
+      scrollViewRef.current?.scrollTo({
+          y: 150,
+          animated: true
+      });
+  };
+
   return (
-    <SafeAreaView className={`flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
       <ScrollView 
-        className="flex-1"
+        ref={scrollViewRef}
+        className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
         showsVerticalScrollIndicator={false}
       >
-        <WeekResumeHome />
-        <HomeCurrentPlan />
+        <MainHomeResume scrollDown={scrollDown} />
 
         <View className="my-1">
           <View className="px-4">
             <Text className={`${isDark ? "text-white" : "text-darkGray-500"}
                 font-ralewayBold text-xl`}>
-              Planes ajustados a ti
+                TE PUEDEN INTERESAR
             </Text>
           </View>
           <HomePlanFlatlist
@@ -47,8 +56,8 @@ const Home = () => {
         <View className="mb-4">
           <View className="flex-row items-center justify-between px-4">
             <Text className={`${isDark ? "text-white" : "text-darkGray-500"}
-                font-ralewayBold text-sm`}>
-              Rutinas que te pueden interesar
+                font-ralewayBold text-xl`}>
+              RUTINAS RECOMENDADAS
             </Text>
             <Pressable className="flex-row items-center">
               <Text className="text-eBlue-500 font-ralewayBold">
@@ -61,7 +70,6 @@ const Home = () => {
           />
         </View>
       </ScrollView>
-    </SafeAreaView>
   )
 }
 

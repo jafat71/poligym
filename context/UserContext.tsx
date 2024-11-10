@@ -54,6 +54,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             try {
                 const response = await verifyToken(accessToken!)
                 const userResponse = await getUserInfo(response.user.id, accessToken!)
+                console.log("userResponse", userResponse)
                 const userMapped = mapUserFromApiToUser(userResponse)
                 setLoggedUserInfo(userMapped)
                 setUserLogged(true)
@@ -78,6 +79,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
     }, [userLogged])
 
+    useEffect(() => {
+        const getRefreshToken = async () => {
+            const refreshToken = await getToken('refreshToken')
+            console.log("refreshToken", refreshToken)
+        }
+        console.log("accessToken", accessToken)
+        getRefreshToken()
+    }, [accessToken])
     return (
         <UserContext.Provider value={{
             userLogged,

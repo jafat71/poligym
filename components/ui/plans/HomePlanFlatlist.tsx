@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { Animated} from 'react-native'
+
 import PlanCard from './PlanCard';
 import { Dificultad } from './PlanConstants';
 
@@ -12,11 +13,10 @@ export const HomePlanFlatlist = ({ data }: Props) => {
 
     return (
         <>
-    
             <Animated.FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                className="px-1 my-2"
+                className="my-2"
                 data={data}
                 onScroll={Animated.event(
                     [{ nativeEvent: { contentOffset: { x: scrollX } } }],

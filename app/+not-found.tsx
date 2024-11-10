@@ -1,8 +1,10 @@
-import MainLogoCustomComponent from '@/components/ui/common/logo/mainLogo'
-import { router } from 'expo-router'
 import React from 'react'
 import { Pressable, Text } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+
+import { router } from 'expo-router'
+
+import MainLogoCustomComponent from '@/components/ui/common/logo/mainLogo'
 
 const NotFound = () => {
 

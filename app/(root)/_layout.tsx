@@ -1,6 +1,8 @@
-import Loading from '@/components/animatedUi/Loading';
-import { useUser } from '@/context/UserContext';
 import { Stack } from 'expo-router';
+
+import Loading from '@/components/animatedUi/Loading';
+
+import { useUser } from '@/context/UserContext';
 
 export default function RootLayout() {
   const { loggedUserInfo } = useUser();

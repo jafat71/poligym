@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import { router } from 'expo-router'
 
 import { useTheme } from '@/context/ThemeContext'
+
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary'
 import CTAButtonSecondary from '@/components/ui/common/buttons/CtaButtonSecondary'
 import OnBoardingSwiper from '@/components/animatedUi/OnBoardingSwiper';

@@ -1,24 +1,27 @@
+import { Pressable, Text, View } from 'react-native';
+
 import { router, Tabs } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
+
 import { useTheme } from '@/context/ThemeContext';
-import { Pressable, Text, View } from 'react-native';
+
+import TabIcon from '@/components/ui/common/bottomtab/TabIcon';
 
 export default function TabsLayout() {
 
   const { isDark } = useTheme()
+
   const tabBarBackgroundColor = isDark ? "#1c1c1c" : "#fff";
   const tabBarIconColor = isDark ? "#fff" : "#1c1c1c";
   const tabBarActiveIconColor = isDark ? "#1c1c1c" : "#fff";
-  const tabBarTextColor = isDark ? "#fff" : "#1c1c1c";
   const tabBarActiveColor = "#0055f4";
-  const tabBarInactiveColor = isDark ? '#fff' : '#1c1c1c';
 
   return (
     <Tabs
       screenOptions={{
         tabBarStyle: {
           backgroundColor: tabBarBackgroundColor,
-          height: 50,
+          height: 60,
           borderColor: isDark ? '#1c1c1c' : '#fff',
         },
         tabBarLabelStyle: {
@@ -26,30 +29,32 @@ export default function TabsLayout() {
           fontWeight: '800',
         },
         tabBarActiveTintColor: tabBarActiveColor,
-        tabBarInactiveTintColor: tabBarInactiveColor,
       }}
     >
       <Tabs.Screen name="(home)" options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => (
-          <Ionicons name="barbell-outline" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
+          <TabIcon
+            focused={focused}
+            color={tabBarIconColor}
+            name="barbell-outline"
+          />
         ),
         tabBarActiveBackgroundColor: tabBarActiveIconColor,
-        tabBarLabel: 'Home',
         tabBarShowLabel: false,
-        tabBarLabelStyle: { color: tabBarTextColor },
-        
-      }} 
+      }}
       />
       <Tabs.Screen name="(library)" options={{
         headerShown: false,
         tabBarIcon: ({ focused }) => (
-          <Ionicons name="library-outline" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
+          <TabIcon
+            focused={focused}
+            color={tabBarIconColor}
+            name="library"
+          />
         ),
         tabBarActiveBackgroundColor: tabBarActiveIconColor,
-        tabBarLabel: 'Biblioteca',
         tabBarShowLabel: false,
-        tabBarLabelStyle: { color: tabBarTextColor },
       }} />
       <Tabs.Screen name="(stats)" options={{
         headerTitle: () => (
@@ -83,13 +88,14 @@ export default function TabsLayout() {
         headerTintColor: isDark ? "#fff" : "#1c1c1c",
         headerTitleAlign: 'center',
         tabBarIcon: ({ focused }) => (
-          <Ionicons name="bar-chart" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
+          <TabIcon
+            focused={focused}
+            color={tabBarIconColor}
+            name="bar-chart"
+          />
         ),
         tabBarActiveBackgroundColor: tabBarActiveIconColor,
-
-        tabBarLabel: 'Stats',
         tabBarShowLabel: false,
-        tabBarLabelStyle: { color: tabBarTextColor },
       }} />
       <Tabs.Screen name="(community)" options={{
         headerTitle: () => (
@@ -123,12 +129,14 @@ export default function TabsLayout() {
         headerTintColor: isDark ? "#fff" : "#1c1c1c",
         headerTitleAlign: 'center',
         tabBarIcon: ({ focused }) => (
-          <Ionicons name="people-sharp" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
+          <TabIcon
+          focused={focused}
+          color={tabBarIconColor}
+            name="people-sharp"
+          />
         ),
         tabBarActiveBackgroundColor: tabBarActiveIconColor,
-        tabBarLabel: 'Feed',
         tabBarShowLabel: false,
-        tabBarLabelStyle: { color: tabBarTextColor },
       }} />
       <Tabs.Screen name="(profile)" options={{
         headerTitle: () => (
@@ -162,12 +170,14 @@ export default function TabsLayout() {
         headerTintColor: isDark ? "#fff" : "#1c1c1c",
         headerTitleAlign: 'center',
         tabBarIcon: ({ focused }) => (
-          <Ionicons name="person" size={26} color={focused ? tabBarActiveColor : tabBarIconColor} />
+          <TabIcon
+          focused={focused}
+          color={tabBarIconColor}
+            name="person"
+          />
         ),
         tabBarActiveBackgroundColor: tabBarActiveIconColor,
-        tabBarLabel: 'Perfil',
         tabBarShowLabel: false,
-        tabBarLabelStyle: { color: tabBarTextColor },
       }} />
 
     </Tabs>
