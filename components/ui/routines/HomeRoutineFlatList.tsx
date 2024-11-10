@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { Animated } from 'react-native'
-import PlanSmallCard from './PlanSmallCard';
+import RoutineSmallCard from './RoutineSmallCard';
 
 interface Props {
     data: Animated.WithAnimatedObject<ArrayLike<any>> | null | undefined
@@ -13,7 +13,7 @@ export const HomeRoutineFlatlist = ({ data }: Props) => {
         <Animated.FlatList
             horizontal
             showsHorizontalScrollIndicator={false}
-            className='my-1 px-1'
+            className='my-2'
             data={data}
             onScroll={Animated.event(
                 [{ nativeEvent: { contentOffset: { x: scrollX } } }],
@@ -28,17 +28,26 @@ export const HomeRoutineFlatlist = ({ data }: Props) => {
 
                 const scale = scrollX.interpolate({
                     inputRange,
-                    outputRange: [0.9, 1, 0.9],
+                    outputRange: [0.85, 1, 0.85],
                     extrapolate: 'clamp',
                 });
+
+                
+                const opacity = scrollX.interpolate({
+                    inputRange,
+                    outputRange: [0.7, 1, 0.7],
+                    extrapolate: 'clamp',
+                });
+
 
                 return (
                     <Animated.View
                         style={{
                             transform: [{ scale }],
+                            opacity
                         }}
                     >
-                        <PlanSmallCard
+                        <RoutineSmallCard
                             key={item.id}
                             {...item}
                         />

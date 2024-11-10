@@ -12,7 +12,7 @@ const IconButton = ({ icon, onPress }: Props) => {
     return (
         <TouchableOpacity
             className={`transition-all duration-200 
-            rounded-md   bg-eBlue-500`}
+            rounded-md   bg-inherit`}
             onPress={onPress}
         >
             {

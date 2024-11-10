@@ -1,6 +1,5 @@
-import React, { useRef } from 'react';
-import { Animated, Pressable, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { ScrollView } from 'react-native';
+import React from 'react';
+import { Text, View, Image } from 'react-native';
 
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -12,6 +11,7 @@ import { useUser } from '@/context/UserContext';
 import WeekResumeHome from '../history/weekResumeHome';
 import IconButton from '../common/buttons/IconButton';
 import HomePill from '../common/pills/HomePill';
+import CTAButtonSuccess from '../common/buttons/CTAButtonSuccess';
 
 interface MainHomeResumeProps {
     scrollDown: () => void
@@ -90,17 +90,7 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
                             className="text-white font-ralewayBold text-2xl ">
                             {userSelectedPlan?.nombre}
                         </Text>
-
-                        <Pressable
-                            onPress={handleNavigation}
-                            className="bg-white/20 border-2 border-lightGreen backdrop-blur-md rounded-2xl h-14 overflow-hidden
-                                flex-row items-center justify-center
-                            ">
-                            <Text className="text-white text-2xl font-ralewayBold">
-                                Continuar
-                            </Text>
-                        </Pressable>
-
+                        <CTAButtonSuccess onPress={handleNavigation} text="Continuar" />
                     </View>
                 ) : (
                     <View className="flex-1 p-4 justify-between">
@@ -112,13 +102,7 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
                                 No tienes un plan activo. 
                             </Text>
                         </View>
-                        <Pressable
-                            onPress={scrollDown}
-                            className="bg-white/20 border-2 border-lightGreen backdrop-blur-md rounded-2xl h-14 overflow-hidden
-                                flex-row items-center justify-center
-                            ">
-                            <Text className="text-white text-2xl font-ralewayBold">Explorar</Text>
-                        </Pressable>
+                        <CTAButtonSuccess onPress={scrollDown} text="Explorar" />
                     </View>
                 )
             }
