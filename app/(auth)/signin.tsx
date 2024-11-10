@@ -1,16 +1,17 @@
-import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import React, { useState } from 'react'
+import { ActivityIndicator, Keyboard, Text, View } from 'react-native'
+
+import { router } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
+
+import { useMutation } from '@tanstack/react-query';
+import { useUser } from '@/context/UserContext';
+import { useTheme } from '@/context/ThemeContext';
+
+import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
 import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
 import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
-
-import { ActivityIndicator, Text, View } from 'react-native'
-import { router } from 'expo-router';
-
-import { useUser } from '@/context/UserContext';
-import { useMutation } from '@tanstack/react-query';
-import { useTheme } from '@/context/ThemeContext';
 
 import { validateSignIn } from '@/lib/utils/validateAuthForm';
 import { signin } from '@/lib/api/auth';
@@ -25,16 +26,16 @@ const Signin = () => {
   const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState<string[]>([]);
-  
+
   const signinMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       signin(email.toLowerCase(), password),
     onSuccess: (data) => {
       if (!data) return
       if (data.accessToken) {
-        saveToken('accessToken', data.accessToken);
+        saveToken('accessToken', data.accessToken);  //save token on secure storage
+        setAccessToken(data.accessToken); //set token on context
         router.replace('/(root)/(tabs)/(home)/home');
-        setAccessToken(data.accessToken);
       }
     },
     onError: (error: any) => {
@@ -43,6 +44,7 @@ const Signin = () => {
   });
 
   const handleSubmit = async () => {
+    Keyboard.dismiss();
     const { errors } = validateSignIn(email, password)
     setErrors(errors)
     if (errors.length > 0) return
@@ -51,17 +53,12 @@ const Signin = () => {
 
   return (
 
-    <View className='mt-2 rounded-lg '>
+    <View className='mt-2' >
 
       <View>
+        <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Iniciar Sesión</Text>
 
-        <View className={`pb-5 `}>
-
-          <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Iniciar Sesión</Text>
-
-        </View>
-
-        <View className={`py-5`}>
+        <View className={`pt-5`}>
           <IconTextInputForm
             title='Email Institucional'
             icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -85,6 +82,13 @@ const Signin = () => {
         </View>
 
         <View className='mb-5'>
+
+          <AuthSupportButton
+            title='Olvidé mi contraseña'
+            onPress={() => {
+              router.push('/(auth)/forgot')
+            }} />
+
           <AuthSupportButton
             title='No tengo una cuenta'
             onPress={() => {
@@ -92,11 +96,6 @@ const Signin = () => {
             }}
           />
 
-          <AuthSupportButton
-            title='Olvidé mi contraseña'
-            onPress={() => {
-              router.push('/(auth)/forgot')
-            }} />
         </View>
 
         <CTAButtonPrimary

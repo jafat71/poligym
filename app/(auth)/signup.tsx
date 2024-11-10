@@ -1,19 +1,24 @@
+import React, { useState } from 'react'
+import { ActivityIndicator, Pressable, Text, View } from 'react-native'
+
+import { router } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
 import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
 import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
 import TermsModal from '@/components/ui/common/modal/TermsModal';
+
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
+
 import { signUp } from '@/lib/api/auth';
 import { saveToken } from '@/lib/token/store';
 import { transformEmailToName } from '@/lib/utils/transform';
 import { validateSignup } from '@/lib/utils/validateAuthForm';
-import Ionicons from '@expo/vector-icons/Ionicons';
+
 import { useMutation } from '@tanstack/react-query';
-import { router } from 'expo-router';
-import React, { useState } from 'react'
-import { ActivityIndicator, Pressable, Text, View } from 'react-native'
 
 const Signup = () => {
 
@@ -57,11 +62,11 @@ const Signup = () => {
   return (
     <View>
 
-      <View className='mt-2 rounded-lg '>
+      <View className='mt-2 '>
 
         <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
 
-        <View className={`py-5`}>
+        <View className={`pt-5`}>
           <IconTextInputForm
             title='Email Institucional'
             icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}

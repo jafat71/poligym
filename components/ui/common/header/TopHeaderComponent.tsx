@@ -1,12 +1,12 @@
-
-
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
-import { useTheme } from '@/context/ThemeContext';
-import MainLogoCustomComponent from '../logo/mainLogo';
-import { Ionicons } from '@expo/vector-icons';
+import { Pressable, View } from 'react-native';
+
 import { router} from 'expo-router';
-import { useRouter, useSegments } from 'expo-router';
+import { useSegments } from 'expo-router';
+
+import { useTheme } from '@/context/ThemeContext';
+import { Ionicons } from '@expo/vector-icons';
+import MainLogoCustomComponent from '../logo/mainLogo';
 
 const TopHeaderComponent = () => {
     const { isDark } = useTheme()
@@ -17,18 +17,18 @@ const TopHeaderComponent = () => {
             <View className='w-full items-center'>
                 <MainLogoCustomComponent width='40' height='40' principal={`${isDark ? "#fff" : "#1c1c1c"}`} />
             </View>
-            <View className='absolute '>
+            <View className='absolute px-2'>
                 <Pressable
                     onPress={() => { 
                         const currentRoute = segments[segments.length - 1];
-                        if (currentRoute === 'delete' || currentRoute === 'update') {
+                        if (currentRoute === 'update') {
                             router.back(); 
                         } else {
-                            router.replace('/welcome'); 
+                            router.replace('/welcome');
                         }
                     }}
                 >
-                    <Ionicons name="arrow-back" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+                    <Ionicons name="close-sharp" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
 
                 </Pressable>
             </View>

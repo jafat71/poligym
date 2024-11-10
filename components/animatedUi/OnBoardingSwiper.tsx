@@ -1,60 +1,85 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, StatusBar } from "react-native";
 import React, { useState } from "react";
-import MainLogoCustomComponent from "../ui/common/logo/mainLogo";
+import Animated, {
+    FadeIn,
+    SlideInRight,
+    SlideOutLeft
+} from 'react-native-reanimated';
 import Swiper from "react-native-swiper";
 import { OnboardingItems } from "@/constants";
 import { useTheme } from "@/context/ThemeContext";
+import MainLogoCustomComponent from "../ui/common/logo/mainLogo";
+import { LinearGradient } from "expo-linear-gradient";
 
 const OnBoardingSwiper = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const { isDark } = useTheme()
+
     return (
-        <>
-            <View className="absolute w-full top-1/4 items-center z-10 ">
+        <View className="flex-1">
+            <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+
+            <Animated.View
+                entering={FadeIn.duration(1000)}
+                className="absolute w-full top-12 items-center z-10"
+            >
                 <MainLogoCustomComponent height="75" width="75" principal="#fff" />
                 <View className="flex flex-row items-center justify-center">
-                    <Text className={`text-3xl font-ralewayExtraBold text-white`}>
+                    <Text className="text-3xl font-ralewayExtraBold text-white drop-shadow-2xl">
                         POLIGYM
                     </Text>
                 </View>
-            </View>
+            </Animated.View>
 
-            <View className="flex-1 justify-around items-center text-center">
+            <View className="flex-1">
                 <Swiper
-                    dotColor={`${isDark ? "#fff" : "#1c1c1c"}`}
+                    dotColor={`${isDark ? "#1c1c1c" : "#fff"}`}
                     activeDotColor="#0059ff"
                     autoplay
                     autoplayTimeout={3}
                     loop={false}
                     showsPagination={true}
                     showsButtons={false}
-                    onIndexChanged={(index) => setActiveIndex(index)}
-                    loadMinimal={false}
-                    bounces
+                    onIndexChanged={setActiveIndex}
+                    paginationStyle={{ bottom: 30 }}
+                    removeClippedSubviews={false}
+                    scrollEnabled={true}
+                    decelerationRate={0.992}
+                    bounces={true}
                 >
                     {OnboardingItems.map((obItem, index) => (
-                        <View
+                        <Animated.View
                             key={index}
-                            className={`flex flex-col items-center rounded-md h-full `}
+                            className="flex-1"
+                            entering={index === activeIndex ? SlideInRight.duration(400).springify().damping(20) : undefined}
+                            exiting={index === activeIndex ? SlideOutLeft.duration(400).springify().damping(20) : undefined}
                         >
                             <Image
                                 source={{ uri: obItem.image }}
                                 resizeMode="cover"
-                                className="w-full h-4/5 rounded-md mb-4 opacity-75"
+                                className="w-full h-full"
                             />
-                            <View className="items-end p-1">
-                                <Text
-                                    className={`text-xl font-ralewaySemiBold break-words text-center 
-                        mb-2 ${isDark ? "text-white" : "text-darkGray-500"} `}
-                                >
-                                    {obItem.title}
+                            <LinearGradient
+                                colors={[
+                                    'rgba(0,85,249,0.7)',
+                                    'rgba(41,111,255,0.4)',
+                                    'rgba(102,155,255,0.2)'
+                                ]}
+                                className="absolute top-0 left-0 right-0 bottom-0"
+                            />
+                            <Animated.View
+                                className="absolute bottom-0 w-full p-16"
+
+                            >
+                                <Text className="text-2xl font-ralewayExtraBold text-white text-center">
+                                    {obItem.title.toUpperCase()}
                                 </Text>
-                            </View>
-                        </View>
+                            </Animated.View>
+                        </Animated.View>
                     ))}
                 </Swiper>
             </View>
-        </>
+        </View>
     );
 };
 

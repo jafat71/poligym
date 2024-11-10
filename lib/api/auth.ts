@@ -25,7 +25,6 @@ export const signUp = async (name: string, email: string, password: string) => {
         }
         return { accessToken };
     } catch (error) {
-        console.error('Error al registrar el usuario:');
         throw error;
     }
 };
@@ -35,7 +34,7 @@ export const signin = async (email: string, password: string) => {
         const body = { email, password }
         const response = await axiosInstance.post('/auth/login', body, {
             headers: {
-                Authorization: 'none'
+                Authorization: 'none',
             }
         });
         const { accessToken } = response.data;
@@ -53,9 +52,9 @@ export const signin = async (email: string, password: string) => {
 
             switch (error.response.status) {
                 case 400:
-                    throw new Error(`Credenciales inválidas: ${error.response.data.message || 'No se proporcionaron detalles adicionales'}`);
+                    throw new Error(`Credenciales inválidas`);
                 case 401:
-                    throw new Error(`No autorizado: ${error.response.data.message || 'Verifique sus credenciales'}`);
+                    throw new Error(`Verifique sus credenciales`);
                 case 404:
                     throw new Error('Usuario no encontrado');
                 case 500:

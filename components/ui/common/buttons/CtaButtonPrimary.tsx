@@ -1,5 +1,5 @@
 import React from 'react';
-import { GestureResponderEvent, Text, TouchableOpacity, View } from 'react-native';
+import { GestureResponderEvent, Keyboard, Text, TouchableOpacity, View } from 'react-native';
 
 interface Props {
     onPress: ((event: GestureResponderEvent) => void) | undefined,
@@ -9,9 +9,13 @@ interface Props {
 }
 
 const CTAButtonPrimary = ({ onPress, text, disabled, children }: Props) => {
+    const handlePress = (event: GestureResponderEvent) => {
+        Keyboard.dismiss(); 
+        onPress?.(event);    
+    };
     return (
         <TouchableOpacity
-            onPress={onPress}
+            onPress={handlePress}
             className={`w-full items-center ${disabled ? 'opacity-70' : ''}`}
             disabled={disabled}
         >

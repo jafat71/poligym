@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
-import { ActivityIndicator, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
+
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { router } from 'expo-router';
+
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
-import { useTheme } from '@/context/ThemeContext';
-import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
-import { router } from 'expo-router';
-import { updatePassword } from '@/lib/api/auth';
-import { useMutation } from '@tanstack/react-query';
-import { useUser } from '@/context/UserContext';
-import { validateUpdatePassword } from '@/lib/utils/validateAuthForm';
 import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
+import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
 import FormSuccessAlert from '@/components/ui/common/alerts/FormSuccesAlert';
+
+import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
+import { useMutation } from '@tanstack/react-query';
+
+import { updatePassword } from '@/lib/api/auth';
+import { validateUpdatePassword } from '@/lib/utils/validateAuthForm';
 
 const Update = () => {
 
@@ -53,13 +57,11 @@ const Update = () => {
 
   return (
     <View className='mt-2 rounded-lg '>
-      <View className={`pb-5 `}>
 
         <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Actualizar Contraseña</Text>
-        <Text className={`text-lg font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>Ingresa tu contraseña actual para confirmar tu identidad</Text>
+        <Text className={`text-lg font-raleway text-start text-darkGray-400`}>Ingresa tu contraseña actual para confirmar tu identidad</Text>
 
-      </View>
-      <View className={`py-5`}>
+      <View className={`pt-5`}>
 
         <IconTextInputForm
           title='Contraseña Actual'
@@ -118,8 +120,8 @@ const Update = () => {
         )}
       </CTAButtonPrimary>
 
-
       <FormSuccessAlert
+        title='Contraseña actualizada correctamente'
         message={successMessage}
       />
       <FormErrorAlert

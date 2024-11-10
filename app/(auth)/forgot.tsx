@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
 import { ActivityIndicator, Text, TextInput, View } from 'react-native';
+
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { router } from 'expo-router';
+
+import { useTheme } from '@/context/ThemeContext';
+import { useMutation } from '@tanstack/react-query';
+
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
-import { useTheme } from '@/context/ThemeContext';
 import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
-import { router } from 'expo-router';
-import { forgotPassword, resetPassword } from '@/lib/api/auth';
-import { useMutation } from '@tanstack/react-query';
 import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
 import FormSuccessAlert from '@/components/ui/common/alerts/FormSuccesAlert';
+
+import { forgotPassword, resetPassword } from '@/lib/api/auth';
 import { validateForgotPassword, validateResetPassword } from '@/lib/utils/validateAuthForm';
 
 const Forgot = () => {
@@ -69,18 +73,14 @@ const Forgot = () => {
 
       <View >
 
-        <View className={`pb-5 `}>
+        <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
 
-          <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
-
-        </View>
-
-        <View className={`py-5 `}>
+        <View className={`pt-5 `}>
 
           {
             !resetSent ? (
               <>
-                <Text className={`text-lg font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>Ingresa tu correo electónico para recibir las instrucciones necesarias para recuperar el acceso a tu cuenta</Text>
+                <Text className={`text-lg font-ralewaySemiBold text-start  ${isDark ? "text-darkGray-400" : "text-darkGray-400"} `}>Ingresa tu correo electónico para recibir un código de recuperación para reestablecer el acceso a tu cuenta</Text>
 
                 <IconTextInputForm
                   title='Email Institucional'
