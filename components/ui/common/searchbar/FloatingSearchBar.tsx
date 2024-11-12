@@ -14,7 +14,7 @@ interface SearchBarProps {
     className?: string
 }
 
-const SearchBar = ({ placeholder, onSearch, onClear, value, onChangeText, isVisible, className }: SearchBarProps) => {
+const FloatingSearchBar = ({ placeholder, onSearch, onClear, value, onChangeText, isVisible, className }: SearchBarProps) => {
     const { isDark } = useTheme()
     if (!isVisible) return null
     return (
@@ -41,4 +41,4 @@ const SearchBar = ({ placeholder, onSearch, onClear, value, onChangeText, isVisi
     )
 }
 
-export default SearchBar
+export default FloatingSearchBar

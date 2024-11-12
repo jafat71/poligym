@@ -867,3 +867,11 @@ export const LastExercisePlans = [
       "estado": "Finalizado"
   },
 ]
+
+export type DifficultySearch = 'ALL' | 'BASIC' | 'INTERMEDIATE' | 'ADVANCED';
+export const DIFFICULTIES: Array<{ value: DifficultySearch; label: string }> = [
+    { value: 'ALL', label: 'Todos' },
+    { value: 'BASIC', label: 'Principiante' },
+    { value: 'INTERMEDIATE', label: 'Intermedio' },
+    { value: 'ADVANCED', label: 'Avanzado' }
+];

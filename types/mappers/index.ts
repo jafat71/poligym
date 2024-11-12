@@ -1,4 +1,4 @@
-import { IndividualExercise, RoutinePlan, TrainingPlan } from "../interfaces/entities/plan"
+import { IndividualExercise, RoutinePlan, TrainingPlan, TrainingPlanAPI } from "../interfaces/entities/plan"
 import { User } from "../interfaces/entities/user"
 
 export const mapUserFromApiToUser = (user: any) : User => {
@@ -58,4 +58,19 @@ export const mapToTrainingPlanFromApiToTrainingPlan = (data: any): TrainingPlan 
             viernes: typeof data.detalleDias.viernes === "string" ? "Descanso" : mapDiaRutina(data.detalleDias.viernes),
         }
     };
+}
+
+
+export const mapApiTrainingPlanToTrainingPlan = (data: any): TrainingPlanAPI[] => {
+    return data.map((plan: any) => {
+        return {
+            id: plan.id,
+            name: plan.name,
+            level: plan.level,
+            description: plan.description,
+            startDate: plan.startDate,
+            endDate: plan.endDate,
+            workouts: [],
+        }
+    });
 }

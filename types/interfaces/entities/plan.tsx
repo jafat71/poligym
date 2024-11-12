@@ -94,3 +94,94 @@ export interface LastTrainingPlan {
     estado: "Activo" | "Finalizado";
 }
 
+//----------------------------------
+
+export interface TrainingPlanAPI {
+    id: number;
+    name: string;
+    level: Difficulty;
+    description?: string;
+    startDate: Date;
+    endDate?: Date;
+    workouts: WorkoutAPI[];
+    isDeleted: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    image?:string; //!add bk
+  }
+  
+  // Workout Interface
+  export interface WorkoutAPI {
+    id: number;
+    name: string;
+    description?: string;
+    frequency: number;
+    duration: number;
+    level: Difficulty;
+    category: Category;
+    trainingType: string;
+    exercisesInWorkout: ExerciseInWorkoutAPI[];
+    trainingPlans: TrainingPlanAPI[];
+    isDeleted: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+  
+  // ExerciseInWorkout Interface
+  export interface ExerciseInWorkoutAPI {
+    id: number;
+    exercise: ExerciseAPI;
+    exerciseId: number;
+    workout: WorkoutAPI;
+    workoutId: number;
+    sets: number;
+    reps: number;
+    weight?: number;
+    restTime: number;
+    order: number;
+    isDeleted: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+  
+  // Exercise Interface
+  export interface ExerciseAPI {
+    id: number;
+    mediaUrl: string;
+    name: string;
+    level: Difficulty;
+    category: Category;
+    equipment: string;
+    description: string;
+    muscleGroups: MuscleGroup[];
+    recommendation?: string;
+    workouts: ExerciseInWorkoutAPI[];
+    isDeleted: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+  
+  // MuscleGroup Interface
+  export interface MuscleGroup {
+    id: number;
+    name: string;
+    description?: string;
+    isDeleted: boolean;
+    exercises: ExerciseAPI[];
+    createdAt: Date;
+    updatedAt: Date;
+  }
+  
+  // Enums for Difficulty and Category
+  export enum Difficulty {
+    BASIC = "BASIC",
+    INTERMEDIATE = "INTERMEDIATE",
+    ADVANCED = "ADVANCED",
+  }
+  
+  export enum Category {
+    CARDIO = "CARDIO",
+    STRENGTH = "STRENGTH",
+    FLEXIBILITY = "FLEXIBILITY",
+  }
+  

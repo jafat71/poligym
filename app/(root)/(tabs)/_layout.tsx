@@ -1,6 +1,6 @@
 import { Pressable, Text, View } from 'react-native';
 
-import { router, Tabs } from 'expo-router';
+import { router, Tabs, usePathname } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { useTheme } from '@/context/ThemeContext';
@@ -37,7 +37,7 @@ export default function TabsLayout() {
           <TabIcon
             focused={focused}
             color={tabBarIconColor}
-            name="barbell-outline"
+            name="home"
           />
         ),
         tabBarActiveBackgroundColor: tabBarActiveIconColor,
@@ -45,7 +45,53 @@ export default function TabsLayout() {
       }}
       />
       <Tabs.Screen name="(library)" options={{
-        headerShown: false,
+        headerTitle: () => (<></>),
+        headerLeft: () => (
+          <View className='ml-4'>
+            <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Biblioteca</Text>
+          </View>
+        ),
+        headerRight: () => (<>
+          <View className='mr-4 flex flex-row'>
+            <Pressable
+              onPress={() => {
+                router.navigate('/(root)/(tabs)/(library)/(plan)');
+              }}
+              className='ml-4'
+            >
+              <Ionicons name="calendar-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                router.navigate('/(root)/(tabs)/(library)/(routine)');
+              }}
+              className='ml-4'
+            >
+              <Ionicons name="body-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                router.navigate('/(root)/(tabs)/(library)/(exercise)');
+              }}
+              className='ml-4'
+            >
+              <Ionicons name="barbell-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                router.navigate('/(root)/(tabs)/(library)/(foodplan)');
+              }}
+              className='ml-4'
+            >
+              <Ionicons name="nutrition-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+            </Pressable>
+          </View>
+        </>),
+        headerStyle: {
+          backgroundColor: isDark ? '#1c1c1c' : '#fff',
+        },
+        headerTintColor: isDark ? "#fff" : "#1c1c1c",
+        headerTitleAlign: 'center',
         tabBarIcon: ({ focused }) => (
           <TabIcon
             focused={focused}
@@ -130,8 +176,8 @@ export default function TabsLayout() {
         headerTitleAlign: 'center',
         tabBarIcon: ({ focused }) => (
           <TabIcon
-          focused={focused}
-          color={tabBarIconColor}
+            focused={focused}
+            color={tabBarIconColor}
             name="people-sharp"
           />
         ),
@@ -171,8 +217,8 @@ export default function TabsLayout() {
         headerTitleAlign: 'center',
         tabBarIcon: ({ focused }) => (
           <TabIcon
-          focused={focused}
-          color={tabBarIconColor}
+            focused={focused}
+            color={tabBarIconColor}
             name="person"
           />
         ),

@@ -8,6 +8,7 @@ import { useBackBehaviour } from '@/hooks/useBackBehaviour'
 import MainHomeResume from '@/components/ui/home/HomeMainResume'
 import HomeSubSection from '@/components/ui/home/HomeSubSection'
 import HomeSmallSection from '@/components/ui/home/HomeSmallSection'
+import { StatusBar } from 'react-native'
 
 const Home = () => {
   useBackBehaviour()
@@ -28,6 +29,8 @@ const Home = () => {
       className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
       showsVerticalScrollIndicator={false}
     >
+      <StatusBar backgroundColor="transparent" barStyle="dark-content" />
+
       <MainHomeResume scrollDown={scrollDown} />
       <HomeSubSection />
       <HomeSmallSection />

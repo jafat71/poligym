@@ -1,4 +1,4 @@
-import SearchBar from "@/components/ui/common/searchbar/SearchBar";
+import SearchBar from "@/components/ui/common/searchbar/FloatingSearchBar";
 import SelfPost from "@/components/ui/social/SelfPost";
 import { socialPosts } from "@/constants";
 import { useTheme } from "@/context/ThemeContext";

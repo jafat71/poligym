@@ -1,57 +1,54 @@
-import { useTheme } from '@/context/ThemeContext';
-import { Ionicons } from '@expo/vector-icons';
-import { router, Stack } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+import { Stack } from 'expo-router';
 
 export default function TabLayout() {
-    const { isDark } = useTheme();
     return (
-        <Stack>
+        //TODO: FLOATING CUSTOM TABS
+        <Stack 
+        initialRouteName='index'
+        screenOptions={{
+            headerShown: false,
+        }}>
             <Stack.Screen
-                name="info"
-                options={{
-                    headerTitle: () => (
-                            <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Biblioteca</Text>
-                    ),
-                    headerLeft: () => (
-                        <Pressable
-                            onPress={() => {
-                                router.navigate('/(tabs)/home');
-                            }}
-                        >
-                            <Ionicons name="arrow-back" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-                        </Pressable>
-                    ),
-                    headerRight: () => (
-                        <Pressable
-                            onPress={() => {
-                                router.navigate('/(config)/config')
-                            }}
-                        >
-                            <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
-                        </Pressable>
-                    ),
-                    headerStyle: {
-                        backgroundColor: isDark ? '#1c1c1c' : '#fff',
-                    },
-                    headerTintColor: isDark ? "#fff" : "#1c1c1c",
-                    headerTitleAlign: 'center',
-
-                }}
-            />
-            <Stack.Screen
-                name="alimentationInfo"
+                name="index"
                 options={{
                     headerShown: false,
                     animation: 'fade_from_bottom',
                     animationTypeForReplace: 'pop',
                 }}
             />
+            
             <Stack.Screen
-                name="exerciseInfo"
+                name="(plan)/index"
                 options={{
                     headerShown: false,
-                    animation: 'fade_from_bottom',
+                    animation: 'slide_from_bottom',
+                    animationTypeForReplace: 'pop',
+                }}
+            />
+
+            <Stack.Screen
+                name="(exercise)/index"
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom',
+                    animationTypeForReplace: 'pop',
+                }}
+            />
+
+            <Stack.Screen
+                name="(foodplan)/index"
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom',
+                    animationTypeForReplace: 'pop',
+                }}
+            />
+
+            <Stack.Screen
+                name="(routine)/index"
+                options={{
+                    headerShown: false,
+                    animation: 'slide_from_bottom',
                     animationTypeForReplace: 'pop',
                 }}
             />

@@ -4,29 +4,25 @@ import { View, Text, Pressable, Image } from 'react-native'
 import { router } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 
-import { TrainingPlan } from '@/types/interfaces/entities/plan'
+import { TrainingPlanAPI } from '@/types/interfaces/entities/plan'
 
-import { useNavigationFlowContext } from '@/context/NavFlowContext'
-import { Ionicons } from '@expo/vector-icons'
-import IconButton from '../common/buttons/IconButton'
 import HomePill from '../common/pills/HomePill'
 
-const PlanCard = (plan: TrainingPlan) => {
-    const { setScreenPlan } = useNavigationFlowContext()
+const PlanSmallCard = (plan: TrainingPlanAPI) => {
     const handleNavigation = () => {
-        setScreenPlan({ ...plan })
-        router.push('/(tabs)/(home)/plandetail')
+
     }
-    const planFirstWord = plan.nombre.split(' ')[0]
-    const planRest = plan.nombre.split(' ').slice(1).join(' ')
+    const planFirstWord = plan.name.split(' ')[0]
+    const planRest = plan.name.split(' ').slice(1).join(' ')
+    const planDuration = plan.workouts.length;
     return (
         <>
             <Pressable
                 key={plan.id}
                 onPress={handleNavigation}
-                className={`w-72 h-72 mr-2 rounded-lg overflow-hidden`}>
+                className={`w-full h-72 mr-2 rounded-lg overflow-hidden`}>
                 <Image
-                    source={{ uri: plan.imagenPlanEntrenamiento }}
+                    source={{ uri: plan.image }}
                     className="w-full h-full absolute"
                     resizeMode="cover"
                 />
@@ -44,13 +40,7 @@ const PlanCard = (plan: TrainingPlan) => {
                         <Text className='text-white font-ralewayBold text-sm'>{planFirstWord}</Text>
                         <Text className='text-white font-ralewayBold text-4xl '>{planRest}</Text>
                     </View>
-                    <View>
-                        <IconButton
-                            icon={<Ionicons name="information" size={24} color="white" />}
-                            onPress={() => {
-                            }}
-                        />
-                    </View>
+  
                 </View>
 
 
@@ -58,11 +48,11 @@ const PlanCard = (plan: TrainingPlan) => {
                     <View className="flex-row items-start justify-between gap-x-2">
                         <HomePill
                             icon="time-outline"
-                            text={`${plan.duracion} sem.`}
+                            text={`${planDuration} rutinas`}
                         />
                         <HomePill
                             icon="flame-outline"
-                            text={`${plan.dificultad}`}
+                            text={`${plan.level}`}
                         />
                     </View>
                     <Text
@@ -70,7 +60,7 @@ const PlanCard = (plan: TrainingPlan) => {
                         numberOfLines={3}
                         ellipsizeMode="tail"
                     >
-                        {plan.descripcion}
+                        {plan.description}
                     </Text>
                 </View>
             </Pressable>
@@ -78,4 +68,4 @@ const PlanCard = (plan: TrainingPlan) => {
     )
 }
 
-export default PlanCard
+export default PlanSmallCard

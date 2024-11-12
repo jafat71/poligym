@@ -31,17 +31,13 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     async (error) => {
-        console.log("Access token expired");
         const originalRequest = error.config;
-        console.log(originalRequest)
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = await getToken("refreshToken");
             if (refreshToken) {
-                console.log("Refreshing access token");
                 try {
                     let accessToken = await getToken("accessToken")
-                    //TODO: verificar refresh con refreshToken
                     const response = await axiosRefreshInstance.post(`/auth/refresh`, {}, {
                         headers: {
                             'Authorization': `Bearer ${accessToken}`
