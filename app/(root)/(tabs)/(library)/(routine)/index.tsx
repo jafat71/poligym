@@ -1,23 +1,38 @@
 import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
-import { View, FlatList, Text, ListRenderItem, RefreshControl } from 'react-native';
+import { View, FlatList, Text, ListRenderItem, RefreshControl, Pressable } from 'react-native';
+import Animated, {
+    useAnimatedStyle,
+    withSpring,
+    useSharedValue,
+    interpolate,
+} from 'react-native-reanimated';
+
+import { Ionicons } from '@expo/vector-icons';
+
 import debounce from 'lodash/debounce';
-import { fetchMuscleGroups, fetchWorkouts } from '@/lib/api/actions';
+
+import { fetchWorkouts } from '@/lib/api/actions';
+import { queryClient } from '@/lib/queryClient/queryClient';
+
 import { useTheme } from '@/context/ThemeContext';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { TrainingPlanAPI, WorkoutAPI } from '@/types/interfaces/entities/plan';
+
+import { useQuery } from '@tanstack/react-query';
+
+import { WorkoutAPI } from '@/types/interfaces/entities/plan';
+import { MuscleGroups } from '@/types/types/muscles';
+
 import { CATEGORIES, CategorySearch, DIFFICULTIES, DifficultySearch } from '@/constants';
+
+import useMuscles from '@/hooks/useMuscles';
+
 import CustomSearchBar from '@/components/ui/common/searchbar/CustomSearchBar';
 import FilterPill from '@/components/ui/common/pills/FilterPill';
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
-import { queryClient } from '@/lib/queryClient/queryClient';
 import MainLogoCustomComponent from '@/components/ui/common/logo/mainLogo';
 import IndividualCardSkeleton from '@/components/animatedUi/IndividualCarkSkeleton';
 import RoutineListCard from '@/components/ui/routines/RoutineListCard';
-import { MuscleGroups } from '@/types/types/muscles';
-import useMuscles from '@/hooks/useMuscles';
 import MusclePill from '@/components/ui/common/pills/MusclePill';
 import IconButton from '@/components/ui/common/buttons/IconButton';
-import { Ionicons } from '@expo/vector-icons';
 
 const ListHeader = React.memo(({
     isDark,
@@ -28,7 +43,6 @@ const ListHeader = React.memo(({
     setSelectedDifficulty,
     selectedCategory,
     setSelectedCategory,
-    filteredWorkouts,
     muscleGroups,
     selectedMuscleGroups,
     toggleMuscleGroup,
@@ -47,75 +61,122 @@ const ListHeader = React.memo(({
     selectedMuscleGroups: MuscleGroups[];
     toggleMuscleGroup: (muscle: MuscleGroups) => void;
     clearMuscleGroups: () => void;
-}) => (
-    <View className={`mb-4 p-4 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
-        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-4xl font-ralewayBold mb-4`}>
-            RUTINAS
-        </Text>
+}) => {
+    const [showFilters, setShowFilters] = useState(false);
+    const filterAnimation = useSharedValue(0);
 
-        <CustomSearchBar
-            isSearching={isSearching}
-            searchInput={searchInput}
-            handleSearchChange={handleSearchChange}
-            placeholder="Buscar Rutinas..."
-        />
+    const toggleFilters = useCallback(() => {
+        setShowFilters(prev => !prev);
+        filterAnimation.value = withSpring(filterAnimation.value === 0 ? 1 : 0, {
+            damping: 15,
+            stiffness: 100,
+        });
+    }, []);
 
-        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-sm font-ralewayBold mb-2`}>
-            Dificultad
-        </Text>
-        <View className="flex-row justify-between mb-4">
-            {DIFFICULTIES.map(({ value, label }) => (
-                <FilterPill
-                    key={value}
-                    value={value}
-                    label={label}
-                    selected={selectedDifficulty}
-                    setSelected={setSelectedDifficulty as any}
-                    isSearching={isSearching}
-                />
-            ))}
-        </View>
+    const filterStyle = useAnimatedStyle(() => {
+        return {
+            maxHeight: interpolate(
+                filterAnimation.value,
+                [0, 1],
+                [0, 500], // Ajusta este valor según tus necesidades
+            ),
+            opacity: filterAnimation.value,
+            transform: [{
+                translateY: interpolate(
+                    filterAnimation.value,
+                    [0, 1],
+                    [-20, 0],
+                ),
+            }],
+        };
+    });
 
-        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-sm font-ralewayBold mb-2`}>
-            Categoría
-        </Text>
-        <View className="flex-row justify-between mb-4">
-            {CATEGORIES.map(({ value, label }) => (
-                <FilterPill
-                    key={value}
-                    value={value}
-                    label={label}
-                    selected={selectedCategory}
-                    setSelected={setSelectedCategory as any}
-                    isSearching={isSearching}   
-                />
-            ))}
-        </View>
-
-        <View className="flex-row justify-between items-center mb-2">
-            <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-sm font-ralewayBold mb-2`}>
-                Grupos Musculares 
+    return (
+        <View className={`p-4 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
+            <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-4xl font-ralewayBold mb-4`}>
+                RUTINAS
             </Text>
-            {selectedMuscleGroups.length > 0 && (
+
+            <View className="flex-row items-center gap-2">
+                <View className="flex-1">
+                    <CustomSearchBar
+                        isSearching={isSearching}
+                        searchInput={searchInput}
+                        handleSearchChange={handleSearchChange}
+                        placeholder="Buscar Rutinas..."
+                    />
+                </View>
+
+            </View>
+
+            <View className="mb-2 ">
+                <View className="flex-row flex-wrap justify-between">
+                    {DIFFICULTIES.map(({ value, label }) => (
+                        <FilterPill
+                            key={value}
+                            value={value}
+                            label={label}
+                            selected={selectedDifficulty}
+                            setSelected={setSelectedDifficulty as any}
+                            isSearching={isSearching}
+                        />
+                    ))}
+                </View>
+            </View>
+            <View className='items-end'>
                 <IconButton
-                    onPress={clearMuscleGroups}
-                    icon={<Ionicons name="remove-circle-outline" size={24} color="#0055f9" />}
+                    onPress={toggleFilters}
+                    icon={<Ionicons name="filter" size={24} color={isDark ? "#fff" : "#374151"} />}
                 />
-            )}
+
+            </View>
+            <Animated.View style={filterStyle} className="overflow-hidden ">
+                    <View className="flex-row justify-between items-center mb-2">
+                        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-sm font-ralewayBold`}>
+                            Categorías
+                        </Text>
+                    </View>
+                    <View className="flex-row flex-wrap justify-between">
+                        {CATEGORIES.map(({ value, label }) => (
+                            <FilterPill
+                                key={value}
+                                value={value}
+                                label={label}
+                                selected={selectedCategory}
+                                setSelected={setSelectedCategory as any}
+                                isSearching={isSearching}
+                            />
+                        ))}
+                    </View>
+
+                <View className="flex-row justify-between items-center my-4">
+                    <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-sm font-ralewayBold`}>
+                        Grupos Musculares
+                    </Text>
+                    <View className='flex-row items-center gap-2'>
+                        {selectedMuscleGroups.length > 0 && (
+                        <IconButton
+                            onPress={clearMuscleGroups}
+                                icon={<Ionicons name="remove-circle-outline" size={24} color={isDark ? "#fff" : "#374151"} />}
+                            />
+                        )}
+                    </View>
+                </View>
+                <View className="flex-row flex-wrap justify-between">
+                    {muscleGroups.map((muscle) => (
+                        <MusclePill
+                            key={muscle}
+                            muscle={muscle}
+                            isSelected={selectedMuscleGroups.some(m => m === muscle)}
+                            onToggle={() => toggleMuscleGroup(muscle)}
+                            isSearching={isSearching}
+                        />
+                    ))}
+                </View>
+            </Animated.View>
         </View>
-        <View className="flex flex-row flex-wrap justify-start ">
-            {muscleGroups.map((muscle) => (
-                <MusclePill
-                    key={muscle}
-                    muscle={muscle}
-                    isSelected={selectedMuscleGroups.some(m => m === muscle)}
-                    onToggle={() => toggleMuscleGroup(muscle)}
-                    isSearching={isSearching}
-                />
-            ))}
-        </View>
-    </View>
-));
+    )
+})
 
 export default function Routine() {
     const { isDark } = useTheme();
@@ -186,12 +247,12 @@ export default function Routine() {
             //             workoutMuscle === selectedMuscle
             //         )
             //     );
-            
+
             //return matchesSearch && matchesDifficulty && matchesMuscleGroups;
             return matchesSearch && matchesDifficulty && matchesCategory;
-            
+
         });
-    }, [data, searchQuery, selectedDifficulty, selectedMuscleGroups,selectedCategory]);
+    }, [data, searchQuery, selectedDifficulty, selectedMuscleGroups, selectedCategory]);
 
     const onRefresh = useCallback(async () => {
         setIsRefreshing(true);
@@ -203,9 +264,9 @@ export default function Routine() {
         <RoutineListCard {...item} />
     ), []);
 
-    const keyExtractor = useCallback((item: WorkoutAPI) => 
-        item.id.toString()
-    , []);
+    const keyExtractor = useCallback((item: WorkoutAPI, index: number) =>
+        `${item.id}-${index}`
+        , []);
 
     if (isLoading || isLoadingMuscleGroups) return (<SkeletonLoadingScreen />);
 
@@ -244,7 +305,7 @@ export default function Routine() {
                     <View className="flex-1 justify-center items-center">
                         {isSearching
                             ? (<>
-                                <IndividualCardSkeleton/>
+                                <IndividualCardSkeleton />
                             </>)
                             : (<>
                                 <MainLogoCustomComponent

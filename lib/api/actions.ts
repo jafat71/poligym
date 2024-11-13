@@ -12,10 +12,11 @@ interface FetchTrainingPlansResponse {
 	}; 
 }
 
-export const fetchTrainingPlansPaged = async (pageParam: number, limit: number = 10) : Promise<FetchTrainingPlansResponse> => {
+export const fetchTrainingPlansPaged = async (pageParam: number, limit: number = 5) : Promise<FetchTrainingPlansResponse> => {
+    console.log("PAGING")
+    console.log(pageParam, "-", limit);
     try {
-        const response = await axiosInstance.get(`/training-plan/find-all?page=${pageParam * limit}&limit=${limit}`);
-        console.log(response);
+        const response = await axiosInstance.get(`/training-plan/find-all?page=${pageParam+1}&limit=${limit}`); //+1
         return { plans: mapApiTrainingPlanToTrainingPlan(response.data.data), meta: response.data.meta };
     } catch (error) {
         console.error('Error al obtener los planes de entrenamiento');

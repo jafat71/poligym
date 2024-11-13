@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 import { WorkoutAPI } from '@/types/interfaces/entities/plan'
 import HomePill from '../common/pills/HomePill'
-import { DIFFICULTIES } from '@/constants';
+import { CATEGORIES, DIFFICULTIES } from '@/constants';
 
 const RoutineListCard = (workout: WorkoutAPI) => {
     const router = useRouter()
@@ -61,7 +61,7 @@ const RoutineListCard = (workout: WorkoutAPI) => {
                         />
                         <HomePill
                             icon="flame-outline"
-                            text={`${workout.category}`}
+                            text={`${CATEGORIES.find(category => category.value === workout.category)?.label}`}
                         />
                     </View>
                 </View>
