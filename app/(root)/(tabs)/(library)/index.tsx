@@ -8,7 +8,7 @@ import { View } from 'react-native';
 const Index = () => {
     const { isDark } = useTheme();
     return (
-        <View className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`} >
+        <View className={`flex-1  justify-center items-center ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`} >
             <View className='flex-1 flex-row '>
                 <CustomTab 
                     text='Planes de Entrenamiento' 

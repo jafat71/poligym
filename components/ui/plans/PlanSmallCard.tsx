@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { TrainingPlanAPI } from '@/types/interfaces/entities/plan'
 
 import HomePill from '../common/pills/HomePill'
+import { DIFFICULTIES } from '@/constants';
 
 const PlanSmallCard = (plan: TrainingPlanAPI) => {
     const handleNavigation = () => {
@@ -52,11 +53,11 @@ const PlanSmallCard = (plan: TrainingPlanAPI) => {
                         />
                         <HomePill
                             icon="flame-outline"
-                            text={`${plan.level}`}
+                            text={`${DIFFICULTIES.find(difficulty => difficulty.value === plan.level)?.label}`}
                         />
                     </View>
                     <Text
-                        className="text-white font-ralewayLight"
+                        className="text-white font-ralewayLight text-sm"
                         numberOfLines={3}
                         ellipsizeMode="tail"
                     >

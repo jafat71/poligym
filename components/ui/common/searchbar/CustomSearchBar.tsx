@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TextInput, View } from 'react-native';
+import { Pressable, TextInput, View } from 'react-native';
 
 import { Ionicons } from '@expo/vector-icons';
 
@@ -9,9 +9,10 @@ interface Props {
     isSearching: boolean;
     searchInput: string;
     handleSearchChange: (text: string) => void;
+    placeholder?: string;
 }
 
-const CustomSearchBar = ({ isSearching, searchInput, handleSearchChange}: Props) => {
+const CustomSearchBar = ({ isSearching, searchInput, handleSearchChange, placeholder = "Buscar..." }: Props) => {
     const { isDark } = useTheme()
     const [isActive, setIsActive] = useState(false);
     return (
@@ -36,7 +37,7 @@ const CustomSearchBar = ({ isSearching, searchInput, handleSearchChange}: Props)
             <TextInput
                 value={searchInput}
                 onChangeText={handleSearchChange}
-                placeholder="Buscar planes..."
+                placeholder={placeholder}
                 placeholderTextColor={isDark ? "#999" : "#666"}
                 className={`ml-2 flex-1 font-ralewaySemiBold ${isDark ? "text-white" : "text-darkGray-500"}`}
                 autoCorrect={false}
@@ -46,6 +47,9 @@ const CustomSearchBar = ({ isSearching, searchInput, handleSearchChange}: Props)
                 onFocus={() => setIsActive(true)}
                 onBlur={() => setIsActive(false)}   
             />
+            <Pressable onPress={() => handleSearchChange("")}>
+                <Ionicons name="close" size={24} color={isDark ? "#fff" : "#666"} />
+            </Pressable>
         </View>
     );
 }

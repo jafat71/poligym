@@ -1,21 +1,27 @@
 import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
-import { View, FlatList, Text, ListRenderItem } from 'react-native';
+import { View, FlatList, Text, ListRenderItem, RefreshControl } from 'react-native';
 
 import debounce from 'lodash/debounce';
 
-import { fetchTrainingPlans } from '@/lib/api/actions';
+import { fetchTrainingPlans, fetchTrainingPlansPaged } from '@/lib/api/actions';
 
 import { useTheme } from '@/context/ThemeContext';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 import { TrainingPlanAPI } from '@/types/interfaces/entities/plan';
 
 import { DIFFICULTIES, DifficultySearch } from '@/constants';
 
-import LoadingScreen from '@/components/animatedUi/LoadingScreen';
 import PlanSmallCard from '@/components/ui/plans/PlanSmallCard';
 import CustomSearchBar from '@/components/ui/common/searchbar/CustomSearchBar';
 import FilterPill from '@/components/ui/common/pills/FilterPill';
+import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
+
+import { queryClient } from '@/lib/queryClient/queryClient';
+import MainLogoCustomComponent from '@/components/ui/common/logo/mainLogo';
+import { Ionicons } from '@expo/vector-icons';
+import IndividualCardSkeleton from '@/components/animatedUi/IndividualCarkSkeleton';
+
 
 const ListHeader = React.memo(({
     isDark,
@@ -35,14 +41,15 @@ const ListHeader = React.memo(({
     filteredPlans: number;
 }) => (
     <View className={`mb-4 p-4 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
-        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-2xl font-ralewayBold mb-4`}>
+        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-4xl font-ralewayBold mb-4`}>
             PLANES DE ENTRENAMIENTO
         </Text>
-        
-        <CustomSearchBar 
+
+        <CustomSearchBar
             isSearching={isSearching}
             searchInput={searchInput}
             handleSearchChange={handleSearchChange}
+            placeholder="Buscar Planes de entrenamiento..."
         />
 
         <View className="flex-row justify-between mb-2">
@@ -57,12 +64,6 @@ const ListHeader = React.memo(({
             ))}
         </View>
 
-        <Text className={`font-raleway text-sm mt-2 ${isDark ? "text-white" : "text-darkGray-500"}`}>
-            {isSearching 
-                ? "Buscando..." 
-                : `${filteredPlans} plan${filteredPlans !== 1 ? 'es' : ''} encontrado${filteredPlans !== 1 ? 's' : ''}`
-            }
-        </Text>
     </View>
 ));
 
@@ -72,19 +73,53 @@ export default function Plan() {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultySearch>('ALL');
     const [isSearching, setIsSearching] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
-    //TODO: paginar
-    const { data: trainingPlans } = useQuery({
+    //TODO: paginar - change for useInfiniteQuery - generalSearch
+    // const { data, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    //     queryKey: ['trainingPlans','infinite'],
+    //     initialPageParam: 0,
+    //     staleTime: 60* 60 * 1000, // 1 hour
+    //     queryFn: async (params) => {
+    //         const { pageParam = 0 } = params;
+    //         const data = await fetchTrainingPlansPaged(pageParam);
+    //         data.plans.forEach(plan => {
+    //             queryClient.setQueryData(['trainingPlans', plan.id], plan);
+    //         });
+    //         return data;
+    //     },
+    //     getNextPageParam: (lastPage, pages) => {
+    //         if (lastPage.meta.lastPage > lastPage.meta.page) {
+    //             return lastPage.meta.page + 1;
+    //         }
+    //         return undefined;
+    //     },
+    //     refetchOnWindowFocus: false,
+    //     refetchOnMount: false,
+    //     refetchOnReconnect: false,
+    //     refetchInterval: false,
+    //     refetchIntervalInBackground: false,
+    //     retry: false,
+    // });
+
+    //Paging on backend is not working, so we need to fetch all plans and filter them on the frontend
+    const { data, isLoading } = useQuery({
         queryKey: ['trainingPlans'],
         queryFn: fetchTrainingPlans,
-        staleTime: 5 * 60 * 1000,
+        staleTime: 1 * 60 * 1000, // 1 hour
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchInterval: false,
+        refetchIntervalInBackground: false,
+        retry: false,
     });
 
     const debouncedSearchRef = useRef(
         debounce((query: string) => {
             setSearchQuery(query);
             setIsSearching(false);
-        }, 500) 
+        }, 500)
     ).current;
 
     const handleSearchChange = (text: string) => {
@@ -99,17 +134,31 @@ export default function Plan() {
         };
     }, [debouncedSearchRef]);
 
+    // const filteredPlans = useMemo(() => {
+    //     if (!data) return [];
+    //     return data.pages.flatMap(page => page.plans).filter((plan: TrainingPlanAPI) => {
+    //         const matchesSearch = plan.name.toLowerCase().includes(searchQuery.toLowerCase());
+    //         const matchesDifficulty = selectedDifficulty === 'ALL' || plan.level === selectedDifficulty;
+    //         return matchesSearch && matchesDifficulty;
+    //     });
+    // }, [data, searchQuery, selectedDifficulty]);
+    // console.log(data);
+
     const filteredPlans = useMemo(() => {
-        if (!trainingPlans) return [];
-        
-        return trainingPlans.filter(plan => {
+        if (!data) return [];
+        return data.filter((plan: TrainingPlanAPI) => {
             const matchesSearch = plan.name.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesDifficulty = selectedDifficulty === 'ALL' || plan.level === selectedDifficulty;
             return matchesSearch && matchesDifficulty;
         });
-    }, [trainingPlans, searchQuery, selectedDifficulty]);
+    }, [data, searchQuery, selectedDifficulty]);
 
-    if (!trainingPlans) return (<LoadingScreen />);
+
+    const onRefresh = useCallback(async () => {
+        setIsRefreshing(true);
+        await queryClient.invalidateQueries({ queryKey: ['trainingPlans'] });
+        setIsRefreshing(false);
+    }, [queryClient]);
 
     const renderItem: ListRenderItem<TrainingPlanAPI> = useCallback(({ item }) => (
         <PlanSmallCard {...item} />
@@ -118,6 +167,8 @@ export default function Plan() {
     const keyExtractor = useCallback((item: TrainingPlanAPI) => 
         item.id.toString()
     , []);
+
+    if (isLoading) return (<SkeletonLoadingScreen />);
 
     return (
         <View className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
@@ -138,23 +189,40 @@ export default function Plan() {
                 }
                 ItemSeparatorComponent={() => <View className="h-2" />}
                 showsVerticalScrollIndicator={false}
-                initialNumToRender={5}
+                initialNumToRender={10}
                 maxToRenderPerBatch={10}
                 windowSize={5}
                 removeClippedSubviews={true}
+                onEndReachedThreshold={0.7}
+                // onEndReached={() => fetchNextPage()}
                 keyboardShouldPersistTaps="handled" // Permite que el teclado permanezca abierto
                 ListEmptyComponent={
-                    <Text className={`text-center ${
-                        isDark ? "text-gray-300" : "text-gray-500"
-                    }`}>
-                        {isSearching 
-                            ? "Buscando..." 
-                            : "No se encontraron planes"
+                    <View className="flex-1 justify-center items-center">
+                        {isSearching
+                            ? (<>
+                                <IndividualCardSkeleton/>
+                            </>)
+                            : (<>
+                                <MainLogoCustomComponent
+                                    width='100'
+                                    height='100'
+                                    principal={isDark ? "#515151" : "#6b7280"}
+                                />
+                                <Text className={`text-center ${isDark ? "text-gray-300" : "text-gray-500"}
+                                    text-base font-raleway
+                                `}>No se encontraron resultados</Text>
+                            </>)
                         }
-                    </Text>
+                    </View>
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefreshing}
+                        onRefresh={onRefresh}
+                        tintColor={"#0055f9"}
+                    />
                 }
             />
-
         </View>
     );
 }

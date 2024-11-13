@@ -1,4 +1,4 @@
-import { MuscleGroups } from "@/components/ui/common/body/bodyConstants";
+import { MuscleGroups } from "@/components/ui/body/bodyConstants";
 import { ReactNode } from "react";
 import { KeyboardTypeOptions } from "react-native";
 

@@ -1,6 +1,10 @@
 
 /**
- *     calves = "pantorrillas", 
+ *     
+ */
+
+export enum MuscleGroups {
+    calves = "pantorrillas", 
     quads = "cuádriceps",
     obliques = "oblicuos",
     abdominals = "abdominales",
@@ -15,22 +19,5 @@
     glutes = "glúteos",
     lats = "dorsales",
     trapsmiddle = "trapecio medio"
- */
-
-export enum MuscleGroups {
-    calves = "calves", 
-    quads = "quads",
-    obliques = "obliques",
-    abdominals = "abdominals",
-    forearms = "forearms",
-    biceps = "biceps",
-    chest = "chest",
-    shoulders = "shoulders",
-    traps = "traps",
-    lowerback = "lowerback",
-    triceps = "triceps",
-    hamstrings = "hamstrings",
-    glutes = "glutes",
-    lats = "lats",
-    trapsmiddle = "trapsmiddle"
+    
 }

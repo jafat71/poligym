@@ -2,7 +2,6 @@ import { Stack } from 'expo-router';
 
 export default function TabLayout() {
     return (
-        //TODO: FLOATING CUSTOM TABS
         <Stack 
         initialRouteName='index'
         screenOptions={{
@@ -13,7 +12,14 @@ export default function TabLayout() {
                 options={{
                     headerShown: false,
                     animation: 'fade_from_bottom',
-                    animationTypeForReplace: 'pop',
+                }}
+            />
+
+            <Stack.Screen
+                name="search"
+                options={{
+                    headerShown: false,
+                    animation: 'fade_from_bottom',
                 }}
             />
             
@@ -21,8 +27,7 @@ export default function TabLayout() {
                 name="(plan)/index"
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_bottom',
-                    animationTypeForReplace: 'pop',
+                    animation: 'fade_from_bottom',
                 }}
             />
 
@@ -30,8 +35,7 @@ export default function TabLayout() {
                 name="(exercise)/index"
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_bottom',
-                    animationTypeForReplace: 'pop',
+                    animation: 'fade_from_bottom',
                 }}
             />
 
@@ -39,8 +43,7 @@ export default function TabLayout() {
                 name="(foodplan)/index"
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_bottom',
-                    animationTypeForReplace: 'pop',
+                    animation: 'fade_from_bottom',
                 }}
             />
 
@@ -48,8 +51,7 @@ export default function TabLayout() {
                 name="(routine)/index"
                 options={{
                     headerShown: false,
-                    animation: 'slide_from_bottom',
-                    animationTypeForReplace: 'pop',
+                    animation: 'fade_from_bottom',
                 }}
             />
         </Stack>

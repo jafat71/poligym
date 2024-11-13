@@ -88,7 +88,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         console.log("accessToken", accessToken)
         getRefreshToken()
     }, [accessToken, refreshToken])
-
+    console.log(accessToken)
     return (
         <UserContext.Provider value={{
             userLogged,

@@ -1,4 +1,4 @@
-import MaleBack from '@/components/ui/common/body/MaleBack';
+import MaleBack from '@/components/ui/body/MaleBack';
 import MaleFront from './MaleFront';
 import { MuscleGroups } from '@/types/types/muscles';
 

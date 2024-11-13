@@ -1,5 +1,6 @@
-import { IndividualExercise, RoutinePlan, TrainingPlan, TrainingPlanAPI } from "../interfaces/entities/plan"
+import { IndividualExercise, RoutinePlan, TrainingPlan, TrainingPlanAPI, WorkoutAPI } from "../interfaces/entities/plan"
 import { User } from "../interfaces/entities/user"
+import { MuscleGroups } from "../types/muscles"
 
 export const mapUserFromApiToUser = (user: any) : User => {
     
@@ -74,3 +75,30 @@ export const mapApiTrainingPlanToTrainingPlan = (data: any): TrainingPlanAPI[] =
         }
     });
 }
+
+export const mapApiWorkoutToWorkout = (data: any): WorkoutAPI[] => {
+    return data.map((workout: any) => {
+        return {
+            id: workout.id,
+            name: workout.name,
+            description: workout.description,
+            frequency: workout.frequency,
+            duration: workout.duration,
+            level: workout.level,
+            category: workout.category,
+            trainingType: workout.trainingType,
+            exercisesInWorkout: [],
+            trainingPlans: [],
+            isDeleted: workout.isDeleted,
+            createdAt: workout.createdAt,
+            updatedAt: workout.updatedAt,
+        }
+    });
+}
+
+export const mapApiMuscleGroupToMuscleGroup = (data: any): MuscleGroups[] => {
+    return data.map((muscleGroup: any) => {
+        return muscleGroup.name;
+    });
+}
+    

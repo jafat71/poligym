@@ -6,12 +6,12 @@ import { View, Text, ScrollView, Pressable, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import CircularProgress from 'react-native-circular-progress-indicator';
-import { BodyColors, MuscleGroupsColors } from '@/components/ui/common/body/bodyConstants';
+import { BodyColors, MuscleGroupsColors } from '@/components/ui/body/bodyConstants';
 import { LastAlimentationPlans, LastExercisePlans, LastRoutines, exampleUser } from '@/constants';
-import MaleBack from '@/components/ui/common/body/MaleBack';
-import FemaleFront from '@/components/ui/common/body/FemaleFront';
-import FemaleBack from '@/components/ui/common/body/FemaleBack';
-import MaleFront from '@/components/ui/common/body/MaleFront';
+import MaleBack from '@/components/ui/body/MaleBack';
+import FemaleFront from '@/components/ui/body/FemaleFront';
+import FemaleBack from '@/components/ui/body/FemaleBack';
+import MaleFront from '@/components/ui/body/MaleFront';
 import TimeResumeFull from '@/components/ui/history/weekResumeFull';
 
 export const Stats = () => {

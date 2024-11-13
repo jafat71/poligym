@@ -43,11 +43,9 @@ axiosInstance.interceptors.response.use(
                             'Authorization': `Bearer ${accessToken}`
                         }
                     });
-                    console.log("Access token refreshed");
                     const newAccessToken = response.data.accessToken;
                     await saveToken("accessToken", newAccessToken);
                     originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                    console.log("refresed finished");
                     return axiosInstance(originalRequest);
                 } catch (error) {
                     //SetRefreshToken(null)

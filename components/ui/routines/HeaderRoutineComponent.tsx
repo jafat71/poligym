@@ -1,8 +1,8 @@
 import { useTheme } from '@/context/ThemeContext';
 import React from 'react';
-import { getMuscleImage } from '../common/body/bodyConstants';
+import { getMuscleImage } from '../body/bodyConstants';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import SmallBodyCardComponent from '../common/body/smallBodyCardComponent';
+import SmallBodyCardComponent from '../body/smallBodyCardComponent';
 import { RoutinePlan } from '@/types/interfaces/entities/plan';
 import { Ionicons } from '@expo/vector-icons';
 

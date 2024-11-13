@@ -17,7 +17,6 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient/queryClient';
 
 import Loading from '@/components/animatedUi/Loading';
-import { StatusBar } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -60,7 +59,6 @@ export default function RootLayout() {
           <UserProvider>
             <ExerciseExecutionProvider>
               <GestureHandlerRootView style={{ flex: 1 }}>
-                <StatusBar backgroundColor="transparent" barStyle="dark-content" />
                 <Stack
                   screenOptions={{
                     statusBarTranslucent: true

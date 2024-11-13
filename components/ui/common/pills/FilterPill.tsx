@@ -6,18 +6,18 @@ import { View } from 'react-native';
 interface Props {
     value: string;
     label: string;
-    selectedDifficulty: string;
-    setSelectedDifficulty: (value: string) => void;
+    selected: string;
+    setSelected: (value: string) => void;
     isSearching: boolean;
 }
 
-const FilterPill = ({ value, label, selectedDifficulty, setSelectedDifficulty, isSearching }: Props) => {
+const FilterPill = ({ value, label, selected, setSelected, isSearching }: Props) => {
     const { isDark } = useTheme();
-    const isSelected = selectedDifficulty === value;
+    const isSelected = selected === value;
     return (
         <Pressable
         key={value}
-        onPress={() => setSelectedDifficulty(value)}
+        onPress={() => setSelected(value)}
         className={`px-2 py-2 rounded-sm border-2
             ${isSelected
                 ? "border-eBlue-500"
