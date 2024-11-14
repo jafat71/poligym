@@ -14,9 +14,7 @@ export const signUp = async (name: string, email: string, password: string) => {
     try {
         const body = { name, email, password }
         const response = await axiosInstance.post('/auth/register', body, {
-            headers: {
-                Authorization: 'none'
-            }
+            headers: {Authorization: 'none'}
         });
         const { accessToken } = response.data;
         const cookies = response.headers['set-cookie'];
@@ -33,9 +31,7 @@ export const signin = async (email: string, password: string) => {
     try {
         const body = { email, password }
         const response = await axiosInstance.post('/auth/login', body, {
-            headers: {
-                Authorization: 'none',
-            }
+            headers: {Authorization: 'none'}
         });
         const { accessToken } = response.data;
         const cookies = response.headers['set-cookie'];
@@ -80,7 +76,6 @@ export const verifyToken = async (token: string) => {
 };
 
 export const refreshAccessToken = async () => {
-    console.log("REFRESHING ACCESS TOKEN")
     try {
         const refreshToken = await getToken('refreshToken');
         const response = await axiosInstance.post(`/auth/refresh`, {}, {

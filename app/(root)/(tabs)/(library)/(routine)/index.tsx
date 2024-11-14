@@ -20,8 +20,10 @@ import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen
 import RoutineListCard from '@/components/ui/routines/RoutineListCard';
 import CustomListEmptyComponent from '@/components/ui/common/flatlists/CustomListEmptyComponent';
 import { WorkoutFlatlistHeader } from '@/components/ui/common/flatlists/WorkoutFlatListHeader';
+import { useUser } from '@/context/UserContext';
 
 export default function Routine() {
+    const { isLoadingMuscleGroups, muscleGroups } = useMuscles();
     const { isDark } = useTheme();
     const [searchInput, setSearchInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -30,9 +32,8 @@ export default function Routine() {
     const [selectedMuscleGroups, setSelectedMuscleGroups] = useState<MuscleGroups[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
-    const { isLoadingMuscleGroups, muscleGroups } = useMuscles();
     const { handleSearchChange } = useDebounce({ setSearchQuery, setIsSearching, setSearchInput });
-
+    const {accessToken} = useUser()
     const {
         data,
         isLoading,
@@ -46,7 +47,7 @@ export default function Routine() {
         staleTime: 60 * 60 * 1000, // 1 hour
         queryFn: async (params) => {
             const { pageParam = 0 } = params;
-            const data = await fetchWorkoutsPaged(pageParam);
+            const data = await fetchWorkoutsPaged(accessToken!,pageParam);
             data.workouts.forEach(workout => {
                 queryClient.setQueryData(['workouts', workout.id], workout);
             });
@@ -153,7 +154,7 @@ export default function Routine() {
                         isSearching={isSearching}
                         selectedDifficulty={selectedDifficulty}
                         setSelectedDifficulty={setSelectedDifficulty}
-                        muscleGroups={muscleGroups!}
+                        muscleGroups={muscleGroups ?? []}
                         selectedMuscleGroups={selectedMuscleGroups}
                         toggleMuscleGroup={toggleMuscleGroup}
                         clearMuscleGroups={clearMuscleGroups}

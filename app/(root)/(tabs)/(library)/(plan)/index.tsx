@@ -17,6 +17,7 @@ import { queryClient } from '@/lib/queryClient/queryClient';
 import { useDebounce } from '@/hooks/useDebounce';
 import CustomListEmptyComponent from '@/components/ui/common/flatlists/CustomListEmptyComponent';
 import { PlanFlatlistHeader } from '@/components/ui/common/flatlists/PlanFlatlistHeader';
+import { useUser } from '@/context/UserContext';
 
 export default function Plan() {
     const { isDark } = useTheme();
@@ -26,7 +27,7 @@ export default function Plan() {
     const [isSearching, setIsSearching] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const { handleSearchChange } = useDebounce({ setSearchQuery, setIsSearching, setSearchInput });
-
+    const {accessToken} = useUser()
     const {
         data,
         isLoading,
@@ -40,7 +41,7 @@ export default function Plan() {
         staleTime: 60 * 60 * 1000, // 1 hour
         queryFn: async (params) => {
             const { pageParam = 0 } = params;
-            const data = await fetchTrainingPlansPaged(pageParam);
+            const data = await fetchTrainingPlansPaged(accessToken!,pageParam);
             data.plans.forEach(plan => {
                 queryClient.setQueryData(['trainingPlans', plan.id], plan);
             });

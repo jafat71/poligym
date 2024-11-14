@@ -1,4 +1,4 @@
-import { MuscleGroup } from "@/types/interfaces/entities/plan";
+import { EquipmentApi, MuscleGroup } from "@/types/interfaces/entities/plan";
 import { SocialPost } from "@/types/interfaces/entities/post";
 import { Experience, Genre, MedicalProblem, Objetive, Schedule, User } from "@/types/interfaces/entities/user";
 
@@ -871,6 +871,7 @@ export const LastExercisePlans = [
 
 export type DifficultySearch = 'ALL' | 'BASIC' | 'INTERMEDIATE' | 'ADVANCED';
 export type CategorySearch = 'ALL' | 'CARDIO' | 'STRENGTH' | 'FLEXIBILITY';
+export type EquipmentSearch = 'ALL' | EquipmentApi;
 
 export const DIFFICULTIES: Array<{ value: DifficultySearch; label: string }> = [
     { value: 'ALL', label: 'Todos' },

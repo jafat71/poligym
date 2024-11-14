@@ -8,10 +8,10 @@ import { useTheme } from '@/context/ThemeContext';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { WorkoutAPI } from '@/types/interfaces/entities/plan';
+import { EquipmentApi, WorkoutAPI } from '@/types/interfaces/entities/plan';
 import { MuscleGroups } from '@/types/types/muscles';
 
-import { CategorySearch, DifficultySearch } from '@/constants';
+import { CategorySearch, DifficultySearch, EquipmentSearch } from '@/constants';
 
 import useMuscles from '@/hooks/useMuscles';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -19,8 +19,9 @@ import { useDebounce } from '@/hooks/useDebounce';
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
 import RoutineListCard from '@/components/ui/routines/RoutineListCard';
 import CustomListEmptyComponent from '@/components/ui/common/flatlists/CustomListEmptyComponent';
-import { WorkoutFlatlistHeader } from '@/components/ui/common/flatlists/WorkoutFlatListHeader';
 import { ExerciseFlatlistHeader } from '@/components/ui/common/flatlists/ExerciseFlatlistHeader';
+import { useEquipment } from '@/hooks/useEquipment';
+import { useUser } from '@/context/UserContext';
 
 export default function Exercise() {
     const { isDark } = useTheme();
@@ -29,10 +30,13 @@ export default function Exercise() {
     const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultySearch>('ALL');
     const [selectedCategory, setSelectedCategory] = useState<CategorySearch>('ALL');
     const [selectedMuscleGroups, setSelectedMuscleGroups] = useState<MuscleGroups[]>([]);
+    const [selectedEquipment, setSelectedEquipment] = useState<EquipmentSearch>('ALL');
     const [isSearching, setIsSearching] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const { isLoadingMuscleGroups, muscleGroups } = useMuscles();
+    const { isLoadingEquipments, equipments } = useEquipment();
     const { handleSearchChange } = useDebounce({ setSearchQuery, setIsSearching, setSearchInput });
+    const {accessToken} = useUser()
 
     const {
         data,
@@ -47,7 +51,7 @@ export default function Exercise() {
         staleTime: 60 * 60 * 1000, // 1 hour
         queryFn: async (params) => {
             const { pageParam = 0 } = params;
-            const data = await fetchWorkoutsPaged(pageParam);
+            const data = await fetchWorkoutsPaged(accessToken!, pageParam);
             data.workouts.forEach(workout => {
                 queryClient.setQueryData(['workouts', workout.id], workout);
             });
@@ -139,7 +143,7 @@ export default function Exercise() {
         return itemCount;
     }, [data]);
 
-    if (isLoading || isLoadingMuscleGroups) return (<SkeletonLoadingScreen />);
+    if (isLoading || isLoadingMuscleGroups || isLoadingEquipments) return (<SkeletonLoadingScreen />);
 
     return (
         <View className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
@@ -160,6 +164,9 @@ export default function Exercise() {
                         clearMuscleGroups={clearMuscleGroups}
                         selectedCategory={selectedCategory}
                         setSelectedCategory={setSelectedCategory}
+                        equipments={equipments!}
+                        selectedEquipment={selectedEquipment}
+                        setSelectedEquipment={setSelectedEquipment}
                     />
                 }
                 ItemSeparatorComponent={() => <View className="h-2" />}

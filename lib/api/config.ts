@@ -26,6 +26,7 @@ const axiosRefreshInstance = axios.create({
 });
 
 
+//Interceptor para manejar errores de autenticación
 axiosInstance.interceptors.response.use(
     (response) => {
         return response;

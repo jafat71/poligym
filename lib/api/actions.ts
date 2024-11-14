@@ -1,7 +1,8 @@
-import { TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
+import { EquipmentApi, TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
 import axiosInstance from "./config";
-import { mapApiMuscleGroupToMuscleGroup, mapApiTrainingPlanToTrainingPlan, mapApiWorkoutToWorkout } from "@/types/mappers";
+import { mapApiEquipmentToEquipment, mapApiMuscleGroupToMuscleGroup, mapApiTrainingPlanToTrainingPlan, mapApiWorkoutToWorkout } from "@/types/mappers";
 import { MuscleGroups } from "@/types/types/muscles";
+import { getToken } from "../token/store";
 
 interface FetchTrainingPlansResponse {
     plans: TrainingPlanAPI[];
@@ -21,9 +22,12 @@ interface FetchWorkoutsResponse {
     }; 
 }
 
-export const fetchTrainingPlansPaged = async (pageParam: number, limit: number = 5) : Promise<FetchTrainingPlansResponse> => {
+
+export const fetchTrainingPlansPaged = async (token: string, pageParam: number, limit: number = 5) : Promise<FetchTrainingPlansResponse> => {
     try {
-        const response = await axiosInstance.get(`/training-plan/find-all?page=${pageParam+1}&limit=${limit}`); //+1
+        const response = await axiosInstance.get(`/training-plan/find-all?page=${pageParam+1}&limit=${limit}`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        ); //+1
         return { plans: mapApiTrainingPlanToTrainingPlan(response.data.data), meta: response.data.meta };
     } catch (error) {
         console.error('Error al obtener los planes de entrenamiento');
@@ -31,9 +35,11 @@ export const fetchTrainingPlansPaged = async (pageParam: number, limit: number =
     }
 }
 
-export const fetchWorkoutsPaged = async (pageParam: number, limit: number = 5) : Promise<FetchWorkoutsResponse> => {
+export const fetchWorkoutsPaged = async (token: string,pageParam: number, limit: number = 5) : Promise<FetchWorkoutsResponse> => {
     try {
-        const response = await axiosInstance.get(`/workout/find-all?page=${pageParam+1}&limit=${limit}`); //+1
+        const response = await axiosInstance.get(`/workout/find-all?page=${pageParam+1}&limit=${limit}`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        ); //+1
         return { workouts: mapApiWorkoutToWorkout(response.data.data), meta: response.data.meta };
     } catch (error) {
         console.error('Error al obtener las rutinas de entrenamiento');
@@ -44,17 +50,19 @@ export const fetchWorkoutsPaged = async (pageParam: number, limit: number = 5) :
 export const fetchTrainingPlans = async () : Promise<TrainingPlanAPI[]> => {
     try {
         const response = await axiosInstance.get(`/training-plan/find-all`);
-        console.log(response.data);
         return mapApiTrainingPlanToTrainingPlan(response.data.data);
     } catch (error) {
+        console.log(error);
         console.error('Error al obtener los planes de entrenamiento');
         throw error;
     }
 }
 
-export const fetchWorkouts = async () : Promise<WorkoutAPI[]> => {
+export const fetchWorkouts = async (token: string) : Promise<WorkoutAPI[]> => {
     try {
-        const response = await axiosInstance.get(`/workout/find-all`);
+        const response = await axiosInstance.get(`/workout/find-all`,{
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         return mapApiWorkoutToWorkout(response.data.data);
     } catch (error) {
         console.error('Error al obtener las rutinas');
@@ -62,10 +70,24 @@ export const fetchWorkouts = async () : Promise<WorkoutAPI[]> => {
     }
 }
 
-export const fetchMuscleGroups = async () : Promise<MuscleGroups[]> => {
+export const fetchMuscleGroups = async (token: string) : Promise<MuscleGroups[]> => {
     try {
-        const response = await axiosInstance.get(`/muscle-group/find-all`);
+        const response = await axiosInstance.get(`/muscle-group/find-all`,{
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
         return mapApiMuscleGroupToMuscleGroup(response.data.data);
+    } catch (error) {
+        console.error('Error al obtener los grupos musculares');
+        throw error;
+    }
+}
+
+export const fetchEquipment = async (token: string) : Promise<EquipmentApi[]> => {
+    try {
+        const response = await axiosInstance.get(`/equipment/find-all`,{
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        return mapApiEquipmentToEquipment(response.data.data);
     } catch (error) {
         console.error('Error al obtener los grupos musculares');
         throw error;

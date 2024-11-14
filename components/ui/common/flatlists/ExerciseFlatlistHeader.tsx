@@ -4,7 +4,7 @@ import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } f
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { CATEGORIES, CategorySearch, DIFFICULTIES, DifficultySearch } from "@/constants";
+import { CATEGORIES, CategorySearch, DIFFICULTIES, DifficultySearch, EquipmentSearch } from "@/constants";
 
 import { useTheme } from "@/context/ThemeContext";
 
@@ -14,6 +14,7 @@ import CustomSearchBar from "../searchbar/CustomSearchBar";
 import FilterPill from "../pills/FilterPill";
 import IconButton from "../buttons/IconButton";
 import MusclePill from "../pills/MusclePill";
+import { EquipmentApi } from "@/types/interfaces/entities/plan";
 
 interface ExerciseFlatlistHeaderProps {
     searchInput: string;
@@ -27,6 +28,9 @@ interface ExerciseFlatlistHeaderProps {
     selectedMuscleGroups: MuscleGroups[];
     toggleMuscleGroup: (muscle: MuscleGroups) => void;
     clearMuscleGroups: () => void;
+    equipments: EquipmentApi[];
+    selectedEquipment: EquipmentSearch;
+    setSelectedEquipment: (equipment: EquipmentSearch) => void;
 }
 
 export const ExerciseFlatlistHeader = memo(({
@@ -41,6 +45,9 @@ export const ExerciseFlatlistHeader = memo(({
     selectedMuscleGroups,
     toggleMuscleGroup,
     clearMuscleGroups,
+    equipments,
+    selectedEquipment,
+    setSelectedEquipment,
 }: ExerciseFlatlistHeaderProps) => {
     const { isDark } = useTheme();
     const [showFilters, setShowFilters] = useState(false);
@@ -145,6 +152,33 @@ export const ExerciseFlatlistHeader = memo(({
                             muscle={muscle}
                             isSelected={selectedMuscleGroups.some(m => m === muscle)}
                             onToggle={() => toggleMuscleGroup(muscle)}
+                            isSearching={isSearching}
+                        />
+                    ))}
+                </View>
+
+                <View className="flex-row justify-between my-2">
+                    <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-sm font-ralewayBold`}>
+                        Equipos
+                    </Text>
+                    <View className='flex-row items-center gap-2'>
+                        {selectedEquipment !== 'ALL' && (
+                            <IconButton
+                                onPress={() => setSelectedEquipment('ALL')}
+                                icon={<Ionicons name="remove-circle-outline" size={24} color={isDark ? "#fff" : "#374151"} />}
+                            />
+                        )}
+                    </View>
+                </View>
+
+                <View className="flex-row flex-wrap justify-between">
+                    {equipments.map((equipment) => (
+                        <FilterPill
+                            key={equipment.name}
+                            value={equipment.name}
+                            label={equipment.name}
+                            selected={selectedEquipment===equipment.name ? equipment.name : 'ALL'}
+                            setSelected={setSelectedEquipment as any}
                             isSearching={isSearching}
                         />
                     ))}

@@ -171,6 +171,17 @@ export interface TrainingPlanAPI {
     createdAt: Date;
     updatedAt: Date;
   }
+
+  export interface EquipmentApi {
+    id: number;                         
+    name: string;                       
+    mediaUrl: string;                   
+    description?: string | null;        
+    category: EquipmentCategory;        
+    exercise: ExerciseAPI[];               
+    isDeleted: boolean;                 
+    status: EquipmentStatus;            
+  }
   
   // Enums for Difficulty and Category
   export enum Difficulty {
@@ -185,3 +196,16 @@ export interface TrainingPlanAPI {
     FLEXIBILITY = "FLEXIBILITY",
   }
   
+  export enum EquipmentCategory {
+    MACHINE = "MACHINE",
+    FREE_WEIGHT = "FREE_WEIGHT",
+    CARDIO = "CARDIO",
+    ACCESSORY = "ACCESSORY",
+    BODYWEIGHT = "BODYWEIGHT",
+  }
+  
+  export enum EquipmentStatus {
+    AVAILABLE = "AVAILABLE",
+    IN_MAINTENANCE = "IN_MAINTENANCE",
+    OUT_OF_ORDER = "OUT_OF_ORDER",
+  }
