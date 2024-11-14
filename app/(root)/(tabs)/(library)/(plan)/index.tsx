@@ -1,7 +1,5 @@
-import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
-import { View, FlatList, Text, ListRenderItem, RefreshControl } from 'react-native';
-
-import debounce from 'lodash/debounce';
+import React, { useCallback, useState, useMemo, useEffect } from 'react';
+import { View, FlatList, ListRenderItem, RefreshControl } from 'react-native';
 
 import { fetchTrainingPlansPaged } from '@/lib/api/actions';
 
@@ -10,59 +8,15 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 
 import { TrainingPlanAPI } from '@/types/interfaces/entities/plan';
 
-import { DIFFICULTIES, DifficultySearch } from '@/constants';
+import { DifficultySearch } from '@/constants';
 
 import PlanSmallCard from '@/components/ui/plans/PlanSmallCard';
-import CustomSearchBar from '@/components/ui/common/searchbar/CustomSearchBar';
-import FilterPill from '@/components/ui/common/pills/FilterPill';
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
 
 import { queryClient } from '@/lib/queryClient/queryClient';
-import MainLogoCustomComponent from '@/components/ui/common/logo/mainLogo';
-import IndividualCardSkeleton from '@/components/animatedUi/IndividualCarkSkeleton';
-
-
-const ListHeader = React.memo(({
-    isDark,
-    searchInput,
-    handleSearchChange,
-    isSearching,
-    selectedDifficulty,
-    setSelectedDifficulty,
-}: {
-    isDark: boolean;
-    searchInput: string;
-    handleSearchChange: (text: string) => void;
-    isSearching: boolean;
-    selectedDifficulty: DifficultySearch;
-    setSelectedDifficulty: (difficulty: DifficultySearch) => void;
-}) => (
-    <View className={`mb-4 p-4 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
-        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-4xl font-ralewayBold mb-4`}>
-            PLANES DE ENTRENAMIENTO
-        </Text>
-
-        <CustomSearchBar
-            isSearching={isSearching}
-            searchInput={searchInput}
-            handleSearchChange={handleSearchChange}
-            placeholder="Buscar Planes de entrenamiento..."
-        />
-
-        <View className="flex-row justify-between mb-2">
-            {DIFFICULTIES.map(({ value, label }) => (
-                <FilterPill
-                    key={value}
-                    value={value}
-                    label={label}
-                    selected={selectedDifficulty}
-                    setSelected={setSelectedDifficulty as any}
-                    isSearching={isSearching}
-                />
-            ))}
-        </View>
-    </View>
-));
+import { useDebounce } from '@/hooks/useDebounce';
+import CustomListEmptyComponent from '@/components/ui/common/flatlists/CustomListEmptyComponent';
+import { PlanFlatlistHeader } from '@/components/ui/common/flatlists/PlanFlatlistHeader';
 
 export default function Plan() {
     const { isDark } = useTheme();
@@ -71,18 +25,19 @@ export default function Plan() {
     const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultySearch>('ALL');
     const [isSearching, setIsSearching] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const { handleSearchChange } = useDebounce({ setSearchQuery, setIsSearching, setSearchInput });
 
-    const { 
-        data, 
-        isLoading, 
+    const {
+        data,
+        isLoading,
         fetchNextPage,
         isFetchingNextPage,
         hasNextPage,
-        isError   
+        isError
     } = useInfiniteQuery({
-        queryKey: ['trainingPlans','infinite'],
+        queryKey: ['trainingPlans', 'infinite'],
         initialPageParam: 0,
-        staleTime: 60* 60 * 1000, // 1 hour
+        staleTime: 60 * 60 * 1000, // 1 hour
         queryFn: async (params) => {
             const { pageParam = 0 } = params;
             const data = await fetchTrainingPlansPaged(pageParam);
@@ -102,25 +57,6 @@ export default function Plan() {
         refetchOnReconnect: true,
         retry: 2,
     });
-
-    const debouncedSearchRef = useRef(
-        debounce((query: string) => {
-            setSearchQuery(query);
-            setIsSearching(false);
-        }, 500)
-    ).current;
-
-    const handleSearchChange = (text: string) => {
-        setSearchInput(text);
-        setIsSearching(true);
-        debouncedSearchRef(text);
-    };
-
-    useEffect(() => {
-        return () => {
-            debouncedSearchRef.cancel();
-        };
-    }, [debouncedSearchRef]);
 
     // Verifica si el término de búsqueda está en los datos ya cargados
     const checkIfPlanExistsInData = useCallback((query: string) => {
@@ -156,15 +92,21 @@ export default function Plan() {
         <PlanSmallCard {...item} />
     ), []);
 
-    const keyExtractor = useCallback((item: TrainingPlanAPI, index: number) => 
+    const keyExtractor = useCallback((item: TrainingPlanAPI, index: number) =>
         `${item.id}-${index}`
-    , []);
+        , []);
 
     const handleEndReached = useCallback(() => {
         if (hasNextPage && !isFetchingNextPage && !isError) {
             fetchNextPage();
         }
     }, [hasNextPage, isFetchingNextPage, isError, fetchNextPage]);
+
+    const windowSize = useMemo(() => {
+        if (!data) return 10; 
+        const itemCount = data.pages.flatMap(page => page.plans).length;
+        return itemCount;
+    }, [data]);
 
     if (isLoading) return (<SkeletonLoadingScreen />);
 
@@ -175,7 +117,7 @@ export default function Plan() {
                 renderItem={renderItem}
                 keyExtractor={keyExtractor}
                 ListHeaderComponent={
-                    <ListHeader
+                    <PlanFlatlistHeader 
                         isDark={isDark}
                         searchInput={searchInput}
                         handleSearchChange={handleSearchChange}
@@ -188,32 +130,18 @@ export default function Plan() {
                 showsVerticalScrollIndicator={false}
                 initialNumToRender={10}
                 maxToRenderPerBatch={10}
-                windowSize={5}
+                windowSize={windowSize}
                 removeClippedSubviews={true}
                 onEndReachedThreshold={0.7}
                 onEndReached={handleEndReached}
-                keyboardShouldPersistTaps="handled" 
+                keyboardShouldPersistTaps="handled"
                 ListEmptyComponent={
-                    <View className="flex-1 justify-center items-center">
-                        {isSearching
-                            ? (<>
-                                <IndividualCardSkeleton/>
-                            </>)
-                            : (<>
-                                <MainLogoCustomComponent
-                                    width='100'
-                                    height='100'
-                                    principal={isDark ? "#515151" : "#6b7280"}
-                                />
-                                <Text className={`text-center ${isDark ? "text-gray-300" : "text-gray-500"}
-                                    text-base font-raleway
-                                `}>No se encontraron resultados</Text>
-                            </>)
-                        }
-                        {isError && <Text className={`text-center ${isDark ? "text-gray-300" : "text-gray-500"}
-                            text-base font-raleway
-                        `}>Error al cargar la información. Por favor, inténtelo de nuevo más tarde.</Text>}
-                    </View>
+                    <CustomListEmptyComponent
+                        isSearching={isSearching}
+                        isFetchingNextPage={isFetchingNextPage}
+                        isError={isError}
+                        hasNextPage={hasNextPage}
+                    />
                 }
                 refreshControl={
                     <RefreshControl
