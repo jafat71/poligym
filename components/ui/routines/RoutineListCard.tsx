@@ -17,6 +17,7 @@ const RoutineListCard = (workout: WorkoutAPI) => {
         <Pressable
             key={workout.id}
             onPress={() => {
+                router.push(`/(root)/(tabs)/(library)/routine/${workout.id}`)
             }}
             className={`w-full h-56 mr-2 mb-1 
             overflow-hidden rounded-lg`}>

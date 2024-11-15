@@ -140,8 +140,6 @@ export interface TrainingPlanAPI {
     restTime: number;
     order: number;
     isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
   }
   
   // Exercise Interface
@@ -151,14 +149,12 @@ export interface TrainingPlanAPI {
     name: string;
     level: Difficulty;
     category: Category;
-    equipment: string;
+    equipment: EquipmentApi[];
     description: string;
-    muscleGroups: MuscleGroup[];
+    muscleGroups: MuscleGroups[];
     recommendation?: string;
     workouts: ExerciseInWorkoutAPI[];
     isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
   }
   
   // MuscleGroup Interface
@@ -168,8 +164,6 @@ export interface TrainingPlanAPI {
     description?: string;
     isDeleted: boolean;
     exercises: ExerciseAPI[];
-    createdAt: Date;
-    updatedAt: Date;
   }
 
   export interface EquipmentApi {

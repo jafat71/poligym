@@ -14,14 +14,14 @@ const Index = () => {
                     text='Planes de Entrenamiento' 
                     icon='calendar-outline' 
                     onPress={() => {
-                        router.push('/(root)/(tabs)/(library)/(plan)')
+                        router.push('/(root)/(tabs)/(library)/plan')
                     }}
                     />
                 <CustomTab 
                     text='Rutinas' 
                     icon='body-outline' 
                     onPress={() => { 
-                        router.push('/(root)/(tabs)/(library)/(routine)')
+                        router.push('/(root)/(tabs)/(library)/routine')
                     }} 
                 />
             </View>
@@ -30,13 +30,13 @@ const Index = () => {
                     text='Ejercicios' 
                     icon='barbell-outline' 
                     onPress={() => {
-                        router.push('/(root)/(tabs)/(library)/(exercise)')
+                        router.push('/(root)/(tabs)/(library)/exercise')
                     }} />
                 <CustomTab 
                     text='Planes de Alimentación' 
                     icon='nutrition-outline' 
                     onPress={() => {
-                        router.push('/(root)/(tabs)/(library)/(foodplan)')
+                        router.push('/(root)/(tabs)/(library)/foodplan')
                     }} 
                 />
             </View>

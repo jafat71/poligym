@@ -1,4 +1,4 @@
-import { EquipmentApi, IndividualExercise, RoutinePlan, TrainingPlan, TrainingPlanAPI, WorkoutAPI } from "../interfaces/entities/plan"
+import { EquipmentApi, ExerciseAPI, ExerciseInWorkoutAPI, IndividualExercise, RoutinePlan, TrainingPlan, TrainingPlanAPI, WorkoutAPI } from "../interfaces/entities/plan"
 import { User } from "../interfaces/entities/user"
 import { MuscleGroups } from "../types/muscles"
 
@@ -61,7 +61,6 @@ export const mapToTrainingPlanFromApiToTrainingPlan = (data: any): TrainingPlan 
     };
 }
 
-
 export const mapApiTrainingPlanToTrainingPlan = (data: any): TrainingPlanAPI[] => {
     return data.map((plan: any) => {
         return {
@@ -87,13 +86,47 @@ export const mapApiWorkoutToWorkout = (data: any): WorkoutAPI[] => {
             level: workout.level,
             category: workout.category,
             trainingType: workout.trainingType,
-            exercisesInWorkout: [],
+            exercisesInWorkout: mapApiExerciseInWorkoutToPartialExerciseInWorkout(workout.exercisesInWorkout) || [],
             trainingPlans: [],
             isDeleted: workout.isDeleted,
-            createdAt: workout.createdAt,
-            updatedAt: workout.updatedAt,
         }
     });
+}
+
+export const mapApiExerciseToExercise = (data: any): ExerciseAPI[] => {
+    return data.map((exercise: any) => {
+        return {
+            id: exercise.id,
+            mediaUrl: exercise.mediaUrl,
+            name: exercise.name,
+            level: exercise.level,
+            category: exercise.category,
+            equipment: mapApiEquipmentToEquipment(exercise.equipments) || [],
+            description: exercise.description,
+            muscleGroups: mapApiMuscleGroupToMuscleGroup(exercise.muscleGroups) || [],
+            recommendation: exercise.recommendation,
+            workouts: [],
+            isDeleted: exercise.isDeleted,
+        }
+    });
+}
+
+export const mapApiExerciseInWorkoutToPartialExerciseInWorkout = (data: any): Partial<ExerciseInWorkoutAPI>[] => {
+    return data.map((exerciseInWorkout: any) => {
+        return {
+            id: exerciseInWorkout.id,
+            workoutId: exerciseInWorkout.workoutId,
+            exerciseId: exerciseInWorkout.exerciseId,
+        }
+    })
+}
+
+export const mapIndividualApiExerciseToExercise = (data: any): ExerciseAPI => {
+    return mapApiExerciseToExercise([data])[0];
+}
+
+export const mapIndividualApiWorkoutToWorkout = (data: any): WorkoutAPI => {
+    return mapApiWorkoutToWorkout([data])[0];
 }
 
 export const mapApiMuscleGroupToMuscleGroup = (data: any): MuscleGroups[] => {
@@ -111,7 +144,6 @@ export const mapApiEquipmentToEquipment = (data: any): EquipmentApi[] => {
             mediaUrl: equipment.mediaUrl,
             description: equipment.description,
             category: equipment.category,
-            exercise: [],
             isDeleted: equipment.isDeleted,
             status: equipment.status,
         };

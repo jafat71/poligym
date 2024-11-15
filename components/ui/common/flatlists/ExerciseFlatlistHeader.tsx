@@ -4,7 +4,7 @@ import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } f
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { CATEGORIES, CategorySearch, DIFFICULTIES, DifficultySearch, EquipmentSearch } from "@/constants";
+import { CATEGORIES, CategorySearch, DIFFICULTIES, DifficultySearch } from "@/constants";
 
 import { useTheme } from "@/context/ThemeContext";
 
@@ -15,6 +15,7 @@ import FilterPill from "../pills/FilterPill";
 import IconButton from "../buttons/IconButton";
 import MusclePill from "../pills/MusclePill";
 import { EquipmentApi } from "@/types/interfaces/entities/plan";
+import MultiFilterPill from "../pills/MultiFilterPill";
 
 interface ExerciseFlatlistHeaderProps {
     searchInput: string;
@@ -29,8 +30,8 @@ interface ExerciseFlatlistHeaderProps {
     toggleMuscleGroup: (muscle: MuscleGroups) => void;
     clearMuscleGroups: () => void;
     equipments: EquipmentApi[];
-    selectedEquipment: EquipmentSearch;
-    setSelectedEquipment: (equipment: EquipmentSearch) => void;
+    selectedEquipment: EquipmentApi[];
+    setSelectedEquipment: (equipment: EquipmentApi[]) => void;
 }
 
 export const ExerciseFlatlistHeader = memo(({
@@ -162,9 +163,9 @@ export const ExerciseFlatlistHeader = memo(({
                         Equipos
                     </Text>
                     <View className='flex-row items-center gap-2'>
-                        {selectedEquipment !== 'ALL' && (
+                        {selectedEquipment.length > 0 && (
                             <IconButton
-                                onPress={() => setSelectedEquipment('ALL')}
+                                onPress={() => setSelectedEquipment([])}
                                 icon={<Ionicons name="remove-circle-outline" size={24} color={isDark ? "#fff" : "#374151"} />}
                             />
                         )}
@@ -173,11 +174,10 @@ export const ExerciseFlatlistHeader = memo(({
 
                 <View className="flex-row flex-wrap justify-between">
                     {equipments.map((equipment) => (
-                        <FilterPill
+                        <MultiFilterPill
                             key={equipment.name}
-                            value={equipment.name}
-                            label={equipment.name}
-                            selected={selectedEquipment===equipment.name ? equipment.name : 'ALL'}
+                            value={equipment}
+                            selected={selectedEquipment}
                             setSelected={setSelectedEquipment as any}
                             isSearching={isSearching}
                         />

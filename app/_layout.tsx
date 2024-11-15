@@ -14,9 +14,8 @@ import { ExerciseExecutionProvider } from '@/context/ExerciseExecutionContext';
 
 import { QueryClientProvider } from '@tanstack/react-query';
 
-import { queryClient } from '@/lib/queryClient/queryClient';
-
 import Loading from '@/components/animatedUi/Loading';
+import { queryClient } from '@/lib/queryClient/queryClient';
 
 SplashScreen.preventAutoHideAsync();
 

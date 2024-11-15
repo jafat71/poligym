@@ -871,7 +871,6 @@ export const LastExercisePlans = [
 
 export type DifficultySearch = 'ALL' | 'BASIC' | 'INTERMEDIATE' | 'ADVANCED';
 export type CategorySearch = 'ALL' | 'CARDIO' | 'STRENGTH' | 'FLEXIBILITY';
-export type EquipmentSearch = 'ALL' | EquipmentApi;
 
 export const DIFFICULTIES: Array<{ value: DifficultySearch; label: string }> = [
     { value: 'ALL', label: 'Todos' },

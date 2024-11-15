@@ -1,4 +1,5 @@
 import { useTheme } from '@/context/ThemeContext';
+import { isValidMuscleGroup } from '@/lib/utils/isMuscle';
 import { MuscleGroups } from '@/types/types/muscles';
 import React, { memo } from 'react';
 import { Pressable, Text } from 'react-native';
@@ -8,11 +9,6 @@ interface Props {
     isSelected: boolean;
     onToggle: () => void;
     isSearching: boolean;
-}
-
-// Verifica musculo en enuim
-function isValidMuscleGroup(muscle: string): muscle is keyof typeof MuscleGroups {
-    return muscle in MuscleGroups;
 }
 
 const MusclePill = memo(({ 

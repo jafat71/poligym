@@ -2,11 +2,11 @@ import { Stack } from 'expo-router';
 
 export default function TabLayout() {
     return (
-        <Stack 
-        initialRouteName='index'
-        screenOptions={{
-            headerShown: false,
-        }}>
+        <Stack
+            initialRouteName='index'
+            screenOptions={{
+                headerShown: false,
+            }}>
             <Stack.Screen
                 name="index"
                 options={{
@@ -16,15 +16,7 @@ export default function TabLayout() {
             />
 
             <Stack.Screen
-                name="search"
-                options={{
-                    headerShown: false,
-                    animation: 'fade_from_bottom',
-                }}
-            />
-            
-            <Stack.Screen
-                name="(plan)/index"
+                name="plan/index"
                 options={{
                     headerShown: false,
                     animation: 'fade_from_bottom',
@@ -32,7 +24,7 @@ export default function TabLayout() {
             />
 
             <Stack.Screen
-                name="(exercise)/index"
+                name="plan/[id]"
                 options={{
                     headerShown: false,
                     animation: 'fade_from_bottom',
@@ -40,7 +32,7 @@ export default function TabLayout() {
             />
 
             <Stack.Screen
-                name="(foodplan)/index"
+                name="exercise/index"
                 options={{
                     headerShown: false,
                     animation: 'fade_from_bottom',
@@ -48,12 +40,44 @@ export default function TabLayout() {
             />
 
             <Stack.Screen
-                name="(routine)/index"
+                name="exercise/[id]"
                 options={{
                     headerShown: false,
                     animation: 'fade_from_bottom',
                 }}
             />
+
+            <Stack.Screen
+                name="routine/index"
+                options={{
+                    headerShown: false,
+                    animation: 'fade_from_bottom',
+                }}
+            />
+
+            <Stack.Screen
+                name="routine/[id]"
+                options={{
+                    headerShown: false,
+                    animation: 'fade_from_bottom',
+                }}
+            />
+
+            <Stack.Screen
+                name="foodplan/index"
+                options={{
+                    headerShown: false,
+                    animation: 'fade_from_bottom',
+                }}
+            />
+            <Stack.Screen
+                name="foodplan/[id]"
+                options={{
+                    headerShown: false,
+                    animation: 'fade_from_bottom',
+                }}
+            />
+
         </Stack>
     );
 }

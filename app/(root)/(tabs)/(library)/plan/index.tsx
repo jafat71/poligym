@@ -59,7 +59,6 @@ export default function Plan() {
         retry: 2,
     });
 
-    // Verifica si el término de búsqueda está en los datos ya cargados
     const checkIfPlanExistsInData = useCallback((query: string) => {
         if (!data) return false;
         return data.pages.flatMap(page => page.plans).some((plan: TrainingPlanAPI) =>
@@ -78,7 +77,6 @@ export default function Plan() {
 
     useEffect(() => {
         if (searchQuery && !checkIfPlanExistsInData(searchQuery)) {
-            // Si no encuenctra el término en los datos cargados, sigue paginando
             fetchNextPage();
         }
     }, [searchQuery, data, checkIfPlanExistsInData, fetchNextPage]);
