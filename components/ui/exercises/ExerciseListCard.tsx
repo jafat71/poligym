@@ -15,7 +15,7 @@ const ExerciseListCard = memo((exercise: ExerciseAPI) => {
         <Pressable
             key={exercise.id}
             onPress={() => {
-                router.push(`/(library)/(exercise)/${exercise.id}`)
+                router.push(`/(library)/exercise/${exercise.id}`)
             }}
             className={`w-full h-40 mr-2 mb-1 
             overflow-hidden rounded-lg`}>

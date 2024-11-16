@@ -55,7 +55,7 @@ export default function TabsLayout() {
             <View className='mr-4 flex flex-row'>
               <Pressable
                 onPress={() => {
-                  router.navigate('/(root)/(tabs)/(library)/(plan)');
+                  router.navigate('/(root)/(tabs)/(library)/plan');
                 }}
                 className='ml-4'
               >
@@ -63,7 +63,7 @@ export default function TabsLayout() {
               </Pressable>
               <Pressable
                 onPress={() => {
-                  router.navigate('/(root)/(tabs)/(library)/(routine)');
+                  router.navigate('/(root)/(tabs)/(library)/routine');
                 }}
                 className='ml-4'
               >
@@ -71,7 +71,7 @@ export default function TabsLayout() {
               </Pressable>
               <Pressable
                 onPress={() => {
-                  router.navigate('/(root)/(tabs)/(library)/(exercise)');
+                  router.navigate('/(root)/(tabs)/(library)/exercise');
                 }}
                 className='ml-4'
               >
@@ -79,7 +79,7 @@ export default function TabsLayout() {
               </Pressable>
               <Pressable
                 onPress={() => {
-                  router.navigate('/(root)/(tabs)/(library)/(foodplan)');
+                  router.navigate('/(root)/(tabs)/(library)/foodplan');
                 }}
                 className='ml-4'
               >

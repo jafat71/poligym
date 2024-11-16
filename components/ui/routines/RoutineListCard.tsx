@@ -21,9 +21,7 @@ const RoutineListCard = (workout: WorkoutAPI) => {
             }}
             className={`w-full h-56 mr-2 mb-1 
             overflow-hidden rounded-lg`}>
-            {
-                //TODO: Get workout muscles and print body image
-            }
+
             <LinearGradient
                 colors={[
                     'rgba(0,85,249,0.95)',

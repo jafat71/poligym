@@ -83,7 +83,7 @@ const WorkoutInfo = () => {
                         workout?.exercisesInWorkout.map((exercise) => (
                             <Pressable 
                                 onPress={() => {
-                                    router.push(`/(library)/(exercise)/${exercise.exercise.id}`)
+                                    router.push(`/(library)/exercise/${exercise.id}`)
                                 }}
                                 key={exercise.id}>
 
