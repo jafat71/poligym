@@ -27,20 +27,15 @@ const IconTextInputForm = ({
 
     return (
         <View>
-            <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"}`}>
+            <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>
                 {title}
             </Text>
-            <View
-                className={`mt-2 border-[2px] rounded-lg ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
-                    isDark ? "border-darkGray-400 " : "border-darkGray-500"
-                    }`}
-            >
+
+            <View className={`flex-row items-center p-1 border-2 mb-2 ${
+            isDark ? "border-darkGray-400" : "border-gray-300" 
+        } ${focused ? "border-eBlue-500" : ""} transition-all duration-800`}>
                 <View className="flex flex-row items-center justify-center w-full">
-                    <View
-                        className={`border-r-[1px] ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
-                            isDark ? "border-darkGray-400" : "border-darkGray-500"
-                            } transition-all duration-300`}
-                    >
+                    <View>
                         {icon}
                     </View>
                     <TextInput

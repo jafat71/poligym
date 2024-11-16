@@ -53,12 +53,14 @@ const Signin = () => {
 
   return (
 
-    <View className='mt-2' >
+    <View>
 
       <View>
-        <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Iniciar Sesión</Text>
+        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-4xl font-ralewayBold mb-2`}>
+          Iniciar Sesión
+        </Text>
 
-        <View className={`pt-5`}>
+        <View className={`pt-1`}>
           <IconTextInputForm
             title='Email Institucional'
             icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -100,7 +102,7 @@ const Signin = () => {
 
         <CTAButtonPrimary
           onPress={handleSubmit}
-          text={signinMutation.isPending ? 'Procesando...' : 'Ingresar'}
+          text={signinMutation.isPending ? '' : 'Ingresar'}
           disabled={signinMutation.isPending}
         >
           {signinMutation.isPending && (

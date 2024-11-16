@@ -69,18 +69,18 @@ const Forgot = () => {
   };
 
   return (
-    <View className='mt-2 rounded-lg '>
+    <View>
 
       <View >
 
-        <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
+        <Text className={`text-4xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
 
-        <View className={`pt-5 `}>
+        <View className={`pt-1`}>
 
           {
             !resetSent ? (
               <>
-                <Text className={`text-lg font-ralewaySemiBold text-start  ${isDark ? "text-darkGray-400" : "text-darkGray-400"} `}>Ingresa tu correo electónico para recibir un código de recuperación para reestablecer el acceso a tu cuenta</Text>
+                <Text className={`text-sm mb-2 font-ralewaySemiBold text-start  ${isDark ? "text-darkGray-400" : "text-darkGray-500"} `}>Ingresa tu correo electónico para recibir un código de recuperación para reestablecer el acceso a tu cuenta</Text>
 
                 <IconTextInputForm
                   title='Email Institucional'
@@ -175,9 +175,9 @@ const Forgot = () => {
           text={
             resetSent
               ?
-              resetPasswordMutation.isPending ? 'Procesando...' : 'Restablecer'
+              resetPasswordMutation.isPending ? '' : 'Restablecer'
               :
-              forgotPasswordMutation.isPending ? 'Procesando...' : 'Enviar'}
+              forgotPasswordMutation.isPending ? '' : 'Enviar'}
           disabled={
             forgotPasswordMutation.isPending || resetPasswordMutation.isPending
           }

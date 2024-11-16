@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, Pressable, Image } from 'react-native';
+import { Text, View, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { router, useLocalSearchParams } from 'expo-router';
@@ -34,6 +34,8 @@ const WorkoutInfo = () => {
         initialData: cachedWorkout,
         enabled: !!id 
     });
+
+    
 
     if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error loading workout details - {id}</Text>;

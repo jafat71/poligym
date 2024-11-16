@@ -21,7 +21,7 @@ export default function AuthLayout() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
-        className='w-full px-2'
+        className='w-full px-4'
         keyboardShouldPersistTaps='handled'
       >
         <TopHeaderComponent />

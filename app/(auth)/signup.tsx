@@ -62,11 +62,11 @@ const Signup = () => {
   return (
     <View>
 
-      <View className='mt-2 '>
+      <View>
 
-        <Text className={`text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
+        <Text className={`text-4xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
 
-        <View className={`pt-5`}>
+        <View className={`pt-1`}>
           <IconTextInputForm
             title='Email Institucional'
             icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -113,7 +113,7 @@ const Signup = () => {
 
         <CTAButtonPrimary
           onPress={handleSubmit}
-          text={signupMutation.isPending ? 'Procesando...' : 'Registrarse'}
+          text={signupMutation.isPending ? '' : 'Registrarse'}
           disabled={signupMutation.isPending}
         >
           {signupMutation.isPending && (
@@ -126,13 +126,13 @@ const Signup = () => {
         </CTAButtonPrimary>
       </View>
 
-      <View className='w-full items-center'>
-        <Text className={`text-sm font-raleway text-center  ${isDark ? "text-white" : "text-darkGray-400"} `}>Al seleccionar REGISTRARSE, estas de acuerdo con nuestros
+      <View className='w-full items-center mt-1'>
+        <Text className={`text-sm font-ralewaySemiBold text-center  ${isDark ? "text-white" : "text-darkGray-400"} `}>Al seleccionar REGISTRARSE, estas de acuerdo con nuestros
           <Pressable
             onPress={toggleTermseModal}
             className='translate-y-1'
           >
-            <Text className={`text-sm font-ralewayExtraBold  ${isDark ? "text-white" : "text-darkGray-400"}`}>
+            <Text className={`text-sm font-ralewayExtraBold  ${isDark ? "text-white" : "text-darkGray-500"}`}>
               {' '} TÉRMINOS Y CONDICIONES
             </Text>
           </Pressable>
