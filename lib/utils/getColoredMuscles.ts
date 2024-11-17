@@ -1,8 +1,6 @@
 import { BodyColors } from "@/components/ui/body/bodyConstants";
 import { MuscleGroup } from "@/types/interfaces/entities/plan"
 
-
-
 export const getMuscleColors = (muscleGroups: MuscleGroup[]) => {
     const {
         defaultColor,

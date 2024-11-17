@@ -10,17 +10,23 @@ import IconButton from '../common/buttons/IconButton';
 import { HomeRoutineFlatlist } from '../routines/HomeRoutineFlatList';
 import { TrainingPlans } from '@/constants';
 
-import { RoutinePlan } from '@/types/interfaces/entities/plan';
+import { RoutinePlan, WorkoutAPI } from '@/types/interfaces/entities/plan';
+import { useQuery } from '@tanstack/react-query';
+import { useUser } from '@/context/UserContext';
+import { fetchRecommendedWorkouts } from '@/lib/api/actions';
+import IndividualCardSkeleton from '@/components/animatedUi/IndividualCarkSkeleton';
 
 const HomeSmallSection = () => {
     const { isDark } = useTheme()
-
-    const suggestedRoutines: RoutinePlan[] = [
-        TrainingPlans[0].detalleDias.lunes as RoutinePlan,
-        TrainingPlans[0].detalleDias.miércoles as RoutinePlan,
-        TrainingPlans[0].detalleDias.viernes as RoutinePlan
-    ]
-
+    const { accessToken } = useUser()
+    const { data: recommendedWorkouts = [], isLoading: isLoadingRecommendedWorkouts } = useQuery<WorkoutAPI[]>({
+        queryKey: ['recommendedWorkouts'],
+        queryFn: async () => {
+            const data = await fetchRecommendedWorkouts(accessToken!);
+            return data;
+        },
+    })
+    if (isLoadingRecommendedWorkouts) return <IndividualCardSkeleton/>;
     return (
         <View className="mb-4">
             <View className="px-4 flex flex-row items-center justify-between ">
@@ -29,12 +35,12 @@ const HomeSmallSection = () => {
                     RUTINAS RECOMENDADAS
                 </Text>
                 <IconButton
-                    onPress={() => { router.push('/(root)/(library)/info') }}
+                    onPress={() => { router.push('/(library)/routine') }}
                     icon={<Ionicons name="add" size={24} color={isDark ? "white" : "black"} />}
                 />
             </View>
             <HomeRoutineFlatlist
-                data={suggestedRoutines}
+                data={recommendedWorkouts}
             />
         </View>
     );

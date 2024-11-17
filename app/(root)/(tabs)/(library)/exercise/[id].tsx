@@ -60,7 +60,7 @@ const ExerciseInfo = () => {
 
                 <Image
                     source={{ uri: exercise?.mediaUrl }}
-                    className='w-full h-64 rounded-lg my-4'
+                    className='w-full h-64 rounded-lg my-4 bg-gray-100'
                     resizeMode='stretch'
                 />
 
@@ -81,10 +81,10 @@ const ExerciseInfo = () => {
                 </View>
                 <View className='flex flex-row flex-wrap'>
                     {
-                        exercise?.muscleGroups.map((muscle) => (
+                        exercise?.muscleGroups && exercise?.muscleGroups.map((muscle) => (
                             <SquarePill
-                                key={muscle as any}
-                                text={isValidMuscleGroup(muscle as any) ? MuscleGroups[muscle as any] : muscle}
+                                key={muscle}
+                                text={isValidMuscleGroup(muscle) ? MuscleGroups[muscle] : muscle}
                                 icon='body-outline'
                             />
                         ))
@@ -99,9 +99,9 @@ const ExerciseInfo = () => {
                 <View className='my-2'>
                     <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Equipamiento</Text>
                 </View>
-                <View className='flex flex-row flex-wrap'>
+                <View className='flex flex-row flex-wrap mb-20'>
                     {
-                        exercise?.equipment.map((equipment) => (
+                        exercise?.equipment?.map((equipment) => (
                             <SquarePill
                                 key={equipment.id}
                                 text={equipment.name}
@@ -110,7 +110,7 @@ const ExerciseInfo = () => {
                         ))
                     }
                     {
-                        exercise?.equipment.length === 0 && (
+                        exercise?.equipment?.length === 0 && (
                             <SquarePill
                                 text='Sin equipamiento'
                                 icon='barbell-outline'
@@ -119,10 +119,7 @@ const ExerciseInfo = () => {
                     }
                 </View>
 
-                <View className='mt-4 mb-20'>
-                    <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Rutinas en las que puedes encontrarlo</Text>
-                </View>    
-
+            
             </ScrollView>
 
             <Pressable className='absolute bottom-0 left-0 right-0 p-4 

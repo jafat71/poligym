@@ -105,8 +105,6 @@ export interface TrainingPlanAPI {
     endDate?: Date;
     workouts: WorkoutAPI[];
     isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
     image?:string; //!add bk
   }
   
@@ -139,7 +137,6 @@ export interface TrainingPlanAPI {
     weight?: number;
     restTime: number;
     order: number;
-    isDeleted: boolean;
   }
   
   // Exercise Interface

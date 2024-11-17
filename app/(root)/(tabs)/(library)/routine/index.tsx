@@ -8,7 +8,6 @@ import { useTheme } from '@/context/ThemeContext';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
 import { WorkoutAPI } from '@/types/interfaces/entities/plan';
-import { MuscleGroups } from '@/types/types/muscles';
 
 import { CategorySearch, DifficultySearch } from '@/constants';
 
@@ -28,7 +27,6 @@ export default function Routine() {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultySearch>('ALL');
     const [selectedCategory, setSelectedCategory] = useState<CategorySearch>('ALL');
-    const [selectedMuscleGroups, setSelectedMuscleGroups] = useState<MuscleGroups[]>([]);
     const [isSearching, setIsSearching] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const { handleSearchChange } = useDebounce({ setSearchQuery, setIsSearching, setSearchInput });
@@ -65,21 +63,6 @@ export default function Routine() {
         retry: 2,
     });
 
-    const toggleMuscleGroup = useCallback((muscle: MuscleGroups) => {
-        setSelectedMuscleGroups(prev => {
-            const isSelected = prev.some(m => m === muscle);
-            if (isSelected) {
-                return prev.filter(m => m !== muscle);
-            } else {
-                return [...prev, muscle];
-            }
-        });
-    }, []);
-
-    const clearMuscleGroups = useCallback(() => {
-        setSelectedMuscleGroups([]);
-    }, []);
-
     const checkIfWorkoutExistsInData = useCallback((query: string) => {
         if (!data) return false;
         return data.pages.flatMap(page => page.workouts).some((workout: WorkoutAPI) =>
@@ -87,24 +70,17 @@ export default function Routine() {
         );
     }, [data]);
 
+    //TODO: Mover logica de filtrado a un modal
     const filteredWorkouts = useMemo(() => {
         if (!data) return [];
         return data.pages.flatMap(page => page.workouts).filter((workout: WorkoutAPI) => {
             const matchesSearch = workout.name.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesDifficulty = selectedDifficulty === 'ALL' || workout.level === selectedDifficulty;
             const matchesCategory = selectedCategory === 'ALL' || workout.category === selectedCategory;
-            // const matchesMuscleGroups = selectedMuscleGroups.length === 0 || 
-            //     selectedMuscleGroups.some(selectedMuscle => 
-            //         workout.muscles.some(workoutMuscle => 
-            //             workoutMuscle === selectedMuscle
-            //         )
-            //     );
-
-            //return matchesSearch && matchesDifficulty && matchesMuscleGroups;
             return matchesSearch && matchesDifficulty && matchesCategory;
 
         });
-    }, [data, searchQuery, selectedDifficulty, selectedMuscleGroups, selectedCategory]);
+    }, [data, searchQuery, selectedDifficulty, selectedCategory]);
 
     useEffect(() => {
         if (searchQuery && !checkIfWorkoutExistsInData(searchQuery)) {
@@ -154,10 +130,6 @@ export default function Routine() {
                         isSearching={isSearching}
                         selectedDifficulty={selectedDifficulty}
                         setSelectedDifficulty={setSelectedDifficulty}
-                        muscleGroups={muscleGroups ?? []}
-                        selectedMuscleGroups={selectedMuscleGroups}
-                        toggleMuscleGroup={toggleMuscleGroup}
-                        clearMuscleGroups={clearMuscleGroups}
                         selectedCategory={selectedCategory}
                         setSelectedCategory={setSelectedCategory}
                     />

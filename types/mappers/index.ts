@@ -70,7 +70,7 @@ export const mapApiTrainingPlanToTrainingPlan = (data: any): TrainingPlanAPI[] =
             description: plan.description,
             startDate: plan.startDate,
             endDate: plan.endDate,
-            workouts: [],
+            workouts: mapApiWorkoutToPartialWorkout(plan.workouts) || [],
         }
     });
 }
@@ -117,8 +117,36 @@ export const mapApiExerciseInWorkoutToPartialExerciseInWorkout = (data: any): Pa
             id: exerciseInWorkout.id,
             workoutId: exerciseInWorkout.workoutId,
             exerciseId: exerciseInWorkout.exerciseId,
+            sets: exerciseInWorkout.sets,
+            reps: exerciseInWorkout.reps,
+            restTime: exerciseInWorkout.restTime,
+            order: exerciseInWorkout.order,
         }
     })
+}
+
+export const mapApiWorkoutToPartialWorkout = (data: any): Partial<WorkoutAPI>[] => {
+    return data.map((workout: any) => {
+        return {
+            id: workout.id,
+            description: workout.description,
+            name: workout.name,
+        }
+    })
+}
+
+export const mapApiExerciseInWorkoutToExerciseInWorkout = (exerciseInWorkout: any): ExerciseInWorkoutAPI => {
+        return {
+            id: exerciseInWorkout.id,
+            workoutId: exerciseInWorkout.workoutId,
+            exerciseId: exerciseInWorkout.exerciseId,
+            exercise: mapApiExerciseToExercise([exerciseInWorkout.exercise])[0],
+            workout: mapApiWorkoutToWorkout([exerciseInWorkout.workout])[0],
+            sets: exerciseInWorkout.sets,
+            reps: exerciseInWorkout.reps,
+            restTime: exerciseInWorkout.restTime,
+            order: exerciseInWorkout.order,
+        }
 }
 
 export const mapIndividualApiExerciseToExercise = (data: any): ExerciseAPI => {
@@ -127,6 +155,10 @@ export const mapIndividualApiExerciseToExercise = (data: any): ExerciseAPI => {
 
 export const mapIndividualApiWorkoutToWorkout = (data: any): WorkoutAPI => {
     return mapApiWorkoutToWorkout([data])[0];
+}
+
+export const mapIndividualApiTrainingPlanToTrainingPlan = (data: any): TrainingPlanAPI => {
+    return mapApiTrainingPlanToTrainingPlan([data])[0];
 }
 
 export const mapApiMuscleGroupToMuscleGroup = (data: any): MuscleGroups[] => {

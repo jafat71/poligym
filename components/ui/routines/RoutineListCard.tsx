@@ -19,9 +19,8 @@ const RoutineListCard = (workout: WorkoutAPI) => {
             onPress={() => {
                 router.push(`/(root)/(tabs)/(library)/routine/${workout.id}`)
             }}
-            className={`w-full h-56 mr-2 mb-1 
-            overflow-hidden rounded-lg`}>
-
+            className={`w-full h-60 mr-2 mb-1 
+            overflow-hidden rounded-lg `}>
             <LinearGradient
                 colors={[
                     'rgba(0,85,249,0.95)',
@@ -30,10 +29,12 @@ const RoutineListCard = (workout: WorkoutAPI) => {
                 ]}
                 className="absolute w-full h-full"
             />
+            <View className="absolute w-2 h-full bg-ePurple-500" />
             <View className='p-4 flex flex-col justify-between'>
-                <View className='flex flex-col w-4/5'>
-                    <Text className='text-white font-ralewayBold text-sm'>{routineFirstWord}</Text>
-                    <Text className='text-white font-ralewayBold text-4xl '>{routineRest}</Text>
+                <View className='flex flex-col'
+                >
+                    <Text numberOfLines={1} className='text-white font-ralewayBold text-sm'>{routineFirstWord}</Text>
+                    <Text numberOfLines={1} className='text-white font-ralewayBold text-4xl '>{routineRest}</Text>
                 </View>
 
                 <View>
@@ -46,12 +47,12 @@ const RoutineListCard = (workout: WorkoutAPI) => {
                         <HomePill
                             icon="time-outline"
                             text={`${workout.duration} min.`}
-                        />  
+                        />
                         <HomePill
                             icon="flame-outline"
                             text={`${DIFFICULTIES.find(difficulty => difficulty.value === workout.level)?.label}`}
                         />
-                        
+
                     </View>
                     <View className='flex-row items-start justify-between gap-x-2'>
                         <HomePill

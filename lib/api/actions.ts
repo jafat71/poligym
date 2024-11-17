@@ -1,8 +1,7 @@
-import { EquipmentApi, ExerciseAPI, TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
+import { EquipmentApi, ExerciseAPI, ExerciseInWorkoutAPI, TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
 import axiosInstance from "./config";
-import { mapApiEquipmentToEquipment, mapApiExerciseToExercise, mapApiMuscleGroupToMuscleGroup, mapApiTrainingPlanToTrainingPlan, mapApiWorkoutToWorkout, mapIndividualApiExerciseToExercise, mapIndividualApiWorkoutToWorkout } from "@/types/mappers";
+import { mapApiEquipmentToEquipment, mapApiExerciseInWorkoutToExerciseInWorkout, mapApiExerciseToExercise, mapApiMuscleGroupToMuscleGroup, mapApiTrainingPlanToTrainingPlan, mapApiWorkoutToWorkout, mapIndividualApiExerciseToExercise, mapIndividualApiTrainingPlanToTrainingPlan, mapIndividualApiWorkoutToWorkout } from "@/types/mappers";
 import { MuscleGroups } from "@/types/types/muscles";
-import { getToken } from "../token/store";
 
 interface FetchTrainingPlansResponse {
     plans: TrainingPlanAPI[];
@@ -141,3 +140,42 @@ export const fetchWorkoutById = async (token: string, id: string) : Promise<Work
     }
 }   
 
+export const fetchTrainingPlanById = async (token: string, id: string) : Promise<TrainingPlanAPI> => {
+    try {
+        const response = await axiosInstance.get(`/training-plan/find-by-id/${id}`,{
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        console.log(response.data)
+        return mapIndividualApiTrainingPlanToTrainingPlan(response.data);
+    } catch (error) {
+        console.error('Error al obtener el plan de entrenamiento ');
+        console.log(error)
+        throw error;
+    }
+}
+
+export const fetchExercisesInWorkout = async (token: string, id: string) : Promise<ExerciseInWorkoutAPI> => {
+    try {
+        const response = await axiosInstance.get(`/workout/find-by-id-exercise-in-workout/${id}`,{
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        return mapApiExerciseInWorkoutToExerciseInWorkout(response.data.data);
+    } catch (error) {
+        console.error('Error al obtener los ejercicios de la rutina ');
+        console.log(error)
+        throw error;
+    }
+}
+
+export const fetchRecommendedWorkouts = async (token: string) : Promise<WorkoutAPI[]> => {
+    try {
+        const response = await axiosInstance.get(`/workout/find-all?page=1&limit=3`,{
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        console.log(response.data.data)
+        return mapApiWorkoutToWorkout(response.data.data);
+    } catch (error) {
+        console.error('Error al obtener las rutinas recomendadas');
+        throw error;
+    }
+}

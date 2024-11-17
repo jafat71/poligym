@@ -9,9 +9,9 @@ import { TrainingPlanAPI } from '@/types/interfaces/entities/plan'
 import HomePill from '../common/pills/HomePill'
 import { DIFFICULTIES } from '@/constants';
 
-const PlanSmallCard = (plan: TrainingPlanAPI) => {
+const PlanListItem = (plan: TrainingPlanAPI) => {
     const handleNavigation = () => {
-
+        router.push(`/plan/${plan.id}`)
     }
     const planFirstWord = plan.name.split(' ')[0]
     const planRest = plan.name.split(' ').slice(1).join(' ')
@@ -35,7 +35,7 @@ const PlanSmallCard = (plan: TrainingPlanAPI) => {
                     ]}
                     className="absolute w-full h-full"
                 />
-
+                <View className="absolute w-2 h-full bg-lightGreen  "/>
                 <View className='p-4 flex flex-row justify-between'>
                     <View className='flex flex-col w-4/5'>
                         <Text className='text-white font-ralewayBold text-sm'>{planFirstWord}</Text>
@@ -46,7 +46,7 @@ const PlanSmallCard = (plan: TrainingPlanAPI) => {
 
 
                 <View className='flex-1 items-start justify-end p-4'>
-                    <View className="flex-row items-start justify-between gap-x-2">
+                    <View className="flex-row items-start justify-between px-2 gap-x-2">
                         <HomePill
                             icon="time-outline"
                             text={`${planDuration} rutinas`}
@@ -69,4 +69,4 @@ const PlanSmallCard = (plan: TrainingPlanAPI) => {
     )
 }
 
-export default PlanSmallCard
+export default PlanListItem

@@ -23,10 +23,6 @@ interface WorkoutFlatlistHeaderProps {
     setSelectedDifficulty: (difficulty: DifficultySearch) => void;
     selectedCategory: CategorySearch;
     setSelectedCategory: (category: CategorySearch) => void;
-    muscleGroups: MuscleGroups[];
-    selectedMuscleGroups: MuscleGroups[];
-    toggleMuscleGroup: (muscle: MuscleGroups) => void;
-    clearMuscleGroups: () => void;
 }
 
 export const WorkoutFlatlistHeader = memo(({
@@ -37,10 +33,6 @@ export const WorkoutFlatlistHeader = memo(({
     setSelectedDifficulty,
     selectedCategory,
     setSelectedCategory,
-    muscleGroups,
-    selectedMuscleGroups,
-    toggleMuscleGroup,
-    clearMuscleGroups,
 }: WorkoutFlatlistHeaderProps) => {
     const { isDark } = useTheme();
     const [showFilters, setShowFilters] = useState(false);
@@ -119,32 +111,6 @@ export const WorkoutFlatlistHeader = memo(({
                             label={label}
                             selected={selectedCategory}
                             setSelected={setSelectedCategory as any}
-                            isSearching={isSearching}
-                        />
-                    ))}
-                </View>
-
-                <View className="flex-row justify-between my-2">
-                    <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-sm font-ralewayBold`}>
-                        Grupos Musculares
-                    </Text>
-                    <View className='flex-row items-center gap-2'>
-                        {selectedMuscleGroups.length > 0 && (
-                            <IconButton
-                                onPress={clearMuscleGroups}
-                                icon={<Ionicons name="remove-circle-outline" size={24} color={isDark ? "#fff" : "#374151"} />}
-                            />
-                        )}
-                    </View>
-                </View>
-
-                <View className="flex-row flex-wrap justify-between">
-                    {muscleGroups.map((muscle) => (
-                        <MusclePill
-                            key={muscle}
-                            muscle={muscle}
-                            isSelected={selectedMuscleGroups.some(m => m === muscle)}
-                            onToggle={() => toggleMuscleGroup(muscle)}
                             isSearching={isSearching}
                         />
                     ))}

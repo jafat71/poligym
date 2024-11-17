@@ -10,7 +10,6 @@ import { TrainingPlanAPI } from '@/types/interfaces/entities/plan';
 
 import { DifficultySearch } from '@/constants';
 
-import PlanSmallCard from '@/components/ui/plans/PlanSmallCard';
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
 
 import { queryClient } from '@/lib/queryClient/queryClient';
@@ -18,6 +17,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import CustomListEmptyComponent from '@/components/ui/common/flatlists/CustomListEmptyComponent';
 import { PlanFlatlistHeader } from '@/components/ui/common/flatlists/PlanFlatlistHeader';
 import { useUser } from '@/context/UserContext';
+import PlanListItem from '@/components/ui/plans/PlanListItem';
 
 export default function Plan() {
     const { isDark } = useTheme();
@@ -88,7 +88,7 @@ export default function Plan() {
     }, [queryClient]);
 
     const renderItem: ListRenderItem<TrainingPlanAPI> = useCallback(({ item }) => (
-        <PlanSmallCard {...item} />
+        <PlanListItem {...item} />
     ), []);
 
     const keyExtractor = useCallback((item: TrainingPlanAPI, index: number) =>
