@@ -21,8 +21,10 @@ const ExerciseInfo = () => {
     const { id } = useLocalSearchParams();
     const { accessToken } = useUser();
     const { isDark } = useTheme();
-    const queryClient = useQueryClient();
-    const cachedExercise = queryClient.getQueryData<ExerciseAPI>(['exercises', id as string]);
+        const queryClient = useQueryClient();
+    const exerciseId = Number(id);
+
+    const cachedExercise = queryClient.getQueryData<ExerciseAPI>(['exercises', exerciseId]);
     
     const { data: exercise, isLoading, isError } = useQuery<ExerciseAPI>({
         queryKey: ['exercises', id],

@@ -48,6 +48,19 @@ const _layout = () => {
                     },
                     headerTintColor: isDark ? "#fff" : "#1c1c1c",
                     headerTitleAlign: "center",
+                    statusBarTranslucent: true,
+                    statusBarColor: 'transparent',
+                    statusBarStyle: isDark ? 'light' : 'dark'
+                }}
+            />
+
+            <Stack.Screen
+                name="playWorkout/[id]"
+                options={{
+                    headerShown: false,
+                    animation: "fade",
+                    statusBarTranslucent: true,
+                    statusBarColor: 'transparent'
                 }}
             />
             <Stack.Screen
@@ -58,14 +71,7 @@ const _layout = () => {
 
                 }}
             />
-            <Stack.Screen
-                name="routinedetail"
-                options={{
-                    headerShown: false,
-                    animation: "fade",
 
-                }}
-            />
             <Stack.Screen
                 name="playexercise"
                 options={{

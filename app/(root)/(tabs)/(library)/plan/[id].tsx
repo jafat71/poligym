@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -25,19 +25,13 @@ const PlanInfo = () => {
     const { id } = useLocalSearchParams();
     const { accessToken } = useUser();
     const { isDark } = useTheme();
-    const queryClient = useQueryClient();
-    const cachedPlan = queryClient.getQueryData<TrainingPlanAPI>(['trainingPlans', id as string]);
-
+    const queryClient = useQueryClient()
+    const planId = Number(id)
+    const cachedPlan = queryClient.getQueryData<TrainingPlanAPI>(['trainingPlans', planId])
     const { data: plan, isLoading, isError } = useQuery<TrainingPlanAPI>({
         queryKey: ['trainingPlans', id],
         queryFn: async () => {
             const data = await fetchTrainingPlanById(accessToken!, id as string);
-            if (data.startDate) {
-                data.startDate = new Date(data.startDate);
-            }
-            if (data.endDate) {
-                data.endDate = new Date(data.endDate);
-            }
             return data;
         },
         initialData: cachedPlan,

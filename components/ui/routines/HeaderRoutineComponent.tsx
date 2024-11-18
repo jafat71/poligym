@@ -3,48 +3,55 @@ import React from 'react';
 import { getMuscleImage } from '../body/bodyConstants';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import SmallBodyCardComponent from '../body/smallBodyCardComponent';
-import { RoutinePlan } from '@/types/interfaces/entities/plan';
+import { RoutinePlan, WorkoutAPI } from '@/types/interfaces/entities/plan';
 import { Ionicons } from '@expo/vector-icons';
+import { CATEGORIES, DIFFICULTIES } from '@/constants';
 
 interface HeaderRoutineComponentProps {
-    screenRoutine: RoutinePlan;
+    selectedWorkout: WorkoutAPI;
 }
 
-const HeaderRoutineComponent = ({ screenRoutine }: HeaderRoutineComponentProps) => {
+const HeaderRoutineComponent = ({ selectedWorkout }: HeaderRoutineComponentProps) => {
     const { isDark } = useTheme();
     const textStyle = `${isDark ? 'text-white' : 'text-darkGray-500'} text-xs font-raleway`
     return (
         <>
             <View className='flex flex-row py-2'>
                 <View className={`w-1/2 p-1`}>
-                    {
-                        screenRoutine?.musculos.map((muscle, index) => (
-                            <SmallBodyCardComponent key={index} muscleImage={getMuscleImage(muscle, 200, 100)} />
-                        ))
-                    }
+                    <Text className={`${textStyle} text-center text-base font-ralewayExtraBold`}>
+                        Descripción
+                    </Text>
+                    <Text className={`${textStyle} text-center text-base font-ralewayLight`}>  
+                        {selectedWorkout?.description}
+                    </Text>
                 </View>
                 <View className='w-1/2 p-1 flex flex-col justify-between'>
                     <View>
 
                         <Text className={`${textStyle} text-center text-base font-ralewayExtraBold`}>
-                            Enfoque
+                            Tipo
                         </Text>
-                        {
-                            screenRoutine?.musculos.map((muscle, index) => (
-                                <Text key={index} className={`${textStyle} text-center text-base font-ralewayLight`}> {muscle}</Text>
-                            ))
-                        }
+                        <Text className={`${textStyle} text-center text-base font-ralewayLight`}>
+                            {`${CATEGORIES.find(category => category.value === selectedWorkout.category)?.label}`}
+                        </Text>
+
                         <Text className={`${textStyle} text-center text-base font-ralewayExtraBold`}>
                             Dificultad
                         </Text>
                         <Text className={`${textStyle} text-center text-base font-ralewayLight`}>
-                            {screenRoutine?.dificultad}
+                            {`${DIFFICULTIES.find(difficulty => difficulty.value === selectedWorkout.level)?.label}`}
                         </Text>
                         <Text className={`${textStyle} text-center text-base font-ralewayExtraBold`}>
                             Tiempo Aprox:
                         </Text>
                         <Text className={`${textStyle} text-center text-base font-ralewayLight`}>
-                            30 m
+                            {selectedWorkout?.duration} m
+                        </Text>
+                        <Text className={`${textStyle} text-center text-base font-ralewayExtraBold`}>
+                            Tipo de entrenamiento:
+                        </Text>
+                        <Text className={`${textStyle} text-center text-base font-ralewayLight`}>
+                            {selectedWorkout?.trainingType}
                         </Text>
                     </View>
                     <View>

@@ -1,27 +1,27 @@
 import React from 'react'
-import { View, Text, Pressable, Image } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 
 import { useRouter } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 
 import { WorkoutAPI } from '@/types/interfaces/entities/plan'
-import { useNavigationFlowContext } from '@/context/NavFlowContext'
-import { getBannerImages } from '../plans/PlanConstants'
 import HomePill from '../common/pills/HomePill'
 import IconButton from '../common/buttons/IconButton'
 import { Ionicons } from '@expo/vector-icons'
+import { DIFFICULTIES } from '@/constants'
 
 const RoutineSmallCard = (routine: WorkoutAPI) => {
-    //const { setScreenRoutine } = useNavigationFlowContext()
+
     const router = useRouter()
     const routineFirstWord = routine.name.split(' ')[0]
     const routineRest = routine.name.split(' ').slice(1).join(' ')
+
     return (
         <Pressable
             key={routine.id}
             onPress={() => {
                 //setScreenRoutine(routine)
-                //router.push("/(library)/routine")
+                router.push(`/(home)/playWorkout/${routine.id}`)
             }}
             className={`w-72 h-60 mr-2 mb-1 
             overflow-hidden rounded-lg`}>
@@ -59,11 +59,11 @@ const RoutineSmallCard = (routine: WorkoutAPI) => {
 
                     <HomePill
                         icon="time-outline"
-                        text={`30 min.`}
+                        text={`${routine.duration} min.`}
                     />
                     <HomePill
                         icon="flame-outline"
-                        text={`${routine.level}`}
+                        text={`${DIFFICULTIES.find(diff => diff.value === routine.level)?.label || ''}`}
                     />
                 </View>
             </View>

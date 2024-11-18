@@ -145,7 +145,6 @@ export const fetchTrainingPlanById = async (token: string, id: string) : Promise
         const response = await axiosInstance.get(`/training-plan/find-by-id/${id}`,{
             headers: { 'Authorization': `Bearer ${token}` }
         })
-        console.log(response.data)
         return mapIndividualApiTrainingPlanToTrainingPlan(response.data);
     } catch (error) {
         console.error('Error al obtener el plan de entrenamiento ');
@@ -172,7 +171,6 @@ export const fetchRecommendedWorkouts = async (token: string) : Promise<WorkoutA
         const response = await axiosInstance.get(`/workout/find-all?page=1&limit=3`,{
             headers: { 'Authorization': `Bearer ${token}` }
         });
-        console.log(response.data.data)
         return mapApiWorkoutToWorkout(response.data.data);
     } catch (error) {
         console.error('Error al obtener las rutinas recomendadas');

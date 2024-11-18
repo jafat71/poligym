@@ -1,19 +1,17 @@
 import { emptyUser } from '@/constants';
-import { ExerciseAPI, IndividualExercise, PlanAlimentacion, RoutinePlan, TrainingPlan } from '@/types/interfaces/entities/plan';
+import { ExerciseAPI, IndividualExercise, PlanAlimentacion, RoutinePlan, TrainingPlan, WorkoutAPI } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import React, { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction, useEffect } from 'react';
 
 interface NavigationFlowContextType {
     screenPlan: TrainingPlan | null;
     setScreenPlan: Dispatch<SetStateAction<TrainingPlan | null>>;
-    screenRoutine: RoutinePlan | null;
-    setScreenRoutine: Dispatch<SetStateAction<RoutinePlan | null>>;
+    screenRoutine: WorkoutAPI | null;
+    setScreenRoutine: Dispatch<SetStateAction<WorkoutAPI | null>>;
     screenExercise: IndividualExercise | null;
     setScreenExercise: Dispatch<SetStateAction<IndividualExercise | null>>;
     screenPlayExercises: IndividualExercise[] | null;
     setScreenPlayExercises: Dispatch<SetStateAction<IndividualExercise[] | null>>;
-    screenLibAlimentacion: PlanAlimentacion | null;
-    setScreenLibAlimentacion: Dispatch<SetStateAction<PlanAlimentacion | null>>;
     tmpUser: User | null;
     updateInitUserShell: (updatedFields: Partial<User>) => void;
 }
@@ -29,8 +27,6 @@ const NavigationFlowContext = createContext<NavigationFlowContextType>({
     setScreenPlayExercises: () => { },
     tmpUser: emptyUser,
     updateInitUserShell: () => { },
-    screenLibAlimentacion: null,
-    setScreenLibAlimentacion: () => { },
 });
 
 interface NavigationFlowProviderProps {
@@ -39,11 +35,10 @@ interface NavigationFlowProviderProps {
 
 export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ children }) => {
     const [screenPlan, setScreenPlan] = useState<TrainingPlan | null>(null)
-    const [screenRoutine, setScreenRoutine] = useState<RoutinePlan | null>(null);
+    const [screenRoutine, setScreenRoutine] = useState<WorkoutAPI | null>(null);
     const [screenExercise, setScreenExercise] = useState<IndividualExercise | null>(null);
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
     const [screenPlayExercises, setScreenPlayExercises] = useState<IndividualExercise[] | null>(null);
-    const [screenLibAlimentacion, setScreenLibAlimentacion] = useState<PlanAlimentacion | null>(null);
 
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
         if (updatedFields === null) {
@@ -89,8 +84,6 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
             setScreenExercise,
             screenPlayExercises,
             setScreenPlayExercises,
-            screenLibAlimentacion,
-            setScreenLibAlimentacion,
         }}>
             {children}
         </NavigationFlowContext.Provider>

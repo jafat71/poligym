@@ -1,8 +1,6 @@
 import React, { useRef } from 'react'
 import { ScrollView } from 'react-native'
 
-import { StatusBar } from 'expo-status-bar'
-
 import { useTheme } from '@/context/ThemeContext'
 
 import { useBackBehaviour } from '@/hooks/useBackBehaviour'
@@ -24,13 +22,14 @@ const Home = () => {
     });
   };
 
+
+
   return (
     <ScrollView
       ref={scrollViewRef}
       className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
       showsVerticalScrollIndicator={false}
     >
-      <StatusBar style="dark" backgroundColor={isDark ? "#1c1c1c" : "#fff"} />
       <MainHomeResume scrollDown={scrollDown} />
       <HomeSubSection />
       <HomeSmallSection />

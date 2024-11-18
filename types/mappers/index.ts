@@ -68,8 +68,8 @@ export const mapApiTrainingPlanToTrainingPlan = (data: any): TrainingPlanAPI[] =
             name: plan.name,
             level: plan.level,
             description: plan.description,
-            startDate: plan.startDate,
-            endDate: plan.endDate,
+            startDate: plan.startDate ? new Date(plan.startDate) : null,
+            endDate: plan.endDate ? new Date(plan.endDate) : null,
             workouts: mapApiWorkoutToPartialWorkout(plan.workouts) || [],
         }
     });

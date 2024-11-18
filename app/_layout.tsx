@@ -16,6 +16,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 
 import Loading from '@/components/animatedUi/Loading';
 import { queryClient } from '@/lib/queryClient/queryClient';
+import DebugCache from '@/lib/utils/debugCache';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -74,6 +75,8 @@ export default function RootLayout() {
                   }} />
                   <Stack.Screen name="+not-found" options={{ headerShown: false }} />
                 </Stack>
+                {/* <DebugCache /> */}
+
               </GestureHandlerRootView>
             </ExerciseExecutionProvider>
           </UserProvider>

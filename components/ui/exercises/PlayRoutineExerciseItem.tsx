@@ -1,20 +1,19 @@
 import { Pressable, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
-import { IndividualExercise } from '@/types/interfaces/entities/plan';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
-import { router } from 'expo-router';
+import { ExerciseInWorkoutAPI } from '@/types/interfaces/entities/plan';
 
 interface ExerciseCardProps {
-    exercise: IndividualExercise;
+    exercise: ExerciseInWorkoutAPI;
     onDrag: () => void;
     isActive: boolean;
     isCompleted?: boolean;
     onComplete?: (completed: boolean) => void;
 }
 
-const RoutineExerciseCard = ({ 
+const PlayRoutineExerciseItem = ({ 
     exercise, 
     onDrag, 
     isActive,
@@ -35,106 +34,80 @@ const RoutineExerciseCard = ({
     return (
         <View className={`
             flex flex-row items-center justify-start
-            transition-all duration-300
+            transition-all duration-300 px-2 h-28
             ${isActive ? '-translate-x-2' : ''}
         `}>
-            {/* Drag Handle */}
             <Pressable 
                 onLongPress={onDrag} 
-                className="p-2 justify-center"
+                className="p-2 justify-center bg-eBlue-700 h-full"
             >
                 <Ionicons 
                     name="menu-outline" 
                     size={24} 
-                    color={isDark ? "white" : "#1c1c1c"} 
+                    color={"white"} 
                 />
             </Pressable>
 
-            {/* Main Card */}
             <View className={`
-                flex-1 my-2 rounded-xl overflow-hidden
-                ${isDark ? 'bg-darkGray-600' : 'bg-gray-50'}
-                shadow-lg
+                flex-1 my-2 rounded-sm overflow-hidden
             `}>
-                {/* Exercise Header */}
                 <Pressable 
                     onPress={() => {
-                        setScreenExercise(exercise);
-                        router.push("/(tabs)/(home)/exerciseDetail");
                     }}
                     className={`
                         p-4 flex-row items-center justify-between
-                        border-l-4 ${completed ? 'border-green-500' : 'border-eBlue-500'}
+                        border-l-4 ${completed ? 'border-lightGreen' : 'border-eBlue-500'}
                     `}
                 >
-                    {/* Exercise Info */}
                     <View className="flex-1">
                         <Text className={`
                             ${isDark ? 'text-white' : 'text-darkGray-500'} 
                             text-base font-ralewayBold mb-1
                         `}>
-                            {exercise.nombre}
+                            {exercise.name}
                         </Text>
                         
-                        {/* Exercise Details */}
-                        <View className="flex-row flex-wrap gap-3">
+                        <View className="flex-col">
                             <View className="flex-row items-center">
                                 <Ionicons 
                                     name="repeat-outline" 
-                                    size={16} 
-                                    color={isDark ? '#fff' : '#374151'} 
+                                    size={24} 
+                                    color={'#fff'} 
                                 />
-                                <Text className={`
-                                    ${isDark ? 'text-white' : 'text-darkGray-500'} 
-                                    text-sm font-raleway ml-1
+                                <Text className={`text-white 
+                                    text-xl font-ralewaySemiBold ml-1
                                 `}>
-                                    {exercise.series} Series
-                                </Text>
-                            </View>
-
-                            <View className="flex-row items-center">
-                                <Ionicons 
-                                    name="fitness-outline" 
-                                    size={16} 
-                                    color={isDark ? '#fff' : '#374151'} 
-                                />
-                                <Text className={`
-                                    ${isDark ? 'text-white' : 'text-darkGray-500'} 
-                                    text-sm font-raleway ml-1
-                                `}>
-                                    {exercise.repeticiones} Reps
+                                    {exercise.sets} X {exercise.reps} Reps
                                 </Text>
                             </View>
 
                             <View className="flex-row items-center">
                                 <Ionicons 
                                     name="time-outline" 
-                                    size={16} 
-                                    color={isDark ? '#fff' : '#374151'} 
+                                    size={24} 
+                                    color={'#fff'} 
                                 />
-                                <Text className={`
-                                    ${isDark ? 'text-white' : 'text-darkGray-500'} 
-                                    text-sm font-raleway ml-1
+                                <Text className={`text-white 
+                                    text-xl font-ralewaySemiBold ml-1
                                 `}>
-                                    {exercise.tiempoDescanso}s descanso
+                                    {exercise.restTime}s Descanso
                                 </Text>
                             </View>
                         </View>
                     </View>
 
-                    {/* Complete Button */}
                     <Pressable
                         onPress={handleComplete}
                         className={`
                             ml-3 p-2 rounded-full
-                            ${completed ? 'bg-green-500' : isDark ? 'bg-darkGray-500' : 'bg-white'}
-                            border-2 border-${completed ? 'green' : 'eBlue'}-500
+                            ${completed ? 'bg-lightGreen' : ''}
+                            border-2 border-${completed ? 'lightGreen' : 'white'}
                         `}
                     >
                         <Ionicons 
                             name={completed ? "checkmark" : "checkmark-outline"} 
-                            size={20} 
-                            color={completed ? "white" : isDark ? "white" : "#1c1c1c"} 
+                            size={24} 
+                            color={`${completed ? '#1c1c1c' : 'white'}`} 
                         />
                     </Pressable>
                 </Pressable>
@@ -143,4 +116,4 @@ const RoutineExerciseCard = ({
     );
 };
 
-export default RoutineExerciseCard;
+export default PlayRoutineExerciseItem;

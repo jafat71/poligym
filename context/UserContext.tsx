@@ -3,6 +3,7 @@ import { getToken } from '@/lib/token/store';
 import { TrainingPlan } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
+import { useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'expo-router';
 import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
@@ -35,6 +36,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const pathname = usePathname()
     const [userSelectedPlan, setUserSelectedPlan] = useState<TrainingPlan | null>(null)
+    const queryClient = useQueryClient();
    
     useEffect(() => {
         getToken('accessToken')
@@ -89,6 +91,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         console.log("accessToken", accessToken)
         getRefreshToken()
     }, [accessToken])
+
+    useEffect(() => {
+        console.log("Cache completo:", queryClient.getQueryCache().getAll());
+    }, [queryClient]);
 
     return (
         <UserContext.Provider value={{

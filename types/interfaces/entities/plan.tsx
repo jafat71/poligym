@@ -137,6 +137,7 @@ export interface TrainingPlanAPI {
     weight?: number;
     restTime: number;
     order: number;
+    name?: string;
   }
   
   // Exercise Interface

@@ -1,30 +1,17 @@
 import { View, Text, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { router } from 'expo-router'
-import { ExerciseAPI, ExerciseInWorkoutAPI } from '@/types/interfaces/entities/plan';
+import { ExerciseInWorkoutAPI } from '@/types/interfaces/entities/plan';
 import { useTheme } from '@/context/ThemeContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 interface RoutineExerciseItemProps {
     exercise: ExerciseInWorkoutAPI;
-    exercises: ExerciseAPI[];
+    exerciseName: string;
 }
 
-export const RoutineExerciseItem = ({ exercise, exercises = [] }: RoutineExerciseItemProps) => {
-    const [exerciseName, setExerciseName] = useState("");
-
+export const RoutineExerciseItem = ({ exercise, exerciseName }: RoutineExerciseItemProps) => {
     const { isDark } = useTheme();
-    const getExerciseDetailedInfo = (exerciseId: number) => {
-        if (exercises && exercises.length > 0) {
-            return exercises.find(exercise => exercise.id.toString() === exerciseId.toString())?.name;
-        }
-        return "";
-    }
-    useEffect(() => {
-        const name = getExerciseDetailedInfo(exercise.exerciseId);
-        setExerciseName(name ?? ""); 
-    }, [exercise.exerciseId, exercises]);
-
     const borderStyle = `${isDark
         ? "border-darkGray-400 bg-transparent"
         : "border-darkGray-200 bg-transparent"
