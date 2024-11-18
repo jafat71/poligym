@@ -84,7 +84,6 @@ export const refreshAccessToken = async () => {
             }
         });
         const { accessToken, refreshToken: newRefreshToken } = response.data;
-        console.log("NEW ACCESS TOKEN", accessToken)
 
         await saveToken('accessToken', accessToken);
         if (newRefreshToken) {

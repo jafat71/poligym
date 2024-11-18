@@ -36,7 +36,7 @@ export const PlayWorkoutFlatlistHeader = ({
             maxHeight: interpolate(
                 filterAnimation.value,
                 [0, 1],
-                [0, 500], // Ajusta este valor según tus necesidades
+                [0, 1000], // Ajusta este valor según tus necesidades
             ),
             opacity: filterAnimation.value,
             transform: [{

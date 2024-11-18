@@ -1,10 +1,8 @@
 import GoBackUpButton from "@/components/ui/common/buttons/GoBackUpButton";
-import ExerciseCard from "@/components/ui/exercises/PlayRoutineExerciseItem";
-import { useTheme } from "@/context/ThemeContext";
 import { ExerciseAPI, ExerciseInWorkoutAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
 import { router, useLocalSearchParams } from "expo-router";
-import { useState, useEffect, useMemo } from "react";
-import { Animated, Pressable, Text, View } from "react-native";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { Alert, Animated, Pressable, Share, Text, View } from "react-native";
 import DraggableFlatList, { RenderItemParams } from "react-native-draggable-flatlist";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery } from "@tanstack/react-query";
@@ -14,8 +12,8 @@ import { useUser } from "@/context/UserContext";
 import PlaySkeletonLoadingScreen from "@/components/animatedUi/PlaySkeletonLoadingScreen";
 import { PlayWorkoutFlatlistHeader } from "@/components/ui/common/flatlists/PlayWorkoutFlastlistHeader";
 import PlayRoutineExerciseItem from "@/components/ui/exercises/PlayRoutineExerciseItem";
-import CTAButtonPrimary from "@/components/ui/common/buttons/CtaButtonPrimary";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import CreatePostModal from "@/components/ui/common/modal/CreatePostModal";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
@@ -24,6 +22,8 @@ const PlayWorkout = () => {
     const queryClient = useQueryClient();
     const workoutId = Number(id);
     const cachedWorkout = queryClient.getQueryData<WorkoutAPI>(['workouts', workoutId]);
+
+    const [infoSetted, setInfoSetted] = useState(false);
 
     const { data: workout, isLoading, isError } = useQuery<WorkoutAPI>({
         queryKey: ['workouts', id],
@@ -56,10 +56,12 @@ const PlayWorkout = () => {
     useEffect(() => {
         if (workout) {
             setExercises(workout.exercisesInWorkout);
+            setTimeout(() => {
+                setInfoSetted(true);
+            }, 1000);
         }
     }, [workout]);
 
-    console.log(exercises);
     // Calcular el progreso de la rutina
     const routineProgress = useMemo(() => {
         if (!exercises.length) return 0;
@@ -74,6 +76,60 @@ const PlayWorkout = () => {
         }));
     };
 
+    const [showPostModal, setShowPostModal] = useState(false);
+    const [workoutDuration, setWorkoutDuration] = useState(0);
+    const startTime = useRef(Date.now());
+
+    // Actualizar la duración cada segundo
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setWorkoutDuration(Math.floor((Date.now() - startTime.current) / 1000));
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    useEffect(() => {
+        if (routineProgress === 1) {
+            Alert.alert(
+                "¡Felicitaciones! 🎉",
+                "Has completado la rutina exitosamente. ¿Deseas compartir tu logro?",
+                [
+                    {
+                        text: "No, gracias",
+                        style: "cancel"
+                    },
+                    {
+                        text: "¡Compartir!",
+                        onPress: () => setShowPostModal(true)
+                    }
+                ]
+            );
+        }
+    }, [routineProgress]);
+
+    const handleCreatePost = async (content: string, image?: string) => {
+        try {
+            // await createPost({
+            //     content,
+            //     image,
+            //     workoutId: workoutId,
+            //     duration: workoutDuration,
+            //     accessToken: accessToken!
+            // });
+            // // Actualizar la caché de posts si es necesario
+            // queryClient.invalidateQueries(['posts']);
+        } catch (error) {
+            console.error('Error creating post:', error);
+            Alert.alert('Error', 'No se pudo crear la publicación');
+        }
+    };
+
+    const formatDuration = (seconds: number) => {
+        const minutes = Math.floor(seconds / 60);
+        return `${minutes} minutos`;
+    };
+
     const renderItem = ({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => (
         <PlayRoutineExerciseItem
             exercise={item}
@@ -84,7 +140,7 @@ const PlayWorkout = () => {
         />
     );
 
-    if (isLoading) return <PlaySkeletonLoadingScreen />;
+    if (isLoading || isLoadingExercises || !infoSetted) return <PlaySkeletonLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
     if (isErrorExercises) return <Text>Error al cargar los ejercicios de la rutina - {id}</Text>;
 
@@ -108,11 +164,20 @@ const PlayWorkout = () => {
                 containerStyle={{ flexGrow: 1 }}
             />
             <Pressable className="absolute bottom-0 right-0 w-24 h-24 flex flex-col
-                items-center justify-center bg-lightGreen
+                items-center justify-center bg-darkGray-900
                 rounded-full mx-2 my-2
             ">
-                <Ionicons name="play" size={32} color="#0055f9" />
+                <Ionicons name="play" size={32} color="#77ff99" />
             </Pressable>
+
+            <CreatePostModal
+                isVisible={showPostModal}
+                onClose={() => setShowPostModal(false)}
+                onSubmit={handleCreatePost}
+                defaultMessage={`¡He completado la rutina "${workout?.name}" en ${formatDuration(workoutDuration)}! 💪`}
+                workoutName={workout?.name || ''}
+                duration={workoutDuration}
+            />
         </SafeAreaView>
     );
 };
