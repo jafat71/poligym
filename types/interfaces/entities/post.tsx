@@ -12,5 +12,5 @@ export interface SocialPost {
     rutina: string;
     imagenComentario?: string,
     duracion: string,
-    dificultad: PlanRoutineLevel,
+    dificultad: string,
 }

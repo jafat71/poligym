@@ -14,11 +14,12 @@ import { PlayWorkoutFlatlistHeader } from "@/components/ui/common/flatlists/Play
 import PlayRoutineExerciseItem from "@/components/ui/exercises/PlayRoutineExerciseItem";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CreatePostModal from "@/components/ui/common/modal/CreatePostModal";
+import { useNavigationFlowContext } from "@/context/NavFlowContext";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
     const { accessToken } = useUser();
-
+    const { setScreenPlayExercises} = useNavigationFlowContext()
     const queryClient = useQueryClient();
     const workoutId = Number(id);
     const cachedWorkout = queryClient.getQueryData<WorkoutAPI>(['workouts', workoutId]);
@@ -80,15 +81,6 @@ const PlayWorkout = () => {
     const [workoutDuration, setWorkoutDuration] = useState(0);
     const startTime = useRef(Date.now());
 
-    // Actualizar la duración cada segundo
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setWorkoutDuration(Math.floor((Date.now() - startTime.current) / 1000));
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, []);
-
     useEffect(() => {
         if (routineProgress === 1) {
             Alert.alert(
@@ -108,23 +100,9 @@ const PlayWorkout = () => {
         }
     }, [routineProgress]);
 
-    const handleCreatePost = async (content: string, image?: string) => {
-        try {
-            // await createPost({
-            //     content,
-            //     image,
-            //     workoutId: workoutId,
-            //     duration: workoutDuration,
-            //     accessToken: accessToken!
-            // });
-            // // Actualizar la caché de posts si es necesario
-            // queryClient.invalidateQueries(['posts']);
-        } catch (error) {
-            console.error('Error creating post:', error);
-            Alert.alert('Error', 'No se pudo crear la publicación');
-        }
-    };
-
+    const getWorkoutDuration = () => {
+        return Math.floor((Date.now() - startTime.current) / 1000);
+    }
     const formatDuration = (seconds: number) => {
         const minutes = Math.floor(seconds / 60);
         return `${minutes} minutos`;
@@ -163,7 +141,12 @@ const PlayWorkout = () => {
                 scrollEnabled={true}
                 containerStyle={{ flexGrow: 1 }}
             />
-            <Pressable className="absolute bottom-0 right-0 w-24 h-24 flex flex-col
+            <Pressable 
+            onPress={()=>{
+                setScreenPlayExercises([...workout?.exercisesInWorkout ?? []])
+                router.push('/(home)/playexercise')
+            }}
+            className="absolute bottom-0 right-0 w-24 h-24 flex flex-col
                 items-center justify-center bg-darkGray-900
                 rounded-full mx-2 my-2
             ">
@@ -173,10 +156,13 @@ const PlayWorkout = () => {
             <CreatePostModal
                 isVisible={showPostModal}
                 onClose={() => setShowPostModal(false)}
-                onSubmit={handleCreatePost}
                 defaultMessage={`¡He completado la rutina "${workout?.name}" en ${formatDuration(workoutDuration)}! 💪`}
-                workoutName={workout?.name || ''}
-                duration={workoutDuration}
+                post={{
+                    rutina: workout?.name ?? "",
+                    dificultad: workout?.level ?? "",
+                    fecha: new Date().toISOString(),
+                    duracion: getWorkoutDuration().toString()
+                }}
             />
         </SafeAreaView>
     );

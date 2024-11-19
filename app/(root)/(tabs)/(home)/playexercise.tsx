@@ -3,24 +3,24 @@ import { useNavigationFlowContext } from "@/context/NavFlowContext"
 import { useTheme } from "@/context/ThemeContext"
 import { Ionicons } from "@expo/vector-icons"
 import { useEffect, useState } from "react"
-import { Text, View, Pressable, Animated } from "react-native"
+import { Text, View, Pressable, Animated, Image } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { IndividualExercise } from "@/types/interfaces/entities/plan"
 import { router } from "expo-router"
+import IconButton from "@/components/ui/common/buttons/IconButton"
 
 const PlayExercise = () => {
     const { screenPlayExercises } = useNavigationFlowContext()
     const { isDark } = useTheme()
     const textStyle = `${isDark ? 'text-white' : 'text-darkGray-500'} font-raleway`
-    
+
     const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0)
-    const [timeLeft, setTimeLeft] = useState(15) // 15 segundos por ejercicio
+    const [timeLeft, setTimeLeft] = useState(15)
     const [isPlaying, setIsPlaying] = useState(true)
     const [progress] = useState(new Animated.Value(0))
 
+    const totalDuration = 15
     const currentExercise = screenPlayExercises![currentExerciseIndex]
     const nextExercise = screenPlayExercises![currentExerciseIndex + 1]
-
     useEffect(() => {
         let timer: NodeJS.Timeout
         if (isPlaying && timeLeft > 0) {
@@ -37,24 +37,10 @@ const PlayExercise = () => {
         }
     }, [timeLeft])
 
-    useEffect(() => {
-        // Reiniciar el tiempo y la animación cuando cambia el ejercicio
-        setTimeLeft(15)
-        progress.setValue(0)
-        startProgressAnimation()
-    }, [currentExerciseIndex])
-
-    const startProgressAnimation = () => {
-        Animated.timing(progress, {
-            toValue: 1,
-            duration: 15000, // 15 segundos
-            useNativeDriver: false,
-        }).start()
-    }
-
     const handleNext = () => {
         if (currentExerciseIndex < screenPlayExercises!.length - 1) {
             setCurrentExerciseIndex(prev => prev + 1)
+            setTimeLeft(totalDuration) // Reiniciar el tiempo
         } else {
             // Rutina completada
             router.back()
@@ -69,98 +55,107 @@ const PlayExercise = () => {
         setIsPlaying(!isPlaying)
     }
 
-    const progressWidth = progress.interpolate({
-        inputRange: [0, 1],
-        outputRange: ['0%', '100%']
-    })
+    // Calcular ancho de la barra de progreso
+    const progressWidth = `${((totalDuration - timeLeft) / totalDuration) * 100}%`
 
     return (
-        <SafeAreaView className={`flex-1 ${isDark ? 'bg-darkGray-500' : 'bg-white'}`}>
+        <SafeAreaView className={`flex-1 ${isDark ? 'bg-darkGray-600' : 'bg-white'}`}>
             <GoBackUpButton />
 
-            {/* Contenedor Principal */}
-            <View className="flex-1 px-4 justify-between">
-                {/* Información del Ejercicio Actual */}
-                <View className={`
-                    p-6 rounded-2xl mt-4
+            <View className="absolute top-0 right-0
+                px-6 z-10 rounded-full translate-y-96 -translate-y-4 ">
+                <Text className={`text-4xl font-ralewayExtraBold`}>
+                    {currentExerciseIndex + 1} /{screenPlayExercises!.length}
+                </Text>
+            </View>
+
+            <Image
+                source={{ uri: "https://media1.tenor.com/m/Re3T3B66V9UAAAAd/barbellsquats-gymexercisesmen.gif" }}
+                className='w-full h-96 rounded-md' />
+
+            <View className={`flex-1 flex flex-col justify-between
+                    px-4 py-2 rounded-t-2xl my-2
                     ${isDark ? 'bg-darkGray-600' : 'bg-gray-100'}
                 `}>
-                    <Text className={`${textStyle} text-2xl font-ralewayExtraBold text-center mb-4`}>
-                        {currentExercise?.nombre}
-                    </Text>
+                <Text
+                    numberOfLines={1}
+                    className={`${textStyle} text-4xl font-ralewayExtraBold mb-4`}>
+                    {currentExercise?.name ?? "EJERCICIO "}
+                </Text>
 
-                    <View className="flex-row justify-around mb-6">
-                        <InfoPill
-                            icon="repeat-outline"
-                            value={`${currentExercise?.series} series`}
-                            isDark={isDark}
-                        />
-                        <InfoPill
-                            icon="fitness-outline"
-                            value={`${currentExercise?.repeticiones} reps`}
-                            isDark={isDark}
-                        />
+                <View className="flex flex-row justify-between items-center mb-6 w-full ">
+
+                    <View className="w-1/3 flex flex-col items-start">
+                        <View className="flex flex-row items-center justify-center">
+                            <Ionicons
+                                name="repeat-outline"
+                                size={24}
+                                color={isDark ? '#fff' : '#374151'}
+                            />
+                            <Text className={`${textStyle} text-xl font-ralewayExtraBold`}>
+                                1/{currentExercise?.sets}
+                            </Text>
+                        </View>
+                        <View className="flex flex-row items-center justify-center">
+                            <Ionicons
+                                name="repeat-outline"
+                                size={24}
+                                color={isDark ? '#fff' : '#374151'}
+                            />
+                            <Text className={`${textStyle} text-xl font-ralewayExtraBold`}>
+                                {currentExercise?.reps} reps
+                            </Text>
+                        </View>
+
                     </View>
 
-                    {/* Barra de Progreso */}
-                    <View className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <Animated.View
-                            className="h-full bg-eBlue-500"
-                            style={{ width: progressWidth }}
+                    <View className="w-1/3 items-center">
+                        <IconButton
+                            onPress={togglePlay}
+                            icon={<Ionicons name={isPlaying ? "pause" : "play"} size={86} color={isDark ? '#fff' : '#374151'} />}
                         />
                     </View>
+                    <View className="w-1/3 items-end">
+                        <IconButton
+                            onPress={handleComplete}
+                            icon={<Ionicons name="checkmark-circle-outline" size={32} color={isDark ? '#fff' : '#374151'} />}
+                        />
+                    </View>
+                </View>
 
-                    {/* Tiempo Restante */}
-                    <Text className={`${textStyle} text-4xl font-ralewayExtraBold text-center my-6`}>
+                <View className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <Animated.View
+                        className="h-full bg-eBlue-500"
+                        style={{
+                            width: progressWidth as any, // Explicit type cast to avoid errors
+                        }}
+                    />
+                </View>
+
+                <View className="flex flex-row items-center justify-center mt-2">
+                    <Ionicons
+                        name="timer-outline"
+                        size={24}
+                        color={isDark ? '#fff' : '#374151'}
+                    />
+                    <Text className={`${textStyle} text-xl font-ralewayExtraBold`}>
                         {timeLeft}s
                     </Text>
                 </View>
 
-                {/* Siguiente Ejercicio */}
-                {nextExercise && (
-                    <View className={`
-                        p-4 rounded-xl mt-4
+                <View className={`
+                        my-2
                         ${isDark ? 'bg-darkGray-600' : 'bg-gray-100'}
                     `}>
-                        <Text className={`${textStyle} text-sm mb-2`}>Siguiente:</Text>
-                        <Text className={`${textStyle} text-lg font-ralewayBold`}>
-                            {nextExercise.nombre}
-                        </Text>
-                    </View>
-                )}
+                    <Text
+                        numberOfLines={1}
+                        className={`${textStyle} items-start text-lg mb-2`}>
+                        {nextExercise ? (
+                            `Siguiente: ${nextExercise.name ?? "EJERCICIO "}`
+                        ) : (
+                            "Estas cerca de completar la rutina :)"
+                        )}
 
-                {/* Controles */}
-                <View className="mb-8">
-                    <View className="flex-row justify-center items-center space-x-6 mb-6">
-                        {/* Play/Pause */}
-                        <Pressable
-                            onPress={togglePlay}
-                            className={`
-                                p-4 rounded-full
-                                ${isDark ? 'bg-darkGray-600' : 'bg-gray-100'}
-                            `}
-                        >
-                            <Ionicons
-                                name={isPlaying ? "pause" : "play"}
-                                size={32}
-                                color={isDark ? '#fff' : '#374151'}
-                            />
-                        </Pressable>
-
-                        {/* Completar */}
-                        <Pressable
-                            onPress={handleComplete}
-                            className="bg-eBlue-500 px-6 py-3 rounded-xl"
-                        >
-                            <Text className="text-white font-ralewayBold text-lg">
-                                Completar Ejercicio
-                            </Text>
-                        </Pressable>
-                    </View>
-
-                    {/* Progreso de la Rutina */}
-                    <Text className={`${textStyle} text-center`}>
-                        Ejercicio {currentExerciseIndex + 1} de {screenPlayExercises!.length}
                     </Text>
                 </View>
             </View>
@@ -168,21 +163,5 @@ const PlayExercise = () => {
     )
 }
 
-const InfoPill = ({ icon, value, isDark }: any) => (
-    <View className={`
-        flex-row items-center px-4 py-2 rounded-full
-        ${isDark ? 'bg-darkGray-500' : 'bg-white'}
-    `}>
-        <Ionicons
-            name={icon}
-            size={20}
-            color={isDark ? '#fff' : '#374151'}
-            style={{ marginRight: 8 }}
-        />
-        <Text className={`${isDark ? 'text-white' : 'text-darkGray-500'} font-ralewayBold`}>
-            {value}
-        </Text>
-    </View>
-)
 
 export default PlayExercise
