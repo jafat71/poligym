@@ -1,16 +1,23 @@
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View, StatusBar } from 'react-native';
 import Modal from 'react-native-modal';
-import { useTheme } from '@/context/ThemeContext';
 import { ScrollView } from 'react-native-gesture-handler';
-import { termsContent } from '@/constants';
+
 import { FloatingModalProps } from '@/types/interfaces/ui';
+
+import { useTheme } from '@/context/ThemeContext';
+
+import { termsContent } from '@/constants';
+import { Ionicons } from '@expo/vector-icons';
+import MainLogoCustomComponent from '../logo/mainLogo';
+import CTAButtonPrimary from '../buttons/CtaButtonPrimary';
 
 const TermsModal = ({
     modalVisible,
     toggleModal,
 }: FloatingModalProps) => {
     const { isDark } = useTheme();
+
     return (
         <Modal
             isVisible={modalVisible}
@@ -23,24 +30,40 @@ const TermsModal = ({
             backdropTransitionOutTiming={0}
             style={{ margin: 0 }}
         >
+            <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+            
             <View className={`w-full h-full
                 ${isDark ? "bg-darkGray-500 text-white" : "bg-white text-darkGray-500"} 
-                p-2 rounded-sm items-start
+                py-2 px-4 rounded-sm items-start
                 `}
             >
                 <ScrollView>
                     <View className={`flex items-start justify-center `}>
-                        <Text className={`text-2xl font-ralewayBold text-center
-                ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                            Términos y Condiciones
-                        </Text>
 
-                        <Text className={`text-sm font-ralewayLight text-center
+                        <View className='w-full items-center justify-center'>
+                            <MainLogoCustomComponent 
+                                principal="#a6a6a6"
+                                height='50'
+                                width='50'
+                            />
+                        </View>
+                        <View className='flex flex-row items-center justify-between w-full'>
+                            <Text className={`text-4xl font-ralewayBold text-start
+                ${isDark ? "text-white" : "text-darkGray-500"}`}>
+                                Términos y Condiciones
+                            </Text>
+
+                            <View className='mr-2 border-2 border-darkGray-200 rounded-full p-2'>
+                                <Ionicons name="document-outline" size={36} color={`${isDark ? "white" : "#a6a6a6"}`} />
+                            </View>
+                        </View>
+
+                        <Text className={`text-sm font-raleway text-center
                 ${isDark ? "text-white" : "text-darkGray-500"} mb-4`}>
                             Última actualización: 06/10/2024
                         </Text>
 
-                        <Text className={`text-sm font-ralewayLight min-w-full
+                        <Text className={`text-sm font-raleway min-w-full
                 ${isDark ? "text-white" : "text-darkGray-500"} mb-2 text-justify`}>
                             Bienvenido a la aplicación POLIGYM. Esta aplicación ha sido diseñada para facilitar a los estudiantes,
                             profesores y personal administrativo de la Escuela Politécnica Nacional el acceso a los servicios del gimnasio de la universidad.
@@ -50,11 +73,11 @@ const TermsModal = ({
 
                         {termsContent.map((term, index) => (
                             <View key={index}>
-                                <Text className={`text-2xl font-ralewayBold min-w-full
+                                <Text className={`text-xl font-ralewayBold min-w-full
                     ${isDark ? "text-white" : "text-darkGray-500"} mt-2 mb-2`}>
                                     {term.title}
                                 </Text>
-                                <Text className={`text-sm font-ralewayLight min-w-full
+                                <Text className={`text-sm font-raleway min-w-full
                     ${isDark ? "text-white" : "text-darkGray-500"} mb-2 text-justify`}>
                                     {term.description}
                                 </Text>
@@ -64,14 +87,10 @@ const TermsModal = ({
 
                     </View>
                 </ScrollView>
-                <Pressable
-                    className={`mt-4 rounded-sm w-full p-2 bg-eBlue-500 my-2`}
+                <CTAButtonPrimary
                     onPress={toggleModal}
-                >
-                    <Text className={`text-base font-ralewayBold text-center text-white`}>
-                        Entendido
-                    </Text>
-                </Pressable>
+                    text='Entendido'
+                />
             </View>
         </Modal>
     );

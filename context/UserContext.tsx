@@ -3,7 +3,6 @@ import { getToken } from '@/lib/token/store';
 import { TrainingPlan } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
-import { useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'expo-router';
 import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
@@ -30,14 +29,16 @@ interface UserProviderProps {
     children: ReactNode;
 }
 
+import * as SecureStore from "expo-secure-store";
+import { SocialPost } from '@/types/interfaces/entities/post';
+
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [userLogged, setUserLogged] = useState(false);
     const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const pathname = usePathname()
     const [userSelectedPlan, setUserSelectedPlan] = useState<TrainingPlan | null>(null)
-    const queryClient = useQueryClient();
-   
+
     useEffect(() => {
         getToken('accessToken')
             .then((token) => {
@@ -73,7 +74,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     useEffect(() => {
         if (userLogged) {
-            if (pathname !== '/form01') {
+            if (pathname !== '/form00') {
                 if(pathname !== '/home'){
                     router.replace('/(root)/(tabs)/home')
                 }
@@ -91,10 +92,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         console.log("accessToken", accessToken)
         getRefreshToken()
     }, [accessToken])
-
-    useEffect(() => {
-        console.log("Cache completo:", queryClient.getQueryCache().getAll());
-    }, [queryClient]);
 
     return (
         <UserContext.Provider value={{

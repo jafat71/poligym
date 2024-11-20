@@ -1,20 +1,25 @@
+import React, { useState } from 'react';
+import { Alert, SafeAreaView, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import Checkbox from 'expo-checkbox';
+import { router } from 'expo-router';
+
+import { deleteToken } from '@/lib/token/store';
+
+import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
 
 import LightDarkButton from '@/components/ui/common/buttons/LightDarkButton';
 import AboutModal from '@/components/ui/common/modal/AboutModal';
 import FaqModal from '@/components/ui/common/modal/FaqModal';
 import TermsModal from '@/components/ui/common/modal/TermsModal';
-import { useTheme } from '@/context/ThemeContext';
-import { useUser } from '@/context/UserContext';
-import { deleteToken } from '@/lib/token/store';
-import Checkbox from 'expo-checkbox';
-import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useMutation } from '@tanstack/react-query';
+import { logout } from '@/lib/api/auth';
 
 const Config = () => {
     const { isDark } = useTheme()
-    const { setAccessToken } = useUser()
+    const { setAccessToken, accessToken } = useUser()
     const [notificationEnabled, setNotificationEnabled] = useState(false);
     const [termsVisible, setTermsVisible] = useState(false);
     const [faqVisible, setFAQVisible] = useState(false);
@@ -32,11 +37,21 @@ const Config = () => {
         setAboutVisible(!aboutVisible);
     };
 
+    const logoutMutation = useMutation({
+        mutationFn: () => logout(accessToken!),
+    });
+
     const handleSignOut = async () => {
-        await deleteToken('accessToken')
-        await deleteToken('refreshToken')
-        setAccessToken(null)
-        router.replace('/(auth)/signin')
+        Alert.alert('Salir', '¿Estás seguro de querer salir de POLIGYM APP?', [
+            { text: 'Cancelar', style: 'cancel' },
+            { text: 'Salir', onPress: async () =>{ 
+                router.replace('/welcome')
+                await deleteToken('accessToken')
+                await deleteToken('refreshToken')
+                setAccessToken(null)
+                logoutMutation.mutate()
+            } }
+        ])
     }
 
     const textStyle = `text-lg ml-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `
@@ -45,7 +60,7 @@ const Config = () => {
     const itemStyle = 'justify-start w-full my-2'
 
     return (
-        <SafeAreaView className={`flex flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"} py-6`}>
+        <SafeAreaView className={`flex flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"} py-6`}>
             <View className='pr-2'>
 
                 <View className={`pb-5`}>

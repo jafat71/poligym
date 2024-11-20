@@ -15,13 +15,14 @@ const Welcome = () => {
         <View className={`flex flex-1 flex-col justify-center ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
 
             <OnBoardingSwiper />
-            <View className='flex flex-col items-center justify-center py-2'>
+            <View className='flex flex-col items-center justify-center'>
 
                 <CTAButtonPrimary
                     onPress={() => {
                         router.push('/(auth)/signup')
                     }}
                     text='Registrarse'
+                    extraClassname={`rounded-none shadow-2xl shadow-${isDark ? 'white' : 'black'}`}
                 />
 
                 <CTAButtonSecondary

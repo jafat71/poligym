@@ -1,4 +1,5 @@
 import ImagePicker from '@/components/ui/common/image/ImagePicker';
+import SimpleInfoComponent from '@/components/ui/common/info/SimpleInfoComponent';
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
 import { useTheme } from '@/context/ThemeContext';
 import React, { useEffect, useState } from 'react';
@@ -73,12 +74,12 @@ const Form05 = () => {
                 </View>
             </View>
 
-            <Text className={`text-sm font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} my-2 `}>
-                Al habilitar las notificaciones en nuestra app, podrás recibir información clave y personalizada, como:
+            <SimpleInfoComponent
+                text="Al habilitar las notificaciones en nuestra app, podrás recibir información clave y personalizada, como:
                 recordatorios de tus sesiones de entrenamiento,
                 actualizaciones sobre horarios y eventos especiales en el gimnasio,
-                consejos de bienestar y salud, entre otras.
-            </Text>
+                consejos de bienestar y salud, entre otras."
+            />
 
         </>
     );

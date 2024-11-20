@@ -1,5 +1,6 @@
 import { emptyUser } from '@/constants';
 import { ExerciseAPI, ExerciseInWorkoutAPI, IndividualExercise, PlanAlimentacion, RoutinePlan, TrainingPlan, WorkoutAPI } from '@/types/interfaces/entities/plan';
+import { SocialPost } from '@/types/interfaces/entities/post';
 import { User } from '@/types/interfaces/entities/user';
 import React, { createContext, useContext, ReactNode, useState, Dispatch, SetStateAction, useEffect } from 'react';
 
@@ -12,6 +13,8 @@ interface NavigationFlowContextType {
     setScreenPlayExercises: Dispatch<SetStateAction<ExerciseInWorkoutAPI[] | null>>;
     tmpUser: User | null;
     updateInitUserShell: (updatedFields: Partial<User>) => void;
+    userPosts: SocialPost[];
+    setUserPosts: Dispatch<SetStateAction<SocialPost[]>>;
 }
 
 const NavigationFlowContext = createContext<NavigationFlowContextType>({
@@ -23,6 +26,8 @@ const NavigationFlowContext = createContext<NavigationFlowContextType>({
     setScreenPlayExercises: () => { },
     tmpUser: emptyUser,
     updateInitUserShell: () => { },
+    userPosts: [],
+    setUserPosts: () => { },
 });
 
 interface NavigationFlowProviderProps {
@@ -34,6 +39,16 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
     const [screenExercise, setScreenExercise] = useState<IndividualExercise | null>(null);
     const [tmpUser, setTmpUSer] = useState<User | null>(emptyUser);
     const [screenPlayExercises, setScreenPlayExercises] = useState<ExerciseInWorkoutAPI[] | null>(null);
+
+    const [userPosts, setUserPosts] = useState<SocialPost[]>([]);
+    
+    // useEffect(() => {
+    //     console.log("tmpUser", tmpUser)
+    // }, [tmpUser])
+
+    useEffect(() => {
+        console.log("userPosts", userPosts)
+    }, [userPosts])
 
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
         if (updatedFields === null) {
@@ -77,6 +92,8 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
             setScreenExercise,
             screenPlayExercises,
             setScreenPlayExercises,
+            userPosts,
+            setUserPosts,
         }}>
             {children}
         </NavigationFlowContext.Provider>

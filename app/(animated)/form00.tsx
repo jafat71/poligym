@@ -1,39 +1,27 @@
-
-
 import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
-import MainLogoGradientComponent from '@/components/ui/common/logo/mainLogoGrandient';
-import { FloatingMessage } from '@/components/animatedUi/FloatingMessage';
+
 import { router } from 'expo-router';
-import { useUser } from '@/context/UserContext';
+
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
+
+import { emptyUser } from '@/constants';
+
+import WelcomeAnimatedLoading from '@/components/animatedUi/WelcomeAnimatedLoading';
+
 const Form00 = () => {
 
-    const {setEmptyUser} = useUser()
+    const {updateInitUserShell} = useNavigationFlowContext()
     useEffect(() => {
-        setEmptyUser()
+        updateInitUserShell(emptyUser)
         setTimeout(() => {
             router.replace('/(init)/form01')
-        }, 2000);
+        }, 3000);
     }, [])
     
-
     return (
-
         <SafeAreaView className={`p-2 pt-6 flex flex-1 flex-col justify-center items-center bg-eBlue-500`}>
-
-            <MainLogoGradientComponent
-                height='100'
-                width='100'
-                principal='#FFF'
-                secondary='#FFF'
-            />
-
-        <FloatingMessage
-            text='Estamos listos para empezar'
-            distance={15}
-            duration={1000}
-        />
-        
+            <WelcomeAnimatedLoading/>
         </SafeAreaView>
     );
 };

@@ -68,7 +68,7 @@ const Form04 = () => {
     return (
         <>
 
-            <View className={`mt-2 pb-5 `}>
+            <View className={`mt-2`}>
                 <View className={`py-2`}>
                     <View className={` w-full items-start`}>
                         <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu horario preferido de entrenamiento?</Text>
@@ -86,9 +86,9 @@ const Form04 = () => {
                             ]}
                         selectedValue={selectedSchedule}
                         setSelectedValue={setSelectedSchedule}
-                        rbComponentStyle='w-full mt-2'
-                        rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
-                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `}
+                        rbComponentStyle='w-full'
+                        rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
+                        rbIndividualTextBtnStyle={`text-lg p-2  font-ralewayExtraBold `}
                     />
 
                     <WeekChecklistComponent

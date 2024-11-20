@@ -1,11 +1,16 @@
-
-import NumericInputInitForm from '@/components/ui/common/form/NumericInputInitForm';
-import { useTheme } from '@/context/ThemeContext';
-import { Ionicons } from '@expo/vector-icons';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { transformToValidZInput } from '@/lib/utils/transform';
+
+import { Ionicons } from '@expo/vector-icons';
+
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
+import { useTheme } from '@/context/ThemeContext';
+
+import { transformToValidZInput } from '@/lib/utils/transform';
+
+import NumericInputInitForm from '@/components/ui/common/form/NumericInputInitForm';
+import SimpleInfoComponent from '@/components/ui/common/info/SimpleInfoComponent';
+
 const Form01 = () => {
     const { isDark } = useTheme()
     const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
@@ -14,6 +19,7 @@ const Form01 = () => {
     const [weightInput, setWeightINput] = useState('');
     const [heightInput, setHeightINput] = useState('');
 
+    //TODO: Eliminar tmpuUser e impactar directamente BK
     useEffect(() => {
         let userweight = tmpUser?.userWeight
         setWeightINput(String(userweight) || '')
@@ -64,8 +70,7 @@ const Form01 = () => {
     return (
         <>
 
-            <View className={`mt-2 pb-5 `}>
-                <View className={`py-2`} >
+            <View className={`mt-2`}>
                     <NumericInputInitForm
                         title='¿Cuántos años tienes?'
                         icon={<Ionicons name="balloon-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -76,9 +81,6 @@ const Form01 = () => {
                         inputOnChangeText={validateAgeInpuChange}
                         maxLength={2}
                     />
-                </View>
-
-                <View className={`py-2`} >
 
                     <NumericInputInitForm
                         title='¿Cuál es tu peso? (KG)'
@@ -91,9 +93,6 @@ const Form01 = () => {
                         inputOnChangeText={validateWeightChange}
                     />
 
-                </View>
-
-                <View className={`py-2`}>
                     <NumericInputInitForm
                         title='¿Cuál es tu altura? (CM)'
                         icon={<Ionicons name="resize-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -103,12 +102,12 @@ const Form01 = () => {
                         inputValue={heightInput}
                         inputOnChangeText={validateHeightChange}
                     />
-                </View>
             </View>
 
-            <Text className={`text-sm font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} my-2 `}>
-                POLIGYM APP utiliza kilogramos (kg) para el peso y centímetros (cm) para la altura. Por favor, introduce solo números enteros en estos campos. Esto nos ayuda a procesar tus datos de manera más rápida y eficiente.
-            </Text>
+            <SimpleInfoComponent
+                text="POLIGYM APP utiliza kilogramos (kg) para el peso y centímetros (cm) para la altura. Introduce SOLO números enteros en estos campos. Esto nos ayuda a procesar tus datos de manera más rápida y eficiente."
+            />
+
         </>
     );
 };

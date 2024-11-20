@@ -104,15 +104,8 @@ const Signin = () => {
           onPress={handleSubmit}
           text={signinMutation.isPending ? '' : 'Ingresar'}
           disabled={signinMutation.isPending}
-        >
-          {signinMutation.isPending && (
-            <ActivityIndicator
-              size="small"
-              color="white"
-              style={{ marginLeft: 10 }}
-            />
-          )}
-        </CTAButtonPrimary>
+          isLoading={signinMutation.isPending}
+        />
 
       </View>
 

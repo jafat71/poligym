@@ -22,7 +22,22 @@ export const signUp = async (name: string, email: string, password: string) => {
             await extractRefreshToken(cookies);
         }
         return { accessToken };
-    } catch (error) {
+    } catch (error: any) {
+        console.error('Error al registrar el usuario', error);
+        
+        if (error.response) {
+            console.log('Error status:', error.response.status);
+            console.log('Error data:', error.response.data);
+
+            switch (error.response.status) {
+                case 500:
+                    throw new Error(`Error en creación de usuario: ${error.response.data.message || 'No se proporcionaron detalles adicionales'}`);
+            }
+        } else if (error.request) {
+            throw new Error('No se recibió respuesta del servidor. Por favor, verifique su conexión a internet.');
+        } else {
+            throw new Error(`Error al realizar la solicitud: ${error.message}`);
+        }
         throw error;
     }
 };
@@ -159,6 +174,18 @@ export const resetPassword = async (code: string, newPassword: string) => {
         return response.data;
     } catch (error) {
         console.error('Error al restablecer la contraseña');
+        throw error;
+    }
+}
+
+export const logout = async (token: string) => {
+    try {
+        const response = await axiosInstance.post('/auth/logout', {}, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error al cerrar la sesión');
         throw error;
     }
 }

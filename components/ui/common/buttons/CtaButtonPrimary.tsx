@@ -6,13 +6,16 @@ interface Props {
     text: string,
     disabled?: boolean,
     isLoading?: boolean,
+    extraClassname?: string
 }
 
-const CTAButtonPrimary = ({ onPress, text, disabled, isLoading }: Props) => {
+const CTAButtonPrimary = ({ onPress, text, disabled = false, isLoading = false, extraClassname = "" }: Props) => {
+
     const handlePress = (event: GestureResponderEvent) => {
         Keyboard.dismiss();
         onPress?.(event);
     };
+    
     return (
         <Pressable
             onPress={handlePress}
@@ -20,7 +23,7 @@ const CTAButtonPrimary = ({ onPress, text, disabled, isLoading }: Props) => {
             disabled={disabled}
         >
             <View className={`w-full rounded-sm flex-row justify-center items-center
-                bg-eBlue-500 px-28 py-4`}>
+                bg-eBlue-500 px-28 py-4 ${extraClassname}`}>
                 {
                     isLoading ? (
                         <ActivityIndicator color="white" />

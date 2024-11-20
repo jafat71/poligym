@@ -114,7 +114,7 @@ const EditProfile = () => {
 
 
                         <View className='py-2'>
-                            <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Género</Text>
+                            <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Género</Text>
                             <RadioButtonIconComponent
                                 options={genresOptions}
                                 icons={[
@@ -130,14 +130,14 @@ const EditProfile = () => {
                                 ]}
                                 selectedValue={selectedGenre}
                                 setSelectedValue={setSelectedGenre}
-                                rbComponentStyle='w-full mt-2'
-                                rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
-                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold`}
+                                rbComponentStyle='w-full'
+                                rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
+                                rbIndividualTextBtnStyle={`text-sm p-2  font-ralewayExtraBold `}
                             />
                         </View>
 
                         <View className={`py-2`}>
-                            <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Objetivo</Text>
+                            <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Objetivo</Text>
                             <RadioButtonIconComponent
                                 options={objetiveOptions}
                                 icons={[
@@ -153,14 +153,14 @@ const EditProfile = () => {
                                 ]}
                                 selectedValue={selectedObjetive}
                                 setSelectedValue={setSelectedObjetive}
-                                rbComponentStyle='w-full mt-2'
-                                rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
-                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold `}
+                                rbComponentStyle='w-full'
+                                rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
+                                rbIndividualTextBtnStyle={`text-sm p-2  font-ralewayExtraBold `}
                             />
                         </View>
 
                         <View className={`py-2`}>
-                            <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu experiencia?</Text>
+                            <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu experiencia?</Text>
                             <RadioButtonIconComponent
                                 options={experienceOptions}
                                 icons={[
@@ -176,9 +176,9 @@ const EditProfile = () => {
                                 ]}
                                 selectedValue={selectedExperience}
                                 setSelectedValue={setSelectedExperience}
-                                rbComponentStyle='w-full mt-2'
-                                rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
-                                rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `}
+                                rbComponentStyle='w-full'
+                                rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
+                                rbIndividualTextBtnStyle={`text-sm p-2  font-ralewayExtraBold `}
                             />
 
                         </View>
@@ -186,7 +186,7 @@ const EditProfile = () => {
                         <View className={`py-2`}>
 
                             <View className={`pb-5 `}>
-                                <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Tienes algún problema médico?</Text>
+                                <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Tienes algún problema médico?</Text>
                             </View>
 
                             <View className='mt-1'>
@@ -203,16 +203,16 @@ const EditProfile = () => {
                                             size={35}
                                             color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
                                     ]}
-                                    rbComponentStyle='w-full '
-                                    rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
-                                    rbIndividualTextBtnStyle={`text-base  font-ralewayBold `}
+                                    rbComponentStyle='w-full'
+                                    rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
+                                    rbIndividualTextBtnStyle={`text-sm p-2  font-ralewayExtraBold `}
                                     selectedValue={selectedMedicalProblem}
                                     setSelectedValue={setSelectedMedicalProblem}
                                 />
 
                                 <>
                                     <View className={` w-full items-start`}>
-                                        <Text className={`text-lg mb-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Detalle de problema médico</Text>
+                                        <Text className={`text-sm mb-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Detalle de problema médico</Text>
                                     </View>
                                     <TextInput
                                         className={`
@@ -235,7 +235,7 @@ const EditProfile = () => {
 
                                 <View className={`py-2`}>
                                     <View className={` w-full items-start`}>
-                                        <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Horario  de entrenamiento</Text>
+                                        <Text className={`text-sm mb-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Horario  de entrenamiento</Text>
                                     </View>
 
                                     <RadioButtonIconComponent
@@ -250,9 +250,9 @@ const EditProfile = () => {
                                         ]}
                                         selectedValue={selectedSchedule}
                                         setSelectedValue={setSelectedSchedule}
-                                        rbComponentStyle='w-full mt-2'
-                                        rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
-                                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `}
+                                        rbComponentStyle='w-full'
+                                        rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
+                                        rbIndividualTextBtnStyle={`text-sm p-2  font-ralewayExtraBold `}
                                     />
 
                                     <WeekChecklistComponent

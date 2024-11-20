@@ -1,12 +1,16 @@
-import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
-import { useTheme } from '@/context/ThemeContext';
-import { Experience, Objetive } from '@/types/interfaces/entities/user';
-import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { experienceMapper, experienceOptions, genreMapper, genresOptions, objetiveMapper, objetiveOptions } from '@/constants';
-import { Genre } from '../../../types/interfaces/entities/user';
+
+import { Ionicons } from '@expo/vector-icons';
+
+import { useTheme } from '@/context/ThemeContext';
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
+
+import { experienceMapper, experienceOptions, genreMapper, genresOptions, objetiveMapper, objetiveOptions } from '@/constants';
+import { Experience, Objetive } from '@/types/interfaces/entities/user';
+import { Genre } from '../../../types/interfaces/entities/user';
+
+import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
 
 const Form02 = () => {
     const { isDark } = useTheme()
@@ -103,8 +107,8 @@ const Form02 = () => {
 
     return (
         <>
-            <View className={`mt-2 pb-5 `}>
-                <View className='py-2'>
+            <View className={`mt-2`}>
+                <View>
                         <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu género?</Text>
                         <RadioButtonIconComponent
                             options={genresOptions}
@@ -121,14 +125,14 @@ const Form02 = () => {
                             ]}
                             selectedValue={selectedGenre}
                             setSelectedValue={setSelectedGenre}
-                            rbComponentStyle='w-full mt-2'
-                            rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
-                            rbIndividualTextBtnStyle={`text-base  font-ralewayBold`}
+                            rbComponentStyle='w-full'
+                            rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
+                            rbIndividualTextBtnStyle={`text-lg p-2  font-ralewayExtraBold `}
                         />
                 </View>
 
 
-                <View className={`py-2`}>
+                <View>
                     <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu objetivo principal?</Text>
                     <RadioButtonIconComponent
                         options={objetiveOptions}
@@ -145,13 +149,13 @@ const Form02 = () => {
                             ]}
                         selectedValue={selectedObjetive}
                         setSelectedValue={setSelectedObjetive}
-                        rbComponentStyle='w-full mt-2'
-                        rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
-                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold `}
+                        rbComponentStyle='w-full'
+                        rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
+                        rbIndividualTextBtnStyle={`text-lg p-2  font-ralewayExtraBold `}
                     />
                 </View>
 
-                <View className={`py-2`}>
+                <View>
                     <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu experiencia?</Text>
                     <RadioButtonIconComponent
                         options={experienceOptions}
@@ -168,15 +172,13 @@ const Form02 = () => {
                         ]}
                         selectedValue={selectedExperience}
                         setSelectedValue={setSelectedExperience}
-                        rbComponentStyle='w-full mt-2'
-                        rbIndividualRadioButtonStyle='h-9 flex flex-col items-center justify-center mb-1'
-                        rbIndividualTextBtnStyle={`text-base  font-ralewayBold  `}
+                        rbComponentStyle='w-full '
+                        rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
+                        rbIndividualTextBtnStyle={`text-lg p-2  font-ralewayExtraBold `}
                     />
 
                 </View>
             </View>
-
-
 
         </>
     );

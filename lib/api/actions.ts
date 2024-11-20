@@ -2,6 +2,7 @@ import { EquipmentApi, ExerciseAPI, ExerciseInWorkoutAPI, TrainingPlanAPI, Worko
 import axiosInstance from "./config";
 import { mapApiEquipmentToEquipment, mapApiExerciseInWorkoutToExerciseInWorkout, mapApiExerciseToExercise, mapApiMuscleGroupToMuscleGroup, mapApiTrainingPlanToTrainingPlan, mapApiWorkoutToWorkout, mapIndividualApiExerciseToExercise, mapIndividualApiTrainingPlanToTrainingPlan, mapIndividualApiWorkoutToWorkout } from "@/types/mappers";
 import { MuscleGroups } from "@/types/types/muscles";
+import { SocialPost } from "@/types/interfaces/entities/post";
 
 interface FetchTrainingPlansResponse {
     plans: TrainingPlanAPI[];
@@ -174,6 +175,17 @@ export const fetchRecommendedWorkouts = async (token: string) : Promise<WorkoutA
         return mapApiWorkoutToWorkout(response.data.data);
     } catch (error) {
         console.error('Error al obtener las rutinas recomendadas');
+        throw error;
+    }
+}
+
+export const createPost = async (token: string, post: SocialPost) => {
+    try {
+        //const response = await axiosInstance.post(`/post/create`, post, { headers: { 'Authorization': `Bearer ${token}` } });
+        //return response.data;
+        return post;
+    } catch (error) {
+        console.error('Error al crear la publicación');
         throw error;
     }
 }

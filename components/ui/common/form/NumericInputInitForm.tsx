@@ -1,11 +1,9 @@
-
-
-import { useTheme } from '@/context/ThemeContext';
-import { NumericInputForm } from '@/types/interfaces/ui';
 import React, { useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
-import IconButton from '../buttons/IconButton';
-import { Ionicons } from '@expo/vector-icons';
+
+import { useTheme } from '@/context/ThemeContext';
+
+import { NumericInputForm } from '@/types/interfaces/ui';
 
 const NumericInputInitForm = (
     {
@@ -19,9 +17,6 @@ const NumericInputInitForm = (
         enabled = true,
         maxLength = 3,
         alert = false,
-        alertMessage = "",
-        subFn,
-        addFn
     }: NumericInputForm
 ) => {
     const { isDark } = useTheme()
@@ -30,18 +25,11 @@ const NumericInputInitForm = (
     return (
         <View className='flex flex-col items-start w-full max-w-md mx-auto' >
             <Text className={`text-lg  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>{title}</Text>
-            <View
-                className={`mt-2 border-[2px]  rounded-lg 
-                    ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
-                    isDark ? "border-darkGray-400 opacity-70" : "border-darkGray-500 opacity-70"
-                    }`}
-            >
+            <View className={`flex-row items-center p-1 border-2 mb-2 
+                ${isDark ? "border-darkGray-400" : "border-gray-300" } 
+                ${focused ? "border-eBlue-500" : ""} transition-all duration-800`}>
                 <View className="flex flex-row items-center justify-center w-full">
-                    <View
-                        className={`border-r-[1px] ${focused ? (isDark ? "border-blue-500" : "border-blue-500") :
-                            isDark ? "border-darkGray-400" : "border-darkGray-500"
-                            }`}
-                    >
+                    <View>
                         {icon}
                     </View>
                     <TextInput

@@ -1,15 +1,19 @@
+import React, { useEffect, useRef } from "react";
+import { Animated, Image, Text, View } from "react-native";
+import { ParamListBase, TabNavigationState } from "@react-navigation/native";
 import {
     MaterialTopTabNavigationEventMap,
     MaterialTopTabNavigationOptions,
     createMaterialTopTabNavigator,
 } from "@react-navigation/material-top-tabs";
+
 import { router, withLayoutContext } from "expo-router";
-import { ParamListBase, TabNavigationState } from "@react-navigation/native";
-import { Image, Pressable, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from "@/context/ThemeContext";
 import { Ionicons } from "@expo/vector-icons";
+
+import { useTheme } from "@/context/ThemeContext";
 import { useUser } from "@/context/UserContext";
+
+import IconButton from "@/components/ui/common/buttons/IconButton";
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -20,85 +24,99 @@ export const MaterialTopTabs = withLayoutContext<
     MaterialTopTabNavigationEventMap
 >(Navigator);
 
-
 export default function TabLayout() {
-    const { isDark } = useTheme()
-    const { loggedUserInfo } = useUser()
+    const { isDark } = useTheme();
+    const { loggedUserInfo } = useUser();
+
+    const fadeAnim = useRef(new Animated.Value(0)).current; // Inicializa la opacidad
+
+    useEffect(() => {
+        Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+        }).start();
+    }, [fadeAnim]);
 
     return (
-        <SafeAreaView className={`flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
+        <View className={`flex-1 bg-eBlue-500`}>
 
-<View className="px-4">
-                {/* Perfil header */}
-                <View className="flex-row items-center justify-between">
-                    <View className="flex-row items-center">
-                        <View className={`rounded-full w-16 h-16 
-                            flex items-center justify-center
-                            border-[2px] border-eBlue-500 
-                            ${isDark ? "" : "bg-darkGray-200"}`}>
-                            {
-                                loggedUserInfo?.userProfileImgUrl ? (
-                                    <Image source={{ uri: loggedUserInfo.userProfileImgUrl }} 
-                                        className='w-full h-full rounded-full' 
-                                        resizeMode='contain' />
-                                ) : (
-                                    <Text className="text-xl font-raleway text-eBlue-500">
-                                        {loggedUserInfo?.userName?.split(' ').map(name => name[0]).join('')}
-                                    </Text>
-                                )
-                            }
-                        </View>
-                        <View className="pl-3">
-                            <Text className={`text-2xl font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                                {loggedUserInfo?.userName}
+
+            <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
+
+                <View className="flex-row items-center px-4 py-2">
+                    <View className={`rounded-full w-20 h-20 flex items-center justify-center border-[2px] border-eBlue-100`}>
+                        {loggedUserInfo?.userProfileImgUrl ? (
+                            <Image source={{ uri: loggedUserInfo.userProfileImgUrl }}
+                                className='w-full h-full rounded-full'
+                                resizeMode='contain' />
+                        ) : (
+                            <Text className="text-4xl font-raleway text-eBlue-100">
+                                {loggedUserInfo?.userName?.split(' ').map(name => name[0]).join('')}
                             </Text>
-                            <Text className={`text-base font-raleway ${isDark ? "text-white" : "text-darkGray-400"}`}>
-                                {loggedUserInfo?.userEmail}
-                            </Text>
-                        </View>
+                        )}
                     </View>
+                    <View className="pl-3 flex-1">
+                        <Text
+                            numberOfLines={2}
+                            className={`text-2xl font-ralewayBold text-white flex-wrap`}>
+                            {loggedUserInfo?.userName}
+                        </Text>
+                        <Text
+                            numberOfLines={1}
+                            className={`text-xs font-raleway text-white`}>
+                            {loggedUserInfo?.userEmail}
+                        </Text>
+                    </View>
+                    <View>
+                        <IconButton
+                            icon={<Ionicons name="pencil-outline" size={24} color="white" />}
+                            onPress={() => {
+                                router.push('/(root)/(config)/updateinformation')
+                            }}
+                        />
+                    </View>
+
                 </View>
 
-                <View className="mt-4 px-4">
-             
-            </View>
-            </View>
+                <MaterialTopTabs
+                    screenOptions={{
+                        lazy: true,
+                    }}
+                >
+                    <MaterialTopTabs.Screen name="public" options={{
+                        title: "Público",
+                        tabBarStyle: {
+                            backgroundColor: "#0055f9",
+                        },
+                        tabBarActiveTintColor: '#fff',
+                        tabBarLabelStyle: {
+                            color: '#fff',
+                            fontFamily: 'Raleway-ExtraBold'
+                        },
+                        tabBarIndicatorStyle: {
+                            backgroundColor: isDark ? '#1c1c1c' : '#fff',
+                            padding: 2
+                        }
+                    }} />
+                    <MaterialTopTabs.Screen name="private" options={{
+                        title: "Privado",
+                        tabBarStyle: {
+                            backgroundColor: "#0055f9",
+                        },
+                        tabBarActiveTintColor: '#fff',
+                        tabBarLabelStyle: {
+                            color: '#fff',
+                            fontFamily: 'Raleway-ExtraBold'
+                        },
+                        tabBarIndicatorStyle: {
+                            backgroundColor: isDark ? '#1c1c1c' : '#fff',
+                            padding: 2
+                        }
+                    }} />
+                </MaterialTopTabs>
+            </Animated.View>
 
-
-            <MaterialTopTabs>
-                <MaterialTopTabs.Screen name="public" options={{
-                    title: "Público",
-                    tabBarStyle: {
-                        backgroundColor: isDark ? "#1c1c1c" : "#fff",
-                    },
-                    tabBarActiveTintColor: '#0055f9',
-                    tabBarLabelStyle: {
-                        color: '#0055f9',
-                        fontFamily: 'Raleway-Bold'
-                    },
-                    tabBarIndicatorStyle: {
-                        backgroundColor: '#0055f9',
-                        padding: 2
-                    }
-                }} />
-                <MaterialTopTabs.Screen name="private" options={{
-                    title: "Privado",
-                    tabBarStyle: {
-                        backgroundColor: isDark ? "#1c1c1c" : "#fff",
-                    },
-                    tabBarActiveTintColor: '#0055f9',
-                    tabBarLabelStyle: {
-                        color: '#0055f9',
-                        fontFamily: 'Raleway-Bold'
-                    },
-                    tabBarIndicatorStyle: {
-                        backgroundColor: '#0055f9',
-                        padding: 2
-                    }
-                }} />
-            </MaterialTopTabs>
-
-
-        </SafeAreaView>
+        </View>
     );
 }

@@ -545,6 +545,8 @@ export const socialPosts  = [
   }
 ];
 
+export const UserPosts = []
+
 
 export const exampleUser = {
   id: 1,

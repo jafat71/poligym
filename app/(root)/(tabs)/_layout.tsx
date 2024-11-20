@@ -187,7 +187,7 @@ export default function TabsLayout() {
         <Tabs.Screen name="(profile)" options={{
           headerTitle: () => (
             <View className='w-full items-center p-4'>
-              <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Tus Posts</Text>
+              <Text className={`text-xl font-ralewayBold text-start text-white `}>Tus Posts</Text>
             </View>
           ),
           headerLeft: () => (
@@ -197,7 +197,7 @@ export default function TabsLayout() {
               }}
               className='ml-4'
             >
-              <Ionicons name="arrow-back" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+              <Ionicons name="arrow-back" size={24} color={"#fff"} />
             </Pressable>
           ),
           headerRight: () => (
@@ -207,13 +207,13 @@ export default function TabsLayout() {
               }}
               className='mr-4'
             >
-              <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+              <Ionicons name="settings-outline" size={24} color={"#fff"} />
             </Pressable>
           ),
           headerStyle: {
-            backgroundColor: isDark ? '#1c1c1c' : '#fff',
+            backgroundColor: '#0055f9',
           },
-          headerTintColor: isDark ? "#fff" : "#1c1c1c",
+          headerTintColor: "#fff",
           headerTitleAlign: 'center',
           tabBarIcon: ({ focused }) => (
             <TabIcon

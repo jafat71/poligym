@@ -10,6 +10,8 @@ import { DIFFICULTIES } from '@/constants';
 import { SocialPost } from '@/types/interfaces/entities/post';
 import ThemeHomePill from '../pills/ThemeHomePill';
 import CTAButtonPrimary from '../buttons/CtaButtonPrimary';
+import { createPost } from '@/lib/api/actions';
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
 
 interface Props {
     isVisible: boolean;
@@ -25,7 +27,8 @@ const CreatePostModal = ({
     post,
 }: Props) => {
     const { isDark } = useTheme()
-    const { loggedUserInfo } = useUser()
+    const { loggedUserInfo, accessToken } = useUser()
+    const { setUserPosts } = useNavigationFlowContext()
     const [content, setContent] = useState(defaultMessage);
     const [image, setImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -50,28 +53,30 @@ const CreatePostModal = ({
         }
     };
 
-    const handleCreatePost = async (content: string, image?: string) => {
-        await new Promise(resolve => setTimeout(resolve, 3000))
-        // try {
-        //     await createPost({
-        //         content,
-        //         image,
-        //         workoutId: workoutId,
-        //         duration: workoutDuration,
-        //         accessToken: accessToken!
-        //     });
-        //     // Actualizar la caché de posts si es necesario
-        //     queryClient.invalidateQueries(['posts']);
-        // } catch (error) {
-        //     console.error('Error creating post:', error);
-        //     Alert.alert('Error', 'No se pudo crear la publicación');
-        // }
+    const handleCreatePost = async () => {
+        const randomId = Math.floor(Math.random() * 1000) + 1;
+        post.id = randomId
+        post.publico = true
+        post.imagenComentario = image ?? ""
+        post.likes = 0
+        post.mensaje = content
+        post.oculto = false
+        post.nombre = loggedUserInfo?.userName ??  ""
+        console.log("post", post)
+        try {
+            await createPost(accessToken!, post as SocialPost);
+            // Actualizar la caché de posts si es necesario
+            //queryClient.invalidateQueries(['posts']);
+            setUserPosts((prevPosts) => [...prevPosts, post as SocialPost])
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
     };
 
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-            await handleCreatePost(content, image || undefined);
+            await handleCreatePost();
             onClose();
         } catch (error) {
             console.error('Error creating post:', error);

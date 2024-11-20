@@ -4,6 +4,8 @@ import MainLogoCustomComponent from '../logo/mainLogo';
 import { useTheme } from '@/context/ThemeContext';
 import SkipButton from '../buttons/SkipButton';
 import TermsModal from '../modal/TermsModal';
+import { Ionicons } from '@expo/vector-icons';
+import SimpleInfoComponent from '../info/SimpleInfoComponent';
 
 const FormHeaderComponent = () => {
     const { isDark } = useTheme();
@@ -21,21 +23,22 @@ const FormHeaderComponent = () => {
                 <View className='absolute w-full items-end my-4'>
                     <SkipButton />
                 </View>
-                <Text className={`w-full items-start text-3xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Queremos saber de ti</Text>
-            </View>
-
-            <View >
-                <Text className={`text-sm font-ralewaySemiBold text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>
-                    La información que nos proporciones nos permite personalizar tu experiencia en POLIGYM APP
+                <Text className={`w-full items-start text-4xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>
+                    Cuéntanos de ti
                 </Text>
-                <Pressable
-                    className='mt-2 '
-                    onPress={toggleTermseModal}
-                >
-                    <Text className={`text-eBlue-500 font-ralewaySemiBold`}>Más información sobre el uso de mis datos</Text>
-                </Pressable>
             </View>
 
+            <SimpleInfoComponent
+                text="La información que nos proporciones nos permite personalizar tu experiencia en POLIGYM APP"
+                pressable={
+                    <Pressable
+                        className='mt-2 '
+                        onPress={toggleTermseModal}
+                    >
+                        <Text className={`text-eBlue-500 font-ralewaySemiBold`}>Más información sobre el uso de mis datos</Text>
+                    </Pressable>
+                }
+            />
             <TermsModal
                 modalVisible={termsVisible}
                 toggleModal={() => toggleTermseModal()}

@@ -9,9 +9,10 @@ interface CustomListEmptyComponentProps {
     isFetchingNextPage: boolean;
     isError: boolean;
     hasNextPage: boolean;
+    text?: string;
 }
 
-const CustomListEmptyComponent = ({ isSearching, isFetchingNextPage, isError, hasNextPage }: CustomListEmptyComponentProps) => {
+const CustomListEmptyComponent = ({ isSearching, isFetchingNextPage, isError, hasNextPage, text = "No se encontraron resultados" }: CustomListEmptyComponentProps) => {
     const { isDark } = useTheme();
 
     if (isSearching || isFetchingNextPage) {
@@ -47,7 +48,7 @@ const CustomListEmptyComponent = ({ isSearching, isFetchingNextPage, isError, ha
                         principal={isDark ? "#515151" : "#6b7280"}
                     />
                     <Text className={`text-center ${isDark ? "text-gray-300" : "text-gray-500"} text-base font-raleway`}>
-                        No se encontraron resultados
+                        {text}
                     </Text>
                 </>
             ) : (

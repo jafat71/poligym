@@ -97,9 +97,7 @@ const Signup = () => {
             inputSecure={true}
           />
 
-
         </View>
-
 
         <View className='mb-5'>
           <AuthSupportButton
@@ -115,15 +113,9 @@ const Signup = () => {
           onPress={handleSubmit}
           text={signupMutation.isPending ? '' : 'Registrarse'}
           disabled={signupMutation.isPending}
-        >
-          {signupMutation.isPending && (
-            <ActivityIndicator
-              size="small"
-              color="white"
-              style={{ marginLeft: 10 }}
-            />
-          )}
-        </CTAButtonPrimary>
+          isLoading={signupMutation.isPending}
+        />
+
       </View>
 
       <View className='w-full items-center mt-1'>
@@ -147,7 +139,6 @@ const Signup = () => {
       <FormErrorAlert
         errors={errors}
       />
-
 
     </View>
   )

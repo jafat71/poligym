@@ -1,11 +1,15 @@
+import { KeyboardAvoidingView, Platform, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
+
+import { router, Slot, usePathname } from 'expo-router';
+
+import { useTheme } from '@/context/ThemeContext';
+
+import useRouteMappinginitForm from '@/hooks/useRouteMappinginitForm';
+
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import FormHeaderComponent from '@/components/ui/common/header/FormHeaderComponent';
-import { useTheme } from '@/context/ThemeContext';
-import useRouteMappinginitForm from '@/hooks/useRouteMappinginitForm';
-import { router, Slot, usePathname } from 'expo-router';
-import { KeyboardAvoidingView, Platform, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function RootLayout() {
   const { isDark } = useTheme()
@@ -19,14 +23,14 @@ export default function RootLayout() {
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          className='w-full px-2'
+          className='w-full px-4'
         >
 
           <FormHeaderComponent />
           <Slot />
 
         </ScrollView>
-        <View className='w-full px-2'>
+        <View className='w-full px-4'>
           <CTAButtonPrimary
             onPress={() => {
               
