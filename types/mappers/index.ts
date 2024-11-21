@@ -1,3 +1,4 @@
+import { Food, Meal, NutritionPlan, WeeklyMeal } from "../interfaces/entities/foodplan"
 import { EquipmentApi, ExerciseAPI, ExerciseInWorkoutAPI, IndividualExercise, RoutinePlan, TrainingPlan, TrainingPlanAPI, WorkoutAPI } from "../interfaces/entities/plan"
 import { User } from "../interfaces/entities/user"
 import { MuscleGroups } from "../types/muscles"
@@ -161,6 +162,10 @@ export const mapIndividualApiTrainingPlanToTrainingPlan = (data: any): TrainingP
     return mapApiTrainingPlanToTrainingPlan([data])[0];
 }
 
+export const mapIndividualApiNutritionPlanToNutritionPlan = (data: any): NutritionPlan => {
+    return mapApiNutritionPlanToNutritionPlan([data])[0];
+}
+
 export const mapApiMuscleGroupToMuscleGroup = (data: any): MuscleGroups[] => {
     if (data.length === 0) return [];
     return data.map((muscleGroup: any) => {
@@ -181,3 +186,57 @@ export const mapApiEquipmentToEquipment = (data: any): EquipmentApi[] => {
         };
     });
 }
+
+export const mapApiNutritionPlanToNutritionPlan = (data: any): NutritionPlan[] => {
+    return data.map((plan: any) => {
+        return {
+            id: plan.id,
+            name: plan.name,
+            description: plan.description,
+            imageURL: plan.imageURL ?? "",
+            duration: plan.duration,
+            category: plan.category,
+            weeklyMeals: mapApiWeeklyMealToWeeklyMeal(plan.weeklyMeals) || [],
+        }
+    });
+}
+
+export const mapApiWeeklyMealToWeeklyMeal = (data: any): WeeklyMeal[] => {
+    return data.map((meal: any) => {
+        return {
+            id: meal.id,
+            dayOfWeek: meal.dayOfWeek,
+            meals: mapApiMealToMeal(meal.meals) || [],
+        }
+    });
+}
+
+export const mapApiMealToMeal = (data: any): Meal[] => {
+    return data.map((meal: any) => {
+        return {
+            id: meal.id,
+            weeklyMealId: meal.weeklyMealId,
+            type: meal.type,
+            name: meal.name,
+            description: meal.description,
+            imageURL: meal.imageURL ?? "",
+            foods: mapApiFoodToFood(meal.foods) || [],
+        }
+    });
+}
+
+export const mapApiFoodToFood = (data: any): Food[] => {
+    return data.map((food: any) => {
+        return {
+            id: food.id,
+            mealId: food.mealId,
+            name: food.name,
+            description: food.description,
+            calories: food.calories,
+            proteins: food.proteins,
+            carbs: food.carbs,
+            fats: food.fats,
+        }
+    });
+}
+

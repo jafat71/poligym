@@ -1,3 +1,4 @@
+import { DayOfWeek, MealType } from "@/types/interfaces/entities/foodplan";
 import { EquipmentApi, MuscleGroup } from "@/types/interfaces/entities/plan";
 import { SocialPost } from "@/types/interfaces/entities/post";
 import { Experience, Genre, MedicalProblem, Objetive, Schedule, User } from "@/types/interfaces/entities/user";
@@ -887,3 +888,28 @@ export const CATEGORIES: Array<{ value: CategorySearch; label: string }> = [
     { value: 'STRENGTH', label: 'Fuerza' },
     { value: 'FLEXIBILITY', label: 'Flexibilidad' }
 ];
+
+export type FoodCategorySearch = 'ALL' | 'WEIGHT_LOSS' | 'MUSCLE_GAIN' | 'DEFINITION';
+export const FOOD_PLAN_CATEGORIES: Array<{ value: FoodCategorySearch; label: string }> = [
+    { value: 'ALL', label: 'Todos' },
+    { value: 'WEIGHT_LOSS', label: 'Pérdida de peso' },
+    { value: 'MUSCLE_GAIN', label: 'Volumen' },
+    { value: 'DEFINITION', label: 'Definición' },
+];
+
+
+export const DAYS_OF_WEEK_VALUES: Record<DayOfWeek, string> = {
+  MONDAY: 'Lunes',
+  TUESDAY: 'Martes',
+  WEDNESDAY: 'Miércoles',
+  THURSDAY: 'Jueves',
+  FRIDAY: 'Viernes',
+  SATURDAY: 'Sábado',
+  SUNDAY: 'Domingo'
+}
+
+export const MEAL_TYPES: Record<MealType, string> = {
+    BREAKFAST: 'Desayuno',
+    LUNCH: 'Almuerzo',
+    DINNER: 'Cena',
+}

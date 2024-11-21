@@ -14,11 +14,10 @@ import { useTheme } from '@/context/ThemeContext';
 
 import { DIFFICULTIES } from '@/constants';
 
-import { ExerciseAPI, TrainingPlanAPI, WorkoutAPI } from '@/types/interfaces/entities/plan';
+import { TrainingPlanAPI, WorkoutAPI } from '@/types/interfaces/entities/plan';
 
 import SquarePill from '@/components/ui/common/pills/SquarePill';
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
-import RoutineExerciseItem from '@/components/ui/routines/RoutineExerciseItem';
 import PlanWorkoutItem from '@/components/ui/plans/PlanWorkoutItem';
 
 const PlanInfo = () => {
@@ -41,6 +40,7 @@ const PlanInfo = () => {
     if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error loading plan details - {id}</Text>;
     const hasWorkouts = plan?.workouts && plan?.workouts?.length > 0;
+
     return (
         <SafeAreaView className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
             <ScrollView

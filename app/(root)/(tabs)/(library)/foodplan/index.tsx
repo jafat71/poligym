@@ -1,81 +1,156 @@
-import SearchBar from '@/components/ui/common/searchbar/FloatingSearchBar';
-import { LibAlimentacion, LibExercises } from '@/constants';
-import { useNavigationFlowContext } from '@/context/NavFlowContext';
+import React, { useCallback, useState, useMemo, useEffect } from 'react';
+import { View, FlatList, ListRenderItem, RefreshControl } from 'react-native';
+
+import { fetchFoodPlansPaged, fetchTrainingPlansPaged } from '@/lib/api/actions';
+
 import { useTheme } from '@/context/ThemeContext';
-import { LibraryExercise } from '@/types/interfaces/entities/plan';
-import { MuscleGroups } from '@/types/types/muscles';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { Text, TouchableOpacity, View, ScrollView, Pressable, Image } from 'react-native';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-export default function FoodPanIndex() {
+import { DifficultySearch, FoodCategorySearch } from '@/constants';
+
+import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
+
+import { queryClient } from '@/lib/queryClient/queryClient';
+import { useDebounce } from '@/hooks/useDebounce';
+import CustomListEmptyComponent from '@/components/ui/common/flatlists/CustomListEmptyComponent';
+import { useUser } from '@/context/UserContext';
+import { FoodPlanFlatlistHeader } from '@/components/ui/common/flatlists/FoodPlanFaltlistHeader';
+import { NutritionPlan } from '@/types/interfaces/entities/foodplan';
+import FoodPlanListItem from '@/components/ui/foodplan/FoodPlanListItem';
+
+export default function FoodPlan() {
     const { isDark } = useTheme();
-    const [activeTab, setActiveTab] = useState<'exercises' | 'food'>('exercises');
-    const [selectedMuscles, setSelectedMuscles] = useState<MuscleGroups[]>([]);
-    const { setScreenLibAlimentacion, setScreenLibExercise } = useNavigationFlowContext();
-    const toggleMuscleFilter = (muscle: MuscleGroups) => {
-        setSelectedMuscles(prev =>
-            prev.includes(muscle)
-                ? prev.filter(m => m !== muscle)
-                : [...prev, muscle]
+    const [searchInput, setSearchInput] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const [selectedCategory, setSelectedCategory] = useState<FoodCategorySearch>('ALL');
+
+    const [isSearching, setIsSearching] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const { handleSearchChange } = useDebounce({ setSearchQuery, setIsSearching, setSearchInput });
+    const {accessToken} = useUser()
+    const {
+        data,
+        isLoading,
+        fetchNextPage,
+        isFetchingNextPage,
+        hasNextPage,
+        isError
+    } = useInfiniteQuery({
+        queryKey: ['foodplans', 'infinite'],
+        initialPageParam: 0,
+        staleTime: 60 * 60 * 1000, // 1 hour
+        queryFn: async (params) => {
+            const { pageParam = 0 } = params;
+            const data = await fetchFoodPlansPaged(accessToken!,pageParam);
+            data.plans.forEach(plan => {
+                queryClient.setQueryData(['foodplans', plan.id], plan);
+            });
+            return data;
+        },
+        getNextPageParam: (lastPage, pages) => {
+            if (lastPage.meta.lastPage > lastPage.meta.page) {
+                return lastPage.meta.page;
+            }
+            return undefined;
+        },
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: true,
+        retry: 2,
+    });
+
+    const checkIfPlanExistsInData = useCallback((query: string) => {
+        if (!data) return false;
+        return data.pages.flatMap(page => page.plans).some((plan: NutritionPlan) =>
+            plan.name.toLowerCase().includes(query.toLowerCase())
         );
-    };
-    const muscles = Object.values(MuscleGroups);
+    }, [data]);
+
+    const filteredPlans = useMemo(() => {
+        if (!data) return [];
+        return data.pages.flatMap(page => page.plans).filter((plan: NutritionPlan) => {
+            const matchesSearch = plan.name.toLowerCase().includes(searchQuery.toLowerCase());
+            const matchesCategory = selectedCategory === 'ALL' || plan.category.toString() === selectedCategory;
+            return matchesSearch && matchesCategory;
+        });
+    }, [data, searchQuery, selectedCategory]);
+
+    useEffect(() => {
+        if (searchQuery && !checkIfPlanExistsInData(searchQuery)) {
+            fetchNextPage();
+        }
+    }, [searchQuery, data, checkIfPlanExistsInData, fetchNextPage]);
+
+    const onRefresh = useCallback(async () => {
+        setIsRefreshing(true);
+        await queryClient.invalidateQueries({ queryKey: ['foodplans'] });
+        setIsRefreshing(false);
+    }, [queryClient]);
+
+    const renderItem: ListRenderItem<NutritionPlan> = useCallback(({ item }) => (
+        <FoodPlanListItem {...item} />
+    ), []);
+
+    const keyExtractor = useCallback((item: NutritionPlan, index: number) =>
+        `${item.id}-${index}`
+        , []);
+
+    const handleEndReached = useCallback(() => {
+        if (hasNextPage && !isFetchingNextPage && !isError) {
+            fetchNextPage();
+        }
+    }, [hasNextPage, isFetchingNextPage, isError, fetchNextPage]);
+
+    const windowSize = useMemo(() => {
+        if (!data) return 10; 
+        const itemCount = data.pages.flatMap(page => page.plans).length;
+        return itemCount;
+    }, [data]);
+
+    if (isLoading) return (<SkeletonLoadingScreen />);
+
     return (
-        <View className={`flex-1 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
-            <ScrollView className="flex-1 px-4 py-3">
-                <View>
-                    {/* Aquí va tu lista de recomendaciones alimenticias */}
-                    <Text className={isDark ? "text-white" : "text-black"}>
-                        Recomendaciones Alimenticias
-                    </Text>
-
-                    {LibAlimentacion.map((alimento) => (
-                        <Pressable
-                            key={alimento.id}
-                            onPress={() => {
-                                setScreenLibAlimentacion(alimento);
-                            }}
-                            className={`p-4 mb-3 rounded-lg ${isDark ? "bg-darkGray-400" : "bg-gray-100"
-                                }`}
-                        >
-                            <Image source={{ uri: alimento.imagenPlanAlimentacion }} className="w-full h-24 rounded-lg mb-2" />
-                            <View className="flex-row justify-between items-center mb-2">
-                                <Text
-                                    className={`font-ralewayBold text-lg ${isDark ? "text-white" : "text-black"
-                                        }`}
-                                >
-                                    {alimento.nombre}
-                                </Text>
-                                <View className="bg-eBlue-500 px-3 py-1 rounded-full">
-                                    <Text className="text-white text-xs font-ralewayMedium">
-                                        {alimento.categoria}
-                                    </Text>
-                                </View>
-                            </View>
-
-                            <Text
-                                className={`font-ralewayMedium mb-2 ${isDark ? "text-gray-300" : "text-gray-600"
-                                    }`}
-                            >
-                                {alimento.descripcion}
-                            </Text>
-
-
-                        </Pressable>
-                    ))}
-                </View>
-            </ScrollView>
-            <Pressable
-                onPress={() => {
-                    router.navigate('/(root)/(tabs)/(library)/body')
-                }}
-                className="absolute bottom-0 right-0 w-1/4 p-4">
-                <View className="flex flex-row items-center justify-center rounded-2xl bg-eBlue-500 p-2">
-                    <Ionicons name="body-outline" size={34} color={"#fff"} />
-                </View>
-            </Pressable>
+        <View className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
+            <FlatList
+                data={filteredPlans}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
+                ListHeaderComponent={
+                    <FoodPlanFlatlistHeader 
+                        isDark={isDark}
+                        searchInput={searchInput}
+                        handleSearchChange={handleSearchChange}
+                        isSearching={isSearching}
+                        selectedCategory={selectedCategory}
+                        setSelectedCategory={setSelectedCategory}
+                    />
+                }
+                ItemSeparatorComponent={() => <View className="h-2" />}
+                showsVerticalScrollIndicator={false}
+                initialNumToRender={10}
+                maxToRenderPerBatch={10}
+                windowSize={windowSize}
+                removeClippedSubviews={true}
+                onEndReachedThreshold={0.7}
+                onEndReached={handleEndReached}
+                keyboardShouldPersistTaps="handled"
+                ListEmptyComponent={
+                    <CustomListEmptyComponent
+                        isSearching={isSearching}
+                        isFetchingNextPage={isFetchingNextPage}
+                        isError={isError}
+                        hasNextPage={hasNextPage}
+                    />
+                }
+                refreshControl={
+                    <RefreshControl
+                        refreshing={isRefreshing}
+                        onRefresh={onRefresh}
+                        tintColor={"#008000"}
+                    />
+                }
+            />
         </View>
     );
 }

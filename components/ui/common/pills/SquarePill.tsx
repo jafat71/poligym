@@ -16,7 +16,7 @@ const SquarePill = ({
 
     return (
         <View
-            className={`px-3 py-2 rounded-sm mr-1 mb-1 border-2 flex flex-row items-center
+            className={`px-3 py-2 rounded-sm mr-1 mb-1 border-2 flex flex-row items-center justify-center   
                 ${isDark 
                         ? "border-darkGray-400 bg-transparent" 
                         : "border-darkGray-200 bg-transparent"

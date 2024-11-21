@@ -1,8 +1,9 @@
 import { EquipmentApi, ExerciseAPI, ExerciseInWorkoutAPI, TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
 import axiosInstance from "./config";
-import { mapApiEquipmentToEquipment, mapApiExerciseInWorkoutToExerciseInWorkout, mapApiExerciseToExercise, mapApiMuscleGroupToMuscleGroup, mapApiTrainingPlanToTrainingPlan, mapApiWorkoutToWorkout, mapIndividualApiExerciseToExercise, mapIndividualApiTrainingPlanToTrainingPlan, mapIndividualApiWorkoutToWorkout } from "@/types/mappers";
+import { mapApiEquipmentToEquipment, mapApiExerciseInWorkoutToExerciseInWorkout, mapApiExerciseToExercise, mapApiMuscleGroupToMuscleGroup, mapApiNutritionPlanToNutritionPlan, mapApiTrainingPlanToTrainingPlan, mapApiWorkoutToWorkout, mapIndividualApiExerciseToExercise, mapIndividualApiNutritionPlanToNutritionPlan, mapIndividualApiTrainingPlanToTrainingPlan, mapIndividualApiWorkoutToWorkout } from "@/types/mappers";
 import { MuscleGroups } from "@/types/types/muscles";
 import { SocialPost } from "@/types/interfaces/entities/post";
+import { NutritionPlan } from "@/types/interfaces/entities/foodplan";
 
 interface FetchTrainingPlansResponse {
     plans: TrainingPlanAPI[];
@@ -31,6 +32,14 @@ interface FetchExercisesResponse {
     }; 
 }
 
+interface FetchFoodPlansResponse {
+    plans: NutritionPlan[];
+    meta:  {    
+        totalPlans: number,
+        page: number,
+        lastPage: number
+    }; 
+}
 
 export const fetchTrainingPlansPaged = async (token: string, pageParam: number, limit: number = 5) : Promise<FetchTrainingPlansResponse> => {
     try {
@@ -154,6 +163,19 @@ export const fetchTrainingPlanById = async (token: string, id: string) : Promise
     }
 }
 
+export const fetchFoodPlanById = async (token: string, id: string) : Promise<NutritionPlan> => {
+    try {
+        const response = await axiosInstance.get(`/nutrition/find-by-id/${id}`,{
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
+        return mapIndividualApiNutritionPlanToNutritionPlan(response.data);
+    } catch (error) {
+        console.error('Error al obtener el plan de entrenamiento ');
+        console.log(error)
+        throw error;
+    }
+}   
+
 export const fetchExercisesInWorkout = async (token: string, id: string) : Promise<ExerciseInWorkoutAPI> => {
     try {
         const response = await axiosInstance.get(`/workout/find-by-id-exercise-in-workout/${id}`,{
@@ -186,6 +208,18 @@ export const createPost = async (token: string, post: SocialPost) => {
         return post;
     } catch (error) {
         console.error('Error al crear la publicación');
+        throw error;
+    }
+}
+
+export const fetchFoodPlansPaged = async (token: string, pageParam: number, limit: number = 5) : Promise<FetchFoodPlansResponse> => {
+    try {
+        const response = await axiosInstance.get(`/nutrition/find-all?page=${pageParam+1}&limit=${limit}`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        ); //+1
+        return { plans: mapApiNutritionPlanToNutritionPlan(response.data.data), meta: response.data.meta };
+    } catch (error) {
+        console.error('Error al obtener los planes de entrenamiento');
         throw error;
     }
 }
