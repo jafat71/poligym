@@ -80,7 +80,7 @@ const PlayExercise = () => {
                 <Text
                     numberOfLines={1}
                     className={`${textStyle} text-4xl font-ralewayExtraBold mb-4`}>
-                    {currentExercise?.name ?? "EJERCICIO "}
+                    {currentExercise?.exercise?.name ?? "EJERCICIO "}
                 </Text>
 
                 <View className="flex flex-row justify-between items-center mb-6 w-full ">
@@ -151,7 +151,7 @@ const PlayExercise = () => {
                         numberOfLines={1}
                         className={`${textStyle} items-start text-lg mb-2`}>
                         {nextExercise ? (
-                            `Siguiente: ${nextExercise.name ?? "EJERCICIO "}`
+                            `Siguiente: ${nextExercise.exercise?.name ?? "EJERCICIO "}`
                         ) : (
                             "Estas cerca de completar la rutina :)"
                         )}

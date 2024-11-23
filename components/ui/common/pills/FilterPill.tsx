@@ -12,7 +12,6 @@ interface Props {
 
 const FilterPill = ({ value, label, selected, setSelected, isSearching }: Props) => {
     const { isDark } = useTheme();
-    console.log(selected, value)
     const isSelected = selected === value;
     return (
         <Pressable

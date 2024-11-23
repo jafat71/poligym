@@ -88,7 +88,6 @@ export const mapApiWorkoutToWorkout = (data: any): WorkoutAPI[] => {
             category: workout.category,
             trainingType: workout.trainingType,
             exercisesInWorkout: mapApiExerciseInWorkoutToPartialExerciseInWorkout(workout.exercisesInWorkout) || [],
-            trainingPlans: [],
             isDeleted: workout.isDeleted,
         }
     });
@@ -118,10 +117,12 @@ export const mapApiExerciseInWorkoutToPartialExerciseInWorkout = (data: any): Pa
             id: exerciseInWorkout.id,
             workoutId: exerciseInWorkout.workoutId,
             exerciseId: exerciseInWorkout.exerciseId,
+            exercise: exerciseInWorkout.exercise ? mapApiExerciseToExercise([exerciseInWorkout.exercise])[0] : null,
             sets: exerciseInWorkout.sets,
             reps: exerciseInWorkout.reps,
             restTime: exerciseInWorkout.restTime,
             order: exerciseInWorkout.order,
+            weight: exerciseInWorkout.weight ?? 0,
         }
     })
 }
@@ -142,7 +143,6 @@ export const mapApiExerciseInWorkoutToExerciseInWorkout = (exerciseInWorkout: an
             workoutId: exerciseInWorkout.workoutId,
             exerciseId: exerciseInWorkout.exerciseId,
             exercise: mapApiExerciseToExercise([exerciseInWorkout.exercise])[0],
-            workout: mapApiWorkoutToWorkout([exerciseInWorkout.workout])[0],
             sets: exerciseInWorkout.sets,
             reps: exerciseInWorkout.reps,
             restTime: exerciseInWorkout.restTime,

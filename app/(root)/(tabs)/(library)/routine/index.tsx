@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useMemo, useEffect } from 'react';
 import { View, FlatList, ListRenderItem, RefreshControl } from 'react-native';
 
-import { fetchWorkoutsPaged } from '@/lib/api/actions';
+import { fetchWorkoutById, fetchWorkoutsPaged } from '@/lib/api/actions';
 
 import { useTheme } from '@/context/ThemeContext';
 
@@ -21,7 +21,7 @@ import { WorkoutFlatlistHeader } from '@/components/ui/common/flatlists/WorkoutF
 import { useUser } from '@/context/UserContext';
 
 export default function Routine() {
-    const { isLoadingMuscleGroups, muscleGroups } = useMuscles();
+    const { isLoadingMuscleGroups } = useMuscles();
     const { isDark } = useTheme();
     const [searchInput, setSearchInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -30,7 +30,7 @@ export default function Routine() {
     const [isSearching, setIsSearching] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const { handleSearchChange } = useDebounce({ setSearchQuery, setIsSearching, setSearchInput });
-    const {accessToken} = useUser()
+    const { accessToken } = useUser()
     const queryClient = useQueryClient();
     const {
         data,
@@ -45,9 +45,16 @@ export default function Routine() {
         staleTime: 60 * 60 * 1000, // 1 hour
         queryFn: async (params) => {
             const { pageParam = 0 } = params;
-            const data = await fetchWorkoutsPaged(accessToken!,pageParam);
+            const data = await fetchWorkoutsPaged(accessToken!, pageParam);
             data.workouts.forEach(workout => {
-                queryClient.setQueryData(['workouts', workout.id], workout);
+                queryClient.prefetchQuery({
+                    queryKey: ['workouts', workout.id],
+                    queryFn: async () => {
+                        const individualWorkout = await fetchWorkoutById(accessToken!, workout.id.toString());
+                        queryClient.setQueryData(['workouts', workout.id], individualWorkout);
+                        return individualWorkout;
+                    }
+                });
             });
             return data;
         },
@@ -110,7 +117,7 @@ export default function Routine() {
     }, [hasNextPage, isFetchingNextPage, isError, fetchNextPage]);
 
     const windowSize = useMemo(() => {
-        if (!data) return 10; 
+        if (!data) return 10;
         const itemCount = data.pages.flatMap(page => page.workouts).length;
         return itemCount;
     }, [data]);
@@ -145,11 +152,11 @@ export default function Routine() {
                 keyboardShouldPersistTaps="handled"
                 ListEmptyComponent={
                     <CustomListEmptyComponent
-                    isSearching={isSearching}
-                    isFetchingNextPage={isFetchingNextPage}
-                    isError={isError}
-                    hasNextPage={hasNextPage}
-                />
+                        isSearching={isSearching}
+                        isFetchingNextPage={isFetchingNextPage}
+                        isError={isError}
+                        hasNextPage={hasNextPage}
+                    />
                 }
                 refreshControl={
                     <RefreshControl

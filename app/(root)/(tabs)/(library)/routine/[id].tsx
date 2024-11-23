@@ -14,7 +14,7 @@ import { ExerciseAPI, WorkoutAPI } from '@/types/interfaces/entities/plan';
 import SquarePill from '@/components/ui/common/pills/SquarePill';
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
 import RoutineExerciseItem from '@/components/ui/routines/RoutineExerciseItem';
-import SkeletonSmallItemsLoading from '@/components/animatedUi/SkeletonSmallItemsLaoding';
+import { IndividualExercise } from '../../../../../types/interfaces/entities/plan';
 
 const WorkoutInfo = () => {
     const { id } = useLocalSearchParams();
@@ -22,54 +22,31 @@ const WorkoutInfo = () => {
     const { isDark } = useTheme();
     const queryClient = useQueryClient();
     const workoutId = Number(id);
-    const [infoFullSetted, setInfoFullSetted] = useState(false);
-
     // Obtener datos en caché
     const cachedWorkout = queryClient.getQueryData<WorkoutAPI>(['workouts', workoutId]);
 
     const { data: workout, isLoading, isError } = useQuery<WorkoutAPI>({
         queryKey: ['workouts', id],
-        queryFn: async () => fetchWorkoutById(accessToken!, id as string),
+        queryFn: async () => {
+            const data = await fetchWorkoutById(accessToken!, id as string);
+            data.exercisesInWorkout.forEach(exercise => {
+                queryClient.prefetchQuery({
+                    queryKey: ['exercises', exercise.exercise.id],
+                    queryFn: async () => {
+                        const IndividualExercise = await fetchExerciseById(accessToken!, exercise.exercise.id.toString());
+                        queryClient.setQueryData(['exercises', exercise.exercise.id], IndividualExercise);
+                        return IndividualExercise;
+                    }
+                });
+            });
+            return data;
+        },
         initialData: cachedWorkout,
         enabled: !!id,
     });
 
-    const cachedExercises = useMemo(() => {
-        const exerciseIds = workout?.exercisesInWorkout.map(ex => ex.exerciseId) || [];
-        return exerciseIds.map(id => queryClient.getQueryData<ExerciseAPI>(['exercises', id]));
-    }, [workout, queryClient]);
-
-    const { data: exercises = [], isLoading: isLoadingExercises, isError: isErrorExercises } = useQuery<ExerciseAPI[]>({
-        queryKey: ['exercises', id],
-        queryFn: async () => {
-            if (!workout) return [];
-            const exerciseIds = workout.exercisesInWorkout.map(ex => ex.exerciseId);
-            const fetchedExercises = await Promise.all(
-                exerciseIds.map(async exerciseId => {
-                    const exercise = await fetchExerciseById(accessToken!, exerciseId.toString());
-                    queryClient.setQueryData(['exercises', exerciseId], exercise);
-                    return exercise;
-                })
-            );
-            return fetchedExercises;
-        },
-        enabled: !!id && !!workout,
-        initialData: cachedExercises.filter(Boolean) as ExerciseAPI[],
-    });
-
-    useEffect(() => {
-        if (workout && exercises.length > 0) {
-            workout.exercisesInWorkout.forEach(exercise => {
-                exercise.name = exercises.find(ex => ex.id === exercise.exerciseId)?.name;
-            })
-            setInfoFullSetted(true);
-        }
-    }, [exercises, workout]);
-
-    // Validación inicial
-    if (isLoading || isLoadingExercises) return <SkeletonLoadingScreen />;
+    if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
-    if (isErrorExercises) return <Text>Error al cargar los ejercicios de la rutina - {id}</Text>;
 
     const hasExercises = workout?.exercisesInWorkout && workout?.exercisesInWorkout?.length > 0;
     return (
@@ -95,18 +72,13 @@ const WorkoutInfo = () => {
                 <View className='mt-2'>
                     <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Ejercicios</Text>
                     <View className='mt-2'>
-                        {hasExercises ? (
-                              !infoFullSetted ? (
-                                <SkeletonSmallItemsLoading />
-                            ) : (
+                    {hasExercises ? (
                                 workout?.exercisesInWorkout.map(exercise => (
                                     <RoutineExerciseItem
                                         key={exercise.id}
                                         exercise={exercise}
-                                        exerciseName={exercise.name!}
                                     />
                                 ))
-                            )
                         ) : (
                             <Text className={`text-start text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>
                                 Esta rutina no tiene ejercicios actualmente

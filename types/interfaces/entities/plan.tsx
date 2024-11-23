@@ -119,10 +119,8 @@ export interface TrainingPlanAPI {
     category: Category;
     trainingType: string;
     exercisesInWorkout: ExerciseInWorkoutAPI[];
-    trainingPlans: TrainingPlanAPI[];
+    exercises: ExerciseAPI[];
     isDeleted: boolean;
-    createdAt: Date;
-    updatedAt: Date;
   }
   
   // ExerciseInWorkout Interface
@@ -130,14 +128,12 @@ export interface TrainingPlanAPI {
     id: number;
     exercise: ExerciseAPI;
     exerciseId: number;
-    workout: WorkoutAPI;
     workoutId: number;
     sets: number;
     reps: number;
     weight?: number;
     restTime: number;
     order: number;
-    name?: string;
   }
   
   // Exercise Interface
@@ -151,7 +147,7 @@ export interface TrainingPlanAPI {
     description: string;
     muscleGroups: MuscleGroups[];
     recommendation?: string;
-    workouts: ExerciseInWorkoutAPI[];
+    workouts: WorkoutAPI[];
     isDeleted: boolean;
   }
   

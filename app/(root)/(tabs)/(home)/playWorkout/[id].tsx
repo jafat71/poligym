@@ -33,24 +33,6 @@ const PlayWorkout = () => {
         enabled: !!id,
     });
 
-    const { data: queryExercises = [], isLoading: isLoadingExercises, isError: isErrorExercises } = useQuery<ExerciseAPI[]>({
-        queryKey: ['exercises', id],
-        queryFn: async () => {
-            if (!workout) return [];
-            const exerciseIds = workout.exercisesInWorkout.map(ex => ex.exerciseId);
-            const fetchedExercises = await Promise.all(
-                exerciseIds.map(async exerciseId => {
-                    const exercise = await fetchExerciseById(accessToken!, exerciseId.toString());
-                    queryClient.setQueryData(['exercises', exerciseId], exercise);
-                    return exercise;
-                })
-            );
-            return fetchedExercises;
-        },
-        enabled: !!id && !!workout,
-        initialData: workout?.exercisesInWorkout.map(ex => queryClient.getQueryData<ExerciseAPI>(['exercises', ex.exerciseId])).filter(Boolean) as ExerciseAPI[],
-    });
-
     const [exercises, setExercises] = useState<ExerciseInWorkoutAPI[]>([]);
     const [completedExercises, setCompletedExercises] = useState<{ [key: string]: boolean }>({});
 
@@ -118,9 +100,8 @@ const PlayWorkout = () => {
         />
     );
 
-    if (isLoading || isLoadingExercises || !infoSetted) return <PlaySkeletonLoadingScreen />;
+    if (isLoading || !infoSetted) return <PlaySkeletonLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
-    if (isErrorExercises) return <Text>Error al cargar los ejercicios de la rutina - {id}</Text>;
 
     return (
         <SafeAreaView className={`flex-1 bg-eBlue-500`}>

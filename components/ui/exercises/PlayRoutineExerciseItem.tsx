@@ -60,11 +60,13 @@ const PlayRoutineExerciseItem = ({
                     `}
                 >
                     <View className="flex-1">
-                        <Text className={`
+                        <Text 
+                            numberOfLines={1}
+                        className={`
                             ${isDark ? 'text-white' : 'text-darkGray-500'} 
-                            text-base font-ralewayBold mb-1
+                            text-xl font-ralewayBold mb-1
                         `}>
-                            {exercise.name}
+                            {exercise.exercise?.name ?? "Ejercicio"}
                         </Text>
                         
                         <View className="flex-col">
