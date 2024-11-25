@@ -19,7 +19,7 @@ const Welcome = () => {
 
                 <CTAButtonPrimary
                     onPress={() => {
-                        router.push('/(auth)/signup')
+                        router.navigate('/(auth)/signup')
                     }}
                     text='Registrarse'
                     extraClassname={`rounded-none shadow-2xl shadow-${isDark ? 'white' : 'black'}`}
@@ -27,7 +27,7 @@ const Welcome = () => {
 
                 <CTAButtonSecondary
                     onPress={() => {
-                        router.push('/(auth)/signin')
+                        router.navigate('/(auth)/signin')
                     }}
                     text='Iniciar sesión'
                 />

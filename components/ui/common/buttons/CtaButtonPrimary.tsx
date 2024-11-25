@@ -1,5 +1,5 @@
 import React from 'react';
-import { GestureResponderEvent, Keyboard, Pressable, Text, View, ActivityIndicator } from 'react-native';
+import { GestureResponderEvent, Keyboard, Pressable, Text, View, ActivityIndicator, TouchableHighlight } from 'react-native';
 
 interface Props {
     onPress: ((event: GestureResponderEvent) => void) | undefined,
@@ -17,7 +17,7 @@ const CTAButtonPrimary = ({ onPress, text, disabled = false, isLoading = false, 
     };
     
     return (
-        <Pressable
+        <TouchableHighlight
             onPress={handlePress}
             className={`w-full items-center ${disabled ? 'opacity-70' : ''}`}
             disabled={disabled}
@@ -26,7 +26,7 @@ const CTAButtonPrimary = ({ onPress, text, disabled = false, isLoading = false, 
                 bg-eBlue-500 px-28 py-4 ${extraClassname}`}>
                 {
                     isLoading ? (
-                        <ActivityIndicator color="white" />
+                        <ActivityIndicator color="white" size={20} />
                     ) : (
                         <Text className={`text-base text-center
                             text-white font-ralewayExtraBold`}>
@@ -35,7 +35,7 @@ const CTAButtonPrimary = ({ onPress, text, disabled = false, isLoading = false, 
                     )
                 }
             </View>
-        </Pressable>
+        </TouchableHighlight>
     );
 };
 

@@ -29,9 +29,6 @@ interface UserProviderProps {
     children: ReactNode;
 }
 
-import * as SecureStore from "expo-secure-store";
-import { SocialPost } from '@/types/interfaces/entities/post';
-
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [userLogged, setUserLogged] = useState(false);
     const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
@@ -74,6 +71,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     useEffect(() => {
         if (userLogged) {
+            //CREACION DE CUENTA
             if (pathname !== '/form00') {
                 if(pathname !== '/home'){
                     router.replace('/(root)/(tabs)/home')

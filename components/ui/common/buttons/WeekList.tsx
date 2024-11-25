@@ -9,12 +9,11 @@ interface Props {
     setDays: React.Dispatch<React.SetStateAction<DaysWeek>>
 }
 
-const WeekChecklistComponent = ({ days, setDays }: Props) => {
-    const { isDark } = useTheme()
+const WeekList = ({ days, setDays }: Props) => {
 
-    const labelStyle = `text-2xl ${isDark ? "text-white" : "text-darkGray-500"} font-ralewayBold`
+    const labelStyle = `text-2xl text-white font-ralewayBold`
     const enabledStyle = "#0059ff"
-    const disabledStyle = `${isDark ? "#fff" : "#1c1c1c"}`
+    const disabledStyle = "#fff"
 
     const checkboxStyle = 'w-8 h-8'
     return (
@@ -97,4 +96,4 @@ const WeekChecklistComponent = ({ days, setDays }: Props) => {
     );
 };
 
-export default WeekChecklistComponent;
+export default WeekList;

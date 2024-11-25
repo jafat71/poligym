@@ -13,7 +13,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'fade', animationTypeForReplace: 'push' }} />
         <Stack.Screen name="(init)" options={{ headerShown: false, animation: 'fade', animationTypeForReplace: 'push'  }} />
-        <Stack.Screen name="(config)" options={{ headerShown: false, animation: 'fade', animationTypeForReplace: 'push' }} />
+        <Stack.Screen name="(config)" options={{ headerShown: false, animation: 'slide_from_bottom', animationTypeForReplace: 'push' }} />
       </Stack>
   );
 }

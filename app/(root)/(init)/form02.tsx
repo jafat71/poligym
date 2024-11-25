@@ -1,186 +1,88 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { Pressable, View } from 'react-native';
 
-import { Ionicons } from '@expo/vector-icons';
-
-import { useTheme } from '@/context/ThemeContext';
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
+import { useTheme } from '@/context/ThemeContext';
 
-import { experienceMapper, experienceOptions, genreMapper, genresOptions, objetiveMapper, objetiveOptions } from '@/constants';
-import { Experience, Objetive } from '@/types/interfaces/entities/user';
-import { Genre } from '../../../types/interfaces/entities/user';
-
-import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
+import { SnapCarousel } from '@/components/ui/common/carousel/SnapCarousel';
+import { Text } from 'react-native';
+import SimpleInfoComponent from '@/components/ui/common/info/SimpleInfoComponent';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 
 const Form02 = () => {
-    const { isDark } = useTheme()
+
     const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
 
-    const [selectedObjetive, setSelectedObjetive] = useState<number>(0);
-    const [selectedExperience, setSelectedExperience] = useState<number>(0);
-    const [selectedGenre, setSelectedGenre] = useState<number>(0);
+    const [selectedWeight, setSelectedWeight] = useState(tmpUser?.userWeight || 70);
+    const weightFlatListRef = useRef(null);
+    const weights = Array.from({ length: 70 }, (_, i) => i + 40);
 
-    useEffect(() => {
-        let genreIndex = 0
-        if (tmpUser?.userGenre) {
-            genreIndex = genreMapper[tmpUser.userGenre]
-        }
-        setSelectedGenre(genreIndex)
-        let objetiveIndex = 0
-        if (tmpUser?.userObjetive) {
-            objetiveIndex = objetiveMapper[tmpUser.userObjetive]
-        }
-        setSelectedObjetive(objetiveIndex)
-        let experienceIndex = 0
-        if (tmpUser?.userPhisicStatus) {
-            experienceIndex = experienceMapper[tmpUser.userPhisicStatus]
-        }
-        setSelectedExperience(experienceIndex)
-    }, []);
+    const [selectedHeight, setSelectedHeight] = useState(tmpUser?.userHeight || 170);
+    const heightFlatListRef = useRef(null);
+    const heights = Array.from({ length: 60 }, (_, i) => i + 140);
 
-    useEffect(() => {
-        if (selectedObjetive === null) return
-        let tmpUserObjetive: Objetive = 'BAJAR_DE_PESO'
-        switch (selectedObjetive) {
-            case 0:
-                tmpUserObjetive = 'BAJAR_DE_PESO'
-                break;
-            case 1:
-                tmpUserObjetive = 'GANAR_MUSCULO'
-                break;
-            case 2:
-                tmpUserObjetive = 'MANTENERSE_EN_FORMA'
-                break;
-            default:
-                break;
-        }
+    const initialIndexWeight = tmpUser?.userWeight ? tmpUser?.userWeight - 40 : 30
+    const initialIndexHeight = tmpUser?.userHeight ? tmpUser?.userHeight - 140 : 30
+
+    const handleContinue = () => {
         updateInitUserShell({
             ...tmpUser,
-            userObjetive: tmpUserObjetive
+            userWeight: selectedWeight,
+            userHeight: selectedHeight
         })
-    }, [selectedObjetive]);
-
-    useEffect(() => {
-        if (selectedExperience === null) return
-        let tmpUserExp: Experience = 'PRINCIPIANTE'
-        switch (selectedExperience) {
-            case 0:
-                tmpUserExp = 'PRINCIPIANTE'
-                break;
-            case 1:
-                tmpUserExp = 'INTERMEDIO'
-                break;
-            case 2:
-                tmpUserExp = 'AVANZADO'
-                break;
-            default:
-                break;
-        }
-        updateInitUserShell({
-            ...tmpUser,
-            userPhisicStatus: tmpUserExp
-        })
-    }, [selectedExperience]);
-
-    useEffect(() => {
-        if (selectedGenre === null) return
-        let tmpUserGenre: Genre = 'MASCULINO'
-        switch (selectedGenre) {
-            case 0:
-                tmpUserGenre = 'MASCULINO'
-                break;
-            case 1:
-                tmpUserGenre = 'FEMENINO'
-                break;
-            case 2:
-                tmpUserGenre = 'OTRO'
-                break;
-            default:
-                break;
-        }
-        updateInitUserShell({
-            ...tmpUser,
-            userGenre: tmpUserGenre
-        })
-    }, [selectedGenre]);
-
-
+        router.push('/form03')
+    }
     return (
-        <>
-            <View className={`mt-2`}>
-                <View>
-                        <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu género?</Text>
-                        <RadioButtonIconComponent
-                            options={genresOptions}
-                            icons={[
-                                <Ionicons name="male"
-                                    size={35}
-                                    color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
-                                <Ionicons name="female"
-                                    size={35}
-                                    color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
-                                <Ionicons name="male-female"
-                                    size={35}
-                                    color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
-                            ]}
-                            selectedValue={selectedGenre}
-                            setSelectedValue={setSelectedGenre}
-                            rbComponentStyle='w-full'
-                            rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
-                            rbIndividualTextBtnStyle={`text-lg p-2  font-ralewayExtraBold `}
-                        />
+        <View className="flex-1 w-full flex flex-col items-center justify-between">
+
+             <Text className="text-white text-4xl font-ralewayExtraBold">
+                Cuéntanos de ti
+            </Text>
+
+            <View className={`flex flex-row w-full`}>
+                
+                <View className={`w-1/2 flex flex-col items-center justify-center`}>
+                    <Ionicons name="scale" size={24} color="white" />
+                    <Text className="text-white text-xl font-ralewaySemiBold mb-4">
+                        Tu peso es:
+                    </Text>
+                    <SnapCarousel
+                        dataOptions={weights}
+                        flatListRef={weightFlatListRef}
+                        selectedOption={selectedWeight}
+                        setSelectedOption={setSelectedWeight}
+                        initialIndex={initialIndexWeight}
+                    />
+                    <Text className="text-white text-2xl font-ralewaySemiBold my-4">{selectedWeight} KG</Text>
+
                 </View>
 
-
-                <View>
-                    <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu objetivo principal?</Text>
-                    <RadioButtonIconComponent
-                        options={objetiveOptions}
-                        icons={[
-                            <Ionicons name="nutrition-outline"
-                                size={35}
-                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
-                                <Ionicons name="barbell-outline"
-                                size={35}
-                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
-                                <Ionicons name="fitness-sharp"
-                                size={35}
-                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
-                            ]}
-                        selectedValue={selectedObjetive}
-                        setSelectedValue={setSelectedObjetive}
-                        rbComponentStyle='w-full'
-                        rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
-                        rbIndividualTextBtnStyle={`text-lg p-2  font-ralewayExtraBold `}
+                <View className={`w-1/2 flex flex-col items-center justify-center`}>
+                    <Ionicons name="body" size={24} color="white" />
+                    <Text className="text-white text-xl font-ralewaySemiBold mb-4">
+                        Tu altura es:
+                    </Text>
+                    <SnapCarousel
+                        dataOptions={heights}
+                        flatListRef={heightFlatListRef}
+                        selectedOption={selectedHeight}
+                        setSelectedOption={setSelectedHeight}
+                        initialIndex={initialIndexHeight}
                     />
-                </View>
-
-                <View>
-                    <Text className={`text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>¿Cuál es tu experiencia?</Text>
-                    <RadioButtonIconComponent
-                        options={experienceOptions}
-                        icons={[
-                            <Ionicons name="star-outline"
-                                size={35}
-                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
-                            <Ionicons name="star-half-outline"
-                                size={35}
-                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
-                            <Ionicons name="star"
-                                size={35}
-                                color={`${isDark ? "#fff" : "#1c1c1c"}`} />,
-                        ]}
-                        selectedValue={selectedExperience}
-                        setSelectedValue={setSelectedExperience}
-                        rbComponentStyle='w-full '
-                        rbIndividualRadioButtonStyle='flex flex-col items-center justify-center'
-                        rbIndividualTextBtnStyle={`text-lg p-2  font-ralewayExtraBold `}
-                    />
-
+                    <Text className="text-white text-2xl font-ralewaySemiBold my-4">{selectedHeight} CM</Text>
                 </View>
             </View>
 
-        </>
+            <View className='w-full'>
+                <CTAButtonPrimary
+                    onPress={handleContinue}
+                    text="Continuar"
+                />
+
+            </View>
+        </View>
     );
 };
 

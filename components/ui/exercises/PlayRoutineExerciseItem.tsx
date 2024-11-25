@@ -1,9 +1,10 @@
-import { Pressable, Text, View } from 'react-native';
+import { Image, Pressable, Text, View } from 'react-native';
 import React, { useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigationFlowContext } from '@/context/NavFlowContext';
 import { ExerciseInWorkoutAPI } from '@/types/interfaces/entities/plan';
+import { router } from 'expo-router';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface ExerciseCardProps {
     exercise: ExerciseInWorkoutAPI;
@@ -21,8 +22,9 @@ const PlayRoutineExerciseItem = ({
     onComplete 
 }: ExerciseCardProps) => {
     const { isDark } = useTheme();
-    const { setScreenExercise } = useNavigationFlowContext();
     const [completed, setCompleted] = useState(isCompleted);
+
+    useQueryClient().setQueryData(['exercises', exercise.exercise?.id], exercise.exercise);
     
     const handleComplete = (e: any) => {
         e.stopPropagation();
@@ -34,31 +36,34 @@ const PlayRoutineExerciseItem = ({
     return (
         <View className={`
             flex flex-row items-center justify-start
-            transition-all duration-300 px-2 h-28
+            transition-all duration-300 px-2 h-24
+            ${isDark ? 'bg-darkGray-900' : 'bg-darkGray-100'}
             ${isActive ? '-translate-x-2' : ''}
         `}>
             <Pressable 
                 onLongPress={onDrag} 
-                className="p-2 justify-center bg-eBlue-700 h-full"
+                className={`p-2 justify-center ${isDark ? 'bg-white' : 'bg-darkGray-800'} h-full`}
             >
                 <Ionicons 
                     name="menu-outline" 
                     size={24} 
-                    color={"white"} 
+                    color={isDark ? 'black' : 'white'} 
                 />
             </Pressable>
 
             <View className={`
-                flex-1 my-2 rounded-sm overflow-hidden
+                flex-1 rounded-sm overflow-hidden
             `}>
                 <Pressable 
                     onPress={() => {
+                        router.push(`/(library)/exercise/${exercise.exercise?.id}`);
                     }}
                     className={`
-                        p-4 flex-row items-center justify-between
-                        border-l-4 ${completed ? 'border-lightGreen' : 'border-eBlue-500'}
+                        px-4 py-2 flex-row items-center justify-between 
+                        border-l-4 border-eBlue-500
                     `}
                 >
+                    
                     <View className="flex-1">
                         <Text 
                             numberOfLines={1}
@@ -74,10 +79,10 @@ const PlayRoutineExerciseItem = ({
                                 <Ionicons 
                                     name="repeat-outline" 
                                     size={24} 
-                                    color={'#fff'} 
+                                    color={isDark ? "#fff" : "#1c1c1c"} 
                                 />
-                                <Text className={`text-white 
-                                    text-xl font-ralewaySemiBold ml-1
+                                <Text className={`${isDark ? "text-white" : "text-darkGray-900"} 
+                                    text-sm font-ralewaySemiBold ml-1
                                 `}>
                                     {exercise.sets} X {exercise.reps} Reps
                                 </Text>
@@ -87,10 +92,11 @@ const PlayRoutineExerciseItem = ({
                                 <Ionicons 
                                     name="time-outline" 
                                     size={24} 
-                                    color={'#fff'} 
+                                    color={isDark ? "#fff" : "#1c1c1c"} 
                                 />
-                                <Text className={`text-white 
-                                    text-xl font-ralewaySemiBold ml-1
+                                <Text className={`
+                                    ${isDark ? "text-white" : "text-darkGray-900"} 
+                                    text-sm font-ralewaySemiBold ml-1
                                 `}>
                                     {exercise.restTime}s Descanso
                                 </Text>
@@ -102,14 +108,14 @@ const PlayRoutineExerciseItem = ({
                         onPress={handleComplete}
                         className={`
                             ml-3 p-2 rounded-full
-                            ${completed ? 'bg-lightGreen' : ''}
-                            border-2 border-${completed ? 'lightGreen' : 'white'}
+                            ${completed ? 'bg-eBlue-500' : ''}
+                            border-2 border-${completed ? 'lightGreen' : isDark ? "#fff" : "#1c1c1c"}
                         `}
                     >
                         <Ionicons 
                             name={completed ? "checkmark" : "checkmark-outline"} 
                             size={24} 
-                            color={`${completed ? '#1c1c1c' : 'white'}`} 
+                            color={completed ? "#fff" : (isDark ? "#fff" : "#1c1c1c")} 
                         />
                     </Pressable>
                 </Pressable>

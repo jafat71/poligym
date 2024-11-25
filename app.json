@@ -10,15 +10,15 @@
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#1C1C1C"
+      "backgroundColor": "#0055f9"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#1C1C1C"
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#0055f9"
       },
       "package": "com.poligym.app"
     },

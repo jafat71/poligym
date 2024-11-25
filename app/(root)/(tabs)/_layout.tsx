@@ -85,6 +85,14 @@ export default function TabsLayout() {
               >
                 <Ionicons name="nutrition-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
               </Pressable>
+              <Pressable
+                onPress={() => {
+                  router.navigate('/(root)/(tabs)/(library)');
+                }}
+                className='ml-4'
+              >
+                <Ionicons name="library-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+              </Pressable>
             </View>
           </>),
           headerStyle: {

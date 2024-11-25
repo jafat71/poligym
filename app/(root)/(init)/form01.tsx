@@ -1,114 +1,69 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
-
-import { Ionicons } from '@expo/vector-icons';
-
-import { useNavigationFlowContext } from '@/context/NavFlowContext';
-import { useTheme } from '@/context/ThemeContext';
-
-import { transformToValidZInput } from '@/lib/utils/transform';
-
-import NumericInputInitForm from '@/components/ui/common/form/NumericInputInitForm';
-import SimpleInfoComponent from '@/components/ui/common/info/SimpleInfoComponent';
+import CTAButtonPrimary from "@/components/ui/common/buttons/CtaButtonPrimary";
+import { SnapCarousel } from "@/components/ui/common/carousel/SnapCarousel";
+import { useNavigationFlowContext } from "@/context/NavFlowContext";
+import { useUser } from "@/context/UserContext";
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import React, { useEffect, useRef, useState } from "react";
+import { Text, TextInput, View } from "react-native";
 
 const Form01 = () => {
-    const { isDark } = useTheme()
+
+    const { loggedUserInfo } = useUser();
     const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
 
-    const [ageINput, setAgeINput] = useState('');
-    const [weightInput, setWeightINput] = useState('');
-    const [heightInput, setHeightINput] = useState('');
+    const [userName, setUserName] = useState(loggedUserInfo?.userName || "");
+    const [selectedAge, setSelectedAge] = useState(tmpUser?.userAge || 18);
+    const agesFlatListRef = useRef(null);
+    const ages = Array.from({ length: 83 }, (_, i) => i + 18);
 
-    //TODO: Eliminar tmpuUser e impactar directamente BK
-    useEffect(() => {
-        let userweight = tmpUser?.userWeight
-        setWeightINput(String(userweight) || '')
+    const initialIndex = tmpUser?.userAge ? tmpUser?.userAge - 18 : 0
 
-        let userAge = tmpUser?.userAge
-        setAgeINput(String(userAge) || '')
-
-        let userHeight = tmpUser?.userHeight
-        setHeightINput(String(userHeight) || '')
-    }, []);
-
-    const validateAgeInpuChange = useCallback(
-        (newAgeInput: string) => {
-            const validAge = transformToValidZInput(newAgeInput)
-            setAgeINput(validAge.toString());
-            updateInitUserShell({
-                ...tmpUser,
-                userAge: validAge ? validAge : 18
-            })
-        },
-        [ageINput],
-    )
-
-    const validateWeightChange = useCallback(
-        (newWeightInput: string) => {
-            const validWeight = transformToValidZInput(newWeightInput)
-            setWeightINput(validWeight.toString());
-            updateInitUserShell({
-                ...tmpUser,
-                userWeight: validWeight
-            })
-        },
-        [weightInput],
-    )
-
-    const validateHeightChange = useCallback(
-        (newHeightInput: string) => {
-            const validHeight = transformToValidZInput(newHeightInput)
-            setHeightINput(validHeight.toString());
-            updateInitUserShell({
-                ...tmpUser,
-                userHeight: validHeight
-            })
-        },
-        [heightInput],
-    )
-
+    const handleContinue = () => {
+        updateInitUserShell({
+            ...tmpUser,
+            userAge: selectedAge
+        })
+        router.push('/form02')
+    }
     return (
-        <>
-
-            <View className={`mt-2`}>
-                    <NumericInputInitForm
-                        title='¿Cuántos años tienes?'
-                        icon={<Ionicons name="balloon-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                        inputKeyboardType='number-pad'
-                        inputPlaceholder='0'
-                        inputSecure={false}
-                        inputValue={ageINput}
-                        inputOnChangeText={validateAgeInpuChange}
-                        maxLength={2}
-                    />
-
-                    <NumericInputInitForm
-                        title='¿Cuál es tu peso? (KG)'
-                        icon={<Ionicons name="scale" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                        inputKeyboardType='number-pad'
-                        inputPlaceholder='18'
-                        inputSecure={false}
-                        inputValue={weightInput}
-                        maxLength={3}
-                        inputOnChangeText={validateWeightChange}
-                    />
-
-                    <NumericInputInitForm
-                        title='¿Cuál es tu altura? (CM)'
-                        icon={<Ionicons name="resize-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                        inputKeyboardType='number-pad'
-                        inputPlaceholder='170'
-                        inputSecure={false}
-                        inputValue={heightInput}
-                        inputOnChangeText={validateHeightChange}
-                    />
-            </View>
-
-            <SimpleInfoComponent
-                text="POLIGYM APP utiliza kilogramos (kg) para el peso y centímetros (cm) para la altura. Introduce SOLO números enteros en estos campos. Esto nos ayuda a procesar tus datos de manera más rápida y eficiente."
+        <View className="flex-1 w-full flex flex-col items-center justify-center">
+            <Text className="text-white text-4xl font-ralewayExtraBold">
+                Cuéntanos de ti
+            </Text>
+            <Text className="text-white text-xl font-ralewaySemiBold">
+                Tu nombre es:
+            </Text>
+            <TextInput
+                className="text-2xl bg-eBlue-600 font-ralewayExtraBold text-darkGray-100 my-4 w-full text-center rounded-md p-2"
+                value={userName}
+                onChangeText={setUserName}
+                placeholder="Tu nombre"
+                placeholderTextColor="#c3c3c3"
             />
 
-        </>
+            <Ionicons name="balloon" size={24} color="white" />
+            <Text className="text-white text-xl font-ralewaySemiBold mb-4">
+                y tienes:
+            </Text>
+
+            <SnapCarousel
+                dataOptions={ages}
+                flatListRef={agesFlatListRef}
+                selectedOption={selectedAge}
+                setSelectedOption={setSelectedAge}
+                initialIndex={initialIndex}
+            />
+            <Text className="text-white text-2xl font-ralewaySemiBold my-4">{selectedAge} años</Text>
+
+            <View className='w-full'>
+                <CTAButtonPrimary
+                    onPress={handleContinue}
+                    text="Continuar"
+                />
+
+            </View>
+        </View>
     );
 };
 

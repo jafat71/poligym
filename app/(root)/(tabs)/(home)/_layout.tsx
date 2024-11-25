@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable } from "react-native";
+import { Pressable, View } from "react-native";
 
 import { router, Stack } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
@@ -57,10 +57,24 @@ const _layout = () => {
             <Stack.Screen
                 name="playWorkout/[id]"
                 options={{
-                    headerShown: false,
+                    headerShown: true,
+                    headerTitle: () => <>
+                    <MainLogoCustomComponent
+                                height="30"
+                                width="30"
+                                principal={`${isDark ? "#fff" : "#1c1c1c"}`}
+                            />
+                            </>,
+                    headerStyle: {
+                        backgroundColor: isDark ? "#1c1c1c" : "#fff",
+                    },
+                    headerTintColor: isDark ? "#fff" : "#1c1c1c",
+                    headerTitleAlign: "center",
+                    statusBarStyle: isDark ? 'light' : 'dark',
                     animation: "fade",
                     statusBarTranslucent: true,
-                    statusBarColor: 'transparent'
+                    statusBarColor: 'transparent',
+                    fullScreenGestureEnabled: true
                 }}
             />
             <Stack.Screen

@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import 'react-native-reanimated';
 
-import useIcons from '@/hooks/useIcons';
-import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -13,13 +11,14 @@ import { NavigationFlowProvider } from '@/context/NavFlowContext';
 
 import { QueryClientProvider } from '@tanstack/react-query';
 
-import Loading from '@/components/animatedUi/Loading';
 import { queryClient } from '@/lib/queryClient/queryClient';
+import { useFonts } from 'expo-font';
 
-SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync().catch(() => {
+  /* reloading the app might trigger some race conditions, ignore them */
+});
 
 export default function RootLayout() {
-
   const [loaded] = useFonts({
     "Raleway-Bold": require("../assets/fonts/Raleway-Bold.ttf"),
     "Raleway-ExtraBold": require("../assets/fonts/Raleway-ExtraBold.ttf"),
@@ -30,55 +29,46 @@ export default function RootLayout() {
     "Raleway-Thin": require("../assets/fonts/Raleway-Thin.ttf"),
   });
 
-  const { iconsloaded } = useIcons() //Preload Icons
-  const [ready, setReady] = useState(false);
-
   useEffect(() => {
-    if (loaded && iconsloaded) {
-      setReady(true)
-      SplashScreen.hideAsync();
+    async function prepare() {
+      if (loaded) {
+        await SplashScreen.hideAsync();
+        }
     }
-    if (!loaded || !iconsloaded) {
-      setReady(false)
-    }
+    prepare();
+  }, [loaded]);
 
-  }, [loaded, iconsloaded]);
-
-  if (!ready) {
-    return (
-      <Loading />
-    )
+  if (!loaded) {
+    return null;
   }
-
   return (
     <ThemeProvider >
       <QueryClientProvider client={queryClient}>
-        <NavigationFlowProvider>
-          <UserProvider>
-              <GestureHandlerRootView style={{ flex: 1 }}>
-                <Stack
-                  screenOptions={{
-                    statusBarTranslucent: true
-                  }}
-                >
-                  <Stack.Screen name="index" options={{ headerShown: false }} />
-                  <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
-                  <Stack.Screen name="(animated)" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
-                  <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'simple_push', animationTypeForReplace: 'pop' }} />
-                  <Stack.Screen name="(auth)" options={{
-                    animation: 'fade_from_bottom',
-                    animationTypeForReplace: 'push',
-                    headerShown: false
-                  }} />
-                  <Stack.Screen name="+not-found" options={{ headerShown: false }} />
-                </Stack>
-                {/* <DebugCache /> */}
+        <UserProvider>
+          <NavigationFlowProvider>
+            <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0055f9' }}>
+              <Stack
+                screenOptions={{
+                  statusBarTranslucent: true
+                }}
+              >
+                <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
+                <Stack.Screen name="(animated)" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
+                <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'simple_push', animationTypeForReplace: 'pop' }} />
+                <Stack.Screen name="(auth)" options={{
+                  animation: 'fade_from_bottom',
+                  animationTypeForReplace: 'push',
+                  headerShown: false
+                }} />
+                <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+              </Stack>
+              {/* <DebugCache /> */}
 
-              </GestureHandlerRootView>
-          </UserProvider>
-        </NavigationFlowProvider>
+            </GestureHandlerRootView>
+          </NavigationFlowProvider>
+        </UserProvider>
       </QueryClientProvider>
     </ThemeProvider>
-
   );
 }
+

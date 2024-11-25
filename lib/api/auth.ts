@@ -29,6 +29,7 @@ export const signUp = async (name: string, email: string, password: string) => {
             console.log('Error status:', error.response.status);
             console.log('Error data:', error.response.data);
 
+            console.log("ERROR ", error.response)
             switch (error.response.status) {
                 case 500:
                     throw new Error(`Error en creación de usuario: ${error.response.data.message || 'No se proporcionaron detalles adicionales'}`);
