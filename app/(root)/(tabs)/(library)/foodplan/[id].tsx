@@ -75,7 +75,7 @@ const Id = () => {
         
                 <View className='flex flex-row flex-wrap'>
                     {
-                        plan?.weeklyMeals.map((meal) => (
+                        plan?.weeklyMeals?.map((meal) => (
                             <FilterPill 
                                 value={DAYS_OF_WEEK_VALUES[meal.dayOfWeek]}
                                 label={DAYS_OF_WEEK_VALUES[meal.dayOfWeek].slice(0, 3)}

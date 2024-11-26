@@ -1,4 +1,4 @@
-import { Image, Pressable, Text, View } from 'react-native';
+import { Image, Pressable, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
@@ -103,6 +103,17 @@ const PlayRoutineExerciseItem = ({
                             </View>
                         </View>
                     </View>
+
+                    <TouchableOpacity
+                        onPress={() => {
+                        }}
+                    >
+                        <Ionicons 
+                            name="pencil-outline" 
+                            size={24} 
+                            color={isDark ? "#fff" : "#1c1c1c"} 
+                        />
+                    </TouchableOpacity>
 
                     <Pressable
                         onPress={handleComplete}

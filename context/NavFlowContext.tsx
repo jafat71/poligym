@@ -46,9 +46,6 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
     //     console.log("tmpUser", tmpUser)
     // }, [tmpUser])
 
-    useEffect(() => {
-        console.log("userPosts", userPosts)
-    }, [userPosts])
 
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
         if (updatedFields === null) {

@@ -87,14 +87,6 @@ const _layout = () => {
             />
 
             <Stack.Screen
-                name="playexercise"
-                options={{
-                    headerShown: false,
-                    animation: "fade",
-
-                }}
-            />
-            <Stack.Screen
                 name="exerciseDetail"
                 options={{
                     headerShown: false,

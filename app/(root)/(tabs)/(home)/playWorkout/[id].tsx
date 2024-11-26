@@ -13,6 +13,7 @@ import CreatePostModal from "@/components/ui/common/modal/CreatePostModal";
 import { useNavigationFlowContext } from "@/context/NavFlowContext";
 import { useTheme } from "@/context/ThemeContext";
 import WorkoutLoadingScreen from "@/components/animatedUi/WorkoutLoadingScreen";
+import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
@@ -44,6 +45,8 @@ const PlayWorkout = () => {
             }
     }, [workout]);
 
+    const { setPlayExercises, startWorkout, isCompleted, setIsCompleted } = usePlayWorkoutContext();
+
     // Calcular el progreso de la rutina
     const routineProgress = useMemo(() => {
         if (!exercises.length) return 0;
@@ -63,7 +66,10 @@ const PlayWorkout = () => {
     const startTime = useRef(Date.now());
 
     useEffect(() => {
-        if (routineProgress === 1) {
+        if (routineProgress === 1 || isCompleted) {
+            if(isCompleted){
+                setIsCompleted(false);
+            }
             Alert.alert(
                 "¡Felicitaciones! 🎉",
                 "Has completado la rutina exitosamente. ¿Deseas compartir tu logro?",
@@ -79,7 +85,7 @@ const PlayWorkout = () => {
                 ]
             );
         }
-    }, [routineProgress]);
+    }, [routineProgress, isCompleted]);
 
     const getWorkoutDuration = () => {
         return Math.floor((Date.now() - startTime.current) / 1000);
@@ -113,8 +119,10 @@ const PlayWorkout = () => {
                     completedExercises={Object.values(completedExercises).filter(Boolean).length}
                     totalExercises={exercises.length}
                     handlePlayWorkout={()=>{
-                        setScreenPlayExercises([...workout?.exercisesInWorkout ?? []])
-                        router.push('/(home)/playexercise')
+                        //setScreenPlayExercises([...workout?.exercisesInWorkout ?? []])
+                        setPlayExercises([...exercises])
+                        startWorkout()
+                        router.push('/(animated)/playexercise')
                     }}
                 />}
                 ListFooterComponent={()=><View className="h-24 " />}
