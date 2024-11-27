@@ -10,28 +10,18 @@ interface ExerciseCardProps {
     exercise: ExerciseInWorkoutAPI;
     onDrag: () => void;
     isActive: boolean;
-    isCompleted?: boolean;
-    onComplete?: (completed: boolean) => void;
+    handleEditExercise: () => void;
 }
 
 const PlayRoutineExerciseItem = ({ 
     exercise, 
     onDrag, 
     isActive,
-    isCompleted = false,
-    onComplete 
+    handleEditExercise
 }: ExerciseCardProps) => {
     const { isDark } = useTheme();
-    const [completed, setCompleted] = useState(isCompleted);
 
     useQueryClient().setQueryData(['exercises', exercise.exercise?.id], exercise.exercise);
-    
-    const handleComplete = (e: any) => {
-        e.stopPropagation();
-        const newState = !completed;
-        setCompleted(newState);
-        onComplete?.(newState);
-    };
 
     return (
         <View className={`
@@ -55,11 +45,9 @@ const PlayRoutineExerciseItem = ({
                 flex-1 rounded-sm overflow-hidden
             `}>
                 <Pressable 
-                    onPress={() => {
-                        router.push(`/(library)/exercise/${exercise.exercise?.id}`);
-                    }}
+                    onPress={handleEditExercise}
                     className={`
-                        px-4 py-2 flex-row items-center justify-between 
+                        px-4 py-0 flex-row items-center justify-between 
                         border-l-4 border-eBlue-500
                     `}
                 >
@@ -103,32 +91,14 @@ const PlayRoutineExerciseItem = ({
                             </View>
                         </View>
                     </View>
-
-                    <TouchableOpacity
-                        onPress={() => {
+                                
+                    <Image
+                        source={{ 
+                            uri: "https://media1.tenor.com/m/c1Q1VD-Aq18AAAAC/muppetwiki-muppet-wiki.gif" 
                         }}
-                    >
-                        <Ionicons 
-                            name="pencil-outline" 
-                            size={24} 
-                            color={isDark ? "#fff" : "#1c1c1c"} 
-                        />
-                    </TouchableOpacity>
-
-                    <Pressable
-                        onPress={handleComplete}
-                        className={`
-                            ml-3 p-2 rounded-full
-                            ${completed ? 'bg-eBlue-500' : ''}
-                            border-2 border-${completed ? 'lightGreen' : isDark ? "#fff" : "#1c1c1c"}
-                        `}
-                    >
-                        <Ionicons 
-                            name={completed ? "checkmark" : "checkmark-outline"} 
-                            size={24} 
-                            color={completed ? "#fff" : (isDark ? "#fff" : "#1c1c1c")} 
-                        />
-                    </Pressable>
+                        className="w-24 h-24 rounded-full"
+                        resizeMode="contain"
+                    />
                 </Pressable>
             </View>
         </View>

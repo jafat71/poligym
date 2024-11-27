@@ -77,6 +77,7 @@ const _layout = () => {
                     fullScreenGestureEnabled: true
                 }}
             />
+
             <Stack.Screen
                 name="plandetail"
                 options={{

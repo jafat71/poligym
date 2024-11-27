@@ -6,25 +6,31 @@ import { useTheme } from "@/context/ThemeContext";
 import SquarePill from "../pills/SquarePill";
 import ButtonPill from "../buttons/ButtonPill";
 import { Ionicons } from "@expo/vector-icons";
+import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext";
+import { useEffect, useMemo, useState } from "react";
+import { router } from "expo-router";
 
 interface PlayWorkoutFlatlistHeaderProps {
     workout: WorkoutAPI;
-    progress: number;
-    completedExercises: number;
     totalExercises: number;
     handlePlayWorkout: () => void;
 }
 
 export const PlayWorkoutFlatlistHeader = ({
     workout,
-    progress,
-    completedExercises,
     totalExercises,
     handlePlayWorkout
 }: PlayWorkoutFlatlistHeaderProps) => {
 
-    const isCompleted = completedExercises === totalExercises;
+    const {completedPlayExercises} = usePlayWorkoutContext()
+
     const { isDark } = useTheme();
+
+    const exercisesCompleted = Object.values(completedPlayExercises).filter(Boolean).length
+    const progressOver100 = exercisesCompleted / totalExercises
+
+    const [isExecuting, setIsExecuting] = useState(progressOver100 > 0);
+
     return (
         <View className="px-4 pb-3">
             <View className="flex-row items-center mb-4 ">
@@ -53,6 +59,17 @@ export const PlayWorkoutFlatlistHeader = ({
                         text="Guardar"
                         onPress={() => { }}
                     />
+                    {
+                        isExecuting && (
+                            <ButtonPill
+                                icon="play-outline"
+                                text="Reanudar"
+                                onPress={() => {
+                                    router.navigate(`/(animated)/playexercise`)
+                                }}
+                            />
+                        )
+                    }
                 </View>
 
                 <Pressable
@@ -62,7 +79,13 @@ export const PlayWorkoutFlatlistHeader = ({
                 rounded-full mx-2 my-2
             `}
                 >
-                    <Ionicons name="play" size={24} color={isDark ? "#1c1c1c" : "#fff"} />
+                    {
+                        isExecuting ? (
+                            <Ionicons name="refresh-outline" size={24} color={isDark ? "#1c1c1c" : "#fff"} />
+                        ) : (
+                            <Ionicons name="play" size={24} color={isDark ? "#1c1c1c" : "#fff"} />
+                        )
+                    }
                 </Pressable>
             </View>
 
@@ -73,22 +96,21 @@ export const PlayWorkoutFlatlistHeader = ({
             <View className={``}>
 
                 <Progress.Bar
-                    progress={progress}
+                    progress={progressOver100}
                     width={null}
                     height={8}
                     color={"#0055f9"}
                     unfilledColor={isDark ? "#1c1c1c" : "#1c1c1c"}
                     borderWidth={0}
                     borderRadius={4}
-                    animated={true}
                 />
 
                 <View className="flex-row justify-between mt-2">
                     <Text className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway text-xl`}>
-                        {(completedExercises)}/{totalExercises}
+                        {exercisesCompleted}/{totalExercises}
                     </Text>
                     <Text className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway text-xl`}>
-                        {Math.round(progress * 100)}/100%
+                        {Math.round(progressOver100 * 100)}/100%
                     </Text>
                 </View>
             </View>

@@ -2,39 +2,28 @@ import GoBackUpButton from "@/components/ui/common/buttons/GoBackUpButton"
 import IconButton from "@/components/ui/common/buttons/IconButton"
 import { useTheme } from "@/context/ThemeContext"
 import { Ionicons } from "@expo/vector-icons"
-import { router } from "expo-router"
-import { useEffect, useState } from "react"
 import { Animated, Image, Pressable, SafeAreaView, Text, TouchableHighlight, TouchableOpacity, View } from "react-native"
 import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext"
-import MainLogoGradientComponent from "@/components/ui/common/logo/mainLogoGrandient"
 
 const PlayExercise = () => {
-    //const { screenPlayExercises } = useNavigationFlowContext()
     const {
         playExercises,
         currentExerciseIndex,
         currentSet,
-        timeLeft,
         isPlaying,
         isResting,
         handleNextExercise,
-        startWorkout,
         togglePlay,
-        workoutStartTime,
-        getWorkoutDuration,
-        isCompleted,
         REST_TIME,
         EXERCISE_TIME,
+        timeLeft,
     } = usePlayWorkoutContext();
     const { isDark } = useTheme()
     const textStyle = `${isDark ? 'text-white' : 'text-darkGray-500'} font-raleway`
 
-    const currentExercise = playExercises![currentExerciseIndex]
-    const nextExercise = playExercises![currentExerciseIndex + 1]
 
-    const handleComplete = () => {
-        handleNextExercise()
-    }
+    const currentExercise = playExercises[currentExerciseIndex];
+    const nextExercise = playExercises[currentExerciseIndex + 1];
 
     const progressWidth = `${((isResting ? REST_TIME : EXERCISE_TIME) - timeLeft) / (isResting ? REST_TIME : EXERCISE_TIME) * 100}%`
 
@@ -99,7 +88,7 @@ const PlayExercise = () => {
                 </View>
 
                 <TouchableHighlight 
-                    onPress={handleComplete}
+                    onPress={handleNextExercise}
                     className={`w-full flex flex-row justify-center
                         p-2 rounded-sm
                         ${isDark ? 'bg-darkGray-100' : 'bg-gray-900'}`}>
@@ -129,10 +118,10 @@ const PlayExercise = () => {
                 <View className={`my-2 ${isDark ? 'bg-darkGray-600' : 'bg-gray-100'}`}>
                     <Text numberOfLines={1} className={`${textStyle} items-start text-lg mb-2`}>
                         {isResting ?
-                            `Prepárate para el set ${currentSet + 1}` :
+                            `🛑✋` :
                             nextExercise ?
-                                `Siguiente: ${nextExercise.exercise?.name ?? "EJERCICIO"}` :
-                                "Estás cerca de completar la rutina :)"
+                                `Vamos 🔥🔥🔥 - Siguiente: ${nextExercise.exercise?.name ?? "EJERCICIO"}` :
+                                "El último ejercicio de la rutina 😎👍"
                         }
 
                     </Text>

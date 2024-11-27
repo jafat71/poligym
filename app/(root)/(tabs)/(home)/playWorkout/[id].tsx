@@ -1,7 +1,7 @@
 import { ExerciseInWorkoutAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
 import { router, useLocalSearchParams } from "expo-router";
 import { useState, useEffect, useMemo, useRef } from "react";
-import { Alert, Text, View } from "react-native";
+import { Alert, Modal, Pressable, Text, View } from "react-native";
 import DraggableFlatList, { RenderItemParams } from "react-native-draggable-flatlist";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,15 +10,15 @@ import { useUser } from "@/context/UserContext";
 import { PlayWorkoutFlatlistHeader } from "@/components/ui/common/flatlists/PlayWorkoutFlastlistHeader";
 import PlayRoutineExerciseItem from "@/components/ui/exercises/PlayRoutineExerciseItem";
 import CreatePostModal from "@/components/ui/common/modal/CreatePostModal";
-import { useNavigationFlowContext } from "@/context/NavFlowContext";
 import { useTheme } from "@/context/ThemeContext";
 import WorkoutLoadingScreen from "@/components/animatedUi/WorkoutLoadingScreen";
-import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext";
+import { usePlayWorkoutContext, WorkoutPlayProvider } from "@/context/PlayWorkoutContext";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import EditExerciseModal from "@/components/ui/common/modal/EditExerciseModal";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
     const { accessToken } = useUser();
-    const { setScreenPlayExercises} = useNavigationFlowContext()
     const queryClient = useQueryClient();
     const workoutId = Number(id);
     const cachedWorkout = queryClient.getQueryData<WorkoutAPI>(['workouts', workoutId]);
@@ -34,7 +34,6 @@ const PlayWorkout = () => {
     });
 
     const [exercises, setExercises] = useState<ExerciseInWorkoutAPI[]>([]);
-    const [completedExercises, setCompletedExercises] = useState<{ [key: string]: boolean }>({});
 
     useEffect(() => {
             if(workout){
@@ -45,31 +44,25 @@ const PlayWorkout = () => {
             }
     }, [workout]);
 
-    const { setPlayExercises, startWorkout, isCompleted, setIsCompleted } = usePlayWorkoutContext();
-
-    // Calcular el progreso de la rutina
-    const routineProgress = useMemo(() => {
-        if (!exercises.length) return 0;
-        const completed = Object.values(completedExercises).filter(Boolean).length;
-        return completed / exercises.length;
-    }, [exercises, completedExercises]);
-
-    const handleExerciseComplete = (exerciseId: string, completed: boolean) => {
-        setCompletedExercises(prev => ({
-            ...prev,
-            [exerciseId]: completed
-        }));
-    };
-
+    const { 
+        setPlayExercises, 
+        startWorkout, 
+        isCompleted, 
+        setIsCompleted,
+    } = usePlayWorkoutContext();
+   
     const [showPostModal, setShowPostModal] = useState(false);
+    const [showEditExerciseModal, setShowEditExerciseModal] = useState({
+        visible:false,
+        exercise: null
+    });
+
     const [workoutDuration, setWorkoutDuration] = useState(0);
     const startTime = useRef(Date.now());
 
     useEffect(() => {
-        if (routineProgress === 1 || isCompleted) {
-            if(isCompleted){
-                setIsCompleted(false);
-            }
+        if (isCompleted) {
+            setIsCompleted(false);
             Alert.alert(
                 "¡Felicitaciones! 🎉",
                 "Has completado la rutina exitosamente. ¿Deseas compartir tu logro?",
@@ -85,7 +78,7 @@ const PlayWorkout = () => {
                 ]
             );
         }
-    }, [routineProgress, isCompleted]);
+    }, [isCompleted]);
 
     const getWorkoutDuration = () => {
         return Math.floor((Date.now() - startTime.current) / 1000);
@@ -95,15 +88,14 @@ const PlayWorkout = () => {
         return `${minutes} minutos`;
     };
 
-    const renderItem = ({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => (
-        <PlayRoutineExerciseItem
+    const renderItem = ({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => {
+        return <PlayRoutineExerciseItem
             exercise={item}
             onDrag={drag}
             isActive={isActive}
-            isCompleted={completedExercises[item.id]}
-            onComplete={(completed) => handleExerciseComplete(item.id.toString(), completed)}
+            handleEditExercise={() => setShowEditExerciseModal({ visible: true, exercise: item as any})}
         />
-    );
+    }
 
     if (isLoading || !infoSetted) return <WorkoutLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
@@ -115,8 +107,6 @@ const PlayWorkout = () => {
             <DraggableFlatList
                 ListHeaderComponent={()=><PlayWorkoutFlatlistHeader
                     workout={workout!}
-                    progress={routineProgress}
-                    completedExercises={Object.values(completedExercises).filter(Boolean).length}
                     totalExercises={exercises.length}
                     handlePlayWorkout={()=>{
                         //setScreenPlayExercises([...workout?.exercisesInWorkout ?? []])
@@ -146,6 +136,13 @@ const PlayWorkout = () => {
                     fecha: new Date().toISOString(),
                     duracion: getWorkoutDuration().toString()
                 }}
+            />
+
+            {/* MODAL - INFO + EDIT EJERCICIO */}
+            <EditExerciseModal
+                visible={showEditExerciseModal.visible}
+                exercise={showEditExerciseModal.exercise}
+                onClose={() => setShowEditExerciseModal({ visible: false, exercise: null })}
             />
         </View>
     );

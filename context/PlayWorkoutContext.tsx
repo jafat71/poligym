@@ -1,6 +1,5 @@
-import { emptyUser } from "@/constants";
 import { ExerciseInWorkoutAPI } from "@/types/interfaces/entities/plan";
-import { router } from "expo-router";
+import { router, usePathname, useRouter } from "expo-router";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 interface WorkoutPlayContextType {
@@ -19,7 +18,7 @@ interface WorkoutPlayContextType {
     startWorkout: () => void;
     togglePlay: () => void;
     handleNextExercise: () => void;
-    
+
     workoutStartTime: number;
     getWorkoutDuration: () => number;
     isCompleted: boolean;
@@ -60,6 +59,7 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     const [playExercises, setPlayExercises] = useState<ExerciseInWorkoutAPI[]>([]);
     const [completedPlayExercises, setCompletedPlayExercises] = useState<{ [key: string]: boolean }>({});
 
+    console.log(completedPlayExercises)
     useEffect(() => {
         console.log("PLAY EXERCISES",playExercises)
     }, [playExercises]);
@@ -80,17 +80,25 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     const [REST_TIME, setREST_TIME] = useState(30);
     const [EXERCISE_TIME, setEXERCISE_TIME] = useState(45);
 
-    React.useEffect(() => {
+    const [progress, setProgress] = useState(0);
+
+    const currentPath = usePathname();
+    const exercisePath = "/playexercise";
+
+    useEffect(() => {
         let timer: NodeJS.Timeout;
-        if (isPlaying && timeLeft > 0) {
+        if (isPlaying && timeLeft > 0 && currentPath === exercisePath) {
             timer = setInterval(() => {
                 setTimeLeft(prev => prev - 1);
             }, 1000);
         }
+        if (currentPath !== exercisePath) {
+            setIsPlaying(false);
+        }
         return () => clearInterval(timer);
-    }, [isPlaying, timeLeft]);
+    }, [isPlaying, timeLeft, currentPath]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (timeLeft === 0) {
             const currentExercise = playExercises[currentExerciseIndex];
             if (isResting) {
@@ -108,7 +116,6 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     }, [timeLeft]);
 
     const handleNextExercise = () => {
-        console.log("CURRENT EXERCISE INDEX",currentExerciseIndex)
         if (currentExerciseIndex < playExercises.length - 1) {
             setCurrentExerciseIndex(prev => prev + 1);
             setCurrentSet(1);
@@ -135,6 +142,7 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
 
     const startWorkout = () => {
         setCurrentExerciseIndex(0);
+        setProgress(0);
         setCurrentSet(1);
         setTimeLeft(EXERCISE_TIME);
         setIsPlaying(true);
@@ -169,7 +177,7 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             setIsCompleted,
             REST_TIME,
             EXERCISE_TIME,
-        }}>
+}}>
             {children}
         </WorkoutPlayContext.Provider>
     );
