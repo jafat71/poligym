@@ -49,6 +49,7 @@ const PlayWorkout = () => {
         startWorkout, 
         isCompleted, 
         setIsCompleted,
+        lastWorkoutPlayed
     } = usePlayWorkoutContext();
    
     const [showPostModal, setShowPostModal] = useState(false);
@@ -88,34 +89,35 @@ const PlayWorkout = () => {
         return `${minutes} minutos`;
     };
 
+    const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
+
     const renderItem = ({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => {
         return <PlayRoutineExerciseItem
             exercise={item}
             onDrag={drag}
             isActive={isActive}
             handleEditExercise={() => setShowEditExerciseModal({ visible: true, exercise: item as any})}
+            blocked={isLastWorkoutPlayed}
         />
     }
 
     if (isLoading || !infoSetted) return <WorkoutLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
 
+    
     return (
         <View className={`flex-1 
-        py-2
         ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
             <DraggableFlatList
                 ListHeaderComponent={()=><PlayWorkoutFlatlistHeader
                     workout={workout!}
                     totalExercises={exercises.length}
                     handlePlayWorkout={()=>{
-                        //setScreenPlayExercises([...workout?.exercisesInWorkout ?? []])
                         setPlayExercises([...exercises])
                         startWorkout()
                         router.push('/(animated)/playexercise')
                     }}
                 />}
-                ListFooterComponent={()=><View className="h-24 " />}
                 data={exercises}
                 ItemSeparatorComponent={() => <View className="h-2 " />}
                 onDragEnd={({ data }) => setExercises([...data])}
@@ -138,7 +140,6 @@ const PlayWorkout = () => {
                 }}
             />
 
-            {/* MODAL - INFO + EDIT EJERCICIO */}
             <EditExerciseModal
                 visible={showEditExerciseModal.visible}
                 exercise={showEditExerciseModal.exercise}

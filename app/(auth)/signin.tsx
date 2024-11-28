@@ -41,6 +41,11 @@ const Signin = () => {
     onError: (error: any) => {
       setErrors([error.message]);
     },
+    onSettled: () => {
+      setErrors([])
+      setEmail('')
+      setPassword('')
+    }
   });
 
   const handleSubmit = async () => {

@@ -11,13 +11,15 @@ interface ExerciseCardProps {
     onDrag: () => void;
     isActive: boolean;
     handleEditExercise: () => void;
+    blocked: boolean;
 }
 
-const PlayRoutineExerciseItem = ({ 
-    exercise, 
-    onDrag, 
+const PlayRoutineExerciseItem = ({
+    exercise,
+    onDrag,
     isActive,
-    handleEditExercise
+    handleEditExercise,
+    blocked
 }: ExerciseCardProps) => {
     const { isDark } = useTheme();
 
@@ -27,74 +29,78 @@ const PlayRoutineExerciseItem = ({
         <View className={`
             flex flex-row items-center justify-start
             transition-all duration-300 px-2 h-24
-            ${isDark ? 'bg-darkGray-900' : 'bg-darkGray-100'}
+            bg-eBlue-500 rounded-lg
             ${isActive ? '-translate-x-2' : ''}
         `}>
-            <Pressable 
-                onLongPress={onDrag} 
-                className={`p-2 justify-center ${isDark ? 'bg-white' : 'bg-darkGray-800'} h-full`}
+            <Pressable
+                disabled={blocked}
+                onLongPress={onDrag}
+                className={`p-2 justify-center 
+                    ${blocked ? 'opacity-50' : ''}
+                    ${isDark ? 'bg-white' : 'bg-darkGray-800'} h-full`}
             >
-                <Ionicons 
-                    name="menu-outline" 
-                    size={24} 
-                    color={isDark ? 'black' : 'white'} 
+                <Ionicons
+                    name="menu-outline"
+                    size={24}
+                    color={isDark ? 'black' : 'white'}
                 />
             </Pressable>
 
             <View className={`
                 flex-1 rounded-sm overflow-hidden
             `}>
-                <Pressable 
+                <Pressable
                     onPress={handleEditExercise}
                     className={`
                         px-4 py-0 flex-row items-center justify-between 
-                        border-l-4 border-eBlue-500
                     `}
                 >
-                    
+
                     <View className="flex-1">
-                        <Text 
+                        <Text
                             numberOfLines={1}
-                        className={`
-                            ${isDark ? 'text-white' : 'text-darkGray-500'} 
+                            className={`
+                            text-white 
                             text-xl font-ralewayBold mb-1
                         `}>
                             {exercise.exercise?.name ?? "Ejercicio"}
                         </Text>
-                        
+
                         <View className="flex-col">
                             <View className="flex-row items-center">
-                                <Ionicons 
-                                    name="repeat-outline" 
-                                    size={24} 
-                                    color={isDark ? "#fff" : "#1c1c1c"} 
+                                <Ionicons
+                                    name="repeat-outline"
+                                    size={24}
+                                    color={"#fff"}
                                 />
-                                <Text className={`${isDark ? "text-white" : "text-darkGray-900"} 
-                                    text-sm font-ralewaySemiBold ml-1
-                                `}>
-                                    {exercise.sets} X {exercise.reps} Reps
+                                <Text className={`text-white text-sm  ml-1`}>
+                                    {exercise.sets} X {exercise.reps}
+                                </Text>
+                                <Text className={`text-white text-sm  font-ralewaySemiBold ml-1`}>
+                                    Reps
                                 </Text>
                             </View>
 
                             <View className="flex-row items-center">
-                                <Ionicons 
-                                    name="time-outline" 
-                                    size={24} 
-                                    color={isDark ? "#fff" : "#1c1c1c"} 
+                                <Ionicons
+                                    name="time-outline"
+                                    size={24}
+                                    color={"#fff"}
                                 />
-                                <Text className={`
-                                    ${isDark ? "text-white" : "text-darkGray-900"} 
-                                    text-sm font-ralewaySemiBold ml-1
+                                <Text className={`text-white text-sm font-ralewaySemiBold ml-1
                                 `}>
-                                    {exercise.restTime}s Descanso
+                                    {exercise.restTime}s
+                                </Text>
+                                <Text className={`text-white text-sm  font-ralewaySemiBold ml-1`}>
+                                    Descanso
                                 </Text>
                             </View>
                         </View>
                     </View>
-                                
+
                     <Image
-                        source={{ 
-                            uri: "https://media1.tenor.com/m/c1Q1VD-Aq18AAAAC/muppetwiki-muppet-wiki.gif" 
+                        source={{
+                            uri: "https://media1.tenor.com/m/c1Q1VD-Aq18AAAAC/muppetwiki-muppet-wiki.gif"
                         }}
                         className="w-24 h-24 rounded-full"
                         resizeMode="contain"

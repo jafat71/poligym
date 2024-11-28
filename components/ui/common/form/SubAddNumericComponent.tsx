@@ -17,7 +17,7 @@ export const SubAddNumericComponent = ({ number, subFunction, addFunction, icon,
         <>
             <View className="flex flex-row items-center justify-between  w-full">
                 <View className='flex flex-row items-center'>
-                    <Text className={`text-sm ${isDark ? 'text-white' : 'text-darkGray-900'} font-ralewayExtraBold`}>{title}</Text>
+                    <Text className={`text-lg ${isDark ? 'text-white' : 'text-darkGray-900'} font-ralewayExtraBold`}>{title}</Text>
                 </View>
 
                 <View className='flex flex-row items-center justify-between w-3/5'>
@@ -29,7 +29,7 @@ export const SubAddNumericComponent = ({ number, subFunction, addFunction, icon,
 
                     <View className='flex flex-row items-center'>
                         <Ionicons name={icon as any} size={34} color={isDark ? '#fff' : '#374151'} />
-                        <Text className={`ml-2 text-4xl font-raleway
+                        <Text className={`ml-2 text-4xl w-12 text-center font-raleway
                             ${isDark ? 'text-white' : 'text-darkGray-900'}
                         `}>
                             {number}

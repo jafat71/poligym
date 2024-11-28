@@ -25,6 +25,7 @@ interface WorkoutPlayContextType {
     setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>;
     REST_TIME: number;
     EXERCISE_TIME: number;
+    lastWorkoutPlayed: number;
 }
 
 const WorkoutPlayContext = createContext<WorkoutPlayContextType | undefined>({
@@ -49,6 +50,7 @@ const WorkoutPlayContext = createContext<WorkoutPlayContextType | undefined>({
     setIsCompleted: () => { },
     REST_TIME: 0,
     EXERCISE_TIME: 0,
+    lastWorkoutPlayed: 0,
 }); 
 
 interface WorkoutPlayProviderProps {    
@@ -59,7 +61,6 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     const [playExercises, setPlayExercises] = useState<ExerciseInWorkoutAPI[]>([]);
     const [completedPlayExercises, setCompletedPlayExercises] = useState<{ [key: string]: boolean }>({});
 
-    console.log(completedPlayExercises)
     useEffect(() => {
         console.log("PLAY EXERCISES",playExercises)
     }, [playExercises]);
@@ -81,6 +82,8 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     const [EXERCISE_TIME, setEXERCISE_TIME] = useState(45);
 
     const [progress, setProgress] = useState(0);
+
+    const [lastWorkoutPlayed, setlastWorkoutPlayed] = useState(0);
 
     const currentPath = usePathname();
     const exercisePath = "/playexercise";
@@ -125,6 +128,7 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
                 ...prev,
                 [playExercises[currentExerciseIndex].id]: true
             }));
+            setlastWorkoutPlayed(playExercises[currentExerciseIndex].workoutId);
         } else {
             //COMPLETE LAST EXERCISE, RESET ALL AND NAVIGATE BACK
             setIsResting(false);
@@ -136,7 +140,8 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             setIsCompleted(true);
             setTimeout(() => {
                 router.back();
-            }, 2000);
+                resetWorkout();
+            }, 3000);
         }
     };
 
@@ -150,6 +155,16 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
         setWorkoutStartTime(Date.now());
         setCompletedPlayExercises({});
     };
+
+    const resetWorkout = () => {
+        setIsCompleted(false);
+        setCompletedPlayExercises({});
+        setCurrentExerciseIndex(0);
+        setCurrentSet(1);
+        setTimeLeft(EXERCISE_TIME);
+        setIsPlaying(false);
+        setIsResting(false);
+    }
 
     const togglePlay = () => setIsPlaying(!isPlaying);
 
@@ -177,6 +192,7 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             setIsCompleted,
             REST_TIME,
             EXERCISE_TIME,
+            lastWorkoutPlayed,
 }}>
             {children}
         </WorkoutPlayContext.Provider>

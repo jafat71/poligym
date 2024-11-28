@@ -44,6 +44,12 @@ const Signup = () => {
     onError: (error: any) => {
       setErrors([error.message || "Error al registrar el usuario. Inténtelo más tarde"])
     },
+    onSettled: () => {
+      setErrors([])
+      setEmail('')
+      setPassword('')
+      setConfirmPassword('')
+    }
   });
 
   const toggleTermseModal = () => {

@@ -12,6 +12,7 @@ import MaleFront from '../../body/MaleFront';
 import { isValidMuscleGroup } from '@/lib/utils/isMuscle';
 import { MuscleGroups } from '@/types/types/muscles';
 import { SubAddNumericComponent } from '../form/SubAddNumericComponent';
+import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
 
 interface EditExerciseModalProps {
     visible: boolean;
@@ -32,123 +33,129 @@ const EditExerciseModal = ({ visible, onClose, exercise }: EditExerciseModalProp
             style={{ margin: 0 }}
             avoidKeyboard
             propagateSwipe
-            animationOut={'fadeOut'}
-            animationIn={'fadeIn'}
-            animationInTiming={300}
-            animationOutTiming={300}
-            backdropOpacity={0.75}
-            backdropTransitionOutTiming={600}
+            animationOut={'slideOutDown'}
+            animationIn={'slideInUp'}
+            animationInTiming={100}
+            animationOutTiming={100}
+            backdropOpacity={0.05}
+            backdropTransitionOutTiming={100}
         >
-                <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'} mt-20 rounded-t-3xl p-4`}>
-                    <View className="flex-row justify-between items-center mb-4">
-                        <Text className={`text-3xl font-ralewayBold ${isDark ? 'text-white' : 'text-black'}`}>
-                            {exercise?.exercise.name}
-                        </Text>
-                        <IconButton
-                            icon={<Ionicons name="close" size={24} color="#999" />}
-                            onPress={onClose}
-                        />
-                    </View>
+            {
+                exercise ? (
+                    <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'} mt-20 rounded-t-3xl p-4`}>
+                        <View className="flex-row justify-between items-center mb-4">
+                            <Text className={`text-3xl font-ralewayBold ${isDark ? 'text-white' : 'text-black'}`}>
+                                {exercise?.exercise.name}
+                            </Text>
+                            <IconButton
+                                icon={<Ionicons name="close" size={24} color="#999" />}
+                                onPress={onClose}
+                            />
+                        </View>
 
-                    <ScrollView
-                        contentContainerStyle={{ flexGrow: 1 }}
-                        showsVerticalScrollIndicator={false}
-                    >
+                        <ScrollView
+                            contentContainerStyle={{ flexGrow: 1 }}
+                            showsVerticalScrollIndicator={false}
+                        >
 
-                        <View className="w-full ">
-                            <View className={`flex flex-col items-start justify-between`}>
+                            <View className="w-full ">
+                                <View className={`flex flex-col items-start justify-between`}>
 
-                                <SubAddNumericComponent
-                                    number={exercise?.sets || 0}
-                                    title='Series'
-                                    subFunction={() => {}}
-                                    addFunction={() => {}}
-                                    icon='repeat-sharp'
-                                />
+                                    <SubAddNumericComponent
+                                        number={exercise?.sets || 0}
+                                        title='Series'
+                                        subFunction={() => {}}
+                                        addFunction={() => {}}
+                                        icon='repeat-sharp'
+                                    />
 
-                                <SubAddNumericComponent
-                                    number={exercise?.reps || 0}
-                                    title='Repeticiones'
-                                    subFunction={() => {}}
-                                    addFunction={() => {}}
-                                    icon='repeat-sharp'
-                                />
+                                    <SubAddNumericComponent
+                                        number={exercise?.reps || 0}
+                                        title='Repeticiones'
+                                        subFunction={() => {}}
+                                        addFunction={() => {}}
+                                        icon='repeat-sharp'
+                                    />
 
-<SubAddNumericComponent
-                                    number={exercise?.restTime || 0}
-                                    title='Descanso (seg)'
-                                    subFunction={() => {}}
-                                    addFunction={() => {}}
-                                    icon='timer-outline'
-                                />
+    <SubAddNumericComponent
+                                        number={exercise?.restTime || 0}
+                                        title='Descanso (seg)'
+                                        subFunction={() => {}}
+                                        addFunction={() => {}}
+                                        icon='timer-outline'
+                                    />
 
+                                </View>
                             </View>
-                        </View>
 
-                        <Image
-                            source={{ uri: exercise?.exercise.mediaUrl }}
-                            className='w-full h-64 rounded-lg my-4 bg-gray-100'
-                            resizeMode='stretch'
-                        />
+                            <Image
+                                source={{ uri: exercise?.exercise.mediaUrl }}
+                                className='w-full h-64 rounded-lg my-4 bg-gray-100'
+                                resizeMode='stretch'
+                            />
 
-                        <View>
-                            <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Descripción</Text>
-                            <Text className={`text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>{exercise?.exercise.description}</Text>
-                        </View>
-
-
-                        <View className='my-2'>
-                            <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Recomendación</Text>
-                            <Text className={`text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>{exercise?.exercise.recommendation}</Text>
-                        </View>
+                            <View>
+                                <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Descripción</Text>
+                                <Text className={`text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>{exercise?.exercise.description}</Text>
+                            </View>
 
 
-                        <View className='my-2'>
-                            <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Grupos musculares</Text>
-                        </View>
-                        <View className='flex flex-row flex-wrap'>
-                            {
-                                exercise?.exercise.muscleGroups && exercise?.exercise.muscleGroups.map((muscle) => (
-                                    <SquarePill
-                                        key={muscle}
-                                        text={isValidMuscleGroup(muscle) ? MuscleGroups[muscle] : muscle}
-                                        icon='body-outline'
-                                    />
-                                ))
-                            }
-                        </View>
+                            <View className='my-2'>
+                                <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Recomendación</Text>
+                                <Text className={`text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>{exercise?.exercise.recommendation}</Text>
+                            </View>
 
-                        <View className='flex flex-row justify-center p-2'>
-                            <MaleBack width={150} height={150} muscleColors={muscleColors} />
-                            <MaleFront width={150} height={150} muscleColors={muscleColors} />
-                        </View>
 
-                        <View className='my-2'>
-                            <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Equipamiento</Text>
-                        </View>
-                        <View className='flex flex-row flex-wrap mb-2'>
-                            {
-                                exercise?.exercise.equipment?.map((equipment) => (
-                                    <SquarePill
-                                        key={equipment.id}
-                                        text={equipment.name}
-                                        icon='barbell-outline'
-                                    />
-                                ))
-                            }
-                            {
-                                exercise?.exercise.equipment?.length === 0 && (
-                                    <SquarePill
-                                        text='Sin equipamiento'
-                                        icon='barbell-outline'
-                                    />
-                                )
-                            }
-                        </View>
+                            <View className='my-2'>
+                                <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Grupos musculares</Text>
+                            </View>
+                            <View className='flex flex-row flex-wrap'>
+                                {
+                                    exercise?.exercise.muscleGroups && exercise?.exercise.muscleGroups.map((muscle) => (
+                                        <SquarePill
+                                            key={muscle}
+                                            text={isValidMuscleGroup(muscle) ? MuscleGroups[muscle] : muscle}
+                                            icon='body-outline'
+                                        />
+                                    ))
+                                }
+                            </View>
 
-                    </ScrollView>
+                            <View className='flex flex-row justify-center p-2'>
+                                <MaleBack width={150} height={150} muscleColors={muscleColors} />
+                                <MaleFront width={150} height={150} muscleColors={muscleColors} />
+                            </View>
 
-                </View>
+                            <View className='my-2'>
+                                <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Equipamiento</Text>
+                            </View>
+                            <View className='flex flex-row flex-wrap mb-2'>
+                                {
+                                    exercise?.exercise.equipment?.map((equipment) => (
+                                        <SquarePill
+                                            key={equipment.id}
+                                            text={equipment.name}
+                                            icon='barbell-outline'
+                                        />
+                                    ))
+                                }
+                                {
+                                    exercise?.exercise.equipment?.length === 0 && (
+                                        <SquarePill
+                                            text='Sin equipamiento'
+                                            icon='barbell-outline'
+                                        />
+                                    )
+                                }
+                            </View>
+
+                        </ScrollView>
+
+                    </View>
+                ) : (
+                    <SkeletonLoadingScreen/>
+                )
+            }
         </Modal>
     )
 }

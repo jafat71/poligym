@@ -19,25 +19,19 @@ const ButtonPill = ({
     return (
         <TouchableOpacity
             onPress={onPress}
-            className={`px-3 py-2 rounded-sm mr-1 mb-1 border-2 flex flex-row items-center justify-center   
-                ${isDark 
-                        ? "border-darkGray-400 bg-transparent" 
-                        : "border-darkGray-400 bg-transparent"
-                }
+            className={`px-3 py-2 rounded-sm mr-1 mb-1 flex flex-row items-center justify-center   
+                 bg-white/20 border-2 border-lightGreen
             `}
         >
             <Ionicons
                 name={icon as any}
                 size={16}
-                color={isDark ? '#fff' : '#000'}
+                color={'#fff'}
             />
 
             <Text 
                 className={`
-                    ${isDark 
-                            ? "text-white" 
-                            : "text-darkGray-500"
-                    } 
+                  text-white
                     font-ralewaySemiBold 
                     text-xs capitalize ml-1
                 `}

@@ -31,7 +31,6 @@ const Update = () => {
     mutationFn: ({ userId, currentPassword, newPassword, confirmPassword }: { userId: string, currentPassword: string, newPassword: string, confirmPassword: string }) =>
       updatePassword(userId, currentPassword, newPassword, confirmPassword, accessToken ?? ""),
     onSuccess: (data) => {
-      console.log("DATA", data)
       setSuccessMessage('Contraseña actualizada correctamente')
       setTimeout(() => {
         router.navigate('/(root)/(tabs)/home')

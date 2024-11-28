@@ -1,5 +1,5 @@
 
-const emailRegex = /^[a-zA-Z0-9._%+-]+@epn\.edu\.ec$/;
+const emailRegex = /^[a-zA-Z0-9._%+-ñÑ]+@epn\.edu\.ec$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*\-_])[A-Za-z\d!@#$%^&*\-_]{8,}$/;
 
 export const validateSignup = (email: string, password: string, confirmPassword: string) => {
