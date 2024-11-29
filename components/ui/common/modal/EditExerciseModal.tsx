@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, KeyboardAvoidingView, Platform, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTheme } from '@/context/ThemeContext';
 import Modal from 'react-native-modal';
 import IconButton from '../buttons/IconButton';
@@ -19,13 +19,18 @@ interface EditExerciseModalProps {
     onClose: () => void;
     exercise: ExerciseInWorkoutAPI | null;
     updateExercise: (exercise: ExerciseInWorkoutAPI) => void;   
+    blocked: boolean;
 }
 
-const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditExerciseModalProps) => {
+const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked }: EditExerciseModalProps) => {
     const { isDark } = useTheme();
 
     let muscleColors = getMuscleColors(exercise?.exercise.muscleGroups || []);
-    //TODO: LIVE REFRESH DEL VALOR DEL CAMPO EDITADO POR EL USUARIO
+    const [exerciseState, setExerciseState] = useState(exercise);
+    useEffect(() => {
+        setExerciseState(exercise);
+    }, [exercise]);
+
     return (
         <Modal
             isVisible={visible}
@@ -47,7 +52,7 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                     <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'} mt-20 rounded-t-3xl p-4`}>
                         <View className="flex-row justify-between items-center mb-4">
                             <Text className={`text-3xl font-ralewayBold ${isDark ? 'text-white' : 'text-black'}`}>
-                                {exercise?.exercise.name}
+                                {exercise?.exercise.name} 
                             </Text>
                             <IconButton
                                 icon={<Ionicons name="close" size={24} color="#999" />}
@@ -64,15 +69,17 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                 <View className={`flex flex-col items-start justify-between`}>
 
                                     <SubAddNumericComponent
-                                        number={exercise?.sets || 0}
+                                        number={exerciseState?.sets || 0}
                                         title='Series'
                                         subFunction={() => {
+                                            if (blocked) return;
                                             updateExercise({
                                                 ...exercise,
                                                 sets: exercise?.sets - 1
                                             })
                                         }}
                                         addFunction={() => {
+                                            if (blocked) return;
                                             updateExercise({
                                                 ...exercise,
                                                 sets: exercise?.sets + 1
@@ -82,15 +89,17 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                     />
 
                                     <SubAddNumericComponent
-                                        number={exercise?.reps || 0}
+                                        number={exerciseState?.reps || 0}
                                         title='Repeticiones'
                                         subFunction={() => {
+                                            if (blocked) return;
                                             updateExercise({
                                                 ...exercise,
                                                 reps: exercise?.reps - 1
                                             })
                                         }}
                                         addFunction={() => {
+                                            if (blocked) return;
                                             updateExercise({
                                                 ...exercise,
                                                 reps: exercise?.reps + 1
@@ -100,15 +109,17 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                     />
 
                                     <SubAddNumericComponent
-                                        number={exercise?.restTime || 0}
+                                        number={exerciseState?.restTime || 0}
                                         title='Descanso (seg)'
                                         subFunction={() => {
+                                            if (blocked) return;
                                             updateExercise({
                                                 ...exercise,
                                                 restTime: exercise?.restTime - 1
                                             })
                                         }}
                                         addFunction={() => {
+                                            if (blocked) return;
                                             updateExercise({
                                                 ...exercise,
                                                 restTime: exercise?.restTime + 1
@@ -118,15 +129,17 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                     />
 
                                     <SubAddNumericComponent
-                                        number={exercise?.weight || 0}
+                                        number={exerciseState?.weight || 0}
                                         title='Peso (kg)'
                                         subFunction={() => {
+                                            if (blocked) return;
                                             updateExercise({
                                                 ...exercise,
                                                 weight: exercise?.weight ? exercise?.weight - 1 : 0
                                             })
                                         }}
                                         addFunction={() => {
+                                            if (blocked) return;
                                             updateExercise({
                                                 ...exercise,
                                                 weight: exercise?.weight ? exercise?.weight + 1 : 0

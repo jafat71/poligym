@@ -1,6 +1,5 @@
 import GoBackUpButton from "@/components/ui/common/buttons/GoBackUpButton"
 import IconButton from "@/components/ui/common/buttons/IconButton"
-import { useTheme } from "@/context/ThemeContext"
 import { Ionicons } from "@expo/vector-icons"
 import { Animated, Image, Pressable, SafeAreaView, StatusBar, Text, TouchableHighlight, TouchableOpacity, View } from "react-native"
 import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext"
@@ -20,13 +19,12 @@ const PlayExercise = () => {
         timeLeft, 
         goBackPreviousExercise
     } = usePlayWorkoutContext();
-    const { isDark } = useTheme()
 
     const currentExercise = playExercises[currentExerciseIndex];
     const progressWidth = `${((isResting ? REST_TIME : EXERCISE_TIME) - timeLeft) / (isResting ? REST_TIME : EXERCISE_TIME) * 100}%`
 
     return (
-        <SafeAreaView className={`flex-1`}>
+        <View className={`flex-1`}>
             <StatusBar barStyle="light-content" />
             <LinearGradient
                 colors={[
@@ -40,7 +38,7 @@ const PlayExercise = () => {
             />
             <GoBackUpButton />
 
-            <View className={`p-8 backdrop-blur-2xl bg-white/10 rounded-sm`}>
+            <View className={`px-0 pt-7 pb-4 rounded-sm`}>
                 <Image
                     source={{ uri: isResting ? 
                         "https://media.tenor.com/4RvzriUK-wUAAAAM/hot-summer.gif"
@@ -52,8 +50,8 @@ const PlayExercise = () => {
 
             <View className={`flex-1 flex flex-col justify-between px-4 py-2 rounded-t-2xl backdrop-blur-2xl bg-white/40
                 border-[1px] border-white`}>
-                <View className="flex flex-row items-center justify-center">
-                    <Text numberOfLines={1} className={`text-white text-4xl text-center font-ralewayExtraBold mb-4`}>
+                <View className="flex flex-row items-center justify-center w-full">
+                    <Text numberOfLines={1} className={`text-white text-4xl w-full text-center font-ralewayExtraBold mb-4`}>
                         {
                             isResting
                                 ?
@@ -99,6 +97,7 @@ const PlayExercise = () => {
 
 
                 <View className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    {/* animación de sonar al completar el ejercicio */}
                     <Animated.View
                         className={`h-full ${isResting ? 'bg-orange-500' : 'bg-eBlue-400'}`}
                         style={{
@@ -111,16 +110,16 @@ const PlayExercise = () => {
 
                     <IconButton
                         onPress={goBackPreviousExercise}
-                        icon={<Ionicons name={"play-back"} size={56} color={isDark ? '#fff' : '#374151'} />}
+                        icon={<Ionicons name={"play-back"} size={56} color={'#1c1c1c'} />}
                     />
                     <IconButton
                         onPress={togglePlay}
-                        icon={<Ionicons name={isPlaying ? "pause" : "play"} size={86} color={isDark ? '#fff' : '#374151'} />}
+                        icon={<Ionicons name={isPlaying ? "pause" : "play"} size={86} color={'#1c1c1c'} />}
                     />
 
                     <IconButton
                         onPress={() => { }}
-                        icon={<Ionicons name={"heart-circle"} size={56} color={isDark ? '#fff' : '#374151'} />}
+                        icon={<Ionicons name={"heart-circle"} size={56} color={'#1c1c1c'} />}
                     />
                 </View>
 
@@ -134,7 +133,7 @@ const PlayExercise = () => {
                     </Text>
                 </TouchableHighlight>
             </View>
-        </SafeAreaView>
+        </View>
     )
 }
 

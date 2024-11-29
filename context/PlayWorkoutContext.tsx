@@ -170,10 +170,12 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     }
 
     const goBackPreviousExercise = () => {
-        setCurrentExerciseIndex(prev => prev - 1);
-        setCurrentSet(1);
-        setIsResting(false);
-        setTimeLeft(EXERCISE_TIME);
+        if (currentExerciseIndex > 0) { 
+            setCurrentExerciseIndex(prev => prev - 1);
+            setCurrentSet(1);
+            setIsResting(false);
+            setTimeLeft(EXERCISE_TIME);
+        }
     }
 
     const togglePlay = () => setIsPlaying(!isPlaying);

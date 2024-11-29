@@ -90,8 +90,10 @@ const PlayWorkout = () => {
     };
 
     const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
+
     const updateExercise = (exercise: ExerciseInWorkoutAPI) => {
         setExercises(prev => prev.map(ex => ex.id === exercise.id ? exercise : ex));
+        setShowEditExerciseModal({ visible: true, exercise: exercise as any });
     }
     
     const renderItem = ({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => {
@@ -149,6 +151,7 @@ const PlayWorkout = () => {
                 exercise={showEditExerciseModal.exercise}
                 onClose={() => setShowEditExerciseModal({ visible: false, exercise: null })}
                 updateExercise={updateExercise}
+                blocked={isLastWorkoutPlayed}
             />
         </View>
     );
