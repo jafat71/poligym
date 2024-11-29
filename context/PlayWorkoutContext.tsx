@@ -26,6 +26,7 @@ interface WorkoutPlayContextType {
     REST_TIME: number;
     EXERCISE_TIME: number;
     lastWorkoutPlayed: number;
+    goBackPreviousExercise: () => void;
 }
 
 const WorkoutPlayContext = createContext<WorkoutPlayContextType | undefined>({
@@ -51,6 +52,7 @@ const WorkoutPlayContext = createContext<WorkoutPlayContextType | undefined>({
     REST_TIME: 0,
     EXERCISE_TIME: 0,
     lastWorkoutPlayed: 0,
+    goBackPreviousExercise: () => { },
 }); 
 
 interface WorkoutPlayProviderProps {    
@@ -138,6 +140,7 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             }));
             setIsPlaying(false);
             setIsCompleted(true);
+            setlastWorkoutPlayed(0); //resetea el ultimo workout para habilitar drag and drop
             setTimeout(() => {
                 router.back();
                 resetWorkout();
@@ -164,6 +167,13 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
         setTimeLeft(EXERCISE_TIME);
         setIsPlaying(false);
         setIsResting(false);
+    }
+
+    const goBackPreviousExercise = () => {
+        setCurrentExerciseIndex(prev => prev - 1);
+        setCurrentSet(1);
+        setIsResting(false);
+        setTimeLeft(EXERCISE_TIME);
     }
 
     const togglePlay = () => setIsPlaying(!isPlaying);
@@ -193,6 +203,7 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             REST_TIME,
             EXERCISE_TIME,
             lastWorkoutPlayed,
+            goBackPreviousExercise
 }}>
             {children}
         </WorkoutPlayContext.Provider>

@@ -90,7 +90,10 @@ const PlayWorkout = () => {
     };
 
     const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
-
+    const updateExercise = (exercise: ExerciseInWorkoutAPI) => {
+        setExercises(prev => prev.map(ex => ex.id === exercise.id ? exercise : ex));
+    }
+    
     const renderItem = ({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => {
         return <PlayRoutineExerciseItem
             exercise={item}
@@ -104,7 +107,8 @@ const PlayWorkout = () => {
     if (isLoading || !infoSetted) return <WorkoutLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
 
-    
+    //TODO: SI USUARIO EDITO, MOSTRAR OPCION DE RESETEAR A VALOR ORIGINAL
+    //TODO: CAMPOS BLOQUEADOS SI RUTINA ESTA EN CURSO - MOSTRAR ALERTA
     return (
         <View className={`flex-1 
         ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
@@ -144,6 +148,7 @@ const PlayWorkout = () => {
                 visible={showEditExerciseModal.visible}
                 exercise={showEditExerciseModal.exercise}
                 onClose={() => setShowEditExerciseModal({ visible: false, exercise: null })}
+                updateExercise={updateExercise}
             />
         </View>
     );

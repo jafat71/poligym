@@ -19,7 +19,7 @@ const PlayRoutineExerciseItem = ({
     onDrag,
     isActive,
     handleEditExercise,
-    blocked
+    blocked,
 }: ExerciseCardProps) => {
     const { isDark } = useTheme();
 

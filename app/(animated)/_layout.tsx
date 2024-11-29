@@ -18,7 +18,7 @@ export default function RootLayout() {
                     headerShown: false, 
                     animation: 'slide_from_bottom', 
                     animationTypeForReplace: 'push',
-                    statusBarStyle: isDark ? 'light' : 'dark'
+                    statusBarStyle: 'light'
                 }} />
 
         </Stack>

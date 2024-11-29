@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, KeyboardAvoidingView, Platform, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useTheme } from '@/context/ThemeContext';
 import Modal from 'react-native-modal';
 import IconButton from '../buttons/IconButton';
@@ -18,12 +18,14 @@ interface EditExerciseModalProps {
     visible: boolean;
     onClose: () => void;
     exercise: ExerciseInWorkoutAPI | null;
+    updateExercise: (exercise: ExerciseInWorkoutAPI) => void;   
 }
 
-const EditExerciseModal = ({ visible, onClose, exercise }: EditExerciseModalProps) => {
+const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditExerciseModalProps) => {
     const { isDark } = useTheme();
 
     let muscleColors = getMuscleColors(exercise?.exercise.muscleGroups || []);
+    //TODO: LIVE REFRESH DEL VALOR DEL CAMPO EDITADO POR EL USUARIO
     return (
         <Modal
             isVisible={visible}
@@ -36,7 +38,7 @@ const EditExerciseModal = ({ visible, onClose, exercise }: EditExerciseModalProp
             animationOut={'slideOutDown'}
             animationIn={'slideInUp'}
             animationInTiming={100}
-            animationOutTiming={100}
+            animationOutTiming={300}
             backdropOpacity={0.05}
             backdropTransitionOutTiming={100}
         >
@@ -64,25 +66,73 @@ const EditExerciseModal = ({ visible, onClose, exercise }: EditExerciseModalProp
                                     <SubAddNumericComponent
                                         number={exercise?.sets || 0}
                                         title='Series'
-                                        subFunction={() => {}}
-                                        addFunction={() => {}}
+                                        subFunction={() => {
+                                            updateExercise({
+                                                ...exercise,
+                                                sets: exercise?.sets - 1
+                                            })
+                                        }}
+                                        addFunction={() => {
+                                            updateExercise({
+                                                ...exercise,
+                                                sets: exercise?.sets + 1
+                                            })
+                                        }}
                                         icon='repeat-sharp'
                                     />
 
                                     <SubAddNumericComponent
                                         number={exercise?.reps || 0}
                                         title='Repeticiones'
-                                        subFunction={() => {}}
-                                        addFunction={() => {}}
+                                        subFunction={() => {
+                                            updateExercise({
+                                                ...exercise,
+                                                reps: exercise?.reps - 1
+                                            })
+                                        }}
+                                        addFunction={() => {
+                                            updateExercise({
+                                                ...exercise,
+                                                reps: exercise?.reps + 1
+                                            })
+                                        }}
                                         icon='repeat-sharp'
                                     />
 
-    <SubAddNumericComponent
+                                    <SubAddNumericComponent
                                         number={exercise?.restTime || 0}
                                         title='Descanso (seg)'
-                                        subFunction={() => {}}
-                                        addFunction={() => {}}
+                                        subFunction={() => {
+                                            updateExercise({
+                                                ...exercise,
+                                                restTime: exercise?.restTime - 1
+                                            })
+                                        }}
+                                        addFunction={() => {
+                                            updateExercise({
+                                                ...exercise,
+                                                restTime: exercise?.restTime + 1
+                                            })
+                                        }}
                                         icon='timer-outline'
+                                    />
+
+                                    <SubAddNumericComponent
+                                        number={exercise?.weight || 0}
+                                        title='Peso (kg)'
+                                        subFunction={() => {
+                                            updateExercise({
+                                                ...exercise,
+                                                weight: exercise?.weight ? exercise?.weight - 1 : 0
+                                            })
+                                        }}
+                                        addFunction={() => {
+                                            updateExercise({
+                                                ...exercise,
+                                                weight: exercise?.weight ? exercise?.weight + 1 : 0
+                                            })
+                                        }}
+                                        icon='barbell-outline'
                                     />
 
                                 </View>
@@ -153,7 +203,7 @@ const EditExerciseModal = ({ visible, onClose, exercise }: EditExerciseModalProp
 
                     </View>
                 ) : (
-                    <SkeletonLoadingScreen/>
+                    <SkeletonLoadingScreen />
                 )
             }
         </Modal>
