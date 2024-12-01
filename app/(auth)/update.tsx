@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ActivityIndicator, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
@@ -57,8 +57,8 @@ const Update = () => {
   return (
     <View>
 
-        <Text className={`text-4xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Actualizar Contraseña</Text>
-        <Text className={`text-sm font-raleway text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>Ingresa tu contraseña actual para confirmar tu identidad</Text>
+      <Text className={`text-4xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Actualizar Contraseña</Text>
+      <Text className={`text-sm font-raleway text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>Confirma tu identidad con tu contraseña actual</Text>
 
       <View className={`pt-1`}>
 
@@ -108,15 +108,7 @@ const Update = () => {
         onPress={handleSubmit}
         text={updatePasswordMutation.isPending ? '' : 'Actualizar'}
         disabled={updatePasswordMutation.isPending}
-      >
-        {updatePasswordMutation.isPending && (
-          <ActivityIndicator
-            size="small"
-            color="white"
-            style={{ marginLeft: 10 }}
-          />
-        )}
-      </CTAButtonPrimary>
+      />
 
       <FormSuccessAlert
         title='Contraseña actualizada correctamente'
@@ -125,7 +117,6 @@ const Update = () => {
       <FormErrorAlert
         errors={errors}
       />
-
 
     </View>
   )

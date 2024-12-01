@@ -11,6 +11,7 @@ import { useTheme } from '@/context/ThemeContext';
 export default function AuthLayout() {
   const { isDark } = useTheme()
 
+  //TODO:  CHECK  react-native-keyboard-controller 
   return (
     <KeyboardAvoidingView 
     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

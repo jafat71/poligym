@@ -15,17 +15,19 @@ interface PlayWorkoutFlatlistHeaderProps {
     workout: WorkoutAPI;
     totalExercises: number;
     handlePlayWorkout: () => void;
+    hasbeenModified: boolean;
+    restoreWorkout: () => void;
 }
 
 export const PlayWorkoutFlatlistHeader = ({
     workout,
     totalExercises,
-    handlePlayWorkout
+    handlePlayWorkout,
+    hasbeenModified,
+    restoreWorkout
 }: PlayWorkoutFlatlistHeaderProps) => {
 
     const { completedPlayExercises, lastWorkoutPlayed } = usePlayWorkoutContext()
-
-    const { isDark } = useTheme();
 
     const [exercisesCompleted, setExercisesCompleted] = useState(0);
     const [progressOver100, setProgressOver100] = useState(0);
@@ -36,10 +38,10 @@ export const PlayWorkoutFlatlistHeader = ({
         if (isLastWorkoutPlayed) {
             const completedExercisesCount = Object.values(completedPlayExercises).filter(Boolean).length;
             setExercisesCompleted(completedExercisesCount);
-            
+
             const calculatedProgress = completedExercisesCount / totalExercises;
             setProgressOver100(calculatedProgress);
-            
+
             setIsExecuting(calculatedProgress > 0);
         }
     }, [lastWorkoutPlayed, completedPlayExercises, totalExercises])
@@ -70,7 +72,7 @@ export const PlayWorkoutFlatlistHeader = ({
                 </View>
 
                 <View className="flex-row items-center justify-between">
-                    <View className="w-3/4">
+                    <View className="w-3/4 flex-row">
                         <ButtonPill
                             icon="save-outline"
                             text="Guardar"
@@ -84,6 +86,15 @@ export const PlayWorkoutFlatlistHeader = ({
                                     onPress={() => {
                                         router.navigate(`/(animated)/playexercise`)
                                     }}
+                                />
+                            )
+                        }
+                        {
+                            hasbeenModified && !(isExecuting) && (
+                                <ButtonPill
+                                    icon="refresh-outline"
+                                    text="Reestablecer"
+                                    onPress={restoreWorkout}
                                 />
                             )
                         }
@@ -105,6 +116,8 @@ export const PlayWorkoutFlatlistHeader = ({
                         }
                     </Pressable>
                 </View>
+
+
 
                 <View className="my-4">
                     <Text className={`text-sm font-ralewayBold text-white`}>
@@ -148,7 +161,7 @@ export const PlayWorkoutFlatlistHeader = ({
                         </View>
                     </View>
                 </View>
-  
+
             </View>
 
         </View>

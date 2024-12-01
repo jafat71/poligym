@@ -49,7 +49,8 @@ const PlayWorkout = () => {
         startWorkout, 
         isCompleted, 
         setIsCompleted,
-        lastWorkoutPlayed
+        lastWorkoutPlayed,
+        resetWorkout
     } = usePlayWorkoutContext();
    
     const [showPostModal, setShowPostModal] = useState(false);
@@ -64,6 +65,7 @@ const PlayWorkout = () => {
     useEffect(() => {
         if (isCompleted) {
             setIsCompleted(false);
+            restoreWorkout();
             Alert.alert(
                 "¡Felicitaciones! 🎉",
                 "Has completado la rutina exitosamente. ¿Deseas compartir tu logro?",
@@ -90,10 +92,19 @@ const PlayWorkout = () => {
     };
 
     const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
+    const [hasbeenModified, setHasbeenModified] = useState(false);
 
     const updateExercise = (exercise: ExerciseInWorkoutAPI) => {
+        setHasbeenModified(true);
         setExercises(prev => prev.map(ex => ex.id === exercise.id ? exercise : ex));
         setShowEditExerciseModal({ visible: true, exercise: exercise as any });
+    }
+
+    const restoreWorkout = () => {
+        if(workout){
+            setExercises(workout.exercisesInWorkout.map(exercise => ({ ...exercise })));     
+            setHasbeenModified(false);
+        }
     }
     
     const renderItem = ({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => {
@@ -106,10 +117,18 @@ const PlayWorkout = () => {
         />
     }
 
+    const handlePlayWorkout = () => {
+        if(isLastWorkoutPlayed){
+            resetWorkout()
+        }
+        setPlayExercises([...exercises])
+        startWorkout()
+        router.push('/(animated)/playexercise')
+    }
+
     if (isLoading || !infoSetted) return <WorkoutLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
 
-    //TODO: SI USUARIO EDITO, MOSTRAR OPCION DE RESETEAR A VALOR ORIGINAL
     //TODO: CAMPOS BLOQUEADOS SI RUTINA ESTA EN CURSO - MOSTRAR ALERTA
     return (
         <View className={`flex-1 
@@ -118,11 +137,9 @@ const PlayWorkout = () => {
                 ListHeaderComponent={()=><PlayWorkoutFlatlistHeader
                     workout={workout!}
                     totalExercises={exercises.length}
-                    handlePlayWorkout={()=>{
-                        setPlayExercises([...exercises])
-                        startWorkout()
-                        router.push('/(animated)/playexercise')
-                    }}
+                    handlePlayWorkout={handlePlayWorkout}
+                    hasbeenModified={hasbeenModified}
+                    restoreWorkout={restoreWorkout}
                 />}
                 data={exercises}
                 ItemSeparatorComponent={() => <View className="h-2 " />}

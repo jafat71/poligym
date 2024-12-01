@@ -1,6 +1,7 @@
 import { ExerciseInWorkoutAPI } from "@/types/interfaces/entities/plan";
 import { router, usePathname, useRouter } from "expo-router";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { Vibration } from "react-native"
 
 interface WorkoutPlayContextType {
     // Exercise list state
@@ -27,6 +28,7 @@ interface WorkoutPlayContextType {
     EXERCISE_TIME: number;
     lastWorkoutPlayed: number;
     goBackPreviousExercise: () => void;
+    resetWorkout: () => void;
 }
 
 const WorkoutPlayContext = createContext<WorkoutPlayContextType | undefined>({
@@ -53,6 +55,7 @@ const WorkoutPlayContext = createContext<WorkoutPlayContextType | undefined>({
     EXERCISE_TIME: 0,
     lastWorkoutPlayed: 0,
     goBackPreviousExercise: () => { },
+    resetWorkout: () => { }
 }); 
 
 interface WorkoutPlayProviderProps {    
@@ -105,6 +108,7 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
 
     useEffect(() => {
         if (timeLeft === 0) {
+            Vibration.vibrate(500);
             const currentExercise = playExercises[currentExerciseIndex];
             if (isResting) {
                 setIsResting(false);
@@ -140,7 +144,6 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             }));
             setIsPlaying(false);
             setIsCompleted(true);
-            setlastWorkoutPlayed(0); //resetea el ultimo workout para habilitar drag and drop
             setTimeout(() => {
                 router.back();
                 resetWorkout();
@@ -160,6 +163,7 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     };
 
     const resetWorkout = () => {
+        setlastWorkoutPlayed(0); //resetea el ultimo workout para habilitar drag and drop + edit individual de cada ejercicio
         setIsCompleted(false);
         setCompletedPlayExercises({});
         setCurrentExerciseIndex(0);
@@ -205,7 +209,8 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             REST_TIME,
             EXERCISE_TIME,
             lastWorkoutPlayed,
-            goBackPreviousExercise
+            goBackPreviousExercise,
+            resetWorkout
 }}>
             {children}
         </WorkoutPlayContext.Provider>

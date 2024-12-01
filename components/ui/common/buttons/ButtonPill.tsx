@@ -14,7 +14,6 @@ const ButtonPill = ({
     icon = 'pricetag',
     onPress
 }: Props) => {
-    const { isDark } = useTheme();
 
     return (
         <TouchableOpacity
