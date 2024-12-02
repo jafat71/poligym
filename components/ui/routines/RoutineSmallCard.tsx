@@ -20,16 +20,10 @@ const RoutineSmallCard = (routine: WorkoutAPI) => {
         <Pressable
             key={routine.id}
             onPress={() => {
-                //setScreenRoutine(routine)
                 router.push(`/(home)/playWorkout/${routine.id}`)
             }}
             className={`w-72 h-60 mr-2 mb-1 
             overflow-hidden rounded-lg`}>
-            {/* <Image
-                source={{ uri: "" }}
-                className="w-full h-full absolute"
-                resizeMode="cover"
-            /> */}
             <LinearGradient
                 colors={[
                     'rgba(0,85,249,0.95)',

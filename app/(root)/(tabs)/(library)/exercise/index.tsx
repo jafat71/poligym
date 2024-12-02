@@ -97,12 +97,11 @@ export default function Exercise() {
             const matchesSearch = exercise.name.toLowerCase().includes(searchQuery.toLowerCase());
             const matchesDifficulty = selectedDifficulty === 'ALL' || exercise.level === selectedDifficulty;
             const matchesCategory = selectedCategory === 'ALL' || exercise.category === selectedCategory;
-            //TODO: veirificar logica de filtrado multiple equipment & muscleGroups
             const matchesEquipment = selectedEquipment.length === 0 || 
                 selectedEquipment.some(equipment => 
-                    exercise.equipment.some(exerciseEquipment => 
-                        exerciseEquipment === equipment
-                    )
+                    exercise.equipment.some(exerciseEquipment => {
+                        return exerciseEquipment.name === equipment.name
+                    })
                 );
             const matchesMuscleGroups = selectedMuscleGroups.length === 0 || 
                 selectedMuscleGroups.some(selectedMuscle => 

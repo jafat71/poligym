@@ -12,24 +12,35 @@ import ThemeHomePill from '../pills/ThemeHomePill';
 import CTAButtonPrimary from '../buttons/CtaButtonPrimary';
 import { createPost } from '@/lib/api/actions';
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
+import { usePlayWorkoutContext } from '@/context/PlayWorkoutContext';
+import CustomSnackbar from '../snackbar/CustomSnackbar';
+import { useNotification } from '@/context/NotificationContext';
 
 interface Props {
     isVisible: boolean;
     onClose: () => void;
-    defaultMessage: string;
     post: Partial<SocialPost>;
 }
 
 const CreatePostModal = ({
     isVisible,
     onClose,
-    defaultMessage,
     post,
 }: Props) => {
     const { isDark } = useTheme()
     const { loggedUserInfo, accessToken } = useUser()
     const { setUserPosts } = useNavigationFlowContext()
-    const [content, setContent] = useState(defaultMessage);
+    const { workoutTotalDuration } = usePlayWorkoutContext()
+    const [postTimeWorkout, setPostTimeWorkout] = useState<string>("00:00");
+    const [content, setContent] = useState(``);
+
+    useEffect(() => {
+        setPostTimeWorkout(workoutTotalDuration)
+        setTimeout(() => {
+            setContent(`¡He completado la rutina "${post.rutina}" en ${workoutTotalDuration} mins! 💪`)
+        }, 1000)
+    }, [workoutTotalDuration])
+
     const [image, setImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [postTime, setPostTime] = useState<string | null>(null);
@@ -40,6 +51,7 @@ const CreatePostModal = ({
         }
     }, [isVisible]);
 
+    const [postCreatedNotification, setPostCreatedNotification] = useState(false);
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -61,7 +73,8 @@ const CreatePostModal = ({
         post.likes = 0
         post.mensaje = content
         post.oculto = false
-        post.nombre = loggedUserInfo?.userName ??  ""
+        post.duracion = postTimeWorkout
+        post.nombre = loggedUserInfo?.userName ?? ""
         console.log("post", post)
         try {
             await createPost(accessToken!, post as SocialPost);
@@ -77,7 +90,12 @@ const CreatePostModal = ({
         setIsLoading(true);
         try {
             await handleCreatePost();
-            onClose();
+            setPostCreatedNotification(true);
+            setTimeout(() => {
+                setPostCreatedNotification(false);
+                onClose();
+            }, 1000)
+
         } catch (error) {
             console.error('Error creating post:', error);
         } finally {
@@ -90,22 +108,23 @@ const CreatePostModal = ({
             isVisible={isVisible}
             onBackdropPress={onClose}
             onBackButtonPress={onClose}
-            className="m-0"
+            className="mt-2"
             style={{ margin: 0 }}
             avoidKeyboard
             propagateSwipe
-            animationOut={'fadeOut'}
-            animationIn={'fadeIn'}
-            animationInTiming={300}
-            animationOutTiming={300}
-            backdropOpacity={0.75}
-            backdropTransitionOutTiming={600}
+            animationOutTiming={1000}
+            animationOut={'bounceOutDown'}
+            animationIn={'bounceInUp'}
+            backdropOpacity={0.25} // Aumentar opacidad del fondo
+            useNativeDriver={true}
+            backdropTransitionOutTiming={0}
+            hideModalContentWhileAnimating
         >
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
-                className="flex-1 mt-20"
+                className="flex-1 mt-4"
             >
-                <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'} mt-20 rounded-t-3xl p-4`}>
+                <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'} mt-4 rounded-t-3xl p-4`}>
                     <View className="flex-row justify-between items-center mb-4">
                         <Text className={`text-3xl font-ralewayBold ${isDark ? 'text-white' : 'text-black'}`}>
                             Compartir en la comunidad
@@ -117,7 +136,7 @@ const CreatePostModal = ({
                     </View>
 
                     <ScrollView
-                        className="flex-1 border-2 border-darkGray-200 rounded-sm"
+                        className="flex-1  rounded-sm"
                         showsVerticalScrollIndicator={false}
                         bounces={false}
                     >
@@ -197,7 +216,7 @@ const CreatePostModal = ({
                                 />
                                 <ThemeHomePill
                                     icon="time-outline"
-                                    text={`${post.duracion ?? '0'} min.`}
+                                    text={`${postTimeWorkout ?? '0'} min.`}
                                 />
                                 <ThemeHomePill
                                     icon="flame-outline"
@@ -212,7 +231,16 @@ const CreatePostModal = ({
                         onPress={handleSubmit}
                         isLoading={isLoading}
                     />
+
+                    <CustomSnackbar
+                        visible={postCreatedNotification}
+                        setVisible={setPostCreatedNotification}
+                        message='Tu logro ha sido compartido en la comunidad'
+                        color={isDark ? 'white' : 'black'}
+                        textColor={isDark ? 'black' : 'white'}
+                    />
                 </View>
+
             </KeyboardAvoidingView>
         </Modal>
     );

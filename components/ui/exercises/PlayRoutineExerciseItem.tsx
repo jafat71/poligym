@@ -70,13 +70,13 @@ const PlayRoutineExerciseItem = ({
                             <View className="flex-row items-center">
                                 <Ionicons
                                     name="repeat-outline"
-                                    size={24}
+                                    size={18}
                                     color={"#fff"}
                                 />
-                                <Text className={`text-white text-sm  ml-1`}>
+                                <Text className={`text-white text-xs  ml-1`}>
                                     {exercise.sets} X {exercise.reps}
                                 </Text>
-                                <Text className={`text-white text-sm  font-ralewaySemiBold ml-1`}>
+                                <Text className={`text-white text-xs  font-ralewaySemiBold ml-1`}>
                                     Reps
                                 </Text>
                             </View>
@@ -84,15 +84,29 @@ const PlayRoutineExerciseItem = ({
                             <View className="flex-row items-center">
                                 <Ionicons
                                     name="time-outline"
-                                    size={24}
+                                    size={18}
                                     color={"#fff"}
                                 />
-                                <Text className={`text-white text-sm font-ralewaySemiBold ml-1
+                                <Text className={`text-white text-xs  ml-1
                                 `}>
-                                    {exercise.restTime}s
+                                    {exercise.restTime}
                                 </Text>
-                                <Text className={`text-white text-sm  font-ralewaySemiBold ml-1`}>
-                                    Descanso
+                                <Text className={`text-white text-xs font-ralewaySemiBold ml-1`}>
+                                    s descanso - series
+                                </Text>
+                            </View>
+
+                            <View className="flex-row items-center">
+                                <Ionicons
+                                    name="barbell-outline"
+                                    size={18}
+                                    color={"#fff"}
+                                />
+                                <Text className={`text-white text-xs font-ralewaySemiBold ml-1
+                                `}> 
+                                    {
+                                        exercise.weight ? `${exercise.weight}kg` : 'Sin peso'
+                                    }
                                 </Text>
                             </View>
                         </View>

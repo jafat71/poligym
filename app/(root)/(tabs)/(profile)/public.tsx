@@ -40,7 +40,7 @@ export default function Public() {
                 className={`w-full px-2 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
                 data={posts.filter(post => post.publico)}
                 renderItem={({ item }) => <SelfPost {...item} />}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item, index) => `${item.id}-${index}`}
                 onEndReached={onEndReached}
                 onEndReachedThreshold={0.1}
                 refreshControl={

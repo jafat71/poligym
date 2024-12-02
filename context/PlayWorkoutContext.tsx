@@ -1,5 +1,6 @@
+import { getFormattedTime } from "@/lib/utils/getFormattedTime";
 import { ExerciseInWorkoutAPI } from "@/types/interfaces/entities/plan";
-import { router, usePathname, useRouter } from "expo-router";
+import { router, usePathname } from "expo-router";
 import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { Vibration } from "react-native"
 
@@ -21,7 +22,8 @@ interface WorkoutPlayContextType {
     handleNextExercise: () => void;
 
     workoutStartTime: number;
-    getWorkoutDuration: () => number;
+    workoutTotalDuration: string;
+    currentExerciseDuration: string;
     isCompleted: boolean;
     setIsCompleted: React.Dispatch<React.SetStateAction<boolean>>;
     REST_TIME: number;
@@ -48,7 +50,8 @@ const WorkoutPlayContext = createContext<WorkoutPlayContextType | undefined>({
     handleNextExercise: () => { },
 
     workoutStartTime: 0,
-    getWorkoutDuration: () => 0,
+    workoutTotalDuration: "00:00",
+    currentExerciseDuration: "00:00",
     isCompleted: false,
     setIsCompleted: () => { },
     REST_TIME: 0,
@@ -90,6 +93,9 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
 
     const [lastWorkoutPlayed, setlastWorkoutPlayed] = useState(0);
 
+    const [workoutTotalDuration, setWorkoutTotalDuration] = useState("00:00");
+    const [currentExerciseDuration, setCurrentExerciseDuration] = useState("00:00");
+
     const currentPath = usePathname();
     const exercisePath = "/playexercise";
 
@@ -125,6 +131,8 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     }, [timeLeft]);
 
     const handleNextExercise = () => {
+        setCurrentExerciseDuration(getFormattedTime(EXERCISE_TIME));
+        //TODO: GENERAR EJERCICIO EN EL HISTORIAL
         if (currentExerciseIndex < playExercises.length - 1) {
             setCurrentExerciseIndex(prev => prev + 1);
             setCurrentSet(1);
@@ -144,6 +152,9 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             }));
             setIsPlaying(false);
             setIsCompleted(true);
+            let totalWorkoutDuration = getWorkoutDuration();
+            console.log("TOTAL WORKOUT DURATION",totalWorkoutDuration)
+            setWorkoutTotalDuration(totalWorkoutDuration);
             setTimeout(() => {
                 router.back();
                 resetWorkout();
@@ -160,6 +171,8 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
         setIsResting(false);
         setWorkoutStartTime(Date.now());
         setCompletedPlayExercises({});
+        setWorkoutTotalDuration("00:00");
+        setCurrentExerciseDuration("00:00");
     };
 
     const resetWorkout = () => {
@@ -185,7 +198,8 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     const togglePlay = () => setIsPlaying(!isPlaying);
 
     const getWorkoutDuration = () => {
-        return Math.floor((Date.now() - workoutStartTime) / 1000);
+        const totalSeconds = Math.floor((Date.now() - workoutStartTime) / 1000);
+        return getFormattedTime(totalSeconds);
     };
 
     return (
@@ -203,7 +217,8 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             togglePlay,
             handleNextExercise,
             workoutStartTime,
-            getWorkoutDuration,
+            workoutTotalDuration,
+            currentExerciseDuration,
             isCompleted,
             setIsCompleted,
             REST_TIME,
@@ -224,4 +239,3 @@ export const usePlayWorkoutContext = (): WorkoutPlayContextType => {
     }
     return context;
 };
-    

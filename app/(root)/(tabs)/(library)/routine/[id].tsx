@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { Text, View, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
@@ -90,6 +90,9 @@ const WorkoutInfo = () => {
 
             {/* Botón de acción */}
             <Pressable
+                onPress={() => {
+                    router.push(`/playWorkout/${workoutId}`);
+                }}
                 className='absolute bottom-0 left-0 right-0 p-4 rounded-t-sm bg-eBlue-500 flex flex-row items-center justify-center gap-x-2'>
                 <Ionicons name='play' size={24} color='white' />
                 <Text className='text-center text-xl font-ralewayBold text-white'>Ejecutar rutina</Text>

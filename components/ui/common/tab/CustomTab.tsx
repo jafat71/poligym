@@ -17,7 +17,7 @@ const CustomTab = ({ text, icon, onPress}: CustomTabProps) => {
     return (
         <Pressable
             onPress={onPress}
-            className={`flex-1 overflow-hidden items-center justify-center rounded-md p-1`}>
+            className={`flex-1 overflow-hidden items-center justify-center rounded-lg p-1 scale-105`}>
             <LinearGradient
                 colors={[
                     'rgba(0,85,249,0.95)',

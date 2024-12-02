@@ -13,7 +13,6 @@ import CreatePostModal from "@/components/ui/common/modal/CreatePostModal";
 import { useTheme } from "@/context/ThemeContext";
 import WorkoutLoadingScreen from "@/components/animatedUi/WorkoutLoadingScreen";
 import { usePlayWorkoutContext, WorkoutPlayProvider } from "@/context/PlayWorkoutContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import EditExerciseModal from "@/components/ui/common/modal/EditExerciseModal";
 
 const PlayWorkout = () => {
@@ -50,7 +49,7 @@ const PlayWorkout = () => {
         isCompleted, 
         setIsCompleted,
         lastWorkoutPlayed,
-        resetWorkout
+        resetWorkout,
     } = usePlayWorkoutContext();
    
     const [showPostModal, setShowPostModal] = useState(false);
@@ -58,9 +57,6 @@ const PlayWorkout = () => {
         visible:false,
         exercise: null
     });
-
-    const [workoutDuration, setWorkoutDuration] = useState(0);
-    const startTime = useRef(Date.now());
 
     useEffect(() => {
         if (isCompleted) {
@@ -82,14 +78,6 @@ const PlayWorkout = () => {
             );
         }
     }, [isCompleted]);
-
-    const getWorkoutDuration = () => {
-        return Math.floor((Date.now() - startTime.current) / 1000);
-    }
-    const formatDuration = (seconds: number) => {
-        const minutes = Math.floor(seconds / 60);
-        return `${minutes} minutos`;
-    };
 
     const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
     const [hasbeenModified, setHasbeenModified] = useState(false);
@@ -129,7 +117,6 @@ const PlayWorkout = () => {
     if (isLoading || !infoSetted) return <WorkoutLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
 
-    //TODO: CAMPOS BLOQUEADOS SI RUTINA ESTA EN CURSO - MOSTRAR ALERTA
     return (
         <View className={`flex-1 
         ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
@@ -143,7 +130,9 @@ const PlayWorkout = () => {
                 />}
                 data={exercises}
                 ItemSeparatorComponent={() => <View className="h-2 " />}
-                onDragEnd={({ data }) => setExercises([...data])}
+                onDragEnd={({ data }) =>{ 
+                    setHasbeenModified(true);
+                    setExercises([...data])}}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
                 scrollEnabled={true}
@@ -154,12 +143,10 @@ const PlayWorkout = () => {
             <CreatePostModal
                 isVisible={showPostModal}
                 onClose={() => setShowPostModal(false)}
-                defaultMessage={`¡He completado la rutina "${workout?.name}" en ${formatDuration(workoutDuration)}! 💪`}
                 post={{
                     rutina: workout?.name ?? "",
                     dificultad: workout?.level ?? "",
                     fecha: new Date().toISOString(),
-                    duracion: getWorkoutDuration().toString()
                 }}
             />
 
@@ -170,6 +157,7 @@ const PlayWorkout = () => {
                 updateExercise={updateExercise}
                 blocked={isLastWorkoutPlayed}
             />
+
         </View>
     );
 };
