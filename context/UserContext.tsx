@@ -6,6 +6,7 @@ import { mapUserFromApiToUser } from '@/types/mappers';
 import { usePathname } from 'expo-router';
 import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { useNavigationFlowContext } from './NavFlowContext';
 
 interface UserContextType {
     userLogged: boolean;
@@ -69,13 +70,20 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         accessToken ? fetchUser() : setUserLogged(false)
     }, [accessToken]);
 
+    const { updateInitUserShell } = useNavigationFlowContext()
     useEffect(() => {
         if (userLogged) {
             //CREACION DE CUENTA
             if (pathname !== '/form00') {
-                if(pathname !== '/home'){
+                if (pathname !== '/home') {
                     router.replace('/(root)/(tabs)/home')
                 }
+            }else{
+                console.log(loggedUserInfo?.name)
+                //Rescata el nombre para el fomrulario inciial tras el signup
+                updateInitUserShell({
+                    name: loggedUserInfo?.name || "",
+                })
             } 
         } else {
             router.replace('/welcome')
@@ -89,6 +97,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         }
         console.log("accessToken", accessToken)
         getRefreshToken()
+    }, [accessToken])
+
+    useEffect(() => {
+        console.log("accessToken", accessToken)
     }, [accessToken])
 
     return (

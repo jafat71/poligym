@@ -6,27 +6,28 @@ import { Image, TouchableOpacity, View } from 'react-native'
 
 interface Props {
     imgUrl: string;
-    setImg: React.Dispatch<React.SetStateAction<string>>
+    setImgURL: React.Dispatch<React.SetStateAction<string>>
+    setImgFile: React.Dispatch<React.SetStateAction<File | null>>
 }
 
-const ImagePicker = ({imgUrl, setImg}:Props) => {
-    const { pickImage, image, setImage} = useImagePicker()
+const ImagePicker = ({imgUrl,setImgURL,setImgFile}:Props) => {
+    const { imagePreview, pickImage, file} = useImagePicker()
     const {isDark} = useTheme()
 
     useEffect(() => {
-        setImage(image)
-        setImg(image!)
-    }, [image]);
+        setImgURL(imagePreview!)
+        setImgFile(file!)
+    }, [file]);
 
     return (
         <TouchableOpacity
             onPress={pickImage}
             className='m-2'
         >
-            {image
+            {imagePreview || imgUrl
                 ? (
                     <View className={`w-32 h-32 rounded-full  flex items-center justify-center p-1 ${isDark ? "bg-white" : "bg-darkGray-500"}  `}>
-                        <Image source={{ uri: image }} style={{ width: 120, height: 120, borderRadius: 60 }} resizeMode='cover' />
+                        <Image source={{ uri: imagePreview || imgUrl }} style={{ width: 120, height: 120, borderRadius: 60 }} resizeMode='cover' />
                     </View>
                 )
                 : (

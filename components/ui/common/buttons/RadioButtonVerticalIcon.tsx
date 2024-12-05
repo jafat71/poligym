@@ -37,8 +37,8 @@ const RadioButtonVerticalIconComponent = ({
                 options.map((opt, i) => (
                     <RadioButton
                         label={opt}
-                        value={i}
-                        selected={selectedValue === i}
+                        value={opt}
+                        selected={selectedValue === opt}
                         onSelect={setSelectedValue}
                         key={i}
                         btnStyle={rbIndividualRadioButtonStyle}

@@ -1,51 +1,100 @@
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
+
+import { router } from 'expo-router';
+
+import { useMutation } from '@tanstack/react-query';
+
+import { useUser } from '@/context/UserContext';
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
+
+import { FITNESS_LEVEL, GENDER, GOAL, User, USER_TYPE } from '@/types/interfaces/entities/user';
+
+import { updateUser } from '@/lib/api/userActions';
+import { getEnumKeyByValue } from '@/lib/utils/getEnumKeyByValue';
+import { uploadImage } from '@/lib/utils/uploadImage';
+
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import ImagePicker from '@/components/ui/common/image/ImagePicker';
-import { useNavigationFlowContext } from '@/context/NavFlowContext';
-import { useTheme } from '@/context/ThemeContext';
-import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { Switch, Text, View } from 'react-native';
 
 const Form06 = () => {
-    const { isDark } = useTheme()
+    const opacity = useSharedValue(0);
+    const animatedStyle = useAnimatedStyle(() => ({
+        opacity: opacity.value,
+    }));
+    useEffect(() => {
+        opacity.value = withTiming(1, { duration: 500 }); 
+    }, []);
+
     const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
-    const [profileImage, setprofileImage] = useState('');
+    const [profileImage, setprofileImage] = useState(tmpUser?.avatarUrl || '');
+    const [profileImageFile, setprofileImageFile] = useState<File | null>(null);
+
+    const { accessToken, loggedUserInfo} = useUser()
+
+    const updateUserMutation = useMutation({
+        mutationFn: async () => {
+            //RECUPERA EL VALOR DE LOS ENUMS
+            const updateUserObj: Partial<User> = {
+                ...tmpUser,
+                fitnessLevel: getEnumKeyByValue(FITNESS_LEVEL, tmpUser?.fitnessLevel!) as FITNESS_LEVEL,
+                goal: getEnumKeyByValue(GOAL, tmpUser?.goal!) as GOAL,
+                gender: getEnumKeyByValue(GENDER, tmpUser?.gender!) as GENDER,
+                userType: getEnumKeyByValue(USER_TYPE, tmpUser?.userType!) as USER_TYPE,
+            };
+            await updateUser(
+            accessToken!,
+            loggedUserInfo?.id!,
+            updateUserObj
+            )},
+        onSuccess: () => {
+            router.push('/(home)/home')
+        },
+        onError: (error: any) => {
+            console.log(error)
+        }
+    })
 
     useEffect(() => {
         updateInitUserShell({
             ...tmpUser,
-            userProfileImgUrl: profileImage
+            avatarUrl: profileImage
         })
     }, [profileImage]);
 
     useEffect(() => {
-        //TODO: modificar logica de recuperación de imagen con el ImagePicker
         if (tmpUser) {
-            setprofileImage(tmpUser.userProfileImgUrl)
+            setprofileImage(tmpUser.avatarUrl || '')
         }
     }, []);
 
-    const [notificationEnabled, setNotificationEnabled] = useState(false);
-
-    useEffect(() => {
-        setNotificationEnabled(
-            tmpUser?.userNotificationsEnabled!!
-        )
-    }, []);
-
-    useEffect(() => {
+  
+    const handleContinue = async () => {
+        let avatarUrl = ''; 
+    
+        if (profileImageFile) {
+            try {
+                avatarUrl = await uploadImage({ file: profileImageFile, uploadPreset: 'profile_image' });
+            } catch (error) {
+                console.error("Error uploading image:", error);
+            }
+        }
+    
         updateInitUserShell({
             ...tmpUser,
-            userNotificationsEnabled: notificationEnabled
-        })
-    }, [notificationEnabled])
-
-    const handleContinue = () => {
-        router.push('/(home)/home')
-    }
+            avatarUrl,
+        });
+    
+        // Ejecutar la mutación
+        updateUserMutation.mutate();
+    };
+    
 
     return (
-        <View className="flex-1 w-full flex flex-col items-center justify-between">
+        <Animated.View
+        style={animatedStyle}
+        className="flex-1 w-full flex flex-col items-center justify-between">
             <Text className="text-white text-4xl font-ralewayExtraBold">
                 Estamos casi listos
             </Text>
@@ -54,30 +103,17 @@ const Form06 = () => {
             </Text>
             <ImagePicker
                 imgUrl={profileImage}
-                setImg={setprofileImage}
+                setImgURL={setprofileImage}
+                setImgFile={setprofileImageFile}
             />
-
-            <Text className="text-white text-center text-xl font-ralewaySemiBold mb-4">
-                Activar notificaciones
-            </Text>
-            <View className='items-center'>
-                <Switch
-                    style={{ transform: [{ scaleX: 2 }, { scaleY: 2 }] }}
-                    onValueChange={() => setNotificationEnabled(prevState => !prevState)}
-                    value={notificationEnabled}
-                    thumbColor="#fff"
-                    trackColor={{ false: "#000099", true: "#16243E" }}
-                    ios_backgroundColor={isDark ? "#333" : "#ddd"}
-                />
-            </View>
-
             <View className='w-full'>
                 <CTAButtonPrimary
                     onPress={handleContinue}
                     text="Continuar"
+                    isLoading={updateUserMutation.isPending}
                 />
             </View>
-        </View>
+        </Animated.View>
     );
 };
 

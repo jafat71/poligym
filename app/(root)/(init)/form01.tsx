@@ -1,33 +1,50 @@
-import CTAButtonPrimary from "@/components/ui/common/buttons/CtaButtonPrimary";
-import { SnapCarousel } from "@/components/ui/common/carousel/SnapCarousel";
-import { useNavigationFlowContext } from "@/context/NavFlowContext";
-import { useUser } from "@/context/UserContext";
-import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import { Text, TextInput, View } from "react-native";
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
+
+import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+
+import { useNavigationFlowContext } from "@/context/NavFlowContext";
+
+import CTAButtonPrimary from "@/components/ui/common/buttons/CtaButtonPrimary";
+import { SnapCarousel } from "@/components/ui/common/carousel/SnapCarousel";
 
 const Form01 = () => {
 
-    const { loggedUserInfo } = useUser();
+    const opacity = useSharedValue(0);
+    const animatedStyle = useAnimatedStyle(() => ({
+        opacity: opacity.value,
+    }));
+    useEffect(() => {
+        opacity.value = withTiming(1, { duration: 500 }); 
+    }, []);
     const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
 
-    const [userName, setUserName] = useState(loggedUserInfo?.userName || "");
-    const [selectedAge, setSelectedAge] = useState(tmpUser?.userAge || 18);
+    const [userName, setUserName] = useState(tmpUser?.name || "");
+    const [selectedAge, setSelectedAge] = useState(tmpUser?.age || 18);
+
     const agesFlatListRef = useRef(null);
     const ages = Array.from({ length: 83 }, (_, i) => i + 18);
 
-    const initialIndex = tmpUser?.userAge ? tmpUser?.userAge - 18 : 0
+    const initialIndex = tmpUser?.age ? tmpUser?.age - 18 : 0
 
     const handleContinue = () => {
+        if (userName.trim() === '') {
+            setUserName(tmpUser?.name || '')
+        }
         updateInitUserShell({
-            ...tmpUser,
-            userAge: selectedAge
-        })
+            name: userName,
+            age: selectedAge,
+        });
         router.push('/form02')
     }
+
     return (
-        <View className="flex-1 w-full flex flex-col items-center justify-center">
+
+        <Animated.View
+            style={animatedStyle}
+            className="flex-1 w-full flex flex-col items-center justify-center">
             <Text className="text-white text-4xl font-ralewayExtraBold">
                 Cuéntanos de ti
             </Text>
@@ -63,7 +80,7 @@ const Form01 = () => {
                 />
 
             </View>
-        </View>
+        </Animated.View>
     );
 };
 

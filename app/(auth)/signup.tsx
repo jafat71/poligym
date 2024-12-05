@@ -39,17 +39,15 @@ const Signup = () => {
         saveToken('accessToken', data.accessToken);
         setAccessToken(data.accessToken);
       }
+      setErrors([])
+      setEmail('')
+      setPassword('')
+      setConfirmPassword('')
       router.push('/(animated)/form00')
     },
     onError: (error: any) => {
       setErrors([error.message || "Error al registrar el usuario. Inténtelo más tarde"])
     },
-    onSettled: () => {
-      setErrors([])
-      setEmail('')
-      setPassword('')
-      setConfirmPassword('')
-    }
   });
 
   const toggleTermseModal = () => {

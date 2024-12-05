@@ -1,36 +1,59 @@
-
 export type Role = "USER" | "ADMIN"
-export type Genre = "MASCULINO" | "FEMENINO" | "OTRO"
-export type Objetive = "BAJAR_DE_PESO" | "GANAR_MUSCULO" | "MANTENERSE_EN_FORMA"
-export type Experience = "PRINCIPIANTE" | "INTERMEDIO" | "AVANZADO"
-export type Schedule = "AM" | "PM"
-export type MedicalProblem = "NINGUNA" | "LESION" | "ALERGIA"
-
-export interface DaysWeek {
-    monday: boolean;
-    tuesday: boolean;
-    wednesday: boolean;
-    thursday: boolean;
-    friday: boolean;
-}
 
 export interface User {
-    userId: string,
-    userName: string,
-    userEmail: string,
-    userRole: Role,
-    userAge: number,
-    userGenre: Genre,
-    userNumberActivityDays: number,
-    userWeight: number,
-    userHeight: number,
-    userObjetive: Objetive,
-    userPhisicStatus: Experience,
-    userNumberComents: number,
-    userNotificationsEnabled: boolean,
-    userHasMedicalProblems: MedicalProblem,
-    userMedicalProblemDetail: string,
-    userPreferedSchedule: Schedule,
-    userTrainingDays: DaysWeek,
-    userProfileImgUrl: string,
+    id: string,
+    avatarUrl?: string,
+    email: string,
+    name: string,
+    age?: number,
+    gender?: GENDER,
+    lastLogin?: Date,
+    role: ROLE,
+    weight?: number,
+    height?: number,
+    fitnessLevel?: FITNESS_LEVEL,
+    goal?: GOAL,
+    injury?: string,
+    userType: USER_TYPE,
+    nutritionIds: string[],
+    trainingPlanIds: number[],
+    workoutsIds: number[],
+    isActive: boolean,
+
+    userNumberActivityDays?: number,
+}
+
+export enum GENDER {
+    MALE = "Másculino",
+    FEMALE = "Femenino",
+    OTHER = "Otro",
+  }
+
+export enum USER_TYPE {
+    STUDENT = 'Estudiante',
+    PROFESSOR = 'Profesor',
+    ADMINISTRATION = 'Administrativo'
+}
+
+export enum FITNESS_LEVEL {
+    BEGINNER = 'Principiante',
+    INTERMEDIATE = 'Intermedio',
+    ADVANCED = 'Avanzado'
+}
+
+export enum GOAL {
+    LOSE_WEIGHT = 'Bajar de peso',
+    GAIN_MUSCLE = 'Ganar músculo',
+    IMPROVE_ENDURANCE = 'Mejorar resistencia',
+    MAINTAIN = 'Mantenerse en forma',
+}
+
+export enum ROLE {
+    USER_ROLE = 'Usuario',
+    ADMIN_ROLE = 'Administrador'
+}
+
+export enum HAS_INJURY {
+    YES = 'Si',
+    NO = 'No'
 }

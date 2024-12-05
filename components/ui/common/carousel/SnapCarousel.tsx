@@ -7,7 +7,6 @@ interface SnapCarouselProps {
     flatListRef: React.RefObject<FlatList>;
     selectedOption: number;
     setSelectedOption: (option: number) => void;
-    initialPosition?: "start" | "center" | "end";
     initialIndex?: number;
 }
 
@@ -16,19 +15,12 @@ export const SnapCarousel = ({
     flatListRef,
     selectedOption,
     setSelectedOption,
-    initialPosition = "start",
     initialIndex = 0,
 }: SnapCarouselProps) => {
     const { height } = useWindowDimensions();
     const ITEM_HEIGHT = height / 6;
 
     useEffect(() => {
-        // Calcula el índice inicial basado en la posición deseada
-        if (initialPosition === "center") {
-            initialIndex = Math.floor(dataOptions.length / 2);
-        } else if (initialPosition === "end") {
-            initialIndex = dataOptions.length - 1;
-        }
 
         // Desplazamiento inicial animado
         if (flatListRef.current) {

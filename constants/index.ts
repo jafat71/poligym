@@ -1,7 +1,5 @@
-import { DayOfWeek, MealType } from "@/types/interfaces/entities/foodplan";
-import { EquipmentApi, MuscleGroup } from "@/types/interfaces/entities/plan";
-import { SocialPost } from "@/types/interfaces/entities/post";
-import { Experience, Genre, MedicalProblem, Objetive, Schedule, User } from "@/types/interfaces/entities/user";
+import { DayOfWeek } from "@/types/interfaces/entities/foodplan";
+import { FITNESS_LEVEL, GENDER, GOAL, ROLE, User, USER_TYPE } from "@/types/interfaces/entities/user";
 
 export const termsContent = [
   {
@@ -77,66 +75,18 @@ export const FAQs = [
   }
 ];
 
-export let emptyUser: User = {
-  userId: '',
-  userName: '',
-  userEmail: '',
-  userRole: 'USER',
-  userAge: 0,
-  userGenre: 'MASCULINO',
-  userNumberActivityDays: 0,
-  userWeight: 0,
-  userHeight: 0,
-  userObjetive: 'BAJAR_DE_PESO',
-  userPhisicStatus: 'PRINCIPIANTE',
-  userNumberComents: 0,
-  userNotificationsEnabled: false,
-  userHasMedicalProblems: 'NINGUNA',
-  userMedicalProblemDetail: '',
-  userPreferedSchedule: 'AM',
-  userTrainingDays: {
-    monday: false,
-    tuesday: false,
-    wednesday: false,
-    thursday: false,
-    friday: false,
-  },
-  userProfileImgUrl: '',
+export let emptyUser: Partial<User> = {
+  name: '',
+  age: 0,
+  gender: GENDER.MALE,
+  weight: 0,
+  height: 0,
+  goal: GOAL.LOSE_WEIGHT,
+  fitnessLevel: FITNESS_LEVEL.BEGINNER,
+  injury: '',
+  avatarUrl: '',
+  userType: USER_TYPE.STUDENT,
 }
-
-export const genreMapper: Record<Genre, number> = {
-  'MASCULINO': 0,
-  'FEMENINO': 1,
-  'OTRO': 2
-}
-export const genresOptions = ['Másculino', 'Femenino', 'No Binario']
-
-export const objetiveMapper: Record<Objetive, number> = {
-  'BAJAR_DE_PESO': 0,
-  'GANAR_MUSCULO': 1,
-  'MANTENERSE_EN_FORMA': 2
-}
-export const objetiveOptions = ['Bajar de Peso', 'Ganar Músculo', 'Mantenerse en forma']
-
-export const experienceMapper: Record<Experience, number> = {
-  'PRINCIPIANTE': 0,
-  'INTERMEDIO': 1,
-  'AVANZADO': 2
-}
-export const experienceOptions = ['Principiante', 'Intermedio', 'Avanzado']
-
-export const medicProblemMapper: Record<MedicalProblem, number> = {
-  'NINGUNA': 0,
-  'LESION': 1,
-  'ALERGIA': 2
-}
-export const medicalProblemsOptions = ['Ninguno', 'Lesión', 'Alergía']
-
-export const scheduleMapper: Record<Schedule, number> = {
-  'AM': 0,
-  'PM': 1,
-}
-export const scheduleOptions = ['AM', 'PM']
 
 export const TrainingPlans = [
   {
@@ -341,7 +291,6 @@ export const TrainingPlans = [
     }
   }
 ];
-
 
 export const OnboardingItems = [
   {
@@ -897,7 +846,6 @@ export const FOOD_PLAN_CATEGORIES: Array<{ value: FoodCategorySearch; label: str
     { value: 'DEFINITION', label: 'Definición' },
 ];
 
-
 export const DAYS_OF_WEEK_VALUES: Record<DayOfWeek, string> = {
   MONDAY: 'Lunes',
   TUESDAY: 'Martes',
@@ -908,8 +856,10 @@ export const DAYS_OF_WEEK_VALUES: Record<DayOfWeek, string> = {
   SUNDAY: 'Domingo'
 }
 
-export const MEAL_TYPES: Record<MealType, string> = {
-    BREAKFAST: 'Desayuno',
-    LUNCH: 'Almuerzo',
-    DINNER: 'Cena',
+
+
+export enum MEAL_TYPE {
+  BREAKFAST = 'Desayuno ',
+  LUNCH = 'Almuerzo',
+  DINNER = 'Cena',
 }

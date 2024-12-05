@@ -33,6 +33,9 @@ const Signin = () => {
     onSuccess: (data) => {
       if (!data) return
       if (data.accessToken) {
+        setErrors([])
+        setEmail('')
+        setPassword('')
         saveToken('accessToken', data.accessToken);  //save token on secure storage
         setAccessToken(data.accessToken); //set token on context
         router.replace('/(root)/(tabs)/(home)/home');
@@ -41,11 +44,6 @@ const Signin = () => {
     onError: (error: any) => {
       setErrors([error.message]);
     },
-    onSettled: () => {
-      setErrors([])
-      setEmail('')
-      setPassword('')
-    }
   });
 
   const handleSubmit = async () => {

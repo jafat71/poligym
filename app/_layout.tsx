@@ -45,8 +45,8 @@ export default function RootLayout() {
   return (
     <ThemeProvider >
         <QueryClientProvider client={queryClient}>
-          <UserProvider>
           <NavigationFlowProvider>
+          <UserProvider>
               <WorkoutPlayProvider>
                 <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0055f9' }}>
                   <Stack
@@ -68,9 +68,9 @@ export default function RootLayout() {
 
                 </GestureHandlerRootView>
               </WorkoutPlayProvider>
-            </NavigationFlowProvider>
           </UserProvider>
-        </QueryClientProvider>
+        </NavigationFlowProvider>
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }

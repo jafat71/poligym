@@ -51,7 +51,7 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
             <View className='p-4 flex flex-row justify-between'>
                 <View className='flex flex-col '>
                     <Text className='text-white font-ralewayBold text-sm'>Hola</Text>
-                    <Text className='text-white font-ralewayBold text-4xl'>{loggedUserInfo?.userName.split(' ')[0]}</Text>
+                    <Text className='text-white font-ralewayBold text-4xl'>{loggedUserInfo?.name.split(' ')[0]}</Text>
                 </View>
                 <View>
                     <IconButton

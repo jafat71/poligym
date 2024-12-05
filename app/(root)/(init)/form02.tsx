@@ -1,41 +1,52 @@
-import React, { useRef, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
 
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
-import { useTheme } from '@/context/ThemeContext';
 
 import { SnapCarousel } from '@/components/ui/common/carousel/SnapCarousel';
 import { Text } from 'react-native';
-import SimpleInfoComponent from '@/components/ui/common/info/SimpleInfoComponent';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 
 const Form02 = () => {
 
+    const opacity = useSharedValue(0);
+    const animatedStyle = useAnimatedStyle(() => ({
+        opacity: opacity.value,
+    }));
+    useEffect(() => {
+        opacity.value = withTiming(1, { duration: 500 }); 
+    }, []);
+
     const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
 
-    const [selectedWeight, setSelectedWeight] = useState(tmpUser?.userWeight || 70);
+    const [selectedWeight, setSelectedWeight] = useState(tmpUser?.weight || 70);
     const weightFlatListRef = useRef(null);
     const weights = Array.from({ length: 70 }, (_, i) => i + 40);
 
-    const [selectedHeight, setSelectedHeight] = useState(tmpUser?.userHeight || 170);
+    const [selectedHeight, setSelectedHeight] = useState(tmpUser?.height || 170);
     const heightFlatListRef = useRef(null);
     const heights = Array.from({ length: 60 }, (_, i) => i + 140);
 
-    const initialIndexWeight = tmpUser?.userWeight ? tmpUser?.userWeight - 40 : 30
-    const initialIndexHeight = tmpUser?.userHeight ? tmpUser?.userHeight - 140 : 30
+    const initialIndexWeight = tmpUser?.weight ? tmpUser?.weight - 40 : 30
+    const initialIndexHeight = tmpUser?.height ? tmpUser?.height - 140 : 30
+
+    useEffect(() => {
+        updateInitUserShell({
+            weight: selectedWeight,
+            height: selectedHeight
+        })
+    }, [selectedWeight, selectedHeight])
 
     const handleContinue = () => {
-        updateInitUserShell({
-            ...tmpUser,
-            userWeight: selectedWeight,
-            userHeight: selectedHeight
-        })
         router.push('/form03')
     }
+
     return (
-        <View className="flex-1 w-full flex flex-col items-center justify-between">
+        <Animated.View
+            style={animatedStyle} className="flex-1 w-full flex flex-col items-center justify-between">
 
              <Text className="text-white text-4xl font-ralewayExtraBold">
                 Cuéntanos de ti
@@ -82,7 +93,7 @@ const Form02 = () => {
                 />
 
             </View>
-        </View>
+        </Animated.View>
     );
 };
 

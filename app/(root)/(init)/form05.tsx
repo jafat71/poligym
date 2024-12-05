@@ -1,87 +1,71 @@
-import WeekChecklistComponent from '@/components/ui/common/buttons/Checklist';
-import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
-import RadioButtonVerticalIconComponent from '@/components/ui/common/buttons/RadioButtonVerticalIcon';
-import WeekList from '@/components/ui/common/buttons/WeekList';
-import { scheduleMapper, scheduleOptions } from '@/constants';
-import { useNavigationFlowContext } from '@/context/NavFlowContext';
-import { useTheme } from '@/context/ThemeContext';
-import { DaysWeek, Schedule } from '@/types/interfaces/entities/user';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-native-reanimated";
+
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+
+import { useNavigationFlowContext } from '@/context/NavFlowContext';
+
+import { USER_TYPE } from '@/types/interfaces/entities/user';
+
+import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
+import RadioButtonVerticalIconComponent from '@/components/ui/common/buttons/RadioButtonVerticalIcon';
+
 const Form05 = () => {
-    const { isDark } = useTheme()
+    const opacity = useSharedValue(0);
+    const animatedStyle = useAnimatedStyle(() => ({
+        opacity: opacity.value,
+    }));
+    useEffect(() => {
+        opacity.value = withTiming(1, { duration: 500 }); 
+    }, []);
     const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
 
-    const [selectedSchedule, setSelectedSchedule] = useState<number>(tmpUser?.userGenre ? scheduleMapper[tmpUser.userPreferedSchedule] : 0);
-    const [days, setDays] = useState<DaysWeek>({
-        "monday": tmpUser?.userTrainingDays.monday ?? false,
-        "tuesday": tmpUser?.userTrainingDays.tuesday ?? false,
-        "wednesday": tmpUser?.userTrainingDays.wednesday ?? false,
-        "thursday": tmpUser?.userTrainingDays.thursday ?? false,
-        "friday": tmpUser?.userTrainingDays.friday ?? false,
-    });
-
-    useEffect(() => {
-        if (selectedSchedule === null) return
-        let tmpUserSchedule: Schedule = 'AM'
-        switch (selectedSchedule) {
-            case 0:
-                tmpUserSchedule = 'AM'
-                break;
-            case 1:
-                tmpUserSchedule = 'PM'
-                break;
-            default:
-                break;
-        }
-        updateInitUserShell({
-            ...tmpUser,
-            userPreferedSchedule: tmpUserSchedule
-        })
-    }, [selectedSchedule]);
+    const [selectedUserType, setSelectedUserType] = useState<USER_TYPE>(tmpUser?.userType || USER_TYPE.STUDENT);
 
     const handleContinue = () => {
         updateInitUserShell({
             ...tmpUser,
-            userTrainingDays: days
+            userType: selectedUserType
         })
         router.push('/form06')
     }
 
     return (
+        
+        <Animated.View
+            style={animatedStyle}
+            className="flex-1 w-full flex flex-col items-center justify-center">
         <View className="flex-1 w-full flex flex-col items-center justify-between">
             <Text className="text-white text-4xl font-ralewayExtraBold">
                 Cuéntanos de ti
             </Text>
-            <View className={`mt-2 flex-1 flex-col`}>
+            <View className={`mt-2 flex-1 flex-col w-full`}>
                 <View className={`py-2`}>
                     <Text className="text-white text-center text-xl font-ralewaySemiBold mb-4">
-                        Tu horario preferido de entrenamiento es:
+                        ¿Cuál es tu rol en la POLI?
                     </Text>
 
                     <RadioButtonVerticalIconComponent
-                        options={scheduleOptions}
+                        options={Object.values(USER_TYPE)}
                         icons={[
-                            <Ionicons name="sunny-outline"
+                            <Ionicons name="person-outline"
                                 size={35}
                                 color={"#fff"} />,
-                            <Ionicons name="partly-sunny-outline"
+                            <Ionicons name="school-outline"
+                                size={35}
+                                color={"#fff"} />,
+                            <Ionicons name="briefcase-outline"
                                 size={35}
                                 color={"#fff"} />,
                         ]}
-                        selectedValue={selectedSchedule}
-                        setSelectedValue={setSelectedSchedule}
-                        rbComponentStyle='w-full flex flex-row'
-                        rbIndividualRadioButtonStyle='items-center justify-center w-1/2'
+                        selectedValue={selectedUserType}
+                        setSelectedValue={setSelectedUserType}
+                        rbComponentStyle='w-full flex flex-col'
+                        rbIndividualRadioButtonStyle='items-center justify-center w-full'
                         rbIndividualTextBtnStyle='text-lg pb-2 font-ralewayExtraBold'
-                    />
-
-                    <WeekList
-                        days={days}
-                        setDays={setDays}
                     />
 
                 </View>
@@ -91,9 +75,10 @@ const Form05 = () => {
                 <CTAButtonPrimary
                     onPress={handleContinue}
                     text="Continuar"
-                />
+                    />
+                </View>
             </View>
-        </View>
+        </Animated.View>
     );
 };
 
