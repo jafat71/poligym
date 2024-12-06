@@ -46,13 +46,13 @@ export default function TabLayout() {
 
                 <View className="flex-row items-center px-4 py-2">
                     <View className={`rounded-full w-20 h-20 flex items-center justify-center border-[2px] border-eBlue-100`}>
-                        {loggedUserInfo?.userProfileImgUrl ? (
-                            <Image source={{ uri: loggedUserInfo.userProfileImgUrl }}
+                        {loggedUserInfo?.avatarUrl ? (
+                            <Image source={{ uri: loggedUserInfo.avatarUrl }}
                                 className='w-full h-full rounded-full'
                                 resizeMode='contain' />
                         ) : (
                             <Text className="text-4xl font-raleway text-eBlue-100">
-                                {loggedUserInfo?.userName?.split(' ').map(name => name[0]).join('')}
+                                {loggedUserInfo?.name?.split(' ').map(name => name[0]).join('')}
                             </Text>
                         )}
                     </View>
@@ -60,12 +60,12 @@ export default function TabLayout() {
                         <Text
                             numberOfLines={2}
                             className={`text-2xl font-ralewayBold text-white flex-wrap`}>
-                            {loggedUserInfo?.userName}
+                            {loggedUserInfo?.name}
                         </Text>
                         <Text
                             numberOfLines={1}
                             className={`text-xs font-raleway text-white`}>
-                            {loggedUserInfo?.userEmail}
+                            {loggedUserInfo?.email}
                         </Text>
                     </View>
                     <View>

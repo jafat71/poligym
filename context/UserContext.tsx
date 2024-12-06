@@ -7,6 +7,7 @@ import { usePathname } from 'expo-router';
 import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useNavigationFlowContext } from './NavFlowContext';
+import { useQuery } from '@tanstack/react-query';
 
 interface UserContextType {
     userLogged: boolean;
@@ -15,6 +16,7 @@ interface UserContextType {
     accessToken: string | null;
     userSelectedPlan: TrainingPlan | null;
     setUserSelectedPlan: Dispatch<SetStateAction<TrainingPlan | null>>;
+    updateUserInfo: () => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -23,7 +25,8 @@ const UserContext = createContext<UserContextType>({
     loggedUserInfo: null,
     accessToken: null,
     userSelectedPlan: null,
-    setUserSelectedPlan: () => { }
+    setUserSelectedPlan: () => { },
+    updateUserInfo: async () => { }
 });
 
 interface UserProviderProps {
@@ -103,6 +106,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         console.log("accessToken", accessToken)
     }, [accessToken])
 
+    const updateUserInfo = async () => {
+        const response = await getUserInfo(loggedUserInfo?.id!, accessToken!)
+        const userMapped = mapUserFromApiToUser(response)
+        setLoggedUserInfo(userMapped)
+    }
+
     return (
         <UserContext.Provider value={{
             userLogged,
@@ -110,7 +119,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             loggedUserInfo: loggedUserInfo ?? null,
             accessToken,
             userSelectedPlan,
-            setUserSelectedPlan
+            setUserSelectedPlan,
+            updateUserInfo
         }}>
             {children}
         </UserContext.Provider>

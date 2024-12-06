@@ -1,52 +1,53 @@
-import WeekChecklistComponent from '@/components/ui/common/buttons/Checklist';
-import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
+import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
 import ImagePicker from '@/components/ui/common/image/ImagePicker';
-import { experienceOptions, genreMapper, genresOptions, medicalProblemsOptions, objetiveOptions, scheduleOptions } from '@/constants';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
-import { DaysWeek, Genre } from '@/types/interfaces/entities/user';
+import { updateUser } from '@/lib/api/userActions';
+import { getEnumKeyByValue, getEnumKeyByValueAsync } from '@/lib/utils/getEnumKeyByValue';
+import { FITNESS_LEVEL, GENDER, GOAL, User, USER_TYPE } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
-import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+
+import { useMutation } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import { SafeAreaView, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const EditProfile = () => {
     const { isDark } = useTheme()
-    const { tmpUser, set1InitUser } = useUser()
-    const [ageINput, setAgeINput] = useState('');
-    const [profileImage, setprofileImage] = useState('');
-    const [weightInput, setWeightINput] = useState('');
-    const [selectedGenre, setSelectedGenre] = useState<number>(0);
-    const [selectedObjetive, setSelectedObjetive] = useState<number>(0);
-    const [selectedExperience, setSelectedExperience] = useState<number>(0);
-    const [selectedMedicalProblem, setSelectedMedicalProblem] = useState<number>(0);
-    const [medicalDetail, setMedicalDetail] = useState('');
-    const [enableEdit, setenableEdit] = useState(false);
-    const [focused, setFocused] = useState(false);
-    const [selectedSchedule, setSelectedSchedule] = useState<number>(0);
+    const { loggedUserInfo, updateUserInfo, accessToken } = useUser()
+    
+    const [updateUserState, setUpdateUserState] = useState<Partial<User>>(loggedUserInfo ?? {} as Partial<User>);
 
-    const [days, setDays] = useState<DaysWeek>({
-        "monday": false,
-        "tuesday": false,
-        "wednesday": false,
-        "thursday": false,
-        "friday": false,
-    });
-
-    useEffect(() => {
-        let userAge = tmpUser?.userAge
-        setAgeINput(String(userAge) || '')
-        setprofileImage(tmpUser?.userProfileImgUrl || '')
-        setWeightINput(tmpUser?.userWeight + "" || '')
-
-        let genreIndex = 0
-        if (tmpUser?.userGenre) {
-            genreIndex = genreMapper[tmpUser.userGenre]
+    const updateUserMutation = useMutation({
+        mutationFn: async () => {
+            const updateUserObj: Partial<User> = {
+                name: updateUserState.name,
+                // fitnessLevel: getEnumKeyByValue(FITNESS_LEVEL, updateUserState.fitnessLevel!) as FITNESS_LEVEL,
+                // goal: getEnumKeyByValue(GOAL, updateUserState.goal!) as GOAL,
+                // gender: getEnumKeyByValue(GENDER, updateUserState.gender!) as GENDER,
+                // userType: getEnumKeyByValue(USER_TYPE, updateUserState.userType!) as USER_TYPE,   
+                userType: updateUserState.userType,
+            };
+            await updateUser(
+            accessToken!,
+            loggedUserInfo?.id!,
+            updateUserObj
+            )},
+        onSuccess: async () => {
+            await updateUserInfo()
+        },
+        onError: (error: any) => {
+            console.log(error)
         }
-        setSelectedGenre(genreIndex)
+    })
+    
+    const updateTmpUserState = (updatedFields: Partial<User> | null) => {
+        setUpdateUserState((prevUser) => prevUser ? { ...prevUser, ...updatedFields } : {} as User);
+    };
 
-    }, []);
+    console.log("LOGGED USER INFO", loggedUserInfo)
+    console.log("UPDATE USER STATE", updateUserState)
 
     return (
         <SafeAreaView className={`flex flex-col items-center justify-center h-full ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
@@ -59,20 +60,22 @@ const EditProfile = () => {
 
                     <View className={`p-2 mt-2 rounded-lg`}>
                         <View className='w-full items-center mt-2'>
-                            <ImagePicker
+                            {/* <ImagePicker
                                 imgUrl={profileImage}
                                 setImg={setprofileImage}
-                            />
+                            /> */}
                         </View>
                         <IconTextInputForm
-                            title='Email Institucional'
+                            title='Nombre'
                             icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                             inputKeyboardType='email-address'
-                            inputPlaceholder='jhon.doe@epn.edu.ec'
+                            inputPlaceholder='Jhon Doe'
                             inputSecure={false}
-                            inputValue={undefined}
-                            inputOnChangeText={undefined}
-                            enabled={false} />
+                            inputValue={updateUserState.name}
+                            inputOnChangeText={(text) => updateTmpUserState({ name: text })}
+                            enabled={!updateUserMutation.isPending} 
+                        />
+{/*
                         <IconTextInputForm
                             title='Nombre'
                             icon={<Ionicons name="person-circle-sharp" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
@@ -264,11 +267,23 @@ const EditProfile = () => {
 
                             </View>
                         </View>
-
-                    </View>
+*/}
+                    </View> 
                 </View>
 
             </ScrollView>
+
+            
+            <View className='w-full'>
+                <CTAButtonPrimary
+                    onPress={() => updateUserMutation.mutate()}
+                    text="Actualizar"
+                    disabled={updateUserMutation.isPending}
+                    isLoading={updateUserMutation.isPending}
+                />
+
+            </View>
+
         </SafeAreaView>
     );
 };

@@ -31,7 +31,7 @@ const Form06 = () => {
     const [profileImage, setprofileImage] = useState(tmpUser?.avatarUrl || '');
     const [profileImageFile, setprofileImageFile] = useState<File | null>(null);
 
-    const { accessToken, loggedUserInfo} = useUser()
+    const { accessToken, loggedUserInfo, updateUserInfo} = useUser()
 
     const updateUserMutation = useMutation({
         mutationFn: async () => {
@@ -48,7 +48,8 @@ const Form06 = () => {
             loggedUserInfo?.id!,
             updateUserObj
             )},
-        onSuccess: () => {
+        onSuccess: async () => {
+            await updateUserInfo()
             router.push('/(home)/home')
         },
         onError: (error: any) => {

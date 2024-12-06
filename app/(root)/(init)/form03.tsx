@@ -24,7 +24,7 @@ const Form03 = () => {
     const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
 
     const [selectedGenre, setSelectedGenre] = useState<GENDER>(tmpUser?.gender || GENDER.MALE);
-    const [selectedGoal, setSelectedGoal] = useState<GOAL>(tmpUser?.goal || GOAL.WEIGHT_LOSS);
+    const [selectedGoal, setSelectedGoal] = useState<GOAL>(tmpUser?.goal || GOAL.LOSE_WEIGHT);
     
     const handleContinue = () => {
         updateInitUserShell({

@@ -25,13 +25,6 @@ export default function RootLayout() {
                 options={{
                     animation: 'slide_from_right',
                     headerTitle: 'Actualizar Información',
-                    headerRight: () => (
-                        <Pressable>
-                            <Text className='font-ralewayBold text-eBlue-500'>
-                                Guardar
-                            </Text>
-                        </Pressable>
-                    )
                 }} />
         </Stack>
     );
