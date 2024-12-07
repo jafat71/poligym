@@ -182,13 +182,6 @@ const Forgot = () => {
             forgotPasswordMutation.isPending || resetPasswordMutation.isPending
           }
         >
-          {forgotPasswordMutation.isPending && (
-            <ActivityIndicator
-              size="small"
-              color="white"
-              style={{ marginLeft: 10 }}
-            />
-          )}
         </CTAButtonPrimary>
       </View>
 

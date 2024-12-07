@@ -21,7 +21,7 @@ const CustomSnackbar = ({ visible, setVisible,  message = "", color = "eBlue-500
                 visible={visible}
                 onDismiss={() => setVisible(false)}
                 duration={3000}
-                className={`bg-${color} rounded-lg mx-4 w-full`}
+                className={`bg-${color} rounded-lg w-full`}
                 action={{
                     label: 'Ok',
                     labelStyle: { color: textColor, fontFamily: 'RalewayBold' },

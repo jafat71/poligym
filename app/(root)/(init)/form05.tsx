@@ -51,15 +51,15 @@ const Form05 = () => {
                     <RadioButtonVerticalIconComponent
                         options={Object.values(USER_TYPE)}
                         icons={[
-                            <Ionicons name="person-outline"
-                                size={35}
-                                color={"#fff"} />,
-                            <Ionicons name="school-outline"
-                                size={35}
-                                color={"#fff"} />,
-                            <Ionicons name="briefcase-outline"
-                                size={35}
-                                color={"#fff"} />,
+                                <Ionicons name="person-outline"
+                                    size={35}
+                                    color={"#fff"} />,
+                                <Ionicons name="school-outline"
+                                    size={35}
+                                    color={"#fff"} />,
+                                <Ionicons name="briefcase-outline"
+                                    size={35}
+                                    color={"#fff"} />,
                         ]}
                         selectedValue={selectedUserType}
                         setSelectedValue={setSelectedUserType}

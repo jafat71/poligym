@@ -20,7 +20,6 @@ import { logout } from '@/lib/api/auth';
 const Config = () => {
     const { isDark } = useTheme()
     const { setAccessToken, accessToken } = useUser()
-    const [notificationEnabled, setNotificationEnabled] = useState(false);
     const [termsVisible, setTermsVisible] = useState(false);
     const [faqVisible, setFAQVisible] = useState(false);
     const [aboutVisible, setAboutVisible] = useState(false);
@@ -86,25 +85,6 @@ const Config = () => {
                         <Text className={subtextStyle}>Actualiza tu contraseña cada cierto tiempo para incrementar la seguridad de tu cuenta</Text>
                     </TouchableOpacity>
 
-                    <Text className={`${titleStyle} mt-2`}>Preferencias</Text>
-
-                    <View className={itemStyle}>
-                        <View className='flex flex-row items-center justify-between'>
-                            <Text className={textStyle}>Notificaciones</Text>
-                            <Checkbox
-                                className='w-6 h-6'
-                                value={notificationEnabled}
-                                onValueChange={() => setNotificationEnabled(!notificationEnabled)}
-                                color={notificationEnabled ? '#0055f9' : isDark ? "#fff" : "#1c1c1c"}
-                            />
-                        </View>
-                        <Text className={subtextStyle}>
-                            Habilitar las notificaciones te permite recibir información clave y personalizada, como:
-                            recordatorios de tus sesiones de entrenamiento,
-                            consejos de bienestar y salud, entre otras.
-                        </Text>
-
-                    </View>
 
                     <View className={itemStyle}>
                         <View className='flex flex-row items-center justify-between'>

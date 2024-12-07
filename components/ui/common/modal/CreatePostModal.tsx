@@ -14,7 +14,6 @@ import { createPost } from '@/lib/api/actions';
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
 import { usePlayWorkoutContext } from '@/context/PlayWorkoutContext';
 import CustomSnackbar from '../snackbar/CustomSnackbar';
-import { useNotification } from '@/context/NotificationContext';
 
 interface Props {
     isVisible: boolean;
@@ -74,7 +73,7 @@ const CreatePostModal = ({
         post.mensaje = content
         post.oculto = false
         post.duracion = postTimeWorkout
-        post.nombre = loggedUserInfo?.userName ?? ""
+        post.nombre = loggedUserInfo?.name ?? ""
         console.log("post", post)
         try {
             await createPost(accessToken!, post as SocialPost);
@@ -162,11 +161,11 @@ const CreatePostModal = ({
                                             // )
                                         }
                                         <Text className={` text-lg font-raleway text-eBlue-500 `}>
-                                            {loggedUserInfo?.userName.split(" ").map((n) => n[0]).join("")}
+                                            {loggedUserInfo?.name.split(" ").map((n) => n[0]).join("")}
                                         </Text>
                                     </View>
                                     <View className={`pl-3`}>
-                                        <Text className={`text-base font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{loggedUserInfo?.userName}</Text>
+                                        <Text className={`text-base font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{loggedUserInfo?.name}</Text>
                                         <Text className={`text-base font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>{postTime}</Text>
                                     </View>
                                 </View>

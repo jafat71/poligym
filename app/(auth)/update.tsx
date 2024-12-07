@@ -47,7 +47,7 @@ const Update = () => {
     if (errors.length > 0) return
 
     updatePasswordMutation.mutate({
-      userId: loggedUserInfo?.userId ?? '',
+      userId: loggedUserInfo?.id ?? '',
       currentPassword: oldPassword,
       newPassword: password,
       confirmPassword: confirmPassword

@@ -31,8 +31,8 @@ const IconTextInputForm = ({
                 {title}
             </Text>
 
-            <View className={`flex-row items-center p-1 border-2 mb-2 ${
-            isDark ? "border-darkGray-400" : "border-gray-300" 
+            <View className={`flex-row items-center p-1 border-2 border-transparent mb-2 rounded-lg 
+            ${isDark ? "bg-darkGray-900" : "bg-darkGray-100" 
         } ${focused ? "border-eBlue-500" : ""} transition-all duration-800`}>
                 <View className="flex flex-row items-center justify-center w-full">
                     <View>
