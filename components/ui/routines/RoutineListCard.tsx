@@ -1,12 +1,11 @@
 import React from 'react'
-import { View, Text, Pressable, Image } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 
 import { useRouter } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 
 import { WorkoutAPI } from '@/types/interfaces/entities/plan'
 import HomePill from '../common/pills/HomePill'
-import { CATEGORIES, DIFFICULTIES } from '@/constants';
 
 const RoutineListCard = (workout: WorkoutAPI) => {
     const router = useRouter()
@@ -50,7 +49,7 @@ const RoutineListCard = (workout: WorkoutAPI) => {
                         />
                         <HomePill
                             icon="flame-outline"
-                            text={`${DIFFICULTIES.find(difficulty => difficulty.value === workout.level)?.label}`}
+                            text={workout.level}
                         />
 
                     </View>
@@ -61,7 +60,7 @@ const RoutineListCard = (workout: WorkoutAPI) => {
                         />
                         <HomePill
                             icon="flame-outline"
-                            text={`${CATEGORIES.find(category => category.value === workout.category)?.label}`}
+                            text={workout.category}
                         />
                     </View>
                 </View>

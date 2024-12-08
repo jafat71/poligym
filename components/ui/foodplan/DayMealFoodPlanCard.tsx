@@ -2,8 +2,7 @@
 import { View, Text, Image } from 'react-native'
 import React from 'react'
 import { useTheme } from '@/context/ThemeContext';
-import { WeeklyMeal } from '@/types/interfaces/entities/foodplan';
-import { DAYS_OF_WEEK_VALUES } from '@/constants';
+import { DAY_OF_WEEK, WeeklyMeal } from '@/types/interfaces/entities/foodplan';
 import { Ionicons } from '@expo/vector-icons';
 import { DayMealItem } from './DayMealItem';
 
@@ -19,7 +18,7 @@ const DayMealFoodPlanCard = ({ selectedDay }: Props) => {
                 <Ionicons name='calendar-number' size={24} color={isDark ? "white" : "black"} />
                 <Text className={`text-4xl font-ralewayExtraBold ${isDark ? "text-white" : "text-darkGray-900"}`}>
                     {
-                    DAYS_OF_WEEK_VALUES[selectedDay.dayOfWeek]}
+                    DAY_OF_WEEK[selectedDay.dayOfWeek as unknown as keyof typeof DAY_OF_WEEK]}
                 </Text>
 
             </View>

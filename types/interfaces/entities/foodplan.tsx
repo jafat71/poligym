@@ -1,23 +1,24 @@
-export enum Category {
-    WEIGHT_LOSS,
-    MUSCLE_GAIN,
-    DEFINITION,
+export enum FOODPLAN_CATEGORY {
+    ALL = 'Todos',
+    WEIGHT_LOSS = 'Pérdida de peso',
+    MUSCLE_GAIN = 'Volumen',
+    DEFINITION = 'Definición',
   }
   
-export enum DayOfWeek {
-    MONDAY = "MONDAY",
-    TUESDAY = "TUESDAY",
-    WEDNESDAY = "WEDNESDAY",
-    THURSDAY = "THURSDAY",
-    FRIDAY = "FRIDAY",
-    SATURDAY = "SATURDAY",
-    SUNDAY = "SUNDAY",
+export enum DAY_OF_WEEK {
+    MONDAY = "Lunes",
+    TUESDAY = "Martes",
+    WEDNESDAY = "Miércoles",
+    THURSDAY = "Jueves",
+    FRIDAY = "Viernes",
+    SATURDAY = "Sábado",
+    SUNDAY = "Domingo",
   }
   
-export enum MealType {
-    BREAKFAST = "BREAKFAST",
-    LUNCH = "LUNCH",
-    DINNER = "DINNER",
+export enum MEAL_TYPES {
+    BREAKFAST = "Desayuno",
+    LUNCH = "Almuerzo",
+    DINNER = "Cena",
   }
   
 export interface NutritionPlan {
@@ -26,21 +27,21 @@ export interface NutritionPlan {
     description: string;
     imageURL: string;
     duration: number;
-    category: Category;
+    category: FOODPLAN_CATEGORY;
     weeklyMeals: WeeklyMeal[];
   }
   
 export interface WeeklyMeal {
     id: string;
     nutritionPlanId: string;
-    dayOfWeek: DayOfWeek;
+    dayOfWeek: DAY_OF_WEEK;
     meals: Meal[];
   }
   
 export interface Meal {
     id: string;
     weeklyMealId: string;
-    type: MealType;
+    type: MEAL_TYPES;
     name: string;
     description: string;
     imageUrl?: string | null;

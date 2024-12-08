@@ -1,4 +1,3 @@
-import { DayOfWeek } from "@/types/interfaces/entities/foodplan";
 import { FITNESS_LEVEL, GENDER, GOAL, ROLE, User, USER_TYPE } from "@/types/interfaces/entities/user";
 
 export const termsContent = [
@@ -821,45 +820,3 @@ export const LastExercisePlans = [
 ]
 
 
-export type DifficultySearch = 'ALL' | 'BASIC' | 'INTERMEDIATE' | 'ADVANCED';
-export type CategorySearch = 'ALL' | 'CARDIO' | 'STRENGTH' | 'FLEXIBILITY';
-
-export const DIFFICULTIES: Array<{ value: DifficultySearch; label: string }> = [
-    { value: 'ALL', label: 'Todos' },
-    { value: 'BASIC', label: 'Principiante' },
-    { value: 'INTERMEDIATE', label: 'Intermedio' },
-    { value: 'ADVANCED', label: 'Avanzado' }
-];
-
-export const CATEGORIES: Array<{ value: CategorySearch; label: string }> = [
-    { value: 'ALL', label: 'Todos' },
-    { value: 'CARDIO', label: 'Cardio' },
-    { value: 'STRENGTH', label: 'Fuerza' },
-    { value: 'FLEXIBILITY', label: 'Flexibilidad' }
-];
-
-export type FoodCategorySearch = 'ALL' | 'WEIGHT_LOSS' | 'MUSCLE_GAIN' | 'DEFINITION';
-export const FOOD_PLAN_CATEGORIES: Array<{ value: FoodCategorySearch; label: string }> = [
-    { value: 'ALL', label: 'Todos' },
-    { value: 'WEIGHT_LOSS', label: 'Pérdida de peso' },
-    { value: 'MUSCLE_GAIN', label: 'Volumen' },
-    { value: 'DEFINITION', label: 'Definición' },
-];
-
-export const DAYS_OF_WEEK_VALUES: Record<DayOfWeek, string> = {
-  MONDAY: 'Lunes',
-  TUESDAY: 'Martes',
-  WEDNESDAY: 'Miércoles',
-  THURSDAY: 'Jueves',
-  FRIDAY: 'Viernes',
-  SATURDAY: 'Sábado',
-  SUNDAY: 'Domingo'
-}
-
-
-
-export enum MEAL_TYPE {
-  BREAKFAST = 'Desayuno ',
-  LUNCH = 'Almuerzo',
-  DINNER = 'Cena',
-}

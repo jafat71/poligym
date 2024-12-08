@@ -6,7 +6,6 @@ import { LinearGradient } from 'expo-linear-gradient'
 
 import { ExerciseAPI } from '@/types/interfaces/entities/plan'
 import HomePill from '../common/pills/HomePill'
-import { CATEGORIES, DIFFICULTIES } from '@/constants';
 import { MuscleGroups } from '@/types/types/muscles'
 
 const ExerciseListCard = memo((exercise: ExerciseAPI) => {
@@ -43,11 +42,11 @@ const ExerciseListCard = memo((exercise: ExerciseAPI) => {
                     <View className='flex-row items-start justify-between gap-x-2'>
                         <HomePill
                             icon="fitness-outline"
-                            text={`${CATEGORIES.find(category => category.value === exercise.category)?.label}`}
+                            text={exercise.category}
                         />
                         <HomePill
                             icon="flame-outline"
-                            text={`${DIFFICULTIES.find(difficulty => difficulty.value === exercise.level)?.label}`}
+                            text={exercise.level}
                         />
 
                     </View>
@@ -58,7 +57,7 @@ const ExerciseListCard = memo((exercise: ExerciseAPI) => {
                                 <HomePill
                                     key={muscleGroup as any}
                                     icon="fitness-outline"
-                                    text={`${MuscleGroups[muscleGroup as keyof typeof MuscleGroups]}`}
+                                    text={`${MuscleGroups[muscleGroup as unknown as keyof typeof MuscleGroups]}`}
                                 />
                             ))
                         }

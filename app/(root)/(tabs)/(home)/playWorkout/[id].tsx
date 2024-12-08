@@ -1,7 +1,7 @@
 import { ExerciseInWorkoutAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
 import { router, useLocalSearchParams } from "expo-router";
-import { useState, useEffect, useMemo, useRef } from "react";
-import { Alert, Modal, Pressable, Text, View } from "react-native";
+import { useState, useEffect } from "react";
+import { Alert, Text, View } from "react-native";
 import DraggableFlatList, { RenderItemParams } from "react-native-draggable-flatlist";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";

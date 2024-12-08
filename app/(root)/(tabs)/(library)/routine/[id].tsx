@@ -8,8 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fetchExerciseById, fetchWorkoutById } from '@/lib/api/actions';
 import { useUser } from '@/context/UserContext';
 import { useTheme } from '@/context/ThemeContext';
-import { CATEGORIES, DIFFICULTIES } from '@/constants';
-import { ExerciseAPI, WorkoutAPI } from '@/types/interfaces/entities/plan';
+import { CATEGORY, DIFFICULTY, ExerciseAPI, WorkoutAPI } from '@/types/interfaces/entities/plan';
 
 import SquarePill from '@/components/ui/common/pills/SquarePill';
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
@@ -56,8 +55,8 @@ const WorkoutInfo = () => {
 
                 {/* Información general */}
                 <View className='flex flex-row flex-wrap my-2'>
-                    <SquarePill text={CATEGORIES.find(cat => cat.value === workout?.category)?.label || ''} icon='apps-outline' />
-                    <SquarePill text={DIFFICULTIES.find(diff => diff.value === workout?.level)?.label || ''} icon='flame-outline' />
+                    <SquarePill text={workout?.category!} icon='apps-outline' />
+                    <SquarePill text={workout?.level!} icon='flame-outline' />
                     <SquarePill text={`${workout?.duration} minutos`} icon='timer-outline' />
                     <SquarePill text={workout?.trainingType || 'Sin tipo'} icon='fitness-outline' />
                 </View>

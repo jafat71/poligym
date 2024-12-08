@@ -99,7 +99,7 @@ export interface LastTrainingPlan {
 export interface TrainingPlanAPI {
     id: number;
     name: string;
-    level: Difficulty;
+    level: DIFFICULTY;
     description?: string;
     startDate: Date;
     endDate?: Date;
@@ -115,8 +115,8 @@ export interface TrainingPlanAPI {
     description?: string;
     frequency: number;
     duration: number;
-    level: Difficulty;
-    category: Category;
+    level: DIFFICULTY;
+    category: CATEGORY;
     trainingType: string;
     exercisesInWorkout: ExerciseInWorkoutAPI[];
     exercises: ExerciseAPI[];
@@ -141,8 +141,8 @@ export interface TrainingPlanAPI {
     id: number;
     mediaUrl: string;
     name: string;
-    level: Difficulty;
-    category: Category;
+    level: DIFFICULTY;
+    category: CATEGORY;
     equipment: EquipmentApi[];
     description: string;
     muscleGroups: MuscleGroups[];
@@ -165,35 +165,36 @@ export interface TrainingPlanAPI {
     name: string;                       
     mediaUrl: string;                   
     description?: string | null;        
-    category: EquipmentCategory;        
+    category: EQUIPMENT_CATEGORY;        
     exercise: ExerciseAPI[];               
     isDeleted: boolean;                 
-    status: EquipmentStatus;            
+    status: EQUIPMENT_STATUS;            
+  }
+
+  export enum DIFFICULTY{
+    ALL = 'Todos',
+    BASIC = 'Principiante',
+    INTERMEDIATE = 'Intermedio',
+    ADVANCED = 'Avanzado'
   }
   
-  // Enums for Difficulty and Category
-  export enum Difficulty {
-    BASIC = "BASIC",
-    INTERMEDIATE = "INTERMEDIATE",
-    ADVANCED = "ADVANCED",
+  export enum CATEGORY {
+    ALL = 'Todos',
+    CARDIO = "Cardio",
+    STRENGTH = "Fuerza",
+    FLEXIBILITY = "Flexibilidad",
+  }
+
+  export enum EQUIPMENT_CATEGORY {
+    MACHINE = "Máquina",
+    FREE_WEIGHT = "Peso Libre",
+    CARDIO = "Cardio",
+    ACCESSORY = "Accesorio",
+    BODYWEIGHT = "Peso corporal",
   }
   
-  export enum Category {
-    CARDIO = "CARDIO",
-    STRENGTH = "STRENGTH",
-    FLEXIBILITY = "FLEXIBILITY",
-  }
-  
-  export enum EquipmentCategory {
-    MACHINE = "MACHINE",
-    FREE_WEIGHT = "FREE_WEIGHT",
-    CARDIO = "CARDIO",
-    ACCESSORY = "ACCESSORY",
-    BODYWEIGHT = "BODYWEIGHT",
-  }
-  
-  export enum EquipmentStatus {
-    AVAILABLE = "AVAILABLE",
-    IN_MAINTENANCE = "IN_MAINTENANCE",
-    OUT_OF_ORDER = "OUT_OF_ORDER",
+  export enum EQUIPMENT_STATUS {
+    AVAILABLE = "Disponible",
+    IN_MAINTENANCE = "En mantenimiento",
+    OUT_OF_ORDER = "Fuera de servicio",
   }

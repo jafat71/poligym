@@ -6,9 +6,7 @@ import { fetchTrainingPlansPaged } from '@/lib/api/actions';
 import { useTheme } from '@/context/ThemeContext';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { TrainingPlanAPI } from '@/types/interfaces/entities/plan';
-
-import { DifficultySearch } from '@/constants';
+import { DIFFICULTY, TrainingPlanAPI } from '@/types/interfaces/entities/plan';
 
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
 
@@ -23,7 +21,7 @@ export default function Plan() {
     const { isDark } = useTheme();
     const [searchInput, setSearchInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultySearch>('ALL');
+    const [selectedDifficulty, setSelectedDifficulty] = useState<DIFFICULTY>(DIFFICULTY.ALL);
     const [isSearching, setIsSearching] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const { handleSearchChange } = useDebounce({ setSearchQuery, setIsSearching, setSearchInput });
@@ -70,7 +68,7 @@ export default function Plan() {
         if (!data) return [];
         return data.pages.flatMap(page => page.plans).filter((plan: TrainingPlanAPI) => {
             const matchesSearch = plan.name.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesDifficulty = selectedDifficulty === 'ALL' || plan.level === selectedDifficulty;
+            const matchesDifficulty = selectedDifficulty === DIFFICULTY.ALL || plan.level === selectedDifficulty;
             return matchesSearch && matchesDifficulty;
         });
     }, [data, searchQuery, selectedDifficulty]);

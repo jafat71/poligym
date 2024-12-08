@@ -7,10 +7,8 @@ import { useTheme } from '@/context/ThemeContext';
 
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
-import { EquipmentApi, ExerciseAPI } from '@/types/interfaces/entities/plan';
+import { CATEGORY, DIFFICULTY, EquipmentApi, ExerciseAPI } from '@/types/interfaces/entities/plan';
 import { MuscleGroups } from '@/types/types/muscles';
-
-import { CategorySearch, DifficultySearch } from '@/constants';
 
 import useMuscles from '@/hooks/useMuscles';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -26,8 +24,8 @@ export default function Exercise() {
     const { isDark } = useTheme();
     const [searchInput, setSearchInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultySearch>('ALL');
-    const [selectedCategory, setSelectedCategory] = useState<CategorySearch>('ALL');
+    const [selectedDifficulty, setSelectedDifficulty] = useState<DIFFICULTY>(DIFFICULTY.ALL );
+    const [selectedCategory, setSelectedCategory] = useState<CATEGORY>(CATEGORY.ALL);
     const [selectedMuscleGroups, setSelectedMuscleGroups] = useState<MuscleGroups[]>([]);
     const [selectedEquipment, setSelectedEquipment] = useState<EquipmentApi[]>([]);
     const [isSearching, setIsSearching] = useState(false);
@@ -95,8 +93,8 @@ export default function Exercise() {
         if (!data) return [];
         return data.pages.flatMap(page => page.exercises).filter((exercise: ExerciseAPI) => {
             const matchesSearch = exercise.name.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesDifficulty = selectedDifficulty === 'ALL' || exercise.level === selectedDifficulty;
-            const matchesCategory = selectedCategory === 'ALL' || exercise.category === selectedCategory;
+            const matchesDifficulty = selectedDifficulty === DIFFICULTY.ALL || exercise.level === selectedDifficulty;
+            const matchesCategory = selectedCategory === CATEGORY.ALL || exercise.category === selectedCategory;
             const matchesEquipment = selectedEquipment.length === 0 || 
                 selectedEquipment.some(equipment => 
                     exercise.equipment.some(exerciseEquipment => {

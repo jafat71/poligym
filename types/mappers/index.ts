@@ -1,5 +1,5 @@
-import { Food, Meal, NutritionPlan, WeeklyMeal } from "../interfaces/entities/foodplan"
-import { EquipmentApi, ExerciseAPI, ExerciseInWorkoutAPI, IndividualExercise, RoutinePlan, TrainingPlan, TrainingPlanAPI, WorkoutAPI } from "../interfaces/entities/plan"
+import { Food, FOODPLAN_CATEGORY, Meal, NutritionPlan, WeeklyMeal } from "../interfaces/entities/foodplan"
+import { CATEGORY, DIFFICULTY, EquipmentApi, ExerciseAPI, ExerciseInWorkoutAPI, IndividualExercise, RoutinePlan, TrainingPlan, TrainingPlanAPI, WorkoutAPI } from "../interfaces/entities/plan"
 import { User } from "../interfaces/entities/user"
 import { MuscleGroups } from "../types/muscles"
 
@@ -67,7 +67,7 @@ export const mapApiTrainingPlanToTrainingPlan = (data: any): TrainingPlanAPI[] =
         return {
             id: plan.id,
             name: plan.name,
-            level: plan.level,
+            level: DIFFICULTY[plan.level as unknown as keyof typeof DIFFICULTY] || DIFFICULTY.ALL,
             description: plan.description,
             startDate: plan.startDate ? new Date(plan.startDate) : null,
             endDate: plan.endDate ? new Date(plan.endDate) : null,
@@ -84,8 +84,8 @@ export const mapApiWorkoutToWorkout = (data: any): WorkoutAPI[] => {
             description: workout.description,
             frequency: workout.frequency,
             duration: workout.duration,
-            level: workout.level,
-            category: workout.category,
+            level: DIFFICULTY[workout.level as unknown as keyof typeof DIFFICULTY] || DIFFICULTY.ALL,
+            category: CATEGORY[workout.category as unknown as keyof typeof CATEGORY] || CATEGORY.ALL,
             trainingType: workout.trainingType,
             exercisesInWorkout: mapApiExerciseInWorkoutToPartialExerciseInWorkout(workout.exercisesInWorkout) || [],
             isDeleted: workout.isDeleted,
@@ -99,8 +99,8 @@ export const mapApiExerciseToExercise = (data: any): ExerciseAPI[] => {
             id: exercise.id,
             mediaUrl: exercise.mediaUrl,
             name: exercise.name,
-            level: exercise.level,
-            category: exercise.category,
+            level: DIFFICULTY[exercise.level as unknown as keyof typeof DIFFICULTY] || DIFFICULTY.ALL,
+            category: CATEGORY[exercise.category as unknown as keyof typeof CATEGORY] || CATEGORY.ALL,
             equipment: mapApiEquipmentToEquipment(exercise.equipments) || [],
             description: exercise.description,
             muscleGroups: mapApiMuscleGroupToMuscleGroup(exercise.muscleGroups) || [],
@@ -195,7 +195,7 @@ export const mapApiNutritionPlanToNutritionPlan = (data: any): NutritionPlan[] =
             description: plan.description,
             imageURL: plan.imageURL ?? "",
             duration: plan.duration,
-            category: plan.category,
+            category: FOODPLAN_CATEGORY[plan.category as unknown as keyof typeof FOODPLAN_CATEGORY] || FOODPLAN_CATEGORY.ALL,
             weeklyMeals: mapApiWeeklyMealToWeeklyMeal(plan.weeklyMeals) || [],
         }
     });

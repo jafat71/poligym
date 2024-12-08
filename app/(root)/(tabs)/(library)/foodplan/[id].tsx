@@ -1,13 +1,11 @@
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
-import CustomListEmptyComponent from '@/components/ui/common/flatlists/CustomListEmptyComponent';
 import FilterPill from '@/components/ui/common/pills/FilterPill';
 import SquarePill from '@/components/ui/common/pills/SquarePill';
 import DayMealFoodPlanCard from '@/components/ui/foodplan/DayMealFoodPlanCard';
-import { DAYS_OF_WEEK_VALUES, FOOD_PLAN_CATEGORIES } from '@/constants';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { fetchFoodPlanById } from '@/lib/api/actions';
-import { DayOfWeek, NutritionPlan } from '@/types/interfaces/entities/foodplan';
+import { DAY_OF_WEEK, FOODPLAN_CATEGORY, NutritionPlan } from '@/types/interfaces/entities/foodplan';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useState } from 'react';
@@ -31,12 +29,14 @@ const Id = () => {
         initialData: cachedPlan,
         enabled: !!id
     });
+    const [selectedDay, setSelectedDay] = useState<DAY_OF_WEEK>(
+        DAY_OF_WEEK[plan?.weeklyMeals[0].dayOfWeek as unknown as keyof typeof DAY_OF_WEEK] ?? DAY_OF_WEEK.MONDAY
+    );
 
     if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error loading food plan details - {id}</Text>;
-    const [selectedDay, setSelectedDay] = useState<string>(DAYS_OF_WEEK_VALUES[
-        plan?.weeklyMeals[0].dayOfWeek ?? DayOfWeek.MONDAY
-    ]);
+
+    console.log(selectedDay)
     return (
         <SafeAreaView className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
             <ScrollView
@@ -48,7 +48,7 @@ const Id = () => {
                 <View className='flex flex-row flex-wrap my-2'>
 
                     <SquarePill
-                        text={`${FOOD_PLAN_CATEGORIES.find(category => category.value === plan?.category.toString())?.label}`}
+                        text={`${FOODPLAN_CATEGORY[plan?.category as unknown as keyof typeof FOODPLAN_CATEGORY]}`}
                         icon='flame-outline'
                     />
 
@@ -77,10 +77,10 @@ const Id = () => {
                     {
                         plan?.weeklyMeals?.map((meal) => (
                             <FilterPill 
-                                value={DAYS_OF_WEEK_VALUES[meal.dayOfWeek]}
-                                label={DAYS_OF_WEEK_VALUES[meal.dayOfWeek].slice(0, 3)}
+                                value={DAY_OF_WEEK[meal.dayOfWeek as unknown as keyof typeof DAY_OF_WEEK]}
+                                label={DAY_OF_WEEK[meal.dayOfWeek as unknown as keyof typeof DAY_OF_WEEK].slice(0, 3)}
                                 selected={selectedDay}
-                                setSelected={setSelectedDay}
+                                setSelected={setSelectedDay as any}
                                 isSearching={false}
                                 key={meal.dayOfWeek}
                             />
@@ -89,7 +89,11 @@ const Id = () => {
                 </View>
 
                 <View className='my-2'>
-                    <DayMealFoodPlanCard selectedDay={plan?.weeklyMeals.find((day) => DAYS_OF_WEEK_VALUES[day.dayOfWeek] === selectedDay)!} />
+                    <DayMealFoodPlanCard 
+                        selectedDay={plan?.weeklyMeals.find(
+                            (day) => DAY_OF_WEEK[day.dayOfWeek as unknown as keyof typeof DAY_OF_WEEK] === selectedDay
+                        )!} 
+                    />
                 </View>
             </ScrollView>
         </SafeAreaView>

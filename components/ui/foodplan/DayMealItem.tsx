@@ -1,6 +1,5 @@
-import { MEAL_TYPES } from "@/constants";
 import { useTheme } from "@/context/ThemeContext";
-import { Meal} from "@/types/interfaces/entities/foodplan";
+import { Meal, MEAL_TYPES } from "@/types/interfaces/entities/foodplan";
 import { Ionicons } from "@expo/vector-icons";
 import { Image, Text } from "react-native";
 import { View } from "react-native"
@@ -20,7 +19,7 @@ export const DayMealItem = ({ meal}: Props) => {
                 <View className='flex-row items-center'>
                     <Ionicons name='fast-food-outline' size={24} color={isDark ? "white" : "black"} />
                     <Text className={`text-lg ml-2 font-ralewayExtraBold ${isDark ? "text-white" : "text-darkGray-900"}`}>
-                        {MEAL_TYPES[meal.type]}
+                        {MEAL_TYPES[meal.type as unknown as keyof typeof MEAL_TYPES]}
                     </Text>
                 </View>
                 <View className='flex-col p-2 w-full '>

@@ -4,8 +4,6 @@ import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } f
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { CATEGORIES, CategorySearch, DIFFICULTIES, DifficultySearch } from "@/constants";
-
 import { useTheme } from "@/context/ThemeContext";
 
 import { MuscleGroups } from "@/types/types/muscles";
@@ -14,17 +12,17 @@ import CustomSearchBar from "../searchbar/CustomSearchBar";
 import FilterPill from "../pills/FilterPill";
 import IconButton from "../buttons/IconButton";
 import MusclePill from "../pills/MusclePill";
-import { EquipmentApi } from "@/types/interfaces/entities/plan";
+import { CATEGORY, DIFFICULTY, EquipmentApi } from "@/types/interfaces/entities/plan";
 import MultiFilterPill from "../pills/MultiFilterPill";
 
 interface ExerciseFlatlistHeaderProps {
     searchInput: string;
     handleSearchChange: (text: string) => void;
     isSearching: boolean;
-    selectedDifficulty: DifficultySearch;
-    setSelectedDifficulty: (difficulty: DifficultySearch) => void;
-    selectedCategory: CategorySearch;
-    setSelectedCategory: (category: CategorySearch) => void;
+    selectedDifficulty: DIFFICULTY;
+    setSelectedDifficulty: (difficulty: DIFFICULTY) => void;
+    selectedCategory: CATEGORY;
+    setSelectedCategory: (category: CATEGORY) => void;
     muscleGroups: MuscleGroups[];
     selectedMuscleGroups: MuscleGroups[];
     toggleMuscleGroup: (muscle: MuscleGroups) => void;
@@ -94,11 +92,11 @@ export const ExerciseFlatlistHeader = memo(({
             />
 
             <View className="flex-row justify-between mb-2 ">
-                {DIFFICULTIES.map(({ value, label }) => (
+                {Object.values(DIFFICULTY).map((difficulty) => (
                     <FilterPill
-                        key={value}
-                        value={value}
-                        label={label}
+                        key={difficulty}
+                        value={difficulty}
+                        label={difficulty}
                         selected={selectedDifficulty}
                         setSelected={setSelectedDifficulty as any}
                         isSearching={isSearching}
@@ -120,11 +118,11 @@ export const ExerciseFlatlistHeader = memo(({
                 </Text>
 
                 <View className="flex-row justify-between mb-2">
-                    {CATEGORIES.map(({ value, label }) => (
+                    {Object.values(CATEGORY).map((category) => (
                         <FilterPill
-                            key={value}
-                            value={value}
-                            label={label}
+                            key={category}
+                            value={category}
+                            label={category}
                             selected={selectedCategory}
                             setSelected={setSelectedCategory as any}
                             isSearching={isSearching}

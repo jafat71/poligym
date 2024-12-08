@@ -7,9 +7,7 @@ import { useTheme } from '@/context/ThemeContext';
 
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 
-import { WorkoutAPI } from '@/types/interfaces/entities/plan';
-
-import { CategorySearch, DifficultySearch } from '@/constants';
+import { CATEGORY, DIFFICULTY, WorkoutAPI } from '@/types/interfaces/entities/plan';
 
 import useMuscles from '@/hooks/useMuscles';
 import { useDebounce } from '@/hooks/useDebounce';
@@ -25,8 +23,8 @@ export default function Routine() {
     const { isDark } = useTheme();
     const [searchInput, setSearchInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedDifficulty, setSelectedDifficulty] = useState<DifficultySearch>('ALL');
-    const [selectedCategory, setSelectedCategory] = useState<CategorySearch>('ALL');
+    const [selectedDifficulty, setSelectedDifficulty] = useState<DIFFICULTY>(DIFFICULTY.ALL);
+    const [selectedCategory, setSelectedCategory] = useState<CATEGORY>(CATEGORY.ALL);
     const [isSearching, setIsSearching] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const { handleSearchChange } = useDebounce({ setSearchQuery, setIsSearching, setSearchInput });
@@ -77,13 +75,12 @@ export default function Routine() {
         );
     }, [data]);
 
-    //TODO: Mover logica de filtrado a un modal
     const filteredWorkouts = useMemo(() => {
         if (!data) return [];
         return data.pages.flatMap(page => page.workouts).filter((workout: WorkoutAPI) => {
             const matchesSearch = workout.name.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesDifficulty = selectedDifficulty === 'ALL' || workout.level === selectedDifficulty;
-            const matchesCategory = selectedCategory === 'ALL' || workout.category === selectedCategory;
+            const matchesDifficulty = selectedDifficulty === DIFFICULTY.ALL || workout.level === selectedDifficulty;
+            const matchesCategory = selectedCategory === CATEGORY.ALL || workout.category === selectedCategory;
             return matchesSearch && matchesDifficulty && matchesCategory;
 
         });

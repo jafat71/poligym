@@ -4,10 +4,9 @@ import { View, Text, Pressable, Image } from 'react-native'
 import { router } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 
-import { TrainingPlanAPI } from '@/types/interfaces/entities/plan'
+import { DIFFICULTY, TrainingPlanAPI } from '@/types/interfaces/entities/plan'
 
 import HomePill from '../common/pills/HomePill'
-import { DIFFICULTIES } from '@/constants';
 
 const PlanListItem = (plan: TrainingPlanAPI) => {
     const handleNavigation = () => {
@@ -53,7 +52,7 @@ const PlanListItem = (plan: TrainingPlanAPI) => {
                         />
                         <HomePill
                             icon="flame-outline"
-                            text={`${DIFFICULTIES.find(difficulty => difficulty.value === plan.level)?.label}`}
+                            text={`${plan.level}`}
                         />
                     </View>
                     <Text

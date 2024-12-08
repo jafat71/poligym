@@ -8,7 +8,7 @@ import { WorkoutAPI } from '@/types/interfaces/entities/plan'
 import HomePill from '../common/pills/HomePill'
 import IconButton from '../common/buttons/IconButton'
 import { Ionicons } from '@expo/vector-icons'
-import { DIFFICULTIES } from '@/constants'
+import { DIFFICULTY } from '@/types/interfaces/entities/plan'
 
 const RoutineSmallCard = (routine: WorkoutAPI) => {
 
@@ -57,7 +57,7 @@ const RoutineSmallCard = (routine: WorkoutAPI) => {
                     />
                     <HomePill
                         icon="flame-outline"
-                        text={`${DIFFICULTIES.find(diff => diff.value === routine.level)?.label || ''}`}
+                        text={`${DIFFICULTY[routine.level as unknown as keyof typeof DIFFICULTY]}`}
                     />
                 </View>
             </View>

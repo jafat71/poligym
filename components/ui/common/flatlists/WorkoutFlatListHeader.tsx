@@ -4,8 +4,6 @@ import Animated, { interpolate, useAnimatedStyle, useSharedValue, withSpring } f
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { CATEGORIES, CategorySearch, DIFFICULTIES, DifficultySearch } from "@/constants";
-
 import { useTheme } from "@/context/ThemeContext";
 
 import { MuscleGroups } from "@/types/types/muscles";
@@ -13,16 +11,16 @@ import { MuscleGroups } from "@/types/types/muscles";
 import CustomSearchBar from "../searchbar/CustomSearchBar";
 import FilterPill from "../pills/FilterPill";
 import IconButton from "../buttons/IconButton";
-import MusclePill from "../pills/MusclePill";
+import { CATEGORY, DIFFICULTY } from "@/types/interfaces/entities/plan";
 
 interface WorkoutFlatlistHeaderProps {
     searchInput: string;
     handleSearchChange: (text: string) => void;
     isSearching: boolean;
-    selectedDifficulty: DifficultySearch;
-    setSelectedDifficulty: (difficulty: DifficultySearch) => void;
-    selectedCategory: CategorySearch;
-    setSelectedCategory: (category: CategorySearch) => void;
+    selectedDifficulty: DIFFICULTY;
+    setSelectedDifficulty: (difficulty: DIFFICULTY) => void;
+    selectedCategory: CATEGORY;
+    setSelectedCategory: (category: CATEGORY) => void;
 }
 
 export const WorkoutFlatlistHeader = memo(({
@@ -78,11 +76,11 @@ export const WorkoutFlatlistHeader = memo(({
             />
 
             <View className="flex-row justify-between mb-2 ">
-                {DIFFICULTIES.map(({ value, label }) => (
+                {Object.values(DIFFICULTY).map((value) => (
                     <FilterPill
                         key={value}
                         value={value}
-                        label={label}
+                        label={value}
                         selected={selectedDifficulty}
                         setSelected={setSelectedDifficulty as any}
                         isSearching={isSearching}
@@ -104,11 +102,11 @@ export const WorkoutFlatlistHeader = memo(({
                 </Text>
 
                 <View className="flex-row justify-between mb-2">
-                    {CATEGORIES.map(({ value, label }) => (
+                    {Object.values(CATEGORY).map((value) => (
                         <FilterPill
                             key={value}
                             value={value}
-                            label={label}
+                            label={value}
                             selected={selectedCategory}
                             setSelected={setSelectedCategory as any}
                             isSearching={isSearching}

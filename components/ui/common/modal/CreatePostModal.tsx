@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
 import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/context/ThemeContext';
 import IconButton from '../buttons/IconButton';
 import { useUser } from '@/context/UserContext';
-import { DIFFICULTIES } from '@/constants';
 import { SocialPost } from '@/types/interfaces/entities/post';
 import ThemeHomePill from '../pills/ThemeHomePill';
 import CTAButtonPrimary from '../buttons/CtaButtonPrimary';
@@ -14,6 +13,7 @@ import { createPost } from '@/lib/api/actions';
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
 import { usePlayWorkoutContext } from '@/context/PlayWorkoutContext';
 import CustomSnackbar from '../snackbar/CustomSnackbar';
+import { DIFFICULTY } from '@/types/interfaces/entities/plan';
 
 interface Props {
     isVisible: boolean;
@@ -219,7 +219,7 @@ const CreatePostModal = ({
                                 />
                                 <ThemeHomePill
                                     icon="flame-outline"
-                                    text={`${DIFFICULTIES.find(diff => diff.value === post.dificultad)?.label || ''}`}
+                                    text={`${DIFFICULTY[post.dificultad as keyof typeof DIFFICULTY]}`}
                                 />
                             </View>
                         </View>

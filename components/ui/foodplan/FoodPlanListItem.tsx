@@ -5,7 +5,6 @@ import { router } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 
 import HomePill from '../common/pills/HomePill'
-import { FOOD_PLAN_CATEGORIES } from '@/constants';
 import { NutritionPlan } from '@/types/interfaces/entities/foodplan'
 
 const FoodPlanListItem = (plan: NutritionPlan) => {
@@ -53,7 +52,7 @@ const FoodPlanListItem = (plan: NutritionPlan) => {
                         />
                         <HomePill
                             icon="flame-outline"
-                            text={`${FOOD_PLAN_CATEGORIES.find(categ => categ.value === plan.category.toString())?.label}`}
+                            text={`${plan.category}`}
                         />
                     </View>
                     <Text

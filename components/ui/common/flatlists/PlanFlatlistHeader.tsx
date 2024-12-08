@@ -3,16 +3,15 @@ import { View, Text } from 'react-native';
 
 import FilterPill from '@/components/ui/common/pills/FilterPill';
 import CustomSearchBar from '@/components/ui/common/searchbar/CustomSearchBar';
-
-import { DIFFICULTIES, DifficultySearch } from '@/constants';
+import { DIFFICULTY } from '@/types/interfaces/entities/plan';
 
 interface PlanFlatlistHeaderProps {
     isDark: boolean;
     searchInput: string;
     handleSearchChange: (text: string) => void;
     isSearching: boolean;
-    selectedDifficulty: DifficultySearch;
-    setSelectedDifficulty: (difficulty: DifficultySearch) => void;
+    selectedDifficulty: DIFFICULTY;
+    setSelectedDifficulty: (difficulty: DIFFICULTY) => void;
 }
 
 export const PlanFlatlistHeader = memo(({
@@ -36,11 +35,11 @@ export const PlanFlatlistHeader = memo(({
         />
 
         <View className="flex-row justify-between mb-2">
-            {DIFFICULTIES.map(({ value, label }) => (
+            {Object.values(DIFFICULTY).map((value) => (
                 <FilterPill
                     key={value}
                     value={value}
-                    label={label}
+                    label={value}
                     selected={selectedDifficulty}
                     setSelected={setSelectedDifficulty as any}
                     isSearching={isSearching}

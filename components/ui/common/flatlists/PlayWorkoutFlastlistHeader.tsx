@@ -1,7 +1,6 @@
 import { Easing, Pressable, Text, View } from "react-native";
 import * as Progress from 'react-native-progress';
-import { WorkoutAPI } from "@/types/interfaces/entities/plan";
-import { DIFFICULTIES } from "@/constants";
+import { DIFFICULTY, WorkoutAPI } from "@/types/interfaces/entities/plan";
 import ButtonPill from "../buttons/ButtonPill";
 import { Ionicons } from "@expo/vector-icons";
 import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext";
@@ -59,7 +58,7 @@ export const PlayWorkoutFlatlistHeader = ({
                     />
                     <HomePill
                         icon="flame-outline"
-                        text={`${DIFFICULTIES.find(diff => diff.value === workout.level)?.label || ''}`}
+                        text={`${DIFFICULTY[workout.level as unknown as keyof typeof DIFFICULTY]}`}
                     />
                 </View>
 

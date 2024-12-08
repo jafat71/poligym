@@ -6,7 +6,6 @@ import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen
 import { fetchExerciseById } from '@/lib/api/actions';
 import { useUser } from '@/context/UserContext';
 import { useTheme } from '@/context/ThemeContext';
-import { CATEGORIES, DIFFICULTIES } from '@/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SquarePill from '@/components/ui/common/pills/SquarePill';
 import { ExerciseAPI } from '@/types/interfaces/entities/plan';
@@ -50,12 +49,12 @@ const ExerciseInfo = () => {
 
                 <View className='flex flex-row flex-wrap my-2'>
                     <SquarePill
-                        text={`${CATEGORIES.find(category => category.value === exercise?.category)?.label}`}
+                        text={`${exercise?.category}`}
                         icon='apps-outline'
                     />
 
                     <SquarePill
-                        text={`${DIFFICULTIES.find(level => level.value === exercise?.level)?.label}`}
+                        text={`${exercise?.level}`}
                         icon='flame-outline'
                     />
                 </View>

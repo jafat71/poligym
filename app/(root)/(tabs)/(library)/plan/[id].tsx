@@ -12,8 +12,6 @@ import { fetchTrainingPlanById, fetchWorkoutById } from '@/lib/api/actions';
 import { useUser } from '@/context/UserContext';
 import { useTheme } from '@/context/ThemeContext';
 
-import { DIFFICULTIES } from '@/constants';
-
 import { TrainingPlanAPI, WorkoutAPI } from '@/types/interfaces/entities/plan';
 
 import SquarePill from '@/components/ui/common/pills/SquarePill';
@@ -52,7 +50,7 @@ const PlanInfo = () => {
                 <View className='flex flex-row flex-wrap my-2'>
 
                     <SquarePill
-                        text={`${DIFFICULTIES.find(level => level.value === plan?.level)?.label}`}
+                        text={`${plan?.level}`}
                         icon='flame-outline'
                     />
 

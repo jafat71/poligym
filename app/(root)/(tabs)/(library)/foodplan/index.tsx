@@ -6,7 +6,6 @@ import { fetchFoodPlansPaged, fetchTrainingPlansPaged } from '@/lib/api/actions'
 import { useTheme } from '@/context/ThemeContext';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import { DifficultySearch, FoodCategorySearch } from '@/constants';
 
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
 
@@ -15,7 +14,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import CustomListEmptyComponent from '@/components/ui/common/flatlists/CustomListEmptyComponent';
 import { useUser } from '@/context/UserContext';
 import { FoodPlanFlatlistHeader } from '@/components/ui/common/flatlists/FoodPlanFaltlistHeader';
-import { NutritionPlan } from '@/types/interfaces/entities/foodplan';
+import { FOODPLAN_CATEGORY, NutritionPlan } from '@/types/interfaces/entities/foodplan';
 import FoodPlanListItem from '@/components/ui/foodplan/FoodPlanListItem';
 
 export default function FoodPlan() {
@@ -23,7 +22,7 @@ export default function FoodPlan() {
     const [searchInput, setSearchInput] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
-    const [selectedCategory, setSelectedCategory] = useState<FoodCategorySearch>('ALL');
+    const [selectedCategory, setSelectedCategory] = useState<FOODPLAN_CATEGORY>(FOODPLAN_CATEGORY.ALL);
 
     const [isSearching, setIsSearching] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
@@ -71,7 +70,7 @@ export default function FoodPlan() {
         if (!data) return [];
         return data.pages.flatMap(page => page.plans).filter((plan: NutritionPlan) => {
             const matchesSearch = plan.name.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesCategory = selectedCategory === 'ALL' || plan.category.toString() === selectedCategory;
+            const matchesCategory = selectedCategory === FOODPLAN_CATEGORY.ALL || plan.category === selectedCategory;
             return matchesSearch && matchesCategory;
         });
     }, [data, searchQuery, selectedCategory]);

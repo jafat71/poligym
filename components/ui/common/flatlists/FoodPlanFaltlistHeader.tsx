@@ -3,16 +3,15 @@ import { View, Text } from 'react-native';
 
 import FilterPill from '@/components/ui/common/pills/FilterPill';
 import CustomSearchBar from '@/components/ui/common/searchbar/CustomSearchBar';
-
-import { FOOD_PLAN_CATEGORIES, FoodCategorySearch } from '@/constants';
+import { FOODPLAN_CATEGORY } from '@/types/interfaces/entities/foodplan';
 
 interface FoodPlanFlatlistHeaderProps {
     isDark: boolean;
     searchInput: string;
     handleSearchChange: (text: string) => void;
     isSearching: boolean;
-    selectedCategory: FoodCategorySearch;
-    setSelectedCategory: (category: FoodCategorySearch) => void;
+    selectedCategory: FOODPLAN_CATEGORY;
+    setSelectedCategory: (category: FOODPLAN_CATEGORY) => void;
 }
 
 export const FoodPlanFlatlistHeader = memo(({
@@ -36,11 +35,11 @@ export const FoodPlanFlatlistHeader = memo(({
         />
 
         <View className="flex-row justify-between mb-2">
-            {FOOD_PLAN_CATEGORIES.map(({ value, label }) => (
+            {Object.values(FOODPLAN_CATEGORY).map((category) => (
                 <FilterPill
-                    key={value}
-                    value={value}
-                    label={label}
+                    key={category}
+                    value={category}
+                    label={category}
                     selected={selectedCategory}
                     setSelected={setSelectedCategory as any}
                     isSearching={isSearching}
