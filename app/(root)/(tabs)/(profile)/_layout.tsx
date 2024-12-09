@@ -49,7 +49,7 @@ export default function TabLayout() {
                         {loggedUserInfo?.avatarUrl ? (
                             <Image source={{ uri: loggedUserInfo.avatarUrl }}
                                 className='w-full h-full rounded-full'
-                                resizeMode='contain' />
+                                resizeMode='cover' />
                         ) : (
                             <Text className="text-4xl font-raleway text-eBlue-100">
                                 {loggedUserInfo?.name?.split(' ').map(name => name[0]).join('')}

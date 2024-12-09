@@ -83,7 +83,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 }
             }else{
                 console.log(loggedUserInfo?.name)
-                //Rescata el nombre para el fomrulario inciial tras el signup
+                //Rescata el nombre para el formulario inciial tras el signup
                 updateInitUserShell({
                     name: loggedUserInfo?.name || "",
                 })

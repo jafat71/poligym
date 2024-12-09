@@ -1,38 +1,34 @@
+import axios from 'axios';
+
 interface UploadImageProps {
-  file: File;
+  base64Img: string;
   uploadPreset: string;
 }
 
-export const uploadImage = async ({ file, uploadPreset }: UploadImageProps) => {
-  if (!file) {
+export const uploadImage = async ({ base64Img, uploadPreset }: UploadImageProps) => {
+  if (!base64Img) {
     throw new Error("No se proporcionó un archivo para subir.");
   }
 
-  const formData = new FormData();
-  formData.append("file", file); // Archivo de imagen
-  formData.append("upload_preset", uploadPreset); // Preset configurado en Cloudinary
+  let data = {
+  "file": base64Img,
+  "upload_preset": uploadPreset
+  }
 
-  console.log('formData', formData)
-  console.log('uploadPreset', uploadPreset)
-  console.log('process.env.EXPO_PUBLIC_CLOUDINARY_URL', process.env.EXPO_PUBLIC_CLOUDINARY_URL)
+  const url = `${process.env.EXPO_PUBLIC_CLOUDINARY_URL}`
   try {
-    // Realiza la solicitud de subida
-    const response = await fetch(
-      `${process.env.EXPO_PUBLIC_CLOUDINARY_URL}`,
+    const response = await axios.post(
+      url,
+      JSON.stringify(data),
       {
-        method: "POST",
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
       }
     );
-
-    if (!response.ok) {
-      throw new Error("Error al subir la imagen a Cloudinary.");
-    }
-
-    const data = await response.json();
-    return data.secure_url; // Devuelve la URL segura de la imagen subida
+    return response.data.secure_url
   } catch (error) {
-    console.error("Error en la subida:", error);
-    throw error;
-  }
+    console.log('error', error)
+    throw error
+  }   
 };

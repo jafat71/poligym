@@ -28,10 +28,9 @@ const Form06 = () => {
     }, []);
 
     const { tmpUser, updateInitUserShell } = useNavigationFlowContext()
-    const [profileImage, setprofileImage] = useState(tmpUser?.avatarUrl || '');
-    const [profileImageFile, setprofileImageFile] = useState<File | null>(null);
-
+    
     const { accessToken, loggedUserInfo, updateUserInfo} = useUser()
+    const [profileImage, setprofileImage] = useState(loggedUserInfo?.avatarUrl || '');
 
     const updateUserMutation = useMutation({
         mutationFn: async () => {
@@ -72,19 +71,9 @@ const Form06 = () => {
 
   
     const handleContinue = async () => {
-        let avatarUrl = ''; 
-    
-        if (profileImageFile) {
-            try {
-                avatarUrl = await uploadImage({ file: profileImageFile, uploadPreset: 'profile_image' });
-            } catch (error) {
-                console.error("Error uploading image:", error);
-            }
-        }
-    
         updateInitUserShell({
             ...tmpUser,
-            avatarUrl,
+            avatarUrl: profileImage,
         });
     
         // Ejecutar la mutación
@@ -104,8 +93,7 @@ const Form06 = () => {
             </Text>
             <ImagePicker
                 imgUrl={profileImage}
-                setImgURL={setprofileImage}
-                setImgFile={setprofileImageFile}
+                setImg={setprofileImage}
             />
             <View className='w-full'>
                 <CTAButtonPrimary

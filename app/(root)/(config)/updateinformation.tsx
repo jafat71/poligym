@@ -24,16 +24,15 @@ const EditProfile = () => {
 
     const [isLoading, setIsLoading] = useState(true);
 
-
     const opacity = useSharedValue(0);
     const animatedStyle = useAnimatedStyle(() => ({
         opacity: opacity.value,
     }));
     useEffect(() => {
-        opacity.value = withTiming(1, { duration: 2500 }); 
+        opacity.value = withTiming(1, { duration: 2500 });
     }, []);
 
-    //Retraso para cargae adecuadamente cata del contexto
+    //Retraso para cargar adecuadamente data del contexto
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false)
@@ -63,7 +62,6 @@ const EditProfile = () => {
     const userTypeValue = USER_TYPE[updateUserState.userType as unknown as keyof typeof USER_TYPE] || USER_TYPE.STUDENT
     const [selectedUserType, setSelectedUserType] = useState<USER_TYPE>(userTypeValue);
     const [profileImage, setprofileImage] = useState(updateUserState?.avatarUrl || '');
-    const [profileImageFile, setprofileImageFile] = useState<File | null>(null);
 
     const updateUserMutation = useMutation({
         mutationFn: async () => {
@@ -118,8 +116,6 @@ const EditProfile = () => {
         setUpdateUserState((prevUser) => prevUser ? { ...prevUser, ...updatedFields } : {} as User);
     };
 
-    console.log("LOGGED USER INFO", loggedUserInfo)
-
     const handleUpdateUser = () => {
         let isValidWeight = validateFloatInput(tmbWeight)
         let isValidHeight = validateFloatInput(tmbHeight)
@@ -144,12 +140,12 @@ const EditProfile = () => {
             setUpdateUserSuccess(true)
         }
     }, [updateUserMutation.isSuccess])
-    if (isLoading) return <WorkoutLoadingScreen/>
+    if (isLoading) return <WorkoutLoadingScreen />
 
     return (
         <Animated.View
-        style={animatedStyle}
-        className="flex-1 ">
+            style={animatedStyle}
+            className="flex-1 ">
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
@@ -166,8 +162,7 @@ const EditProfile = () => {
                         <View className='w-full items-center mt-2'>
                             <ImagePicker
                                 imgUrl={profileImage}
-                                setImgURL={setprofileImage}
-                                setImgFile={setprofileImageFile}    
+                                setImg={setprofileImage}
                             />
                         </View>
                         <IconTextInputForm

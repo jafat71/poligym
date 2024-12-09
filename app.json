@@ -17,11 +17,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#0055f9"
       },
       "package": "com.poligym.app",
-      "permissions": ["android.permission.VIBRATE", "android.permission.VIBRATE_ALWAYS", "android.permission.CAMERA","android.permission.READ_EXTERNAL_STORAGE","android.permission.WRITE_EXTERNAL_STORAGE"]
+      "permissions": [
+        "android.permission.VIBRATE", 
+        "android.permission.VIBRATE_ALWAYS", 
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.INTERNET"
+      ]
     },
     "web": {
       "bundler": "metro",

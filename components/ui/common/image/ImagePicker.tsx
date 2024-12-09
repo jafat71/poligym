@@ -1,33 +1,40 @@
 import { useTheme } from '@/context/ThemeContext'
 import { useImagePicker } from '@/hooks/useImagePicker'
+import { uploadImage } from '@/lib/utils/uploadImage'
 import { Ionicons } from '@expo/vector-icons'
 import React, { useEffect } from 'react'
 import { Image, TouchableOpacity, View } from 'react-native'
 
 interface Props {
     imgUrl: string;
-    setImgURL: React.Dispatch<React.SetStateAction<string>>
-    setImgFile: React.Dispatch<React.SetStateAction<File | null>>
+    setImg: React.Dispatch<React.SetStateAction<string>>
 }
 
-const ImagePicker = ({imgUrl,setImgURL,setImgFile}:Props) => {
-    const { imagePreview, pickImage, file} = useImagePicker()
+const ImagePicker = ({imgUrl,setImg}:Props) => {
+    const { image, pickImage, setImage} = useImagePicker()
     const {isDark} = useTheme()
 
     useEffect(() => {
-        setImgURL(imagePreview!)
-        setImgFile(file!)
-    }, [file]);
+        if(imgUrl){
+            setImage(imgUrl)
+        }
+    }, []);
+
+    useEffect(() => {
+        if (image) {
+            setImg(image)
+        }
+    }, [image]);
 
     return (
         <TouchableOpacity
             onPress={pickImage}
             className='m-2'
         >
-            {imagePreview || imgUrl
+            {image || imgUrl
                 ? (
                     <View className={`w-32 h-32 rounded-full  flex items-center justify-center p-1 ${isDark ? "bg-white" : "bg-darkGray-500"}  `}>
-                        <Image source={{ uri: imagePreview || imgUrl }} style={{ width: 120, height: 120, borderRadius: 60 }} resizeMode='cover' />
+                        <Image source={{ uri: image || imgUrl }} style={{ width: 120, height: 120, borderRadius: 60 }} resizeMode='cover' />
                     </View>
                 )
                 : (
