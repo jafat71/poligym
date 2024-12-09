@@ -34,7 +34,7 @@ const OnBoardingSwiper = () => {
             <View className="flex-1">
                 <Swiper
                     dotColor={`${isDark ? "#1c1c1c" : "#fff"}`}
-                    activeDotColor="#0059ff"
+                    activeDotColor="#FF5722"
                     autoplay
                     autoplayTimeout={3}
                     loop={false}
@@ -61,9 +61,9 @@ const OnBoardingSwiper = () => {
                             />
                             <LinearGradient
                                 colors={[
-                                    'rgba(0,85,249,0.7)',
-                                    'rgba(41,111,255,0.4)',
-                                    'rgba(102,155,255,0.2)'
+                                    'rgba(255,87,34,0.7)',
+                                    'rgba(255,87,34,0.4)',
+                                    'rgba(255,87,34,0.2)'
                                 ]}
                                 className="absolute top-0 left-0 right-0 bottom-0"
                             />

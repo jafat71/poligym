@@ -26,7 +26,7 @@ const MusclePill = memo(({
             onPress={onToggle}
             className={`px-3 py-2 rounded-sm mr-1 mb-1 border-2
                 ${isSelected
-                    ? "border-eBlue-500 "
+                    ? "border-eOrange-500 bg-eOrange-500/20"
                     : isDark 
                         ? "border-darkGray-400 bg-transparent" 
                         : "border-darkGray-200 bg-transparent"
@@ -39,7 +39,7 @@ const MusclePill = memo(({
             <Text 
                 className={`
                     ${isSelected
-                        ? "text-eBlue-500"
+                        ? "text-eOrange-500"
                         : isDark 
                             ? "text-white" 
                             : "text-darkGray-500"

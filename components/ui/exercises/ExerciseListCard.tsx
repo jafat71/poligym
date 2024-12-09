@@ -21,13 +21,13 @@ const ExerciseListCard = memo((exercise: ExerciseAPI) => {
             overflow-hidden rounded-lg`}>
             <LinearGradient
                 colors={[
-                    'rgba(0,85,249,0.95)',
-                    'rgba(0,85,249,0.8)',
-                    'rgba(0,85,249,0.95)'
+                    'rgba(255,87,34,0.8)', //orange
+                    'rgba(255,87,34,0.95)', //orange
+                    'rgba(255,87,34,1)', //orange
                 ]}
                 className="absolute w-full h-full"
             />
-            <View className="absolute w-2 h-full bg-eOrange-500" />
+            <View className="absolute w-2 h-full bg-eBlue-500" />
             <View className='p-4 flex flex-col justify-between'>
                 <View className='flex flex-col'>
                     <Text numberOfLines={1} className='text-white font-ralewayBold text-4xl '>{exercise.name}</Text>

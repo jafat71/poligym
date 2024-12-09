@@ -52,14 +52,14 @@ const Form01 = () => {
                 Tu nombre es:
             </Text>
             <TextInput
-                className="text-2xl bg-eBlue-600 font-ralewayExtraBold text-darkGray-100 my-4 w-full text-center rounded-md p-2"
+                className="text-2xl bg-blueEPN-900 font-ralewayExtraBold text-darkGray-100 my-4 w-full text-center rounded-md p-2"
                 value={userName}
                 onChangeText={setUserName}
                 placeholder="Tu nombre"
                 placeholderTextColor="#c3c3c3"
             />
 
-            <Ionicons name="balloon" size={24} color="white" />
+            <Ionicons name="balloon" size={24} color="#ff5722" />
             <Text className="text-white text-xl font-ralewaySemiBold mb-4">
                 y tienes:
             </Text>

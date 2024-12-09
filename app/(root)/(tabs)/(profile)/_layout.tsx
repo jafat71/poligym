@@ -39,8 +39,7 @@ export default function TabLayout() {
     }, [fadeAnim]);
 
     return (
-        <View className={`flex-1 bg-eBlue-500`}>
-
+        <View className={`flex-1 bg-blueEPN-500`}>
 
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
 
@@ -87,7 +86,7 @@ export default function TabLayout() {
                     <MaterialTopTabs.Screen name="public" options={{
                         title: "Público",
                         tabBarStyle: {
-                            backgroundColor: "#0055f9",
+                            backgroundColor: "#0f172a",
                         },
                         tabBarActiveTintColor: '#fff',
                         tabBarLabelStyle: {
@@ -102,7 +101,7 @@ export default function TabLayout() {
                     <MaterialTopTabs.Screen name="private" options={{
                         title: "Privado",
                         tabBarStyle: {
-                            backgroundColor: "#0055f9",
+                            backgroundColor: "#0f172a",
                         },
                         tabBarActiveTintColor: '#fff',
                         tabBarLabelStyle: {

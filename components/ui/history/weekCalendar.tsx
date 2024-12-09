@@ -58,10 +58,9 @@ const WeekCalendar = () => {
             {weekDays.map((date, index) => (
                 <View
                     key={index}
-                    className={`rounded-full px-4 py-2   bg-eBlue-400
+                    className={`rounded-full px-4 py-2   bg-eOrange-500/40
                         flex flex-col items-center justify-center
-                        
-                    ${date.isToday ? "bg-eBlue-800" : ""}
+                    ${date.isToday ? "bg-eOrange-500  border-2 border-eOrange-500" : ""}
                     `}
                 >
                     <Text

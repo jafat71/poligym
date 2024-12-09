@@ -19,7 +19,7 @@ const MultiFilterPill = ({ value, selected, setSelected, isSearching }: Props) =
         onPress={() => isSelected ? setSelected(selected.filter(item => item.name !== value.name)) : setSelected([...selected, value])}
         className={`px-2 py-2 rounded-sm border-2
             ${isSelected
-                ? "border-eBlue-500"
+                ? "border-eOrange-500 bg-eOrange-500/20"
                 : isDark ? "border-darkGray-400" : "border-darkGray-200"
         }`}
         style={{
@@ -28,7 +28,7 @@ const MultiFilterPill = ({ value, selected, setSelected, isSearching }: Props) =
     >
         <Text className={`${
             isSelected
-                ? "text-eBlue-500"
+                ? "text-eOrange-500"
                 : isDark ? "text-white" : "text-darkGray-500"
         } font-ralewaySemiBold text-xs`}>
             {value.name}

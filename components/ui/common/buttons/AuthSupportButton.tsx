@@ -14,7 +14,7 @@ const AuthSupportButton = ({ title, onPress }: Props) => {
                 className='mt-1'
                 onPress={onPress}
             >
-                <Text className={`text-sm  font-ralewayBold text-eBlue-500 `}>{title}</Text>
+                <Text className={`text-sm  font-ralewayBold text-eOrange-500 `}>{title}</Text>
             </TouchableOpacity>
         </View>
     );

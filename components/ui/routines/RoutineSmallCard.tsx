@@ -26,13 +26,12 @@ const RoutineSmallCard = (routine: WorkoutAPI) => {
             overflow-hidden rounded-lg`}>
             <LinearGradient
                 colors={[
-                    'rgba(0,85,249,0.95)',
-                    'rgba(0,85,249,0.8)',
-                    'rgba(0,85,249,0.95)'
+                    'rgba(255,87,34,0.8)', //orange
+                    'rgba(255,87,34,0.95)', //orange
+                    'rgba(255,87,34,1)', //orange
                 ]}
                 className="absolute w-full h-full"
             />
-            <View className="absolute w-2 h-full bg-ePurple-500" />
 
             <View className='p-4 flex flex-row justify-between'>
                 <View className='flex flex-col w-4/5'>
@@ -57,7 +56,7 @@ const RoutineSmallCard = (routine: WorkoutAPI) => {
                     />
                     <HomePill
                         icon="flame-outline"
-                        text={`${DIFFICULTY[routine.level as unknown as keyof typeof DIFFICULTY]}`}
+                        text={`${routine.level}`}
                     />
                 </View>
             </View>

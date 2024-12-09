@@ -19,7 +19,7 @@ export default function RootLayout() {
   }, []);
 
   return (
-      <SafeAreaView className={`flex flex-col items-center justify-between w-full h-full bg-eBlue-500`}>
+      <SafeAreaView className={`flex flex-col items-center justify-between w-full h-full bg-blueEPN-500`}>
         <StatusBar style="light" />
         <FormHeaderComponent />
         <Animated.View 

@@ -19,7 +19,7 @@ const ButtonPill = ({
         <TouchableOpacity
             onPress={onPress}
             className={`px-3 py-2 rounded-sm mr-1 mb-1 flex flex-row items-center justify-center   
-                 bg-white/20 border-2 border-lightGreen
+                 bg-eOrange-500/20 border-2 border-eOrange-500
             `}
         >
             <Ionicons

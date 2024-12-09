@@ -57,14 +57,14 @@ const Update = () => {
   return (
     <View>
 
-      <Text className={`text-4xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Actualizar Contraseña</Text>
-      <Text className={`text-sm font-raleway text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>Confirma tu identidad con tu contraseña actual</Text>
+      <Text className={`text-4xl font-ralewayBold text-start text-white`}>Actualizar Contraseña</Text>
+      <Text className={`text-sm font-raleway text-start text-white`}>Confirma tu identidad con tu contraseña actual</Text>
 
       <View className={`pt-1`}>
 
         <IconTextInputForm
           title='Contraseña Actual'
-          icon={<Ionicons name="shield-half" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+          icon={<Ionicons name="shield-half" size={35} color={`#ff5722`} />}
           inputKeyboardType='ascii-capable'
           inputPlaceholder='*********'
           inputValue={oldPassword}
@@ -75,7 +75,7 @@ const Update = () => {
 
         <IconTextInputForm
           title='Nueva Contraseña'
-          icon={<Ionicons name="shield-checkmark-sharp" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+          icon={<Ionicons name="shield-checkmark-sharp" size={35} color={`#ff5722`} />}
           inputKeyboardType='ascii-capable'
           inputPlaceholder='*********'
           inputValue={password}
@@ -85,7 +85,7 @@ const Update = () => {
 
         <IconTextInputForm
           title='Confirmar Nueva Contraseña'
-          icon={<Ionicons name="shield-checkmark-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+          icon={<Ionicons name="shield-checkmark-outline" size={35} color={`#ff5722`} />}
           inputKeyboardType='ascii-capable'
           inputPlaceholder='*********'
           inputValue={confirmPassword}

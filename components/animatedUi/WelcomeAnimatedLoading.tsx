@@ -72,10 +72,10 @@ const WelcomeAnimatedLoading = () => {
     }));
     
     return (
-        <View className="flex flex-col items-center justify-center flex-1 bg-eBlue-500 p-4">
+        <View className="flex flex-col items-center justify-center flex-1 bg-blueEPN-500 p-4">
             <View className="relative">
                 <Animated.View 
-                    className="absolute rounded-full bg-white/30"
+                    className="absolute rounded-full bg-eOrange-500/30"
                     style={[
                         {
                             width: 120,
@@ -90,8 +90,8 @@ const WelcomeAnimatedLoading = () => {
                     <MainLogoGradientComponent
                         height='100'
                         width='100'
-                        principal='#fff'
-                        secondary='#1c1c1c'
+                        principal='#ff5722'
+                        secondary='#ff5722'
                     />
                 </Animated.View>
             </View>

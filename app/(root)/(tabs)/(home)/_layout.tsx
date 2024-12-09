@@ -27,7 +27,7 @@ const _layout = () => {
                         <MainLogoCustomComponent
                             height="30"
                             width="30"
-                            principal={`${isDark ? "#fff" : "#1c1c1c"}`}
+                            principal="#fff"
                         />
                     ),
                     headerRight: () => (
@@ -39,18 +39,18 @@ const _layout = () => {
                             <Ionicons
                                 name="settings-outline"
                                 size={24}
-                                color={isDark ? "#fff" : "#1c1c1c"}
+                                color="#fff"
                             />
                         </Pressable>
                     ),
                     headerStyle: {
-                        backgroundColor: isDark ? "#1c1c1c" : "#fff",
+                        backgroundColor: isDark ? '#050b12' : '#0f172a',
                     },
-                    headerTintColor: isDark ? "#fff" : "#1c1c1c",
+                    headerTintColor: '#fff',
                     headerTitleAlign: "center",
                     statusBarTranslucent: true,
                     statusBarColor: 'transparent',
-                    statusBarStyle: isDark ? 'light' : 'dark'
+                    statusBarStyle: 'light'
                 }}
             />
 
@@ -62,15 +62,15 @@ const _layout = () => {
                     <MainLogoCustomComponent
                                 height="30"
                                 width="30"
-                                principal={`${isDark ? "#fff" : "#1c1c1c"}`}
+                                principal="#fff"
                             />
                             </>,
                     headerStyle: {
-                        backgroundColor: isDark ? "#1c1c1c" : "#fff",
+                        backgroundColor: isDark ? "#050b12" : "#0f172a",
                     },
-                    headerTintColor: isDark ? "#fff" : "#1c1c1c",
+                    headerTintColor: "#fff" ,
                     headerTitleAlign: "center",
-                    statusBarStyle: isDark ? 'light' : 'dark',
+                    statusBarStyle: 'light',
                     animation: "fade",
                     statusBarTranslucent: true,
                     statusBarColor: 'transparent',

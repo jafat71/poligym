@@ -48,7 +48,7 @@ export default function RootLayout() {
           <NavigationFlowProvider>
           <UserProvider>
               <WorkoutPlayProvider>
-                <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0055f9' }}>
+                <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0F172A' }}>
                   <Stack
                     screenOptions={{
                       statusBarTranslucent: true

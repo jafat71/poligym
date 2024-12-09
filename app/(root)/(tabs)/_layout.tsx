@@ -11,10 +11,10 @@ export default function TabsLayout() {
 
   const { isDark } = useTheme()
 
-  const tabBarBackgroundColor = isDark ? "#1c1c1c" : "#fff";
-  const tabBarIconColor = isDark ? "#fff" : "#1c1c1c";
-  const tabBarActiveIconColor = isDark ? "#1c1c1c" : "#fff";
-  const tabBarActiveColor = "#0055f4";
+  const tabBarBackgroundColor = isDark ? "#050b12" : "#0f172a";
+  const tabBarIconColor = "#fff";
+  const tabBarActiveIconColor = isDark ? "#050b12" : "#0f172a";
+  const tabBarActiveColor = "#ff5722";
 
   return (
       <Tabs
@@ -22,7 +22,7 @@ export default function TabsLayout() {
           tabBarStyle: {
             backgroundColor: tabBarBackgroundColor,
             height: 60,
-            borderColor: isDark ? '#1c1c1c' : '#fff',
+            borderColor: isDark ? '#050b12' : '#0f172a',
           },
           tabBarLabelStyle: {
             fontSize: 16,
@@ -48,7 +48,7 @@ export default function TabsLayout() {
           headerTitle: () => (<></>),
           headerLeft: () => (
             <View className='ml-4'>
-              <Text className={`text-xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Biblioteca</Text>
+              <Text className={`text-xl font-ralewayBold text-start text-white`}>Biblioteca</Text>
             </View>
           ),
           headerRight: () => (<>
@@ -59,7 +59,7 @@ export default function TabsLayout() {
                 }}
                 className='ml-4'
               >
-                <Ionicons name="calendar-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+                <Ionicons name="calendar-outline" size={24} color={"#fff"} />
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -67,7 +67,7 @@ export default function TabsLayout() {
                 }}
                 className='ml-4'
               >
-                <Ionicons name="body-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+                <Ionicons name="body-outline" size={24} color={"#fff"} />
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -75,7 +75,7 @@ export default function TabsLayout() {
                 }}
                 className='ml-4'
               >
-                <Ionicons name="barbell-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+                <Ionicons name="barbell-outline" size={24} color={"#fff"} />
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -83,7 +83,7 @@ export default function TabsLayout() {
                 }}
                 className='ml-4'
               >
-                <Ionicons name="nutrition-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+                <Ionicons name="nutrition-outline" size={24} color={"#fff"} />
               </Pressable>
               <Pressable
                 onPress={() => {
@@ -91,12 +91,12 @@ export default function TabsLayout() {
                 }}
                 className='ml-4'
               >
-                <Ionicons name="library-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
+                <Ionicons name="library-outline" size={24} color={"#fff"} />
               </Pressable>
             </View>
           </>),
           headerStyle: {
-            backgroundColor: isDark ? '#1c1c1c' : '#fff',
+            backgroundColor: isDark ? '#050b12' : '#0f172a',
           },
           headerTintColor: isDark ? "#fff" : "#1c1c1c",
           headerTitleAlign: 'center',
@@ -219,7 +219,7 @@ export default function TabsLayout() {
             </Pressable>
           ),
           headerStyle: {
-            backgroundColor: '#0055f9',
+            backgroundColor: '#0f172a',
           },
           headerTintColor: "#fff",
           headerTitleAlign: 'center',

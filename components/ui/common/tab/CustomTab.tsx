@@ -20,9 +20,9 @@ const CustomTab = ({ text, icon, onPress}: CustomTabProps) => {
             className={`flex-1 overflow-hidden items-center justify-center rounded-lg p-1 scale-105`}>
             <LinearGradient
                 colors={[
-                    'rgba(0,85,249,0.95)',
-                    'rgba(0,85,249,0.8)',
-                    'rgba(0,85,249,0.95)'
+                    'rgba(15,23,42,1)',
+                    'rgba(15,23,42,0.95)',
+                    'rgba(15,23,42,1)'
                 ]}
                 className="absolute w-full h-full"
             />

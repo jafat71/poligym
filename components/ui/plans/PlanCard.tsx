@@ -32,9 +32,9 @@ const PlanCard = (plan: TrainingPlan) => {
                 />
                 <LinearGradient
                     colors={[
-                        'rgba(0,85,249,0.95)',
-                        'rgba(0,85,249,0.8)',
-                        'rgba(0,85,249,0.95)'
+                        'rgba(255,87,34,0.95)',
+                        'rgba(255,87,34,0.8)',
+                        'rgba(255,87,34,0.95)'
                     ]}
                     className="absolute w-full h-full"
                 />

@@ -28,13 +28,13 @@ const PlanListItem = (plan: TrainingPlanAPI) => {
                 />
                 <LinearGradient
                     colors={[
-                        'rgba(0,85,249,0.95)',
-                        'rgba(0,85,249,0.8)',
-                        'rgba(0,85,249,0.95)'
+                        'rgba(255,87,34,0.8)',
+                        'rgba(255,87,34,0.95)',
+                        'rgba(255,87,34,1)',
                     ]}
                     className="absolute w-full h-full"
                 />
-                <View className="absolute w-2 h-full bg-lightGreen  "/>
+                <View className="absolute w-2 h-full bg-blueEPN-400  "/>
                 <View className='p-4 flex flex-row justify-between'>
                     <View className='flex flex-col w-4/5'>
                         <Text className='text-white font-ralewayBold text-sm'>{planFirstWord}</Text>

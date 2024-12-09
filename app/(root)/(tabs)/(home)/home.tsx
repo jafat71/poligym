@@ -27,7 +27,7 @@ const Home = () => {
   return (
     <ScrollView
       ref={scrollViewRef}
-      className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
+      className={`flex-1 ${isDark ? "bg-blueEPN-900" : "bg-blueEPN-100"}`}
       showsVerticalScrollIndicator={false}
     >
       <MainHomeResume scrollDown={scrollDown} />

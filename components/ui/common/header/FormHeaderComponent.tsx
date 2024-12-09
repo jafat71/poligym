@@ -31,7 +31,7 @@ const FormHeaderComponent = () => {
                     <Ionicons name="help-circle-outline" size={24} color="#fff" />
                 </TouchableOpacity>
                 <View className='w-full items-center'>
-                    <MainLogoCustomComponent width='40' height='40' principal={`#fff`} />
+                    <MainLogoCustomComponent width='40' height='40' principal={`#ff5722`} />
                 </View>
                 <View className='absolute w-full items-end my-4 px-4'>
                     <SkipButton />
@@ -46,7 +46,7 @@ const FormHeaderComponent = () => {
                         className='mt-2 '
                         onPress={toggleTermsModal}
                     >
-                        <Text className={`text-eBlue-500 font-ralewaySemiBold`}>Más información sobre el uso de mis datos</Text>
+                        <Text className={`text-eOrange-500 font-ralewaySemiBold`}>Más información sobre el uso de mis datos</Text>
                     </Pressable>
                 }
                 modalVisible={infoVisible}

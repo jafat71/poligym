@@ -12,7 +12,7 @@ const Welcome = () => {
 
     const { isDark } = useTheme()
     return (
-        <View className={`flex flex-1 flex-col justify-center ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
+        <View className={`flex flex-1 flex-col justify-center bg-blueEPN-500`}>
 
             <OnBoardingSwiper />
             <View className='flex flex-col items-center justify-center'>

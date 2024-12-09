@@ -55,7 +55,7 @@ const Form02 = () => {
             <View className={`flex flex-row w-full`}>
                 
                 <View className={`w-1/2 flex flex-col items-center justify-center`}>
-                    <Ionicons name="scale" size={24} color="white" />
+                    <Ionicons name="scale" size={24} color="#ff5722" />
                     <Text className="text-white text-xl font-ralewaySemiBold mb-4">
                         Tu peso es:
                     </Text>
@@ -71,7 +71,7 @@ const Form02 = () => {
                 </View>
 
                 <View className={`w-1/2 flex flex-col items-center justify-center`}>
-                    <Ionicons name="body" size={24} color="white" />
+                    <Ionicons name="body" size={24} color="#ff5722" />
                     <Text className="text-white text-xl font-ralewaySemiBold mb-4">
                         Tu altura es:
                     </Text>

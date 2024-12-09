@@ -63,7 +63,7 @@ export const WorkoutFlatlistHeader = memo(({
     });
 
     return (
-        <View className={`p-4 ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
+        <View className={`p-4 ${isDark ? "bg-blueEPN-900" : "bg-blueEPN-500"}`}>
             <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-4xl font-ralewayBold mb-4`}>
                 RUTINAS
             </Text>

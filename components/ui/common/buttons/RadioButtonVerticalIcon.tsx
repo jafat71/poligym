@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 const RadioButton = ({ label, value, selected, onSelect, btnStyle, textStyle, icon }: any) => {
-    const selectionColor = `bg-eBlue-800`
+    const selectionColor = `bg-eOrange-500`
     return (
         <TouchableOpacity
             className={`

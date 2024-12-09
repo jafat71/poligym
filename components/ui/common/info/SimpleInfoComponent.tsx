@@ -57,7 +57,7 @@ export const SimpleInfoComponent = ({ text, pressable, modalVisible, toggleModal
                 }}
                 className={`
                     flex flex-col justify-between 
-                    ${isDark ? 'bg-darkGray-900' : 'bg-white'} 
+                    ${isDark ? 'bg-blueEPN-900' : 'bg-white'} 
                     rounded-lg p-4 shadow-lg
                     mx-4
                 `}

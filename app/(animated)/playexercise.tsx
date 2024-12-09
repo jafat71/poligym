@@ -29,9 +29,9 @@ const PlayExercise = () => {
             <StatusBar barStyle="light-content" />
             <LinearGradient
                 colors={[
-                    'rgba(0,85,249,0.95)',
-                    'rgba(0,85,249,85)',
-                    'rgba(119,249,140,1)',
+                    'rgba(15,23,42,1)',
+                    'rgba(15,23,42,1)',
+                    'rgba(255,87,34,1)', //orange
                 ]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
@@ -50,8 +50,8 @@ const PlayExercise = () => {
             </View>
 
 
-            <View className={`flex-1 flex flex-col justify-between px-4 py-2 rounded-t-2xl backdrop-blur-2xl bg-white/10
-                border-[1px] border-white `}>
+            <View className={`flex-1 flex flex-col justify-between px-4 py-2 rounded-t-2xl backdrop-blur-2xl bg-eOrange-500/10
+                border-[1px] border-eOrange-500 `}>
                 <View className="flex flex-row items-center justify-center w-full">
                     <Text numberOfLines={1} className={`text-white text-4xl w-full text-center font-ralewayExtraBold mb-4`}>
                         {
@@ -66,21 +66,21 @@ const PlayExercise = () => {
                 <View className="w-full mb-4">
                     <View className={`flex flex-row items-center justify-between`}>
 
-                    <View className="flex flex-col items-center justify-center w-1/3 border-[1px] border-white rounded-xl p-2">
+                    <View className="flex flex-col items-center justify-center w-1/3 border-[1px] border-white rounded-xl p-2 backdrop-blur-lg bg-eOrange-500/50">
                             <Ionicons name="repeat-sharp" size={30} color={'#fff'} />
                             <Text className={`text-3xl text-white`}>
                                 {currentSet}/{currentExercise?.sets}
                             </Text>
                         </View>
 
-                        <View className="flex flex-col items-center justify-center w-1/3 border-[1px] border-white rounded-xl p-2">
+                        <View className="flex flex-col items-center justify-center w-1/3 border-[1px] border-white rounded-xl p-2  backdrop-blur-lg bg-eOrange-500/50">
                             <Ionicons name="body-outline" size={30} color={'#fff'} />
                             <Text className={`text-3xl text-white`}>
                                 x{currentExercise?.reps}
                             </Text>
                         </View>
 
-                        <View className="flex flex-col items-center justify-center w-1/3 border-[1px] border-white rounded-xl p-2">
+                        <View className="flex flex-col items-center justify-center w-1/3 border-[1px] border-white rounded-xl p-2 backdrop-blur-lg bg-eOrange-500/50">
                             <Ionicons name="barbell-outline" size={30} color={'#fff'} />
                             <Text className={`text-3xl text-white`}>
                                 {currentExercise?.weight ?? "0"}kg
@@ -91,8 +91,8 @@ const PlayExercise = () => {
                 </View>
 
                 <View className="flex flex-row items-center justify-center">
-                    <Ionicons name="timer-outline" size={34} color={'#1c1c1c'} />
-                    <Text className={`text-6xl text-black`}>
+                    <Ionicons name="timer-outline" size={34} color={'#fff'} />
+                    <Text className={`text-6xl text-white`}>
                         {timeLeft}s
                     </Text>
                 </View>
@@ -101,7 +101,7 @@ const PlayExercise = () => {
                 <View className="h-2 bg-gray-200 rounded-full overflow-hidden">
                     {/* animación de sonar al completar el ejercicio */}
                     <Animated.View
-                        className={`h-full ${isResting ? 'bg-orange-500' : 'bg-eBlue-400'}`}
+                        className={`h-full ${isResting ? 'bg-yellow-400' : 'bg-lightGreen'}`}
                         style={{
                             width: progressWidth as any,
                         }}
@@ -112,16 +112,16 @@ const PlayExercise = () => {
 
                     <IconButton
                         onPress={goBackPreviousExercise}
-                        icon={<Ionicons name={"play-back"} size={56} color={'#1c1c1c'} />}
+                        icon={<Ionicons name={"play-back"} size={56} color={'#fff'} />}
                     />
                     <IconButton
                         onPress={togglePlay}
-                        icon={<Ionicons name={isPlaying ? "pause" : "play"} size={86} color={'#1c1c1c'} />}
+                        icon={<Ionicons name={isPlaying ? "pause" : "play"} size={86} color={'#fff'} />}
                     />
 
                     <IconButton
                         onPress={() => { }}
-                        icon={<Ionicons name={"heart-circle"} size={56} color={'#1c1c1c'} />}
+                        icon={<Ionicons name={"heart-circle"} size={56} color={'#fff'} />}
                     />
                 </View>
 

@@ -31,7 +31,7 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
 
     return (
         <View
-            className="w-full h-[420px] rounded-lg overflow-hidden"
+            className="w-full h-[420px] rounded-b-lg overflow-hidden"
         >
             <Image
                 source={{ uri: userSelectedPlan?.imagenPlanEntrenamiento }}
@@ -41,9 +41,9 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
 
             <LinearGradient
                 colors={[
-                    'rgba(0,85,249,0.95)',
-                    'rgba(0,85,249,0.8)',
-                    'rgba(0,85,249,0.95)'
+                    'rgba(255,87,34,0.95)',
+                    'rgba(255,87,34,0.8)',
+                    'rgba(255,87,34,0.95)',
                 ]}
                 className="absolute w-full h-full"
             />

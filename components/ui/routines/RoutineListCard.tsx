@@ -22,9 +22,9 @@ const RoutineListCard = (workout: WorkoutAPI) => {
             overflow-hidden rounded-lg `}>
             <LinearGradient
                 colors={[
-                    'rgba(0,85,249,0.95)',
-                    'rgba(0,85,249,0.8)',
-                    'rgba(0,85,249,0.95)'
+                    'rgba(255,87,34,0.8)',
+                    'rgba(255,87,34,0.95)',
+                    'rgba(255,87,34,1)',
                 ]}
                 className="absolute w-full h-full"
             />

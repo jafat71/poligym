@@ -40,7 +40,7 @@ const PlanInfo = () => {
     const hasWorkouts = plan?.workouts && plan?.workouts?.length > 0;
 
     return (
-        <SafeAreaView className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
+        <SafeAreaView className={`${isDark ? 'bg-blueEPN-900' : 'bg-blueEPN-500'} flex-1 px-4`}>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
                 showsVerticalScrollIndicator={false}

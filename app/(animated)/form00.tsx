@@ -20,7 +20,7 @@ const Form00 = () => {
     }, [])
     
     return (
-        <SafeAreaView className={`p-2 pt-6 flex flex-1 flex-col justify-center items-center bg-eBlue-500`}>
+        <SafeAreaView className={`p-2 pt-6 flex flex-1 flex-col justify-center items-center bg-blueEPN-500`}>
             <WelcomeAnimatedLoading/>
         </SafeAreaView>
     );

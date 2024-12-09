@@ -33,7 +33,7 @@ const TermsModal = ({
             <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
             
             <View className={`w-full h-full
-                ${isDark ? "bg-darkGray-500 text-white" : "bg-white text-darkGray-500"} 
+                ${isDark ? "bg-darkGray-900" : "bg-blueEPN-500"}
                 py-2 px-4 rounded-sm items-start
                 `}
             >
@@ -42,29 +42,29 @@ const TermsModal = ({
 
                         <View className='w-full items-center justify-center'>
                             <MainLogoCustomComponent 
-                                principal="#a6a6a6"
+                                principal="#ff5722"
                                 height='50'
                                 width='50'
                             />
                         </View>
                         <View className='flex flex-row items-center justify-between w-full'>
                             <Text className={`text-4xl font-ralewayBold text-start
-                ${isDark ? "text-white" : "text-darkGray-500"}`}>
+                                text-white`}>
                                 Términos y Condiciones
                             </Text>
 
                             <View className='mr-2 border-2 border-darkGray-200 rounded-full p-2'>
-                                <Ionicons name="document-outline" size={36} color={`${isDark ? "white" : "#a6a6a6"}`} />
+                                <Ionicons name="document-outline" size={36} color={`white`} />
                             </View>
                         </View>
 
                         <Text className={`text-sm font-raleway text-center
-                ${isDark ? "text-white" : "text-darkGray-500"} mb-4`}>
+                            text-white mb-4`}>
                             Última actualización: 06/10/2024
                         </Text>
 
                         <Text className={`text-sm font-raleway min-w-full
-                ${isDark ? "text-white" : "text-darkGray-500"} mb-2 text-justify`}>
+                            text-white mb-2 text-justify`}>
                             Bienvenido a la aplicación POLIGYM. Esta aplicación ha sido diseñada para facilitar a los estudiantes,
                             profesores y personal administrativo de la Escuela Politécnica Nacional el acceso a los servicios del gimnasio de la universidad.
                             Al utilizar esta aplicación, aceptas los términos y condiciones que se detallan a continuación.
@@ -74,11 +74,11 @@ const TermsModal = ({
                         {termsContent.map((term, index) => (
                             <View key={index}>
                                 <Text className={`text-xl font-ralewayBold min-w-full
-                    ${isDark ? "text-white" : "text-darkGray-500"} mt-2 mb-2`}>
+                                    text-eOrange-500 mt-2 mb-2`}>
                                     {term.title}
                                 </Text>
                                 <Text className={`text-sm font-raleway min-w-full
-                    ${isDark ? "text-white" : "text-darkGray-500"} mb-2 text-justify`}>
+                                    text-white mb-2 text-justify`}>
                                     {term.description}
                                 </Text>
                             </View>

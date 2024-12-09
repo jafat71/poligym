@@ -27,19 +27,19 @@ const IconTextInputForm = ({
 
     return (
         <View>
-            <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>
+            <Text className={`text-sm font-ralewayBold text-white mb-2`}>
                 {title}
             </Text>
 
             <View className={`flex-row items-center p-1 border-2 border-transparent mb-2 rounded-lg 
-            ${isDark ? "bg-darkGray-900" : "bg-darkGray-100" 
-        } ${focused ? "border-eBlue-500" : ""} transition-all duration-800`}>
+            ${isDark ? "bg-blueEPN-500" : "bg-blueEPN-900"}
+        } ${focused ? "border-eOrange-500" : ""} transition-all duration-800`}>
                 <View className="flex flex-row items-center justify-center w-full">
                     <View>
                         {icon}
                     </View>
                     <TextInput
-                        className={`flex-1 p-2 rounded-lg shadow-lg pl-3 ${isDark ? "text-white" : "text-darkGray-500"}
+                        className={`flex-1 p-2 rounded-lg shadow-lg pl-3 text-white
                         ml-2 font-ralewayBold`}
                         placeholder={inputPlaceholder}
                         keyboardType={inputKeyboardType}
@@ -53,7 +53,7 @@ const IconTextInputForm = ({
                     />
                     {isPasswordInput && (
                         <TouchableOpacity onPress={togglePasswordVisibility} className='p-2'>
-                            <Ionicons name={`${isPasswordVisible ? "eye-off" : "eye"}`} size={24} color="#a6a6a6" />
+                            <Ionicons name={`${isPasswordVisible ? "eye-off" : "eye"}`} size={24} color="#ff7756" />
                         </TouchableOpacity>
                     )}
                 </View>

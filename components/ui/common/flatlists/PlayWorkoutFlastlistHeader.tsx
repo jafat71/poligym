@@ -38,12 +38,12 @@ export const PlayWorkoutFlatlistHeader = ({
     const isExecuting = (isLastWorkoutPlayed ? Object.values(completedPlayExercises).filter(Boolean).length > 0 : false);
     const { isDark } = useTheme();
     return (
-        <View className="rounded-lg overflow-hidden mb-2">
+        <View className="rounded-b-lg overflow-hidden mb-2">
             <LinearGradient
                 colors={[
-                    'rgba(0,85,249,0.95)',
-                    'rgba(0,85,249,0.8)',
-                    'rgba(0,85,249,0.95)'
+                    'rgba(15,23,42,1)',
+                    'rgba(15,23,42,1)',
+                    'rgba(15,23,42,0.95)'
                 ]}
                 className="absolute w-full h-full"
             />
@@ -58,7 +58,7 @@ export const PlayWorkoutFlatlistHeader = ({
                     />
                     <HomePill
                         icon="flame-outline"
-                        text={`${DIFFICULTY[workout.level as unknown as keyof typeof DIFFICULTY]}`}
+                        text={`${workout.level}`}
                     />
                 </View>
 
@@ -94,8 +94,8 @@ export const PlayWorkoutFlatlistHeader = ({
                     <Pressable
                         onPress={handlePlayWorkout}
                         className={`absolute bottom-0 right-0 w-20 h-20 flex flex-col
-                    items-center justify-center bg-eBlue-800
-                    rounded-full border-2 border-lightGreen
+                    items-center justify-center bg-eOrange-500/20
+                    rounded-full border-2 border-eOrange-500
                 `}
                     >
                         {
@@ -124,7 +124,7 @@ export const PlayWorkoutFlatlistHeader = ({
                             <Progress.Circle
                                 progress={progressOver100}
                                 size={50}
-                                color={"#77ffaa"}
+                                color={"#ff5722"}
                                 unfilledColor={isDark ? "#1c1c1c" : "#fff"}
                                 borderWidth={0}
                             />

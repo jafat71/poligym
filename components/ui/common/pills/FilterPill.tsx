@@ -19,7 +19,7 @@ const FilterPill = ({ value, label, selected, setSelected, isSearching }: Props)
         onPress={() => setSelected(value)}
         className={`px-2 py-2 rounded-sm border-2
             ${isSelected
-                ? "border-eBlue-500 bg-eBlue-500"
+                ? "border-eOrange-500 bg-eOrange-500"
                 : isDark ? "border-darkGray-400" : "border-darkGray-200"
         }`}
         style={{

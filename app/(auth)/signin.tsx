@@ -56,17 +56,17 @@ const Signin = () => {
 
   return (
 
-    <View>
+    <View className='flex-1'>
 
-      <View>
-        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-4xl font-ralewayBold mb-2`}>
+      <View className='flex flex-col items- justify-around'>
+        <Text className={`text-white text-4xl font-ralewayBold mb-2`}>
           Iniciar Sesión
         </Text>
 
         <View className={`pt-1`}>
           <IconTextInputForm
             title='Email Institucional'
-            icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+            icon={<Ionicons name="person-circle-outline" size={35} color={`#ff7756`} />}
             inputKeyboardType='email-address'
             inputPlaceholder='tu.nombre@epn.edu.ec'
             inputValue={email}
@@ -76,7 +76,7 @@ const Signin = () => {
 
           <IconTextInputForm
             title='Contraseña'
-            icon={<Ionicons name="shield-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+            icon={<Ionicons name="shield-outline" size={35} color={`#ff7756`} />}
             inputKeyboardType='ascii-capable'
             inputPlaceholder='*********'
             inputValue={password}

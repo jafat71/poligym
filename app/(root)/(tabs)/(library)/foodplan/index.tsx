@@ -110,7 +110,7 @@ export default function FoodPlan() {
     if (isLoading) return (<SkeletonLoadingScreen />);
 
     return (
-        <View className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
+        <View className={`flex-1 ${isDark ? "bg-blueEPN-900" : "bg-blueEPN-500"}`}>
             <FlatList
                 data={filteredPlans}
                 renderItem={renderItem}

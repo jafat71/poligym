@@ -29,7 +29,7 @@ const PlayRoutineExerciseItem = ({
         <View className={`
             flex flex-row items-center justify-start
             transition-all duration-300 px-2 h-24
-            bg-eBlue-500 rounded-lg
+            bg-blueEPN-500 rounded-lg
             ${isActive ? '-translate-x-2' : ''}
         `}>
             <Pressable

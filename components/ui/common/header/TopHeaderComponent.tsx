@@ -19,7 +19,7 @@ const TopHeaderComponent = () => {
                 <MainLogoCustomComponent
                     width="40"
                     height="40"
-                    principal={`${isDark ? "#fff" : "#1c1c1c"}`}
+                    principal={'#FF5722'}
                 />
             </View>
             <View className="absolute ">
@@ -37,7 +37,7 @@ const TopHeaderComponent = () => {
                         <Ionicons
                             name="close-sharp"
                             size={24}
-                            color={isDark ? "#fff" : "#1c1c1c"}
+                            color={"#FF5722"}
                         />
                     </Pressable>
                 </Animatable.View>

@@ -18,7 +18,7 @@ const CustomSearchBar = ({ isSearching, searchInput, handleSearchChange, placeho
     return (
         <View className={`flex-row items-center p-2  border-2 mb-4 ${
             isDark ? "border-darkGray-400" : "border-gray-300" 
-        } ${isActive ? "border-eBlue-500" : ""} transition-all duration-800`}>
+        } ${isActive ? "border-eOrange-500" : ""} transition-all duration-800`}>
             {isSearching ? (
                 <Ionicons 
                     name="hourglass-outline" 

@@ -68,12 +68,12 @@ const Signup = () => {
 
       <View>
 
-        <Text className={`text-4xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
+        <Text className={`text-4xl mb-2  font-ralewayBold text-start text-white `}>Registro</Text>
 
         <View className={`pt-1`}>
           <IconTextInputForm
             title='Email Institucional'
-            icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+            icon={<Ionicons name="person-circle-outline" size={35} color={`#ff7756`} />}
             inputKeyboardType='email-address'
             inputPlaceholder='tu.nombre@epn.edu.ec'
             inputValue={email}
@@ -83,7 +83,7 @@ const Signup = () => {
 
           <IconTextInputForm
             title='Contraseña'
-            icon={<Ionicons name="shield-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+            icon={<Ionicons name="shield-outline" size={35} color={`#ff7756`} />}
             inputKeyboardType='ascii-capable'
             inputPlaceholder='*********'
             inputValue={password}
@@ -93,7 +93,7 @@ const Signup = () => {
 
           <IconTextInputForm
             title='Confirmar Contraseña'
-            icon={<Ionicons name="shield-checkmark-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+            icon={<Ionicons name="shield-checkmark-outline" size={35} color={`#ff7756`} />}
             inputKeyboardType='ascii-capable'
             inputPlaceholder='*********'
             inputValue={confirmPassword}
@@ -128,7 +128,7 @@ const Signup = () => {
             onPress={toggleTermseModal}
             className='translate-y-1'
           >
-            <Text className={`text-sm font-ralewayExtraBold  ${isDark ? "text-white" : "text-darkGray-500"}`}>
+            <Text className={`text-sm font-ralewayExtraBold  text-white`}>
               {' '} TÉRMINOS Y CONDICIONES
             </Text>
           </Pressable>

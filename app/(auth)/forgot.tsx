@@ -73,18 +73,18 @@ const Forgot = () => {
 
       <View >
 
-        <Text className={`text-4xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
+        <Text className={`text-4xl mb-2 font-ralewayBold text-start text-white`}>Olvidé mi contraseña</Text>
 
         <View className={`pt-1`}>
 
           {
             !resetSent ? (
               <>
-                <Text className={`text-sm mb-2 font-ralewaySemiBold text-start  ${isDark ? "text-darkGray-400" : "text-darkGray-500"} `}>Ingresa tu correo electónico para recibir un código de recuperación para reestablecer el acceso a tu cuenta</Text>
+                <Text className={`text-sm mb-2 font-ralewaySemiBold text-start text-white`}>Ingresa tu correo electónico para recibir un código de recuperación para reestablecer el acceso a tu cuenta</Text>
 
                 <IconTextInputForm
                   title='Email Institucional'
-                  icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                  icon={<Ionicons name="person-circle-outline" size={35} color={`#ff5722`} />}
                   inputKeyboardType='email-address'
                   inputPlaceholder='tu.nombre@epn.edu.ec'
                   inputValue={email}
@@ -117,7 +117,7 @@ const Forgot = () => {
               <>
                 <IconTextInputForm
                   title='Código de recuperación'
-                  icon={<Ionicons name="key-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                  icon={<Ionicons name="key-outline" size={35} color={`#ff5722`} />}
                   inputKeyboardType='default'
                   inputPlaceholder='***********************************'
                   inputValue={code}
@@ -127,7 +127,7 @@ const Forgot = () => {
 
                 <IconTextInputForm
                   title='Nueva Contraseña'
-                  icon={<Ionicons name="shield-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                  icon={<Ionicons name="shield-outline" size={35} color={`#ff5722`} />}
                   inputKeyboardType='ascii-capable'
                   inputPlaceholder='*********'
                   inputValue={newPassword}
@@ -137,7 +137,7 @@ const Forgot = () => {
 
                 <IconTextInputForm
                   title='Confirmar Nueva Contraseña'
-                  icon={<Ionicons name="shield-checkmark-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
+                  icon={<Ionicons name="shield-checkmark-outline" size={35} color={`#ff5722`} />}
                   inputKeyboardType='ascii-capable'
                   inputPlaceholder='*********'
                   inputValue={confirmNewPassword}
