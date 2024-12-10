@@ -57,7 +57,7 @@ const Update = () => {
   return (
     <View>
 
-      <Text className={`text-4xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Actualizar Contraseña</Text>
+      <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Actualizar Contraseña</Text>
       <Text className={`text-sm font-raleway text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>Confirma tu identidad con tu contraseña actual</Text>
 
       <View className={`pt-1`}>

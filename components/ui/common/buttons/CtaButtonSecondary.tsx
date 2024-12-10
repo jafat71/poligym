@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { GestureResponderEvent, Text, TouchableOpacity } from 'react-native';
+import { GestureResponderEvent, Text, TouchableHighlight } from 'react-native';
 
 interface Props {
     onPress: ((event: GestureResponderEvent) => void) | undefined,
@@ -10,13 +10,13 @@ interface Props {
 const CTAButtonSecondary = ({ onPress, text}: Props) => {
 
     return (
-        <TouchableOpacity
+        <TouchableHighlight
             onPress={onPress}
+            className={`text-base text-center bg-eBlue-700 
+                text-white py-4 bg-inherit px-24 w-full font-ralewayExtraBold`}
         >
-            <Text className={`w-full rounded-xl text-base text-center
-                text-eBlue-500 my-1
-                py-4 bg-inherit px-24  font-ralewayExtraBold`}>{text}</Text>
-        </TouchableOpacity>
+            <Text className={`rounded-xl text-base text-center text-white font-ralewayExtraBold`}>{text}</Text>
+        </TouchableHighlight>
     );
 };
 

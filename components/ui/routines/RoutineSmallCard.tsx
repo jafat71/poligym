@@ -57,7 +57,7 @@ const RoutineSmallCard = (routine: WorkoutAPI) => {
                     />
                     <HomePill
                         icon="flame-outline"
-                        text={`${DIFFICULTY[routine.level as unknown as keyof typeof DIFFICULTY]}`}
+                        text={`${routine.level}`}
                     />
                 </View>
             </View>

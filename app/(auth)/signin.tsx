@@ -55,11 +55,10 @@ const Signin = () => {
   }
 
   return (
-
     <View>
-
+      
       <View>
-        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-4xl font-ralewayBold mb-2`}>
+        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-2xl font-ralewayBold mb-2`}>
           Iniciar Sesión
         </Text>
 

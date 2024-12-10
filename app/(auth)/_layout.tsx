@@ -7,38 +7,31 @@ import { Slot } from 'expo-router';
 import TopHeaderComponent from '@/components/ui/common/header/TopHeaderComponent';
 
 import { useTheme } from '@/context/ThemeContext';
-import { LinearGradient } from 'expo-linear-gradient';
 
 export default function AuthLayout() {
   const { isDark } = useTheme()
 
-  //TODO:  CHECK  react-native-keyboard-controller 
+  //TODO:  CHECK  react-native-keyboard-controller to add slow scroll
   return (
-    <KeyboardAvoidingView 
-    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    className="flex-1"
-  >
-    <SafeAreaView className={`flex flex-col items-center justify-center h-full ${isDark ? "bg-darkGray-500" : "bg-white"}`}>
-      <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
-      {/* <LinearGradient
-                colors={[
-                    'rgba(0,85,249,0.95)',
-                    'rgba(0,85,249,0.8)',
-                    'rgba(0,85,249,0.95)'
-                ]}
-                className="absolute w-full h-full"
-            /> */}
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        className='w-full px-4'
-        keyboardShouldPersistTaps='handled'
-      >
-        <TopHeaderComponent />
-        <Slot />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1, backgroundColor: '#0059ff' }}
+    >
+      <StatusBar backgroundColor="#0059ff" barStyle={"light-content"} />
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
 
-      </ScrollView>
-    </SafeAreaView>
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          keyboardShouldPersistTaps='handled'
+        >
+          <TopHeaderComponent />
+          <View className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-white"} p-4 rounded-t-3xl`}>
+            <Slot />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     </KeyboardAvoidingView>
 
   );

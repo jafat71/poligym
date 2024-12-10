@@ -68,7 +68,7 @@ const Signup = () => {
 
       <View>
 
-        <Text className={`text-4xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
+        <Text className={`text-2xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
 
         <View className={`pt-1`}>
           <IconTextInputForm

@@ -61,9 +61,9 @@ const OnBoardingSwiper = () => {
                             />
                             <LinearGradient
                                 colors={[
-                                    'rgba(0,85,249,0.7)',
-                                    'rgba(41,111,255,0.4)',
-                                    'rgba(102,155,255,0.2)'
+                                    'rgba(0,85,249,0.8)',
+                                    'rgba(41,111,255,0.6)',
+                                    'rgba(102,155,255,0.05)'
                                 ]}
                                 className="absolute top-0 left-0 right-0 bottom-0"
                             />

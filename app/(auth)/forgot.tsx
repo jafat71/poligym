@@ -73,7 +73,7 @@ const Forgot = () => {
 
       <View >
 
-        <Text className={`text-4xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
+        <Text className={`text-2xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
 
         <View className={`pt-1`}>
 

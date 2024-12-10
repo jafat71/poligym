@@ -12,7 +12,7 @@ const Welcome = () => {
 
     const { isDark } = useTheme()
     return (
-        <View className={`flex flex-1 flex-col justify-center ${isDark ? "bg-darkGray-500" : "bg-white"} `}>
+        <View className={`flex flex-1 flex-col justify-center bg-eBlue-500 `}>
 
             <OnBoardingSwiper />
             <View className='flex flex-col items-center justify-center'>
@@ -22,7 +22,6 @@ const Welcome = () => {
                         router.navigate('/(auth)/signup')
                     }}
                     text='Registrarse'
-                    extraClassname={`rounded-none shadow-2xl shadow-${isDark ? 'white' : 'black'}`}
                 />
 
                 <CTAButtonSecondary

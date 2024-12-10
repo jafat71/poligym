@@ -49,18 +49,18 @@ export default function RootLayout() {
           <UserProvider>
               <WorkoutPlayProvider>
                 <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0055f9' }}>
-                  <Stack
-                    screenOptions={{
-                      statusBarTranslucent: true
-                    }}
-                  >
-                    <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
+                  <Stack screenOptions={{
+                    headerShown: false,
+                    statusBarTranslucent: true,
+                  }}>
+                    <Stack.Screen name="welcome" />
                     <Stack.Screen name="(animated)" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
                     <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'simple_push', animationTypeForReplace: 'pop' }} />
-                    <Stack.Screen name="(auth)" options={{
-                      animation: 'fade_from_bottom',
-                      animationTypeForReplace: 'push',
-                      headerShown: false
+                    <Stack.Screen name="(auth)" options={{ 
+                      headerShown: false, 
+                      animation: 'flip', 
+                      animationTypeForReplace: 'pop',
+                      statusBarColor: '#0055f9'
                     }} />
                     <Stack.Screen name="+not-found" options={{ headerShown: false }} />
                   </Stack>

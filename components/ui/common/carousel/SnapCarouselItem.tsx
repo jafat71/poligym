@@ -13,7 +13,7 @@ export class SnapCarouselItem extends PureComponent<SnapCarouselItemProps> {
         const { item, isFocused, ITEM_HEIGHT } = this.props;
         return (
             <View
-                className={`justify-center items-center ${isFocused ? "scale-110" : "scale-100"}`}
+                className={`justify-center items-center ${isFocused ? "scale-125" : "scale-100"}`}
                 style={{ height: ITEM_HEIGHT }}
             >
                 <Text
