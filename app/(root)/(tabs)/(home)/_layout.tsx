@@ -87,14 +87,6 @@ const _layout = () => {
                 }}
             />
 
-            <Stack.Screen
-                name="exerciseDetail"
-                options={{
-                    headerShown: false,
-                    animation: "fade_from_bottom",
-                    animationTypeForReplace: 'pop'
-                }}
-            />
         </Stack>
     );
 };

@@ -43,7 +43,7 @@ export const SimpleInfoComponent = ({ text, pressable, modalVisible, toggleModal
             }}
             className={`
                 flex flex-col items-center justify-center
-                z-50
+                z-50 bg-black/50
             `}
         >
             <Animated.View
@@ -59,7 +59,7 @@ export const SimpleInfoComponent = ({ text, pressable, modalVisible, toggleModal
                     flex flex-col justify-between 
                     ${isDark ? 'bg-darkGray-900' : 'bg-white'} 
                     rounded-lg p-4 shadow-lg
-                    mx-4
+                    mx-4 border-2 border-eBlue-500
                 `}
             >
                 <View className="flex flex-row items-start justify-between">
@@ -74,7 +74,7 @@ export const SimpleInfoComponent = ({ text, pressable, modalVisible, toggleModal
                             ${isDark ? 'text-white' : 'text-darkGray-500'}
                         `}
                     >
-                        {text}
+                        {text}  
                     </Text>
                     <Pressable onPress={toggleModal}>
                         <Ionicons

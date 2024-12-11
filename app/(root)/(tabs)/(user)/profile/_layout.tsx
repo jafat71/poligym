@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { Animated, Image, Text, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, Image, Pressable, Text, View } from "react-native";
 import { ParamListBase, TabNavigationState } from "@react-navigation/native";
 import {
     MaterialTopTabNavigationEventMap,
@@ -14,6 +14,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useUser } from "@/context/UserContext";
 
 import IconButton from "@/components/ui/common/buttons/IconButton";
+import SimpleInfoComponent from "@/components/ui/common/info/SimpleInfoComponent";
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -29,6 +30,7 @@ export default function TabLayout() {
     const { loggedUserInfo } = useUser();
 
     const fadeAnim = useRef(new Animated.Value(0)).current; // Inicializa la opacidad
+    const [infoVisible, setInfoVisible] = useState(false);
 
     useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -39,46 +41,20 @@ export default function TabLayout() {
     }, [fadeAnim]);
 
     return (
-        <View className={`flex-1 bg-eBlue-500`}>
-
+        <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'}`}>
 
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-
-                <View className="flex-row items-center px-4 py-2">
-                    <View className={`rounded-full w-20 h-20 flex items-center justify-center border-[2px] border-eBlue-100`}>
-                        {loggedUserInfo?.avatarUrl ? (
-                            <Image source={{ uri: loggedUserInfo.avatarUrl }}
-                                className='w-full h-full rounded-full'
-                                resizeMode='cover' />
-                        ) : (
-                            <Text className="text-4xl font-raleway text-eBlue-100">
-                                {loggedUserInfo?.name?.split(' ').map(name => name[0]).join('')}
-                            </Text>
-                        )}
+                <View className='p-4 flex flex-row justify-between items-center'>
+                    <View className='flex flex-col '>
+                        <Text className={`${isDark ? 'text-white' : 'text-darkGray-900'} font-ralewayBold text-4xl`}>Posts</Text>
                     </View>
-                    <View className="pl-3 flex-1">
-                        <Text
-                            numberOfLines={2}
-                            className={`text-2xl font-ralewayBold text-white flex-wrap`}>
-                            {loggedUserInfo?.name}
-                        </Text>
-                        <Text
-                            numberOfLines={1}
-                            className={`text-xs font-raleway text-white`}>
-                            {loggedUserInfo?.email}
-                        </Text>
-                    </View>
-                    <View>
-                        <IconButton
-                            icon={<Ionicons name="pencil-outline" size={24} color="white" />}
-                            onPress={() => {
-                                router.push('/(root)/(config)/updateinformation')
-                            }}
-                        />
-                    </View>
-
+                    <IconButton
+                        icon={<Ionicons name="information-circle-outline" size={24} color={isDark ? 'white' : '#1c1c1c'} />}
+                        onPress={() => {
+                            setInfoVisible(!infoVisible)
+                        }}
+                    />
                 </View>
-
                 <MaterialTopTabs
                     screenOptions={{
                         lazy: true,
@@ -116,6 +92,16 @@ export default function TabLayout() {
                     }} />
                 </MaterialTopTabs>
             </Animated.View>
+
+            
+            <SimpleInfoComponent
+                text="Un post se genera al momento que completas una rutina y decides compartir tu logro con la comunidad"
+                modalVisible={infoVisible}
+                toggleModal={() => setInfoVisible(!infoVisible)}
+                pressable={
+                    <Text className={`text-eOrange-500 font-ralewaySemiBold`}>Si deseas que un post ya no se muestre en tu perfil, puedes cambiar su visibilidad.</Text>
+                }
+            />
 
         </View>
     );

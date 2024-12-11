@@ -6,6 +6,8 @@ import FormHeaderComponent from '@/components/ui/common/header/FormHeaderCompone
 import { StatusBar } from 'expo-status-bar';
 import Animated, { withTiming, useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { useEffect } from 'react';
+import { View } from 'react-native';
+import MainLogoGradientComponent from '@/components/ui/common/logo/mainLogoGrandient';
 
 export default function RootLayout() {
   const opacity = useSharedValue(0);
@@ -27,8 +29,16 @@ export default function RootLayout() {
 
           className='flex-1 w-full'>
           <Slot />
-        </Animated.View>
+          <View className='absolute opacity-20 -z-20 w-full h-full flex flex-col items-center justify-center px-4 '>
+            <MainLogoGradientComponent
+              width={'250'}
+              height={'250'}  
+              principal='#061826'
+              secondary='#061826'
+            />
+          </View>
       
+        </Animated.View>
       </SafeAreaView>
 
   );

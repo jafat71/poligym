@@ -7,7 +7,7 @@ import { usePathname } from 'expo-router';
 import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useNavigationFlowContext } from './NavFlowContext';
-import { useQuery } from '@tanstack/react-query';
+import { updateUser } from '@/lib/api/userActions';
 
 interface UserContextType {
     userLogged: boolean;
@@ -17,6 +17,7 @@ interface UserContextType {
     userSelectedPlan: TrainingPlan | null;
     setUserSelectedPlan: Dispatch<SetStateAction<TrainingPlan | null>>;
     updateUserInfo: () => Promise<void>;
+    setLoggedUserInfo: Dispatch<SetStateAction<User | null | undefined>>;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -26,7 +27,8 @@ const UserContext = createContext<UserContextType>({
     accessToken: null,
     userSelectedPlan: null,
     setUserSelectedPlan: () => { },
-    updateUserInfo: async () => { }
+    updateUserInfo: async () => { },
+    setLoggedUserInfo: () => { }
 });
 
 interface UserProviderProps {
@@ -82,12 +84,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                     router.replace('/(root)/(tabs)/home')
                 }
             }else{
-                console.log(loggedUserInfo?.name)
                 //Rescata el nombre para el formulario inciial tras el signup
                 updateInitUserShell({
                     name: loggedUserInfo?.name || "",
                 })
-            } 
+            }
+            updateUserLastLogin()
         } else {
             router.replace('/welcome')
         }
@@ -112,6 +114,17 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setLoggedUserInfo(userMapped)
     }
 
+    const updateUserLastLogin = async () => {
+        console.log("Updating user last login")
+        const tmpUserLastLogin = {
+            lastLogin: new Date()
+        }
+        await updateUser(accessToken!, loggedUserInfo?.id!, tmpUserLastLogin)
+        await updateUserInfo()
+    }
+
+    console.log("loggedUserInfo", loggedUserInfo)
+
     return (
         <UserContext.Provider value={{
             userLogged,
@@ -120,7 +133,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             accessToken,
             userSelectedPlan,
             setUserSelectedPlan,
-            updateUserInfo
+            updateUserInfo,
+            setLoggedUserInfo
         }}>
             {children}
         </UserContext.Provider>

@@ -58,7 +58,7 @@ export const PlayWorkoutFlatlistHeader = ({
                     />
                     <HomePill
                         icon="flame-outline"
-                        text={`${DIFFICULTY[workout.level as unknown as keyof typeof DIFFICULTY]}`}
+                        text={`${workout.level}`}
                     />
                 </View>
 

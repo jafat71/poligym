@@ -1,20 +1,24 @@
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
+import ButtonPillLightDark from '@/components/ui/common/buttons/ButtonPillLightDark';
 import FilterPill from '@/components/ui/common/pills/FilterPill';
 import SquarePill from '@/components/ui/common/pills/SquarePill';
 import DayMealFoodPlanCard from '@/components/ui/foodplan/DayMealFoodPlanCard';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { fetchFoodPlanById } from '@/lib/api/actions';
+import { updateUser } from '@/lib/api/userActions';
 import { DAY_OF_WEEK, FOODPLAN_CATEGORY, NutritionPlan } from '@/types/interfaces/entities/foodplan';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams } from 'expo-router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, SafeAreaView, ScrollView, Text } from 'react-native';
 import { View } from 'react-native';
 
 const Id = () => {
     const { id } = useLocalSearchParams();
-    const { accessToken } = useUser();
+    
+    const { accessToken, loggedUserInfo, setLoggedUserInfo } = useUser();
+    const [isFollowing, setIsFollowing] = useState(loggedUserInfo?.nutritionIds?.includes(id!.toString()!) ?? false)
     const { isDark } = useTheme();
     const queryClient = useQueryClient()
     const planId = Number(id)
@@ -36,7 +40,40 @@ const Id = () => {
     if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error loading food plan details - {id}</Text>;
 
-    console.log(selectedDay)
+    const handleFollowPlan = async () => {
+        setIsFollowing(!isFollowing)
+        const tmpUser = {
+            userType: loggedUserInfo?.userType,
+            nutritionIds: [...loggedUserInfo?.nutritionIds!, plan?.id!.toString()!]
+        }
+        setLoggedUserInfo({
+            ...loggedUserInfo!,
+            nutritionIds: [...loggedUserInfo?.nutritionIds!, plan?.id!.toString()!]
+        })
+        try {
+            await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleUnfollowPlan = async () => {
+        setIsFollowing(!isFollowing)
+        const tmpUser = {
+            userType: loggedUserInfo?.userType,
+            nutritionIds: loggedUserInfo?.nutritionIds?.filter((id) => id !== plan?.id!.toString())
+        }
+        setLoggedUserInfo({
+            ...loggedUserInfo!,
+            nutritionIds: loggedUserInfo?.nutritionIds?.filter((id) => id !== plan?.id!.toString()) ?? []
+        })
+        try {
+            await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <SafeAreaView className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
             <ScrollView
@@ -48,7 +85,7 @@ const Id = () => {
                 <View className='flex flex-row flex-wrap my-2'>
 
                     <SquarePill
-                        text={`${FOODPLAN_CATEGORY[plan?.category as unknown as keyof typeof FOODPLAN_CATEGORY]}`}
+                        text={`${plan?.category}`}
                         icon='flame-outline'
                     />
 
@@ -58,6 +95,21 @@ const Id = () => {
                     />
 
                 </View>
+                
+                <ButtonPillLightDark
+                    icon="nutrition-outline"
+                    text={
+                        isLoading ? "Cargando..." :
+                        isFollowing ? "Dejar de seguir" : "Seguir plan"}
+                    onPress={() => {
+                        if (isFollowing) {
+                            handleUnfollowPlan()
+                        } else {
+                            handleFollowPlan()
+                        }
+                    }}
+                    disabled={isLoading}
+                />
 
                 <Image
                     source={{ uri: plan?.imageURL }}

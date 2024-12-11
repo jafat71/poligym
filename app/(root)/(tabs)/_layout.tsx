@@ -192,20 +192,20 @@ export default function TabsLayout() {
           tabBarActiveBackgroundColor: tabBarActiveIconColor,
           tabBarShowLabel: false,
         }} />
-        <Tabs.Screen name="(profile)" options={{
+        <Tabs.Screen name="(user)" options={{
           headerTitle: () => (
             <View className='w-full items-center p-4'>
-              <Text className={`text-xl font-ralewayBold text-start text-white `}>Tus Posts</Text>
+              <Text className={`text-xl font-ralewayBold text-start ${isDark ? 'text-white' : 'text-darkGray-500'} `}>Tú</Text>
             </View>
           ),
           headerLeft: () => (
             <Pressable
               onPress={() => {
-                router.navigate('/(tabs)/home');
+                router.back();
               }}
               className='ml-4'
             >
-              <Ionicons name="arrow-back" size={24} color={"#fff"} />
+              <Ionicons name="arrow-back" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
             </Pressable>
           ),
           headerRight: () => (
@@ -215,13 +215,13 @@ export default function TabsLayout() {
               }}
               className='mr-4'
             >
-              <Ionicons name="settings-outline" size={24} color={"#fff"} />
+              <Ionicons name="settings-outline" size={24} color={isDark ? "#fff" : "#1c1c1c"} />
             </Pressable>
           ),
           headerStyle: {
-            backgroundColor: '#0055f9',
+            backgroundColor: isDark ? '#1c1c1c' : '#fff',
           },
-          headerTintColor: "#fff",
+          headerTintColor: isDark ? "#fff" : "#1c1c1c",
           headerTitleAlign: 'center',
           tabBarIcon: ({ focused }) => (
             <TabIcon

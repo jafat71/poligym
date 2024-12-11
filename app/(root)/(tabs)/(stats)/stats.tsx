@@ -84,12 +84,6 @@ export const Stats = () => {
               </Text>
             </View>
           </View>
-          <Pressable
-            onPress={() => router.push('/(config)/updateinformation')}
-            className={`p-2 rounded-full ${isDark ? "bg-darkGray-400" : "bg-gray-100"}`}
-          >
-            <Ionicons name="pencil-outline" size={24} color={isDark ? "#fff" : "#000"} />
-          </Pressable>
         </View>
 
         {/**ACTUAL WEEK STATS */}

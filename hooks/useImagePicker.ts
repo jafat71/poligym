@@ -4,6 +4,7 @@ import { uploadImage } from "@/lib/utils/uploadImage";
 
 export const useImagePicker = () => {
     const [image, setImage] = useState<string | null>(null);
+    const [imageCloudUrl, setImageCloudUrl] = useState<string | null>(null);
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -19,7 +20,7 @@ export const useImagePicker = () => {
             try {
                 setImage(result.assets[0].uri);
                 const cloudUrl = await uploadImage({base64Img, uploadPreset: "profile_images"})
-                return cloudUrl
+                setImageCloudUrl(cloudUrl)
             } catch (error) {
                 console.log('error uploading image to server', error)
             }
@@ -29,6 +30,7 @@ export const useImagePicker = () => {
     return {
         image,
         pickImage,
-        setImage
+        setImage,
+        imageCloudUrl
     }
 }

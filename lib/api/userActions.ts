@@ -13,3 +13,5 @@ export const updateUser = async (token: string, userId: string, user: Partial<Us
         throw error;
     }
 }
+
+

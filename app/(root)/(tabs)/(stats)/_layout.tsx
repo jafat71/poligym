@@ -17,22 +17,6 @@ const _layout = () => {
                     headerShown: false,
                 }}
             />
-            <Stack.Screen
-                name="favorites"
-                options={{
-                    headerShown: false,
-                    animation: "fade",
-
-                }}
-            />
-            <Stack.Screen
-                name="historial"
-                options={{
-                    headerShown: false,
-                    animation: "fade",
-
-                }}
-            />
         </Stack>
     );
 };

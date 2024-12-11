@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ImagePicker = ({imgUrl,setImg}:Props) => {
-    const { image, pickImage, setImage} = useImagePicker()
+    const { image, pickImage, setImage, imageCloudUrl} = useImagePicker()
     const {isDark} = useTheme()
 
     useEffect(() => {
@@ -21,10 +21,10 @@ const ImagePicker = ({imgUrl,setImg}:Props) => {
     }, []);
 
     useEffect(() => {
-        if (image) {
-            setImg(image)
+        if (imageCloudUrl) {
+            setImg(imageCloudUrl)
         }
-    }, [image]);
+    }, [imageCloudUrl]);
 
     return (
         <TouchableOpacity
