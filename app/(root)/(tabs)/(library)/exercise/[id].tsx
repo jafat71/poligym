@@ -8,20 +8,24 @@ import { useUser } from '@/context/UserContext';
 import { useTheme } from '@/context/ThemeContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SquarePill from '@/components/ui/common/pills/SquarePill';
-import { ExerciseAPI } from '@/types/interfaces/entities/plan';
+import { ExerciseAPI, ExerciseInWorkoutAPI } from '@/types/interfaces/entities/plan';
 import { MuscleGroups } from '@/types/types/muscles';
 import { isValidMuscleGroup } from '@/lib/utils/isMuscle';
 import MaleBack from '@/components/ui/body/MaleBack';
 import MaleFront from '@/components/ui/body/MaleFront';
 import { getMuscleColors } from '@/lib/utils/getColoredMuscles';
 import { Ionicons } from '@expo/vector-icons';
+import ButtonPillLightDark from '@/components/ui/common/buttons/ButtonPillLightDark';
+import { usePlayWorkoutContext } from '@/context/PlayWorkoutContext';
 
 const ExerciseInfo = () => {
     const { id } = useLocalSearchParams();
     const { accessToken } = useUser();
     const { isDark } = useTheme();
-        const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
     const exerciseId = Number(id);
+
+    const { setPlayExercises, startWorkout } = usePlayWorkoutContext();
 
     const cachedExercise = queryClient.getQueryData<ExerciseAPI>(['exercises', exerciseId]);
     
@@ -39,8 +43,24 @@ const ExerciseInfo = () => {
 
     let muscleColors = getMuscleColors(exercise?.muscleGroups || [] );
 
+    const handlePlayExercise = () => {
+        const playExercise: ExerciseInWorkoutAPI = {
+            id: 0,
+            exercise: exercise!,
+            exerciseId: exerciseId,
+            workoutId: 0,
+            sets: 1,
+            reps: 1,
+            restTime: 0,
+            order: 0
+        }
+        setPlayExercises([playExercise])
+        startWorkout()
+        router.push('/(animated)/playexercise')
+    }
+
     return (
-        <SafeAreaView className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
+        <View className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
                 showsVerticalScrollIndicator={false}
@@ -58,6 +78,14 @@ const ExerciseInfo = () => {
                         icon='flame-outline'
                     />
                 </View>
+
+                <ButtonPillLightDark
+                    icon="play-outline"
+                    text={"Hacer una serie"}
+                    onPress={handlePlayExercise}
+                    disabled={isLoading}
+                />
+
 
                 <Image
                     source={{ uri: exercise?.mediaUrl }}
@@ -122,14 +150,7 @@ const ExerciseInfo = () => {
 
             
             </ScrollView>
-
-            <Pressable className='absolute bottom-0 left-0 right-0 p-4 
-            rounded-t-sm
-            bg-eBlue-500 flex flex-row items-center justify-center gap-x-2'>
-                <Ionicons name='play' size={24} color='white' />
-                <Text className='text-center text-xl font-ralewayBold text-white'>Hacer una serie :)</Text>
-            </Pressable>
-        </SafeAreaView>
+        </View>
     );
 };
 

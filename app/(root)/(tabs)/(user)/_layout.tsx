@@ -28,7 +28,7 @@ const _layout = () => {
                 name="favorites"
                 options={{
                     headerShown: false,
-                    animation: "fade",
+                    animation: "slide_from_right",
 
                 }}
             />
@@ -36,14 +36,14 @@ const _layout = () => {
                 name="historial"
                 options={{
                     headerShown: false,
-                    animation: "fade",
+                    animation: "slide_from_right",
                 }}
             />
             <Stack.Screen
                 name="plans"
                 options={{
                     headerShown: false,
-                    animation: "fade",
+                    animation: "slide_from_right",
                 }}
             />
         </Stack>

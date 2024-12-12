@@ -22,7 +22,7 @@ export const mapUserFromApiToUser = (user: any) : User => {
         userType: user.userType || "",
         nutritionIds: user.nutritionIds || [],
         trainingPlanIds: user.trainingPlanIds || [],
-        workoutsIds: user.workoutsIds || [],
+        workoutIds: user.workoutIds || [],
         isActive: user.isActive || false,
     }
     return userLogged

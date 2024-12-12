@@ -75,7 +75,7 @@ const Id = () => {
     }
 
     return (
-        <SafeAreaView className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
+        <View className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
                 showsVerticalScrollIndicator={false}
@@ -99,7 +99,6 @@ const Id = () => {
                 <ButtonPillLightDark
                     icon="nutrition-outline"
                     text={
-                        isLoading ? "Cargando..." :
                         isFollowing ? "Dejar de seguir" : "Seguir plan"}
                     onPress={() => {
                         if (isFollowing) {
@@ -148,7 +147,7 @@ const Id = () => {
                     />
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 }
 

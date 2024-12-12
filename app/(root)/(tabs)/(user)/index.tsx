@@ -59,7 +59,7 @@ const Index = () => {
                 />
 
                 <YouPageButton
-                    onPress={() => { }}
+                    onPress={() => router.push('/(root)/(user)/favorites')}
                     title='Tus Favoritos'
                 />
 

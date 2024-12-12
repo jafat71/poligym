@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, Text, View } from "react-native";
+import { Animated, FlatList, Text, View } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 
@@ -13,8 +13,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import { NutritionPlan } from "@/types/interfaces/entities/foodplan";
 import { fetchFoodPlanById } from "@/lib/api/actions";
 import FoodPlanListItemSmall from "@/components/ui/foodplan/FoodPlanListItemSmall";
+import { getUserPlans } from "@/lib/api/userActions";
 
-export default function TabLayout() {
+export default function Plans() {
     const { isDark } = useTheme();
     const { loggedUserInfo, accessToken } = useUser();
 
@@ -32,26 +33,20 @@ export default function TabLayout() {
         }).start();
     }, [fadeAnim]);
 
-    const fetchUserFoodPlans = async (): Promise<NutritionPlan[]> => {
-        if (!nutritionIds || nutritionIds.length === 0) {
-            return []; 
-        }
-        const promises = nutritionIds.map((id) => fetchFoodPlanById(accessToken!, id));
-        return Promise.all(promises);
-    };
-
     const {
         data: foodPlans = [],
         isLoading,
         isError,
     } = useQuery<NutritionPlan[]>({
         queryKey: ["foodplans", "user"],
-        queryFn: fetchUserFoodPlans,
+        queryFn: () => getUserPlans(accessToken!, loggedUserInfo?.id!),
         initialData: queryClient.getQueryData<NutritionPlan[]>(["foodplans", "user"]),
         enabled: !!nutritionIds?.length, // Solo habilita la consulta si hay IDs disponibles
     });
 
     const userHasActivePlan = nutritionIds?.length! > 0;
+
+    //TODO: ACORDION COMPONENTE para TUS PLANES FAVORITOS
 
     return (
         <View className={`flex-1 bg-${isDark ? "darkGray-900" : "white"}`}>
@@ -82,9 +77,12 @@ export default function TabLayout() {
                         ) : isError ? (
                             <Text className="text-red-500 font-raleway">Error al cargar los planes.</Text>
                         ) : userHasActivePlan && foodPlans.length > 0 ? (
-                            foodPlans.map((plan, index) => (
-                                <FoodPlanListItemSmall key={plan.id} {...plan} />
-                            ))
+                            <FlatList
+                                data={foodPlans}
+                                renderItem={({ item }) => <FoodPlanListItemSmall key={item.id} {...item} />}
+                                keyExtractor={(item: NutritionPlan) => item.id.toString()}
+                                ListFooterComponent={<View className="h-4" />}
+                            />
                         ) : (
                             <View>
                                 <Text

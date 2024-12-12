@@ -9,6 +9,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import HomePill from "../pills/HomePill";
 import { useMemo } from "react";
 import { useTheme } from "@/context/ThemeContext";
+import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
 
 interface PlayWorkoutFlatlistHeaderProps {
     workout: WorkoutAPI;
@@ -36,7 +37,8 @@ export const PlayWorkoutFlatlistHeader = ({
     );
 
     const isExecuting = (isLastWorkoutPlayed ? Object.values(completedPlayExercises).filter(Boolean).length > 0 : false);
-    const { isDark } = useTheme();
+    const { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout } = useFavoriteWorkout(workout.id);
+    const { isDark } = useTheme(); 
     return (
         <View className="rounded-lg overflow-hidden mb-2">
             <LinearGradient
@@ -66,8 +68,15 @@ export const PlayWorkoutFlatlistHeader = ({
                     <View className="w-3/4 flex-row">
                         <ButtonPill
                             icon="heart-outline"
-                            text="Añadir"
-                            onPress={() => { }}
+                            text={
+                                isFavorite ? "Quitar" : "Añadir"}
+                            onPress={() => {
+                                if (isFavorite) {
+                                    handleUnfavoriteWorkout()
+                                } else {
+                                    handleFavoriteWorkout()
+                                }
+                            }}
                         />
                         {
                             isExecuting && (

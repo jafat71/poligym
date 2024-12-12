@@ -17,7 +17,7 @@ export interface User {
     userType: USER_TYPE,
     nutritionIds: string[],
     trainingPlanIds: number[],
-    workoutsIds: number[],
+    workoutIds: number[],
     isActive: boolean,
 
     userNumberActivityDays?: number,

@@ -14,6 +14,7 @@ import { useTheme } from "@/context/ThemeContext";
 import WorkoutLoadingScreen from "@/components/animatedUi/WorkoutLoadingScreen";
 import { usePlayWorkoutContext, WorkoutPlayProvider } from "@/context/PlayWorkoutContext";
 import EditExerciseModal from "@/components/ui/common/modal/EditExerciseModal";
+import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
@@ -106,6 +107,7 @@ const PlayWorkout = () => {
     }
 
     const handlePlayWorkout = () => {
+        if(exercises.length === 0)return;
         if(isLastWorkoutPlayed){
             resetWorkout()
         }

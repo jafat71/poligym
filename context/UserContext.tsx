@@ -89,7 +89,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                     name: loggedUserInfo?.name || "",
                 })
             }
-            updateUserLastLogin()
         } else {
             router.replace('/welcome')
         }
@@ -114,14 +113,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setLoggedUserInfo(userMapped)
     }
 
-    const updateUserLastLogin = async () => {
-        console.log("Updating user last login")
-        const tmpUserLastLogin = {
-            lastLogin: new Date()
-        }
-        await updateUser(accessToken!, loggedUserInfo?.id!, tmpUserLastLogin)
-        await updateUserInfo()
-    }
 
     console.log("loggedUserInfo", loggedUserInfo)
 

@@ -1,5 +1,4 @@
 import { MuscleGroups } from "@/types/types/muscles";
-
 export type PlanRoutineLevel = 'Baja' | 'Media' | 'Alta'
 export interface IndividualExercise {
     id: number;
@@ -198,3 +197,5 @@ export interface TrainingPlanAPI {
     IN_MAINTENANCE = "En mantenimiento",
     OUT_OF_ORDER = "Fuera de servicio",
   }
+
+
