@@ -1,6 +1,6 @@
 import { getUserInfo, verifyToken } from '@/lib/api/auth';
 import { getToken } from '@/lib/token/store';
-import { TrainingPlan } from '@/types/interfaces/entities/plan';
+import { TrainingPlan, WorkoutAPI, TrainingPlanAPI } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
 import { usePathname } from 'expo-router';
@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useNavigationFlowContext } from './NavFlowContext';
 import { updateUser } from '@/lib/api/userActions';
+import { NutritionPlan } from '@/types/interfaces/entities/foodplan';
 
 interface UserContextType {
     userLogged: boolean;
@@ -18,6 +19,12 @@ interface UserContextType {
     setUserSelectedPlan: Dispatch<SetStateAction<TrainingPlan | null>>;
     updateUserInfo: () => Promise<void>;
     setLoggedUserInfo: Dispatch<SetStateAction<User | null | undefined>>;
+    userFavWorkouts: WorkoutAPI[];
+    userFavFoodPlans: NutritionPlan[];
+    userFavTrainingPlans: TrainingPlanAPI[];
+    setUserFavWorkouts: Dispatch<SetStateAction<WorkoutAPI[]>>;
+    setUserFavFoodPlans: Dispatch<SetStateAction<NutritionPlan[]>>;
+    setUserFavTrainingPlans: Dispatch<SetStateAction<TrainingPlanAPI[]>>;
 }
 
 const UserContext = createContext<UserContextType>({
@@ -28,7 +35,13 @@ const UserContext = createContext<UserContextType>({
     userSelectedPlan: null,
     setUserSelectedPlan: () => { },
     updateUserInfo: async () => { },
-    setLoggedUserInfo: () => { }
+    setLoggedUserInfo: () => { },
+    userFavWorkouts: [],
+    userFavFoodPlans: [],
+    userFavTrainingPlans: [],
+    setUserFavWorkouts: () => { },
+    setUserFavFoodPlans: () => { },
+    setUserFavTrainingPlans: () => { }
 });
 
 interface UserProviderProps {
@@ -57,7 +70,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            console.log("Fetching user")
             try {
                 console.log("Verifying token")
                 const response = await verifyToken(accessToken!)
@@ -113,8 +125,14 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setLoggedUserInfo(userMapped)
     }
 
-
+    const [userFavWorkouts, setUserFavWorkouts] = useState<WorkoutAPI[]>([]);
+    const [userFavFoodPlans, setUserFavFoodPlans] = useState<NutritionPlan[]>([]);
+    const [userFavTrainingPlans, setUserFavTrainingPlans] = useState<TrainingPlanAPI[]>([]);
+    
     console.log("loggedUserInfo", loggedUserInfo)
+    console.log("userFavWorkouts", userFavWorkouts)
+    console.log("userFavFoodPlans", userFavFoodPlans)
+    console.log("userFavTrainingPlans", userFavTrainingPlans)
 
     return (
         <UserContext.Provider value={{
@@ -125,7 +143,13 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             userSelectedPlan,
             setUserSelectedPlan,
             updateUserInfo,
-            setLoggedUserInfo
+            setLoggedUserInfo,
+            userFavWorkouts,
+            userFavFoodPlans,
+            userFavTrainingPlans,
+            setUserFavWorkouts,
+            setUserFavFoodPlans,
+            setUserFavTrainingPlans
         }}>
             {children}
         </UserContext.Provider>

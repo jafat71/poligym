@@ -23,7 +23,6 @@ const WorkoutInfo = () => {
     const workoutId = Number(id);
     // Obtener datos en caché
     const cachedWorkout = queryClient.getQueryData<WorkoutAPI>(['workouts', workoutId]);
-    
     const { data: workout, isLoading, isError } = useQuery<WorkoutAPI>({
         queryKey: ['workouts', id],
         queryFn: async () => {
@@ -43,17 +42,15 @@ const WorkoutInfo = () => {
         initialData: cachedWorkout,
         enabled: !!id,
     });
-    const { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout } = useFavoriteWorkout(workoutId);
+    const { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout } = useFavoriteWorkout(workout!);
 
-    if (isLoading) return <SkeletonLoadingScreen />;
-    if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
-    
     const handlePlayWorkout = () => {
         router.push(`/playWorkout/${workoutId}`);
     }
-    
-
     const hasExercises = workout?.exercisesInWorkout && workout?.exercisesInWorkout?.length > 0;
+    if (isLoading) return <SkeletonLoadingScreen />;
+    if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
+    
     return (
         <View className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>

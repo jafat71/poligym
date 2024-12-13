@@ -1,19 +1,30 @@
 import { useUser } from "@/context/UserContext";
 import { updateUser } from "@/lib/api/userActions";
-import { useState } from "react"
+import { TrainingPlanAPI } from "@/types/interfaces/entities/plan";
+import { useEffect, useState } from "react"
 
-export const useFavoriteTrainingPlan = (trainingPlanId: number) => {
-    const { accessToken, loggedUserInfo, setLoggedUserInfo } = useUser();
-    const [isFavorite, setIsFavorite] = useState(loggedUserInfo?.trainingPlanIds?.includes(trainingPlanId) ?? false)
+export const useFavoriteTrainingPlan = (trainingPlan: TrainingPlanAPI) => {
+    const { accessToken, loggedUserInfo, setLoggedUserInfo, userFavTrainingPlans, setUserFavTrainingPlans } = useUser();
+    const [isFavorite, setIsFavorite] = useState(
+        trainingPlan && loggedUserInfo?.trainingPlanIds?.includes(trainingPlan.id)
+    );
+    
+    useEffect(() => {
+        if (trainingPlan) {
+            setIsFavorite(loggedUserInfo?.trainingPlanIds?.includes(trainingPlan.id) ?? false)
+        }
+    }, [loggedUserInfo?.trainingPlanIds, trainingPlan])
+
     const handleFavoriteTrainingPlan = async () => {
         setIsFavorite(!isFavorite)
+        setUserFavTrainingPlans([...userFavTrainingPlans, trainingPlan])
         const tmpUser = {
             userType: loggedUserInfo?.userType,
-            trainingPlanIds: [...loggedUserInfo?.trainingPlanIds!, trainingPlanId]
+            trainingPlanIds: [...loggedUserInfo?.trainingPlanIds!, trainingPlan.id]
         }
         setLoggedUserInfo({
             ...loggedUserInfo!,
-            trainingPlanIds: [...loggedUserInfo?.trainingPlanIds!, trainingPlanId]
+            trainingPlanIds: [...loggedUserInfo?.trainingPlanIds!, trainingPlan.id]
         })
         try {
             await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)
@@ -24,13 +35,14 @@ export const useFavoriteTrainingPlan = (trainingPlanId: number) => {
 
     const handleUnfavoriteTrainingPlan = async () => {
         setIsFavorite(!isFavorite)
+        setUserFavTrainingPlans(userFavTrainingPlans.filter((plan) => plan.id !== trainingPlan.id))
         const tmpUser = {
             userType: loggedUserInfo?.userType,
-            trainingPlanIds: loggedUserInfo?.trainingPlanIds?.filter((id) => id !== trainingPlanId)
+            trainingPlanIds: loggedUserInfo?.trainingPlanIds?.filter((id) => id !== trainingPlan.id)
         }
         setLoggedUserInfo({
             ...loggedUserInfo!,
-            trainingPlanIds: loggedUserInfo?.trainingPlanIds?.filter((id) => id !== trainingPlanId) ?? []
+            trainingPlanIds: loggedUserInfo?.trainingPlanIds?.filter((id) => id !== trainingPlan.id) ?? []
         })
         try {
             await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)

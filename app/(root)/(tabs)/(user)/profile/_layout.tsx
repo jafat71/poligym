@@ -44,7 +44,7 @@ export default function TabLayout() {
         <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'}`}>
 
             <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-                <View className='p-4 flex flex-row justify-between items-center'>
+                <View className='px-4 flex flex-row justify-between items-center'>
                     <View className='flex flex-col '>
                         <Text className={`${isDark ? 'text-white' : 'text-darkGray-900'} font-ralewayBold text-4xl`}>Posts</Text>
                     </View>

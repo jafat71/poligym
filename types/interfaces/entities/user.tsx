@@ -1,3 +1,6 @@
+import { NutritionPlan } from "./foodplan";
+import { TrainingPlanAPI, WorkoutAPI } from "./plan";
+
 export type Role = "USER" | "ADMIN"
 
 export interface User {

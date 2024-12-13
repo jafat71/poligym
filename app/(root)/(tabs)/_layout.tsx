@@ -194,7 +194,7 @@ export default function TabsLayout() {
         }} />
         <Tabs.Screen name="(user)" options={{
           headerTitle: () => (
-            <View className='w-full items-center p-4'>
+            <View className='w-full items-center'>
               <Text className={`text-xl font-ralewayBold text-start ${isDark ? 'text-white' : 'text-darkGray-500'} `}>Tú</Text>
             </View>
           ),

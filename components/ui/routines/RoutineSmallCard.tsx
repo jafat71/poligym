@@ -32,33 +32,36 @@ const RoutineSmallCard = (routine: WorkoutAPI) => {
                 ]}
                 className="absolute w-full h-full"
             />
-            <View className="absolute w-2 h-full bg-ePurple-500" />
-
-            <View className='p-4 flex flex-row justify-between'>
-                <View className='flex flex-col w-4/5'>
-                    <Text className='text-white font-ralewayBold text-sm'>{routineFirstWord}</Text>
-                    <Text className='text-white font-ralewayBold text-4xl '>{routineRest}</Text>
-                </View>
-                <View>
-                    <IconButton
-                        icon={<Ionicons name="information" size={24} color="white" />}
-                        onPress={() => {
-                            router.push(`/(library)/routine/${routine.id}`)
-                        }}
-                    />
-                </View>
+            <View className='absolute right-0 top-10 z-1 translate-x-14 '>
+                <Ionicons name="barbell-outline" size={194} color="#0085F9" />  
             </View>
-            <View className='flex-1 items-start justify-end p-4'>
-                <View className="flex-row items-start justify-between px-2 gap-x-2">
+            <View className='z-30 flex-1'>
+                <View className='p-4 flex flex-row justify-between'>
+                    <View className='flex flex-col w-4/5'>
+                        <Text className='text-white font-ralewayBold text-sm'>{routineFirstWord}</Text>
+                        <Text className='text-white font-ralewayBold text-4xl '>{routineRest}</Text>
+                    </View>
+                    <View>
+                        <IconButton
+                            icon={<Ionicons name="information" size={24} color="white" />}
+                            onPress={() => {
+                                router.push(`/(library)/routine/${routine.id}`)
+                            }}
+                        />
+                    </View>
+                </View>
+                <View className='flex-1 items-start justify-end p-4'>
+                    <View className="flex-row items-start justify-between px-2 gap-x-2">
 
-                    <HomePill
-                        icon="time-outline"
-                        text={`${routine.duration} min.`}
-                    />
-                    <HomePill
-                        icon="flame-outline"
-                        text={`${routine.level}`}
-                    />
+                        <HomePill
+                            icon="time-outline"
+                            text={`${routine.duration} min.`}
+                        />
+                        <HomePill
+                            icon="flame-outline"
+                            text={`${routine.level}`}
+                        />
+                    </View>
                 </View>
             </View>
         </Pressable>

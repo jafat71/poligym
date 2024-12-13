@@ -4,25 +4,23 @@ import { View, Text, Pressable, Image, TouchableOpacity } from 'react-native'
 import { router } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 
-import { DIFFICULTY, TrainingPlanAPI } from '@/types/interfaces/entities/plan'
-
 import HomePill from '../common/pills/HomePill'
-import { useUser } from '@/context/UserContext'
-import { useFavoriteTrainingPlan } from '@/hooks/useFavoriteTrainingPlan'
+import { FOODPLAN_CATEGORY, NutritionPlan } from '@/types/interfaces/entities/foodplan'
 import { Ionicons } from '@expo/vector-icons'
+import { useFavoriteNutritionPlan } from '@/hooks/useFavoriteNutritionPlan'
 import { useTheme } from '@/context/ThemeContext'
+import { useUser } from '@/context/UserContext'
 
-interface FavPlanListItemProps {
-    plan: TrainingPlanAPI
+interface FavFoodPlanListItemProps {
+    plan: NutritionPlan
 }
 
-const FavPlanListItem = ({ plan }: FavPlanListItemProps) => {
+const FavFoodPlanListItem = ({ plan }: FavFoodPlanListItemProps) => {
     const handleNavigation = () => {
-        router.push(`/(root)/(tabs)/(library)/plan/${plan.id}`)
+        router.push(`/foodplan/${plan.id}`)
     }
-    const { handleUnfavoriteTrainingPlan } = useFavoriteTrainingPlan(plan);
     const { isDark } = useTheme();
-    const planDuration = plan.workouts.length;
+    const { handleUnfollowPlan } = useFavoriteNutritionPlan(plan);
     return (
         <>
             <Pressable
@@ -30,7 +28,7 @@ const FavPlanListItem = ({ plan }: FavPlanListItemProps) => {
                 onPress={handleNavigation}
                 className={`w-full h-36 mb-1 rounded-lg overflow-hidden`}>
                 <Image
-                    source={{ uri: plan.image }}
+                    source={{ uri: plan.imageURL }}
                     className="w-full h-full absolute"
                     resizeMode="cover"
                 />
@@ -43,23 +41,28 @@ const FavPlanListItem = ({ plan }: FavPlanListItemProps) => {
                     className="absolute w-full h-full"
                 />
                 <View className='flex flex-row h-full'>
-                    <TouchableOpacity onPress={handleUnfavoriteTrainingPlan} className={`w-6 h-full ${isDark ? 'bg-white' : 'bg-darkGray-500'} flex flex-col justify-center`}>
+                    <TouchableOpacity onPress={handleUnfollowPlan} className={`w-6 h-full ${isDark ? 'bg-white' : 'bg-darkGray-500'} flex flex-col justify-center`}>
                         <Ionicons name="trash-outline" size={24} color={isDark ? '#000' : '#fff'} />
                     </TouchableOpacity>
                     <View className='flex-1'>
                         <View className='p-4 flex flex-row justify-between'>
-                            <Text numberOfLines={2} ellipsizeMode="tail" className='text-white font-ralewayBold text-xl'>{plan.name}</Text>
+                            <View className='flex flex-col'>
+                                <Text 
+                                    numberOfLines={2}
+                                    ellipsizeMode="tail"
+                                    className='text-white font-ralewayBold text-xl'>{plan.name}</Text>
+                            </View>
                         </View>
 
                         <View className='flex-1 items-start justify-end p-2'>
                             <View className="flex-row items-start justify-between px-2 gap-x-2">
                                 <HomePill
                                     icon="time-outline"
-                                    text={`${planDuration} rutinas`}
+                                    text={`${plan.duration} semanas`}
                                 />
                                 <HomePill
                                     icon="flame-outline"
-                                    text={`${plan.level}`}
+                                    text={`${plan.category}`}
                                 />
                             </View>
                         </View>
@@ -70,4 +73,4 @@ const FavPlanListItem = ({ plan }: FavPlanListItemProps) => {
     )
 }
 
-export default FavPlanListItem
+export default FavFoodPlanListItem

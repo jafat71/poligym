@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { NutritionPlan } from "@/types/interfaces/entities/foodplan";
 import { getUserFoodPlans, getUserTrainingPlans, getUserWorkouts } from "@/lib/api/userActions";
-import FoodPlanListItemSmall from "@/components/ui/foodplan/FoodPlanListItemSmall";
+import FoodPlanListItemSmall from "@/components/ui/foodplan/FavFoodPlanListItem";
 import FavPlanListItem from "@/components/ui/plans/FavPlanListItem";
 import { TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
 import { List } from "react-native-paper";
@@ -17,7 +17,16 @@ import FavRoutineListCard from "@/components/ui/routines/FavRoutineListCard ";
 
 export default function Favorites() {
     const { isDark } = useTheme();
-    const { loggedUserInfo, accessToken } = useUser();
+    const { 
+        loggedUserInfo, 
+        accessToken, 
+        userFavWorkouts, 
+        userFavFoodPlans, 
+        userFavTrainingPlans, 
+        setUserFavWorkouts,
+        setUserFavFoodPlans,
+        setUserFavTrainingPlans
+    } = useUser();
 
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [infoVisible, setInfoVisible] = useState(false);
@@ -42,7 +51,7 @@ export default function Favorites() {
         queryFn: () => getUserWorkouts(accessToken!, loggedUserInfo?.id!),
         initialData: queryClient.getQueryData<WorkoutAPI[]>(["workouts", "user"]),
     });
-
+    
     const {
         data: foodPlans = [],
         isLoading: isLoadingFoodPlans,
@@ -63,9 +72,12 @@ export default function Favorites() {
         initialData: queryClient.getQueryData<TrainingPlanAPI[]>(["trainingplans", "user"]),
     });
 
-    console.log(workouts);
-    console.log(foodPlans);
-    console.log(trainingPlans);
+    useEffect(() => {
+        if(isLoading || isLoadingFoodPlans || isLoadingTrainingPlans) return;
+        setUserFavWorkouts([...workouts]);
+        setUserFavFoodPlans([...foodPlans]);
+        setUserFavTrainingPlans([...trainingPlans]);
+    }, [workouts, foodPlans, trainingPlans, isLoading, isLoadingFoodPlans, isLoadingTrainingPlans]);
 
     const onRefresh = async () => {
         setIsRefreshing(true);
@@ -85,28 +97,28 @@ export default function Favorites() {
             title: "Rutinas",
             key: "workouts",
             icon: "body",
-            data: workouts,
+            data: userFavWorkouts,
             isLoading,
             isError,
-            renderItem: ({ item }: { item: WorkoutAPI }) => <FavRoutineListCard key={item.id} {...item} />,
+            renderItem: ({ item }: { item: WorkoutAPI }) => <FavRoutineListCard key={item.id} workout={item}/>,
         },
         {
             title: "Planes Alimenticios",
             key: "foodplans",
             icon: "nutrition",
-            data: foodPlans,
+            data: userFavFoodPlans,
             isLoading: isLoadingFoodPlans,
             isError: isErrorFoodPlans,
-            renderItem: ({ item }: { item: NutritionPlan }) => <FoodPlanListItemSmall key={item.id} {...item} />,
+            renderItem: ({ item }: { item: NutritionPlan }) => <FoodPlanListItemSmall key={item.id} plan={item} />,
         },
         {
             title: "Planes de Entrenamiento",
             key: "trainingplans",
             icon: "calendar",
-            data: trainingPlans,
+            data: userFavTrainingPlans,
             isLoading: isLoadingTrainingPlans,
             isError: isErrorTrainingPlans,
-            renderItem: ({ item }: { item: TrainingPlanAPI }) => <FavPlanListItem key={item.id} {...item} />,
+            renderItem: ({ item }: { item: TrainingPlanAPI }) => <FavPlanListItem key={item.id} plan={item} />,
         },
     ];
 
@@ -115,7 +127,7 @@ export default function Favorites() {
             <Animated.View style={{ flex: 1, opacity: fadeAnim, backgroundColor: isDark ? "#080808" : "#fff" }}>
                 <FlatList
                     ListHeaderComponent={
-                        <View className="p-4 flex flex-row justify-between items-center">
+                        <View className="px-4 flex flex-row justify-between items-center">
                             <View className="flex flex-col">
                                 <Text
                                     className={`${isDark ? "text-white" : "text-darkGray-900"} font-ralewayBold text-4xl`}

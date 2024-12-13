@@ -37,7 +37,7 @@ const PlanInfo = () => {
         enabled: !!id
     });
 
-    const { isFavorite, handleFavoriteTrainingPlan, handleUnfavoriteTrainingPlan } = useFavoriteTrainingPlan(planId);
+    const { isFavorite, handleFavoriteTrainingPlan, handleUnfavoriteTrainingPlan } = useFavoriteTrainingPlan(plan!);
     if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error loading plan details - {id}</Text>;
     const hasWorkouts = plan?.workouts && plan?.workouts?.length > 0;

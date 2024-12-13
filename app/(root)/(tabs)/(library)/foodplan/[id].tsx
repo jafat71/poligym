@@ -5,6 +5,7 @@ import SquarePill from '@/components/ui/common/pills/SquarePill';
 import DayMealFoodPlanCard from '@/components/ui/foodplan/DayMealFoodPlanCard';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
+import { useFavoriteNutritionPlan } from '@/hooks/useFavoriteNutritionPlan';
 import { fetchFoodPlanById } from '@/lib/api/actions';
 import { updateUser } from '@/lib/api/userActions';
 import { DAY_OF_WEEK, FOODPLAN_CATEGORY, NutritionPlan } from '@/types/interfaces/entities/foodplan';
@@ -18,7 +19,6 @@ const Id = () => {
     const { id } = useLocalSearchParams();
     
     const { accessToken, loggedUserInfo, setLoggedUserInfo } = useUser();
-    const [isFollowing, setIsFollowing] = useState(loggedUserInfo?.nutritionIds?.includes(id!.toString()!) ?? false)
     const { isDark } = useTheme();
     const queryClient = useQueryClient()
     const planId = Number(id)
@@ -36,43 +36,10 @@ const Id = () => {
     const [selectedDay, setSelectedDay] = useState<DAY_OF_WEEK>(
         DAY_OF_WEEK[plan?.weeklyMeals[0].dayOfWeek as unknown as keyof typeof DAY_OF_WEEK] ?? DAY_OF_WEEK.MONDAY
     );
+    const { isFavorite, handleFollowPlan, handleUnfollowPlan } = useFavoriteNutritionPlan(plan!);
 
     if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error loading food plan details - {id}</Text>;
-
-    const handleFollowPlan = async () => {
-        setIsFollowing(!isFollowing)
-        const tmpUser = {
-            userType: loggedUserInfo?.userType,
-            nutritionIds: [...loggedUserInfo?.nutritionIds!, plan?.id!.toString()!]
-        }
-        setLoggedUserInfo({
-            ...loggedUserInfo!,
-            nutritionIds: [...loggedUserInfo?.nutritionIds!, plan?.id!.toString()!]
-        })
-        try {
-            await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const handleUnfollowPlan = async () => {
-        setIsFollowing(!isFollowing)
-        const tmpUser = {
-            userType: loggedUserInfo?.userType,
-            nutritionIds: loggedUserInfo?.nutritionIds?.filter((id) => id !== plan?.id!.toString())
-        }
-        setLoggedUserInfo({
-            ...loggedUserInfo!,
-            nutritionIds: loggedUserInfo?.nutritionIds?.filter((id) => id !== plan?.id!.toString()) ?? []
-        })
-        try {
-            await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     return (
         <View className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
@@ -99,9 +66,9 @@ const Id = () => {
                 <ButtonPillLightDark
                     icon="nutrition-outline"
                     text={
-                        isFollowing ? "Dejar de seguir" : "Seguir plan"}
+                        isFavorite ? "Dejar de seguir" : "Seguir plan"}
                     onPress={() => {
-                        if (isFollowing) {
+                        if (isFavorite) {
                             handleUnfollowPlan()
                         } else {
                             handleFollowPlan()

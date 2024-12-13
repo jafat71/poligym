@@ -37,7 +37,7 @@ export const PlayWorkoutFlatlistHeader = ({
     );
 
     const isExecuting = (isLastWorkoutPlayed ? Object.values(completedPlayExercises).filter(Boolean).length > 0 : false);
-    const { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout } = useFavoriteWorkout(workout.id);
+    const { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout } = useFavoriteWorkout(workout);
     const { isDark } = useTheme(); 
     return (
         <View className="rounded-lg overflow-hidden mb-2">

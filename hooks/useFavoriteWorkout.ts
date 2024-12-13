@@ -1,43 +1,57 @@
 import { useUser } from "@/context/UserContext";
 import { updateUser } from "@/lib/api/userActions";
-import { useState } from "react"
+import { WorkoutAPI } from "@/types/interfaces/entities/plan";
+import { useEffect, useState } from "react"
 
-export const useFavoriteWorkout = (workoutId: number) => {
-    const { accessToken, loggedUserInfo, setLoggedUserInfo } = useUser();
-    const [isFavorite, setIsFavorite] = useState(loggedUserInfo?.workoutIds?.includes(workoutId) ?? false)
+export const useFavoriteWorkout = (workout: WorkoutAPI | null) => {
+    const { accessToken, loggedUserInfo, setLoggedUserInfo, setUserFavWorkouts, userFavWorkouts } = useUser();
+    const [isFavorite, setIsFavorite] = useState(
+        workout && loggedUserInfo?.workoutIds?.includes(workout.id)
+    );
+
+    useEffect(() => {
+        if (workout) {
+            setIsFavorite(loggedUserInfo?.workoutIds?.includes(workout.id) ?? false);
+        }
+    }, [loggedUserInfo?.workoutIds, workout]);
+
     const handleFavoriteWorkout = async () => {
-        setIsFavorite(!isFavorite)
+        if (!workout) return;
+        setIsFavorite(true);
+        setUserFavWorkouts([...userFavWorkouts, workout]);
         const tmpUser = {
             userType: loggedUserInfo?.userType,
-            workoutIds: [...loggedUserInfo?.workoutIds!, workoutId]
-        }
+            workoutIds: [...loggedUserInfo?.workoutIds!, workout.id],
+        };
         setLoggedUserInfo({
             ...loggedUserInfo!,
-            workoutIds: [...loggedUserInfo?.workoutIds!, workoutId]
-        })
+            workoutIds: [...loggedUserInfo?.workoutIds!, workout.id],
+        });
         try {
-            await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)
+            await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
     const handleUnfavoriteWorkout = async () => {
-        setIsFavorite(!isFavorite)
+        if (!workout) return;
+        setIsFavorite(false);
+        setUserFavWorkouts((prev) => prev.filter((w) => w.id !== workout.id));
         const tmpUser = {
             userType: loggedUserInfo?.userType,
-            workoutIds: loggedUserInfo?.workoutIds?.filter((id) => id !== workoutId)
-        }
+            workoutIds: loggedUserInfo?.workoutIds?.filter((id) => id !== workout.id),
+        };
         setLoggedUserInfo({
             ...loggedUserInfo!,
-            workoutIds: loggedUserInfo?.workoutIds?.filter((id) => id !== workoutId) ?? []
-        })
+            workoutIds: loggedUserInfo?.workoutIds?.filter((id) => id !== workout.id) ?? [],
+        });
         try {
-            await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)
+            await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
-    return { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout }
-}
+    return { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout };
+};

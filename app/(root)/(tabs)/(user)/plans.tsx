@@ -12,8 +12,9 @@ import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { NutritionPlan } from "@/types/interfaces/entities/foodplan";
 import { fetchFoodPlanById } from "@/lib/api/actions";
-import FoodPlanListItemSmall from "@/components/ui/foodplan/FoodPlanListItemSmall";
-import { getUserPlans } from "@/lib/api/userActions";
+import FoodPlanListItemSmall from "@/components/ui/foodplan/FavFoodPlanListItem";
+import { getUserFoodPlans } from "@/lib/api/userActions";
+import FavFoodPlanListItem from "@/components/ui/foodplan/FavFoodPlanListItem";
 
 export default function Plans() {
     const { isDark } = useTheme();
@@ -39,14 +40,12 @@ export default function Plans() {
         isError,
     } = useQuery<NutritionPlan[]>({
         queryKey: ["foodplans", "user"],
-        queryFn: () => getUserPlans(accessToken!, loggedUserInfo?.id!),
+        queryFn: () => getUserFoodPlans(accessToken!, loggedUserInfo?.id!),
         initialData: queryClient.getQueryData<NutritionPlan[]>(["foodplans", "user"]),
         enabled: !!nutritionIds?.length, // Solo habilita la consulta si hay IDs disponibles
     });
 
     const userHasActivePlan = nutritionIds?.length! > 0;
-
-    //TODO: ACORDION COMPONENTE para TUS PLANES FAVORITOS
 
     return (
         <View className={`flex-1 bg-${isDark ? "darkGray-900" : "white"}`}>
@@ -79,7 +78,7 @@ export default function Plans() {
                         ) : userHasActivePlan && foodPlans.length > 0 ? (
                             <FlatList
                                 data={foodPlans}
-                                renderItem={({ item }) => <FoodPlanListItemSmall key={item.id} {...item} />}
+                                renderItem={({ item }) => <FavFoodPlanListItem key={item.id} plan={item} />}
                                 keyExtractor={(item: NutritionPlan) => item.id.toString()}
                                 ListFooterComponent={<View className="h-4" />}
                             />
