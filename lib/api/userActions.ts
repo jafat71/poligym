@@ -14,8 +14,10 @@ export const updateUser = async (token: string, userId: string, user: Partial<Us
 }
 
 export const getUserFoodPlans = async (token: string, userId: string) => {
+    console.log("GET USER FOOD PLANS")
     try {
         const response = await axiosInstance.get(`/user/find-nutrition-plans/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        console.log(response.data)
         return response.data;
     } catch (error) {
         console.error('Error al obtener los planes del usuario');
@@ -24,6 +26,8 @@ export const getUserFoodPlans = async (token: string, userId: string) => {
 }
 
 export const getUserTrainingPlans = async (token: string, userId: string) => {
+    console.log("GET USER TRAINING PLANS")
+
     try {
         const response = await axiosInstance.get(`/user/find-training-plans/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
         return response.data;
@@ -34,6 +38,7 @@ export const getUserTrainingPlans = async (token: string, userId: string) => {
 }
 
 export const getUserWorkouts = async (token: string, userId: string) => {
+    console.log("GET USER WORKOUTS")
     try {
         const response = await axiosInstance.get(`/user/find-workouts/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
         return response.data;

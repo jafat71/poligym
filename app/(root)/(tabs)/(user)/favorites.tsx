@@ -1,22 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Animated, FlatList, Text, View } from "react-native";
-
+import { Animated, FlatList, RefreshControl, Text, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-
 import { useTheme } from "@/context/ThemeContext";
 import { useUser } from "@/context/UserContext";
-
 import IconButton from "@/components/ui/common/buttons/IconButton";
 import SimpleInfoComponent from "@/components/ui/common/info/SimpleInfoComponent";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { NutritionPlan } from "@/types/interfaces/entities/foodplan";
-import { fetchFoodPlanById } from "@/lib/api/actions";
-import FoodPlanListItemSmall from "@/components/ui/foodplan/FoodPlanListItemSmall";
 import { getUserFoodPlans, getUserTrainingPlans, getUserWorkouts } from "@/lib/api/userActions";
-import FavRoutineListCard from "@/components/ui/routines/FavRoutineListCard ";
-import { TrainingPlan, TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
+import FoodPlanListItemSmall from "@/components/ui/foodplan/FoodPlanListItemSmall";
 import FavPlanListItem from "@/components/ui/plans/FavPlanListItem";
+import { TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
+import { List } from "react-native-paper";
+import FavRoutineListCard from "@/components/ui/routines/FavRoutineListCard ";
 
 export default function Favorites() {
     const { isDark } = useTheme();
@@ -24,9 +21,9 @@ export default function Favorites() {
 
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const [infoVisible, setInfoVisible] = useState(false);
+    const [isRefreshing, setIsRefreshing] = useState(false);
 
     const queryClient = useQueryClient();
-    const nutritionIds = loggedUserInfo?.nutritionIds;
 
     useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -44,7 +41,6 @@ export default function Favorites() {
         queryKey: ["workouts", "user"],
         queryFn: () => getUserWorkouts(accessToken!, loggedUserInfo?.id!),
         initialData: queryClient.getQueryData<WorkoutAPI[]>(["workouts", "user"]),
-        enabled: !!nutritionIds?.length, // Solo habilita la consulta si hay IDs disponibles
     });
 
     const {
@@ -55,7 +51,6 @@ export default function Favorites() {
         queryKey: ["foodplans", "user"],
         queryFn: () => getUserFoodPlans(accessToken!, loggedUserInfo?.id!),
         initialData: queryClient.getQueryData<NutritionPlan[]>(["foodplans", "user"]),
-        enabled: !!nutritionIds?.length, // Solo habilita la consulta si hay IDs disponibles
     });
 
     const {
@@ -66,134 +61,135 @@ export default function Favorites() {
         queryKey: ["trainingplans", "user"],
         queryFn: () => getUserTrainingPlans(accessToken!, loggedUserInfo?.id!),
         initialData: queryClient.getQueryData<TrainingPlanAPI[]>(["trainingplans", "user"]),
-        enabled: !!nutritionIds?.length, // Solo habilita la consulta si hay IDs disponibles
     });
 
-    const userHasFavoritesFoodPlans = foodPlans?.length! > 0;
-    const userHasFavoritesTrainingPlans = trainingPlans?.length! > 0;
-    const userHasFavoritesWorkouts = workouts?.length! > 0;
-    //TODO: DELETE ON SLIDE COMPONENT
+    console.log(workouts);
+    console.log(foodPlans);
+    console.log(trainingPlans);
+
+    const onRefresh = async () => {
+        setIsRefreshing(true);
+        try {
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey: ["workouts", "user"] }),
+                queryClient.invalidateQueries({ queryKey: ["foodplans", "user"] }),
+                queryClient.invalidateQueries({ queryKey: ["trainingplans", "user"] }),
+            ]);
+        } finally {
+            setIsRefreshing(false);
+        }
+    };
+
+    const data = [
+        {
+            title: "Rutinas",
+            key: "workouts",
+            icon: "body",
+            data: workouts,
+            isLoading,
+            isError,
+            renderItem: ({ item }: { item: WorkoutAPI }) => <FavRoutineListCard key={item.id} {...item} />,
+        },
+        {
+            title: "Planes Alimenticios",
+            key: "foodplans",
+            icon: "nutrition",
+            data: foodPlans,
+            isLoading: isLoadingFoodPlans,
+            isError: isErrorFoodPlans,
+            renderItem: ({ item }: { item: NutritionPlan }) => <FoodPlanListItemSmall key={item.id} {...item} />,
+        },
+        {
+            title: "Planes de Entrenamiento",
+            key: "trainingplans",
+            icon: "calendar",
+            data: trainingPlans,
+            isLoading: isLoadingTrainingPlans,
+            isError: isErrorTrainingPlans,
+            renderItem: ({ item }: { item: TrainingPlanAPI }) => <FavPlanListItem key={item.id} {...item} />,
+        },
+    ];
+
     return (
-        <View className={`flex-1 bg-${isDark ? "darkGray-900" : "white"}`}>
-            <Animated.View style={{ flex: 1, opacity: fadeAnim }}>
-                <View className="p-4 flex flex-row justify-between items-center">
-                    <View className="flex flex-col">
-                        <Text
-                            className={`${isDark ? "text-white" : "text-darkGray-900"} font-ralewayBold text-4xl`}
-                        >
-                            Favoritos
+        <View className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-white"}`}>
+            <Animated.View style={{ flex: 1, opacity: fadeAnim, backgroundColor: isDark ? "#080808" : "#fff" }}>
+                <FlatList
+                    ListHeaderComponent={
+                        <View className="p-4 flex flex-row justify-between items-center">
+                            <View className="flex flex-col">
+                                <Text
+                                    className={`${isDark ? "text-white" : "text-darkGray-900"} font-ralewayBold text-4xl`}
+                                >
+                                    Favoritos
+                                </Text>
+                            </View>
+                            <IconButton
+                                icon={<Ionicons name="information-circle-outline" size={24} color={isDark ? "white" : "#1c1c1c"} />}
+                                onPress={() => setInfoVisible(!infoVisible)}
+                            />
+                        </View>
+                    }
+                    data={data}
+                    refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+                    renderItem={({ item }) => (
+                        <List.Section>
+                            <List.Accordion
+                                title={
+                                    <Text className={`${isDark ? "text-white" : "text-darkGray-900"} font-ralewayBold text-xl`}>
+                                        {item.title}
+                                    </Text>
+                                }
+                                style={{ 
+                                    backgroundColor: isDark ? "#1c1c1c" : "#f5f5f5",
+                                    borderBottomWidth: 1,
+                                    borderBottomColor: isDark ? "#333" : "#e0e0e0",
+                                    padding: 0,
+                                    alignItems: "flex-start",
+                                }}
+                                left={() => 
+                                <View className="flex flex-row items-center pl-4">
+                                    <Ionicons name={item.icon as any} size={24} color={isDark ? "white" : "#1c1c1c"} />
+                                </View>
+                                }
+                                right={() => 
+                                <View className="flex flex-row items-center ">
+                                    <Text className={`${isDark ? "text-white" : "text-darkGray-900"} font-ralewaySemiBold text-xl`}>
+                                        {item.data.length}
+                                    </Text>
+                                </View>
+                                }
+                            >
+                                {item.isLoading ? (
+                                    <Text className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway`}>Cargando...</Text>
+                                ) : item.isError ? (
+                                    <Text className="text-red-500 font-raleway">Error al cargar.</Text>
+                                ) : item.data.length > 0 ? (
+                                    <FlatList
+                                        data={item.data as any}
+                                        renderItem={item.renderItem as any}
+                                        keyExtractor={(dataItem) => dataItem.id.toString()}
+                                    />
+                                ) : (
+                                    <Text className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway text-sm`}>
+                                        No tienes {item.title.toLowerCase()} favoritos.
+                                    </Text>
+                                )}
+                            </List.Accordion>
+                        </List.Section>
+                    )}
+                    keyExtractor={(item) => item.key}
+                />
+                <SimpleInfoComponent
+                    text="En la sección Favoritos encontraras las rutinas que has marcado como favoritas y acceder a ellas fácilmente."
+                    modalVisible={infoVisible}
+                    toggleModal={() => setInfoVisible(!infoVisible)}
+                    pressable={
+                        <Text className={`text-eOrange-500 font-ralewaySemiBold`}>
+                            Si deseas conocer todas nuestras rutinas, puedes hacerlo en la sección "Rutinas" de nuestra Biblioteca.
                         </Text>
-                    </View>
-                    <IconButton
-                        icon={<Ionicons name="information-circle-outline" size={24} color={isDark ? "white" : "#1c1c1c"} />}
-                        onPress={() => setInfoVisible(!infoVisible)}
-                    />
-                </View>
-
-                <View className="flex-1 p-4">
-                    <Text
-                        className={`${isDark ? "text-white" : "text-darkGray-900"} font-ralewayBold text-xl`}
-                    >
-                        Tus Rutinas 
-                    </Text>
-                    <View className="py-2">
-                        {isLoading ? (
-                            <Text className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway`}>Cargando rutinas...</Text>
-                        ) : isError ? (
-                            <Text className="text-red-500 font-raleway">Error al cargar las rutinas.</Text>
-                        ) : userHasFavoritesWorkouts && workouts.length > 0 ? (
-                            <FlatList
-                                data={workouts}
-                                renderItem={({ item }) => <FavRoutineListCard key={item.id} {...item} />}
-                                keyExtractor={(item: WorkoutAPI) => item.id.toString()}
-                                ListFooterComponent={<View className="h-4" />}
-                            />
-                        ) : (
-                            <View>
-                                <Text
-                                    className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway text-sm`}
-                                >
-                                    No tienes ningún plan alimenticio activo. Puedes descubrir nuestros planes en la
-                                    sección "Planes de Alimentación" de nuestra Biblioteca.
-                                </Text>
-                            </View>
-                        )}
-                    </View>
-                </View>
-
-                <View className="flex-1 p-4">
-                    <Text
-                        className={`${isDark ? "text-white" : "text-darkGray-900"} font-ralewayBold text-xl`}
-                    >
-                        Planes Alimenticios 
-                    </Text>
-                    <View className="py-2">
-                        {isLoading ? (
-                            <Text className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway`}>Cargando planes alimenticios...</Text>
-                        ) : isError ? (
-                            <Text className="text-red-500 font-raleway">Error al cargar los planes alimenticios.</Text>
-                        ) : userHasFavoritesFoodPlans && foodPlans.length > 0 ? (
-                            <FlatList
-                                data={foodPlans}
-                                renderItem={({ item }) => <FoodPlanListItemSmall key={item.id} {...item} />}
-                                keyExtractor={(item: NutritionPlan) => item.id.toString()}
-                                ListFooterComponent={<View className="h-4" />}
-                            />
-                        ) : (
-                            <View>
-                                <Text
-                                    className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway text-sm`}
-                                >
-                                    No tienes ningún plan alimenticio favorito. Puedes descubrir nuestros planes en la
-                                    sección "Planes de Alimentación" de nuestra Biblioteca.
-                                </Text>
-                            </View>
-                        )}
-                    </View>
-                </View>
-
-                <View className="flex-1 p-4">
-                    <Text
-                        className={`${isDark ? "text-white" : "text-darkGray-900"} font-ralewayBold text-xl`}
-                    >
-                        Planes de Entrenamiento
-                    </Text>
-                    <View className="py-2">
-                        {isLoading ? (
-                            <Text className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway`}>Cargando planes de entrenamiento...</Text>
-                        ) : isError ? (
-                            <Text className="text-red-500 font-raleway">Error al cargar los planes de entrenamiento.</Text>
-                        ) : userHasFavoritesTrainingPlans && trainingPlans.length > 0 ? (
-                            <FlatList
-                                data={trainingPlans}
-                                renderItem={({ item }) => <FavPlanListItem key={item.id} {...item} />}
-                                keyExtractor={(item: TrainingPlanAPI) => item.id.toString()}
-                                ListFooterComponent={<View className="h-4" />}
-                            />
-                        ) : (
-                            <View>
-                                <Text
-                                    className={`${isDark ? "text-white" : "text-darkGray-900"} font-raleway text-sm`}
-                                >
-                                    No tienes ningún plan de entrenamiento favorito. Puedes descubrir nuestros planes en la
-                                    sección "Planes de Entrenamiento" de nuestra Biblioteca.
-                                </Text>
-                            </View>
-                        )}
-                    </View>
-                </View>
+                    }
+                />
             </Animated.View>
-
-            <SimpleInfoComponent
-                text="En la sección Favoritos encontraras las rutinas que has marcado como favoritas y acceder a ellas facilmente,"
-                modalVisible={infoVisible}
-                toggleModal={() => setInfoVisible(!infoVisible)}
-                pressable={
-                    <Text className={`text-eOrange-500 font-ralewaySemiBold`}>
-                        Si deseas conocer todas nuestras rutinas, puedes hacerlo en la sección "Rutinas" de nuestra Biblioteca.
-                    </Text>
-                }
-            />
         </View>
     );
 }
