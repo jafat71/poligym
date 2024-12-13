@@ -17,6 +17,8 @@ import { TrainingPlanAPI, WorkoutAPI } from '@/types/interfaces/entities/plan';
 import SquarePill from '@/components/ui/common/pills/SquarePill';
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
 import PlanWorkoutItem from '@/components/ui/plans/PlanWorkoutItem';
+import { useFavoriteTrainingPlan } from '@/hooks/useFavoriteTrainingPlan';
+import ButtonPillLightDark from '@/components/ui/common/buttons/ButtonPillLightDark';
 
 const PlanInfo = () => {
     const { id } = useLocalSearchParams();
@@ -35,12 +37,13 @@ const PlanInfo = () => {
         enabled: !!id
     });
 
+    const { isFavorite, handleFavoriteTrainingPlan, handleUnfavoriteTrainingPlan } = useFavoriteTrainingPlan(planId);
     if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error loading plan details - {id}</Text>;
     const hasWorkouts = plan?.workouts && plan?.workouts?.length > 0;
 
     return (
-        <SafeAreaView className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
+        <View className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
             <ScrollView
                 contentContainerStyle={{ flexGrow: 1 }}
                 showsVerticalScrollIndicator={false}
@@ -56,19 +59,24 @@ const PlanInfo = () => {
 
                 </View>
 
+                <ButtonPillLightDark
+                    icon="heart-outline"
+                    text={
+                        isFavorite ? "Quitar de favorito" : "Marcar como favorito"}
+                    onPress={() => {
+                        if (isFavorite) {
+                            handleUnfavoriteTrainingPlan()
+                        } else {
+                            handleFavoriteTrainingPlan()
+                        }
+                    }}
+                    disabled={isLoading}
+                />
+
+
                 <View>
                     <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Descripción</Text>
                     <Text className={`text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>{plan?.description}</Text>
-                </View>
-
-                <View>
-                    <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Fecha de inicio</Text>
-                    <Text className={`text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>{plan?.startDate.toLocaleDateString()}</Text>
-                </View>
-
-                <View>
-                    <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Fecha de finalización</Text>
-                    <Text className={`text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>{plan?.endDate?.toLocaleDateString()}</Text>
                 </View>
 
                 <View className='mt-2'>
@@ -93,12 +101,7 @@ const PlanInfo = () => {
 
             </ScrollView>
 
-            <Pressable className='absolute bottom-0 left-0 right-0 p-4 
-            rounded-t-sm
-            bg-eBlue-500 flex flex-row items-center justify-center gap-x-2'>
-                <Text className='text-center text-xl font-ralewayBold text-white'>Seleccionar plan</Text>
-            </Pressable>
-        </SafeAreaView>
+        </View>
     );
 };
 

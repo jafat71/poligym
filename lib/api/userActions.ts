@@ -13,12 +13,22 @@ export const updateUser = async (token: string, userId: string, user: Partial<Us
     }
 }
 
-export const getUserPlans = async (token: string, userId: string) => {
+export const getUserFoodPlans = async (token: string, userId: string) => {
     try {
         const response = await axiosInstance.get(`/user/find-nutrition-plans/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
         return response.data;
     } catch (error) {
         console.error('Error al obtener los planes del usuario');
+        throw error;
+    }
+}
+
+export const getUserTrainingPlans = async (token: string, userId: string) => {
+    try {
+        const response = await axiosInstance.get(`/user/find-training-plans/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener los planes de entrenamiento del usuario');
         throw error;
     }
 }

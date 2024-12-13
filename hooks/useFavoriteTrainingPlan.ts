@@ -2,18 +2,18 @@ import { useUser } from "@/context/UserContext";
 import { updateUser } from "@/lib/api/userActions";
 import { useState } from "react"
 
-export const useFavoriteWorkout = (workoutId: number) => {
+export const useFavoriteTrainingPlan = (trainingPlanId: number) => {
     const { accessToken, loggedUserInfo, setLoggedUserInfo } = useUser();
-    const [isFavorite, setIsFavorite] = useState(loggedUserInfo?.workoutIds?.includes(workoutId) ?? false)
-    const handleFavoriteWorkout = async () => {
+    const [isFavorite, setIsFavorite] = useState(loggedUserInfo?.trainingPlanIds?.includes(trainingPlanId) ?? false)
+    const handleFavoriteTrainingPlan = async () => {
         setIsFavorite(!isFavorite)
         const tmpUser = {
             userType: loggedUserInfo?.userType,
-            workoutIds: [...loggedUserInfo?.workoutIds!, workoutId]
+            trainingPlanIds: [...loggedUserInfo?.trainingPlanIds!, trainingPlanId]
         }
         setLoggedUserInfo({
             ...loggedUserInfo!,
-            workoutIds: [...loggedUserInfo?.workoutIds!, workoutId]
+            trainingPlanIds: [...loggedUserInfo?.trainingPlanIds!, trainingPlanId]
         })
         try {
             await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)
@@ -22,15 +22,15 @@ export const useFavoriteWorkout = (workoutId: number) => {
         }
     }
 
-    const handleUnfavoriteWorkout = async () => {
+    const handleUnfavoriteTrainingPlan = async () => {
         setIsFavorite(!isFavorite)
         const tmpUser = {
             userType: loggedUserInfo?.userType,
-            workoutIds: loggedUserInfo?.workoutIds?.filter((id) => id !== workoutId)
+            trainingPlanIds: loggedUserInfo?.trainingPlanIds?.filter((id) => id !== trainingPlanId)
         }
         setLoggedUserInfo({
             ...loggedUserInfo!,
-            workoutIds: loggedUserInfo?.workoutIds?.filter((id) => id !== workoutId) ?? []
+            trainingPlanIds: loggedUserInfo?.trainingPlanIds?.filter((id) => id !== trainingPlanId) ?? []
         })
         try {
             await updateUser(accessToken!, loggedUserInfo?.id!, tmpUser)
@@ -39,5 +39,5 @@ export const useFavoriteWorkout = (workoutId: number) => {
         }
     }
 
-    return { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout }
+    return { isFavorite, handleFavoriteTrainingPlan, handleUnfavoriteTrainingPlan }
 }
