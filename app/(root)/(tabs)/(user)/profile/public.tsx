@@ -1,6 +1,5 @@
 import CustomListEmptyComponent from "@/components/ui/common/flatlists/CustomListEmptyComponent";
 import SelfPost from "@/components/ui/social/SelfPost";
-import { UserPosts } from "@/constants";
 import { useNavigationFlowContext } from "@/context/NavFlowContext";
 import { useTheme } from "@/context/ThemeContext";
 import { SocialPost } from "@/types/interfaces/entities/post";

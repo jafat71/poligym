@@ -8,13 +8,28 @@ import IconButton from '../common/buttons/IconButton';
 
 import { useTheme } from '@/context/ThemeContext';
 
-import { TrainingPlans } from '@/constants';
 import { HomePlanFlatlist } from '../plans/HomePlanFlatlist';
+import IndividualCardSkeleton from '@/components/animatedUi/IndividualCarkSkeleton';
+import { useUser } from '@/context/UserContext';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { TrainingPlanAPI } from '@/types/interfaces/entities/plan';
+import { fetchRecommendedPlans } from '@/lib/api/actions';
 
 const HomeSubSection = () => {
     const { isDark } = useTheme()
-
-    const suggestedPlans = TrainingPlans.slice(0, 3)
+    const { accessToken } = useUser()
+    const queryClient = useQueryClient();
+    const { data: recommendedPlans = [], isLoading: isLoadingRecommendedPlans } = useQuery<TrainingPlanAPI[]>({
+        queryKey: ['plans', 'recommended'],
+        queryFn: async () => {
+            const data = await fetchRecommendedPlans(accessToken!);
+            data.forEach(plan => {
+                queryClient.setQueryData(['plans', plan.id], plan);
+            })
+            return data;
+        },
+    })
+    if (isLoadingRecommendedPlans) return <IndividualCardSkeleton/>;
 
     return (
         <View className="my-2">
@@ -29,7 +44,7 @@ const HomeSubSection = () => {
                 />
             </View>
             <HomePlanFlatlist
-                data={suggestedPlans}
+                data={recommendedPlans}
             />
         </View>
     );

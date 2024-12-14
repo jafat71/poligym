@@ -201,6 +201,18 @@ export const fetchRecommendedWorkouts = async (token: string) : Promise<WorkoutA
     }
 }
 
+export const fetchRecommendedPlans = async (token: string) : Promise<TrainingPlanAPI[]> => {
+    try {
+        const response = await axiosInstance.get(`/training-plan/find-all?page=1&limit=3`,{
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        return mapApiTrainingPlanToTrainingPlan(response.data.data);
+    } catch (error) {
+        console.error('Error al obtener los planes recomendados');
+        throw error;
+    }
+}
+
 export const createPost = async (token: string, post: SocialPost) => {
     try {
         //const response = await axiosInstance.post(`/post/create`, post, { headers: { 'Authorization': `Bearer ${token}` } });

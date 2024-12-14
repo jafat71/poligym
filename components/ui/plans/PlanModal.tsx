@@ -2,12 +2,12 @@ import { useTheme } from '@/context/ThemeContext';
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { TrainingPlan } from '@/types/interfaces/entities/plan';
+import { TrainingPlanAPI } from '@/types/interfaces/entities/plan';
 
 interface PlanModalProps {
     isModalVisible: boolean;
     setIsModalVisible: (value: boolean) => void;
-    screenPlan: TrainingPlan;
+    screenPlan: TrainingPlanAPI;
 }
 
 const PlanModal = ({ isModalVisible, setIsModalVisible, screenPlan}: PlanModalProps) => {
@@ -31,7 +31,7 @@ const PlanModal = ({ isModalVisible, setIsModalVisible, screenPlan}: PlanModalPr
                         text-xl font-ralewayBold
                         ${isDark ? 'text-white' : 'text-darkGray-500'}
                     `}>
-                        {screenPlan?.nombre || "Detalles del Plan"}
+                        {screenPlan?.name || "Detalles del Plan"}
                     </Text>
                     <TouchableOpacity 
                         onPress={() => setIsModalVisible(false)}
@@ -47,20 +47,6 @@ const PlanModal = ({ isModalVisible, setIsModalVisible, screenPlan}: PlanModalPr
 
                 {/* Content */}
                 <View className="space-y-4">
-                    <View className="flex-row items-center space-x-2">
-                        <Ionicons 
-                            name="time-outline" 
-                            size={20} 
-                            color={isDark ? '#fff' : '#374151'} 
-                        />
-                        <Text className={`
-                            font-raleway
-                            ${isDark ? 'text-white' : 'text-darkGray-500'}
-                        `}>
-                            Duración: {screenPlan?.duracion} semanas
-                        </Text>
-                    </View>
-
                     <View className="flex-row items-start space-x-2">
                         <Ionicons 
                             name="document-text-outline" 
@@ -71,7 +57,7 @@ const PlanModal = ({ isModalVisible, setIsModalVisible, screenPlan}: PlanModalPr
                             flex-1 font-raleway
                             ${isDark ? 'text-white' : 'text-darkGray-500'}
                         `}>
-                            {screenPlan?.descripcion}
+                            {screenPlan?.description}
                         </Text>
                     </View>
 
@@ -85,7 +71,7 @@ const PlanModal = ({ isModalVisible, setIsModalVisible, screenPlan}: PlanModalPr
                             font-raleway
                             ${isDark ? 'text-white' : 'text-darkGray-500'}
                         `}>
-                            Nivel: {screenPlan?.dificultad}
+                            Nivel: {screenPlan?.level}
                         </Text>
                     </View>
                 </View>

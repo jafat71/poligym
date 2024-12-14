@@ -219,7 +219,7 @@ const CreatePostModal = ({
                                 />
                                 <ThemeHomePill
                                     icon="flame-outline"
-                                    text={`${DIFFICULTY[post.dificultad as keyof typeof DIFFICULTY]}`}
+                                    text={`${post.dificultad}`}
                                 />
                             </View>
                         </View>

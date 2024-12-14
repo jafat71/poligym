@@ -1,4 +1,3 @@
-import { DIFFICULTIES } from '@/constants';
 import { useTheme } from '@/context/ThemeContext';
 import { SocialPost } from '@/types/interfaces/entities/post';
 import { Ionicons } from '@expo/vector-icons';
@@ -113,7 +112,7 @@ export const SelfPost = (post: SocialPost) => {
                     />
                     <ThemeHomePill
                         icon="flame-outline"
-                        text={`${DIFFICULTIES.find(diff => diff.value === post.dificultad)?.label || ''}`}
+                        text={`${post.dificultad}`}
                     />
                 </View>
             </View>

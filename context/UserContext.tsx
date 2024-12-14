@@ -1,6 +1,6 @@
 import { getUserInfo, verifyToken } from '@/lib/api/auth';
 import { getToken } from '@/lib/token/store';
-import { TrainingPlan, WorkoutAPI, TrainingPlanAPI } from '@/types/interfaces/entities/plan';
+import { WorkoutAPI, TrainingPlanAPI } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
 import { usePathname } from 'expo-router';
@@ -15,8 +15,8 @@ interface UserContextType {
     setAccessToken: Dispatch<SetStateAction<string | null>>;
     loggedUserInfo: User | null;
     accessToken: string | null;
-    userSelectedPlan: TrainingPlan | null;
-    setUserSelectedPlan: Dispatch<SetStateAction<TrainingPlan | null>>;
+    userSelectedPlan: TrainingPlanAPI | null;
+    setUserSelectedPlan: Dispatch<SetStateAction<TrainingPlanAPI | null>>;
     updateUserInfo: () => Promise<void>;
     setLoggedUserInfo: Dispatch<SetStateAction<User | null | undefined>>;
     userFavWorkouts: WorkoutAPI[];
@@ -53,7 +53,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const pathname = usePathname()
-    const [userSelectedPlan, setUserSelectedPlan] = useState<TrainingPlan | null>(null)
+    const [userSelectedPlan, setUserSelectedPlan] = useState<TrainingPlanAPI | null>(null)
 
     useEffect(() => {
         getToken('accessToken')
@@ -129,11 +129,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [userFavFoodPlans, setUserFavFoodPlans] = useState<NutritionPlan[]>([]);
     const [userFavTrainingPlans, setUserFavTrainingPlans] = useState<TrainingPlanAPI[]>([]);
     
-    console.log("loggedUserInfo", loggedUserInfo)
-    console.log("userFavWorkouts", userFavWorkouts)
-    console.log("userFavFoodPlans", userFavFoodPlans)
-    console.log("userFavTrainingPlans", userFavTrainingPlans)
-
     return (
         <UserContext.Provider value={{
             userLogged,

@@ -8,9 +8,8 @@ import { useTheme } from '@/context/ThemeContext';
 
 import IconButton from '../common/buttons/IconButton';
 import { HomeRoutineFlatlist } from '../routines/HomeRoutineFlatList';
-import { TrainingPlans } from '@/constants';
 
-import { RoutinePlan, WorkoutAPI } from '@/types/interfaces/entities/plan';
+import { WorkoutAPI } from '@/types/interfaces/entities/plan';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useUser } from '@/context/UserContext';
 import { fetchRecommendedWorkouts } from '@/lib/api/actions';
