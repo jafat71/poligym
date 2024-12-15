@@ -18,8 +18,8 @@ const ButtonPill = ({
     return (
         <TouchableOpacity
             onPress={onPress}
-            className={`px-3 py-2 rounded-sm mr-1 mb-1 flex flex-row items-center justify-center   
-                 bg-white/20 border-2 border-lightGreen
+            className={`px-2 py-2 rounded-full mr-1 mb-1 flex flex-row items-center justify-center   
+                bg-eBlue-600  border-2 border-lightGreen
             `}
         >
             <Ionicons
@@ -32,9 +32,8 @@ const ButtonPill = ({
                 className={`
                   text-white
                     font-ralewaySemiBold 
-                    text-xs capitalize ml-1
+                    text-xs capitalize 
                 `}
-                numberOfLines={1}
             >
                 {text}
             </Text>

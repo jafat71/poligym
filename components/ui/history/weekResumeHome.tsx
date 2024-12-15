@@ -36,7 +36,7 @@ const WeekResumeHome = () => {
                 </View>
                 <View className='flex flex-col items-end justify-end'>
                     <Text className={`text-sm font-ralewayBold text-start text-white`}>Dias Activo</Text>
-                    <Text className={`text-4xl font-ralewaySemiBold text-start text-white`}>{loggedUserInfo?.userNumberActivityDays}</Text>
+                    <Text className={`text-4xl font-semibold text-start text-white`}>{loggedUserInfo?.userNumberActivityDays ?? 0}</Text>
                 </View>
 
             </View>

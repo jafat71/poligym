@@ -12,7 +12,7 @@ import { HomeRoutineFlatlist } from '../routines/HomeRoutineFlatList';
 import { WorkoutAPI } from '@/types/interfaces/entities/plan';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useUser } from '@/context/UserContext';
-import { fetchRecommendedWorkouts } from '@/lib/api/actions';
+import { fetchRecommendedWorkouts, fetchWorkoutById } from '@/lib/api/actions';
 import IndividualCardSkeleton from '@/components/animatedUi/IndividualCarkSkeleton';
 
 const HomeSmallSection = () => {
@@ -24,7 +24,15 @@ const HomeSmallSection = () => {
         queryFn: async () => {
             const data = await fetchRecommendedWorkouts(accessToken!);
             data.forEach(workout => {
-                queryClient.setQueryData(['workouts', workout.id], workout);
+                queryClient.prefetchQuery({
+                    queryKey: ['workouts', workout.id],
+                    queryFn: async () => {
+                        const individualWorkout = await fetchWorkoutById(accessToken!, workout.id.toString());
+                        queryClient.setQueryData(['workouts', workout.id], individualWorkout);
+                        return individualWorkout;
+                    }
+                });
+                // queryClient.setQueryData(['workouts', workout.id], workout);
             })
             return data;
         },

@@ -10,6 +10,8 @@ import HomePill from "../pills/HomePill";
 import { useMemo } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
+import WorkoutLoadingScreen from "@/components/animatedUi/WorkoutLoadingScreen";
+import WorkoutSkeleton from "@/components/animatedUi/WorkoutSkeleton";
 
 interface PlayWorkoutFlatlistHeaderProps {
     workout: WorkoutAPI;
@@ -17,6 +19,7 @@ interface PlayWorkoutFlatlistHeaderProps {
     handlePlayWorkout: () => void;
     hasbeenModified: boolean;
     restoreWorkout: () => void;
+    isLoading: boolean;
 }
 
 export const PlayWorkoutFlatlistHeader = ({
@@ -24,11 +27,12 @@ export const PlayWorkoutFlatlistHeader = ({
     totalExercises,
     handlePlayWorkout,
     hasbeenModified,
-    restoreWorkout
+    restoreWorkout,
+    isLoading
 }: PlayWorkoutFlatlistHeaderProps) => {
 
     const { completedPlayExercises, lastWorkoutPlayed } = usePlayWorkoutContext()
-    const isLastWorkoutPlayed = lastWorkoutPlayed === workout.id;
+    const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
 
     const exercisesCompleted = (isLastWorkoutPlayed ? Object.values(completedPlayExercises).filter(Boolean).length : 0);
     const progressOver100 = useMemo(
@@ -39,6 +43,8 @@ export const PlayWorkoutFlatlistHeader = ({
     const isExecuting = (isLastWorkoutPlayed ? Object.values(completedPlayExercises).filter(Boolean).length > 0 : false);
     const { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout } = useFavoriteWorkout(workout);
     const { isDark } = useTheme(); 
+    if (isLoading) return <WorkoutSkeleton/>
+
     return (
         <View className="rounded-lg overflow-hidden mb-2">
             <LinearGradient
@@ -51,25 +57,26 @@ export const PlayWorkoutFlatlistHeader = ({
             />
             <View className="p-4 pb-3 ">
                 <Text className={`text-white text-4xl font-ralewayBold mb-4 flex-1`}>
-                    {workout.name}
+                    {workout?.name}
                 </Text>
                 <View className="flex-row items-center mb-2">
                     <HomePill
                         icon="time-outline"
-                        text={`${workout.duration} min.`}
+                        text={`${workout?.duration} min.`}
                     />
                     <HomePill
                         icon="flame-outline"
-                        text={`${workout.level}`}
+                        text={`${workout?.level}`}
                     />
                 </View>
 
                 <View className="flex-row items-center justify-between">
                     <View className="w-3/4 flex-row">
                         <ButtonPill
-                            icon="heart-outline"
-                            text={
-                                isFavorite ? "Quitar" : "Añadir"}
+                            icon={
+                                isFavorite ? "heart-outline" : "trash-outline"
+                            }
+                            text={""}
                             onPress={() => {
                                 if (isFavorite) {
                                     handleUnfavoriteWorkout()
@@ -122,7 +129,7 @@ export const PlayWorkoutFlatlistHeader = ({
                         Descripción
                     </Text>
                     <Text className={`text-xl font-ralewayLight text-white mb-4`}>
-                        {workout.description}
+                        {workout?.description}
                     </Text>
                 </View>
 

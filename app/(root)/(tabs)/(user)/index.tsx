@@ -12,10 +12,6 @@ const Index = () => {
     const { isDark } = useTheme()
     return (
         <View className={`flex-1 ${isDark ? 'bg-darkGray-900' : 'bg-white'}`}>
-            <StatusBar
-                barStyle={isDark ? 'light-content' : 'dark-content'}
-                backgroundColor={isDark ? '#1c1c1c' : '#fff'}
-            />
             <View className="flex-row items-center px-4 py-2">
                 <View className={`rounded-full w-20 h-20 flex items-center justify-center border-2 border-eBlue-500`}>
                     {loggedUserInfo?.avatarUrl ? (

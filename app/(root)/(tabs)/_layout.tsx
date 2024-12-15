@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, StatusBar, Text, View } from 'react-native';
 
 import { router, Tabs, usePathname } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';

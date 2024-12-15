@@ -15,6 +15,7 @@ import WorkoutLoadingScreen from "@/components/animatedUi/WorkoutLoadingScreen";
 import { usePlayWorkoutContext, WorkoutPlayProvider } from "@/context/PlayWorkoutContext";
 import EditExerciseModal from "@/components/ui/common/modal/EditExerciseModal";
 import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
+import ExerciseInWorkoutSkeleton from "@/components/animatedUi/ExerciseInWorkoutSkeleton";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
@@ -116,7 +117,7 @@ const PlayWorkout = () => {
         router.push('/(animated)/playexercise')
     }
 
-    if (isLoading || !infoSetted) return <WorkoutLoadingScreen />;
+    // if (isLoading || !infoSetted) return <WorkoutLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
 
     return (
@@ -129,9 +130,10 @@ const PlayWorkout = () => {
                     handlePlayWorkout={handlePlayWorkout}
                     hasbeenModified={hasbeenModified}
                     restoreWorkout={restoreWorkout}
+                    isLoading={isLoading}
                 />}
                 data={exercises}
-                ItemSeparatorComponent={() => <View className="h-2 " />}
+                ItemSeparatorComponent={() => <View className="h-2" />}
                 onDragEnd={({ data }) =>{ 
                     setHasbeenModified(true);
                     setExercises([...data])}}
@@ -140,7 +142,15 @@ const PlayWorkout = () => {
                 scrollEnabled={true}
                 containerStyle={{ flexGrow: 1 }}
             />
-            
+            {
+                (isLoading || !infoSetted) && (
+                    <>
+                        <ExerciseInWorkoutSkeleton/>
+                        <ExerciseInWorkoutSkeleton/>
+                        <ExerciseInWorkoutSkeleton/>
+                    </>
+                )
+            }
 
             <CreatePostModal
                 isVisible={showPostModal}

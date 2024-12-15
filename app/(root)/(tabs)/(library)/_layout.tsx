@@ -11,7 +11,6 @@ export default function TabLayout() {
                 name="index"
                 options={{
                     headerShown: false,
-                    animation: 'fade_from_bottom',
                 }}
             />
 
@@ -27,7 +26,7 @@ export default function TabLayout() {
                 name="plan/[id]"
                 options={{
                     headerShown: false,
-                    animation: 'fade_from_bottom',
+                    animation: 'slide_from_right',
                 }}
             />
 
@@ -43,7 +42,7 @@ export default function TabLayout() {
                 name="exercise/[id]"
                 options={{
                     headerShown: false,
-                    animation: 'fade_from_bottom',
+                    animation: 'slide_from_right',
                 }}
             />
 
@@ -59,7 +58,7 @@ export default function TabLayout() {
                 name="routine/[id]"
                 options={{
                     headerShown: false,
-                    animation: 'fade_from_bottom',
+                    animation: 'slide_from_right',
                 }}
             />
 
@@ -74,7 +73,7 @@ export default function TabLayout() {
                 name="foodplan/[id]"
                 options={{
                     headerShown: false,
-                    animation: 'fade_from_bottom',
+                    animation: 'slide_from_right',
                 }}
             />
 

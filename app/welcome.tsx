@@ -2,15 +2,12 @@ import React from 'react'
 import { View } from 'react-native'
 import { router } from 'expo-router'
 
-import { useTheme } from '@/context/ThemeContext'
-
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary'
 import CTAButtonSecondary from '@/components/ui/common/buttons/CtaButtonSecondary'
 import OnBoardingSwiper from '@/components/animatedUi/OnBoardingSwiper';
 
 const Welcome = () => {
 
-    const { isDark } = useTheme()
     return (
         <View className={`flex flex-1 flex-col justify-center bg-eBlue-500 `}>
 
