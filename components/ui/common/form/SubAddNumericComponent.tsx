@@ -29,7 +29,7 @@ export const SubAddNumericComponent = ({ number, subFunction, addFunction, icon,
 
                     <View className='flex flex-row items-center'>
                         <Ionicons name={icon as any} size={34} color={isDark ? '#fff' : '#374151'} />
-                        <Text className={`ml-2 text-4xl w-12 text-center font-raleway
+                        <Text className={`ml-2 text-2xl w-12 text-center font-semibold
                             ${isDark ? 'text-white' : 'text-darkGray-900'}
                         `}>
                             {number}

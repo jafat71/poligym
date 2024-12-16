@@ -13,7 +13,8 @@ import IndividualCardSkeleton from '@/components/animatedUi/IndividualCarkSkelet
 import { useUser } from '@/context/UserContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { TrainingPlanAPI } from '@/types/interfaces/entities/plan';
-import { fetchRecommendedPlans } from '@/lib/api/actions';
+import { fetchRecommendedPlans, fetchTrainingPlanById, fetchWorkoutById } from '@/lib/api/actions';
+import HorizontalFlatlistSkeleton from '@/components/animatedUi/HorizontalFlatlistSkeleton';
 
 const HomeSubSection = () => {
     const { isDark } = useTheme()
@@ -24,12 +25,19 @@ const HomeSubSection = () => {
         queryFn: async () => {
             const data = await fetchRecommendedPlans(accessToken!);
             data.forEach(plan => {
-                queryClient.setQueryData(['plans', plan.id], plan);
+                queryClient.prefetchQuery({
+                    queryKey: ['plans', plan.id],
+                    queryFn: async () => {
+                        const individualPlan = await fetchTrainingPlanById(accessToken!, plan.id.toString());
+                        queryClient.setQueryData(['plans', plan.id], individualPlan);
+                        return individualPlan;
+                    }
+                });
             })
             return data;
         },
     })
-    if (isLoadingRecommendedPlans) return <IndividualCardSkeleton/>;
+    if (isLoadingRecommendedPlans) return <HorizontalFlatlistSkeleton/>;
 
     return (
         <View className="my-2">

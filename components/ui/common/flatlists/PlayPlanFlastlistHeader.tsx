@@ -8,25 +8,28 @@ import HomePill from "../pills/HomePill";
 import { useMemo, useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { useFavoriteTrainingPlan } from "@/hooks/useFavoriteTrainingPlan";
+import WorkoutSkeleton from "@/components/animatedUi/WorkoutSkeleton";
 
 interface PlayPlanFlatlistHeaderProps {
     plan: TrainingPlanAPI;
+    isLoading: boolean;
 }
 
 export const PlayPlanFlatlistHeader = ({
     plan,
+    isLoading
 }: PlayPlanFlatlistHeaderProps) => {
 
     const workoutsCompleted = 0
     const progressOver100 = useMemo(
-        () => workoutsCompleted / plan.workouts.length,
-        [workoutsCompleted, plan.workouts.length]
+        () => workoutsCompleted / plan?.workouts.length,
+        [workoutsCompleted, plan?.workouts.length]
     );
     const [isFollowing, setIsFollowing] = useState(false);
     const { isFavorite, handleFavoriteTrainingPlan, handleUnfavoriteTrainingPlan } = useFavoriteTrainingPlan(plan);
 
     const { isDark } = useTheme();
-    console.log(plan.name)
+    if (isLoading) return <WorkoutSkeleton />
     return (
         <View className="rounded-lg overflow-hidden mb-2">
             <LinearGradient
@@ -39,12 +42,12 @@ export const PlayPlanFlatlistHeader = ({
             />
             <View className="p-4 pb-3 ">
                 <Text className={`text-white text-4xl font-ralewayBold mb-4`}>
-                    {plan.name}
+                    {plan?.name}
                 </Text>
                 <View className="flex-row items-center mb-2">
                     <HomePill
                         icon="flame-outline"
-                        text={`${plan.level}`}
+                        text={`${plan?.level}`}
                     />
                 </View>
 
@@ -89,7 +92,7 @@ export const PlayPlanFlatlistHeader = ({
                         Descripción
                     </Text>
                     <Text className={`text-xl font-ralewayLight text-white mb-4`}>
-                        {plan.description}
+                        {plan?.description}
                     </Text>
                 </View>
 
@@ -107,7 +110,7 @@ export const PlayPlanFlatlistHeader = ({
                             <View>
                                 <Text className={`font-ralewayBold text-start text-white`}>Rutinas</Text>
                                 <Text className={`text-4xl text-start text-white`}>
-                                    {workoutsCompleted}/{plan.workouts.length}
+                                    {workoutsCompleted}/{plan?.workouts.length}
                                 </Text>
                             </View>
                         </View>

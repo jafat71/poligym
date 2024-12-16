@@ -14,6 +14,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useUser } from '@/context/UserContext';
 import { fetchRecommendedWorkouts, fetchWorkoutById } from '@/lib/api/actions';
 import IndividualCardSkeleton from '@/components/animatedUi/IndividualCarkSkeleton';
+import HorizontalFlatlistSkeleton from '@/components/animatedUi/HorizontalFlatlistSkeleton';
 
 const HomeSmallSection = () => {
     const { isDark } = useTheme()
@@ -32,12 +33,11 @@ const HomeSmallSection = () => {
                         return individualWorkout;
                     }
                 });
-                // queryClient.setQueryData(['workouts', workout.id], workout);
             })
             return data;
         },
     })
-    if (isLoadingRecommendedWorkouts) return <IndividualCardSkeleton/>;
+    if (isLoadingRecommendedWorkouts) return <HorizontalFlatlistSkeleton/>;
     return (
         <View className="mb-4">
             <View className="px-4 flex flex-row items-center justify-between ">

@@ -1,21 +1,14 @@
-import { FlatList, Pressable, ScrollView, Text, View } from 'react-native'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { ScrollView, Text } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { useTheme } from '@/context/ThemeContext'
-import { Animated } from 'react-native'
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useUser } from '@/context/UserContext'
-import GoBackUpButton from '@/components/ui/common/buttons/GoBackUpButton'
 import { TrainingPlanAPI, WorkoutAPI } from '@/types/interfaces/entities/plan'
-import { Alert } from 'react-native'
-import { router, useLocalSearchParams } from 'expo-router'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { fetchTrainingPlanById } from '@/lib/api/actions'
-import MainLogoCustomComponent from '@/components/ui/common/logo/mainLogo'
-import SquarePill from '@/components/ui/common/pills/SquarePill'
-import { HomeRoutineFlatlist } from '@/components/ui/routines/HomeRoutineFlatList'
+import { fetchTrainingPlanById, fetchWorkoutById } from '@/lib/api/actions'
 import { WorkoutsInPlanFlatList } from '@/components/ui/routines/WorkoutsInPlanFlastListComponent'
-import WorkoutLoadingScreen from '@/components/animatedUi/WorkoutLoadingScreen'
 import { PlayPlanFlatlistHeader } from '@/components/ui/common/flatlists/PlayPlanFlastlistHeader'
+import HorizontalFlatlistSkeleton from '@/components/animatedUi/HorizontalFlatlistSkeleton'
+import { useLocalSearchParams } from 'expo-router'
 
 const PlayPlan = () => {
     const { isDark } = useTheme()
@@ -28,7 +21,20 @@ const PlayPlan = () => {
 
     const { data: plan, isLoading, isError } = useQuery<TrainingPlanAPI>({
         queryKey: ['plans', id],
-        queryFn: async () => fetchTrainingPlanById(accessToken!, id as string),
+        queryFn: async () => {
+            const data = await fetchTrainingPlanById(accessToken!, id as string)
+            data.workouts?.forEach(workout => {
+                queryClient.prefetchQuery({
+                    queryKey: ['workouts', workout.id],
+                    queryFn: async () => {
+                        const individualWorkout = await fetchWorkoutById(accessToken!, workout.id.toString());
+                        queryClient.setQueryData(['workouts', workout.id], individualWorkout);
+                        return individualWorkout;
+                    }
+                });
+            })
+            return data;
+        },
         initialData: cachedPlan,
         enabled: !!id,
     });
@@ -40,7 +46,7 @@ const PlayPlan = () => {
             setWorkouts(plan.workouts.map(workout => ({ ...workout })));
             setTimeout(() => {
                 setInfoSetted(true);
-            }, 1500);
+            },1000);
         }
     }, [plan]);
 
@@ -49,8 +55,7 @@ const PlayPlan = () => {
     const handleSelectPlan = () => {
     }
 
-    if (isLoading || !infoSetted) return <WorkoutLoadingScreen />;
-    if (isError) return
+    if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
     return (
         <ScrollView className={`flex-1 
             ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
@@ -58,10 +63,18 @@ const PlayPlan = () => {
                 ListHeaderComponent={(
                     <PlayPlanFlatlistHeader
                         plan={plan!}
+                        isLoading={isLoading}
                     />
                 )}
                 data={workouts}
             />
+            {
+                (isLoading || !infoSetted) && (
+                    <>
+                        <HorizontalFlatlistSkeleton/>
+                    </>
+                )
+            }
         </ScrollView>
     )
 }

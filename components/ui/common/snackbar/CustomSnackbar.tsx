@@ -16,7 +16,7 @@ const StyledSnackbar = styled(Snackbar);
 
 const CustomSnackbar = ({ visible, setVisible,  message = "", color = "eBlue-500", textColor }: CustomSnackbarProps) => {
     return (
-        <View className="absolute bottom-0 justify-center items-center w-full z-50">
+        <View className="absolute bottom-0 justify-center items-center w-full z-50 bg-sky-600">
             <StyledSnackbar
                 visible={visible}
                 onDismiss={() => setVisible(false)}

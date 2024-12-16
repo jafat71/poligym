@@ -16,6 +16,7 @@ import { usePlayWorkoutContext, WorkoutPlayProvider } from "@/context/PlayWorkou
 import EditExerciseModal from "@/components/ui/common/modal/EditExerciseModal";
 import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
 import ExerciseInWorkoutSkeleton from "@/components/animatedUi/ExerciseInWorkoutSkeleton";
+import CustomSnackbar from "@/components/ui/common/snackbar/CustomSnackbar";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
@@ -37,26 +38,26 @@ const PlayWorkout = () => {
     const [exercises, setExercises] = useState<ExerciseInWorkoutAPI[]>([]);
 
     useEffect(() => {
-            if(workout){
-                setExercises(workout.exercisesInWorkout.map(exercise => ({ ...exercise })));
-                setTimeout(() => {
-                    setInfoSetted(true);
-                }, 1500);
-            }
+        if (workout) {
+            setExercises(workout.exercisesInWorkout.map(exercise => ({ ...exercise })));
+            // setTimeout(() => {
+            setInfoSetted(true);
+            // }, 1500);
+        }
     }, [workout]);
 
-    const { 
-        setPlayExercises, 
-        startWorkout, 
-        isCompleted, 
+    const {
+        setPlayExercises,
+        startWorkout,
+        isCompleted,
         setIsCompleted,
         lastWorkoutPlayed,
         resetWorkout,
     } = usePlayWorkoutContext();
-   
+
     const [showPostModal, setShowPostModal] = useState(false);
     const [showEditExerciseModal, setShowEditExerciseModal] = useState({
-        visible:false,
+        visible: false,
         exercise: null
     });
 
@@ -83,6 +84,7 @@ const PlayWorkout = () => {
 
     const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
     const [hasbeenModified, setHasbeenModified] = useState(false);
+    const [workoutInProgressNotification, setWorkoutInProgressNotification] = useState(false);
 
     const updateExercise = (exercise: ExerciseInWorkoutAPI) => {
         setHasbeenModified(true);
@@ -91,25 +93,28 @@ const PlayWorkout = () => {
     }
 
     const restoreWorkout = () => {
-        if(workout){
-            setExercises(workout.exercisesInWorkout.map(exercise => ({ ...exercise })));     
+        if (workout) {
+            setExercises(workout.exercisesInWorkout.map(exercise => ({ ...exercise })));
             setHasbeenModified(false);
         }
     }
-    
+
     const renderItem = ({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => {
         return <PlayRoutineExerciseItem
             exercise={item}
             onDrag={drag}
             isActive={isActive}
-            handleEditExercise={() => setShowEditExerciseModal({ visible: true, exercise: item as any})}
+            handleEditExercise={() => {
+                setShowEditExerciseModal({ visible: true, exercise: item as any })
+            }}
             blocked={isLastWorkoutPlayed}
+            setWorkoutInProgressNotification={setWorkoutInProgressNotification}
         />
     }
 
     const handlePlayWorkout = () => {
-        if(exercises.length === 0)return;
-        if(isLastWorkoutPlayed){
+        if (exercises.length === 0) return;
+        if (isLastWorkoutPlayed) {
             resetWorkout()
         }
         setPlayExercises([...exercises])
@@ -117,14 +122,13 @@ const PlayWorkout = () => {
         router.push('/(animated)/playexercise')
     }
 
-    // if (isLoading || !infoSetted) return <WorkoutLoadingScreen />;
     if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
 
     return (
         <View className={`flex-1 
         ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
             <DraggableFlatList
-                ListHeaderComponent={()=><PlayWorkoutFlatlistHeader
+                ListHeaderComponent={() => <PlayWorkoutFlatlistHeader
                     workout={workout!}
                     totalExercises={exercises.length}
                     handlePlayWorkout={handlePlayWorkout}
@@ -134,9 +138,10 @@ const PlayWorkout = () => {
                 />}
                 data={exercises}
                 ItemSeparatorComponent={() => <View className="h-2" />}
-                onDragEnd={({ data }) =>{ 
+                onDragEnd={({ data }) => {
                     setHasbeenModified(true);
-                    setExercises([...data])}}
+                    setExercises([...data])
+                }}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
                 scrollEnabled={true}
@@ -145,9 +150,9 @@ const PlayWorkout = () => {
             {
                 (isLoading || !infoSetted) && (
                     <>
-                        <ExerciseInWorkoutSkeleton/>
-                        <ExerciseInWorkoutSkeleton/>
-                        <ExerciseInWorkoutSkeleton/>
+                        <ExerciseInWorkoutSkeleton />
+                        <ExerciseInWorkoutSkeleton />
+                        <ExerciseInWorkoutSkeleton />
                     </>
                 )
             }
@@ -167,9 +172,15 @@ const PlayWorkout = () => {
                 exercise={showEditExerciseModal.exercise}
                 onClose={() => setShowEditExerciseModal({ visible: false, exercise: null })}
                 updateExercise={updateExercise}
-                blocked={isLastWorkoutPlayed}
             />
 
+            <CustomSnackbar
+                visible={workoutInProgressNotification}
+                setVisible={setWorkoutInProgressNotification}
+                message='Rutina en progreso'
+                color='eOrange-500'
+                textColor='white'
+            />
         </View>
     );
 };

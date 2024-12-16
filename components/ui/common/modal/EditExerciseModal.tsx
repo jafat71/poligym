@@ -19,17 +19,15 @@ import MaleFront from '../../body/MaleFront';
 import { MuscleGroups } from '@/types/types/muscles';
 import { SubAddNumericComponent } from '../form/SubAddNumericComponent';
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
-import CustomSnackbar from '../snackbar/CustomSnackbar';
 
 interface EditExerciseModalProps {
     visible: boolean;
     onClose: () => void;
     exercise: ExerciseInWorkoutAPI | null;
     updateExercise: (exercise: ExerciseInWorkoutAPI) => void;
-    blocked: boolean;
 }
 
-const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked }: EditExerciseModalProps) => {
+const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditExerciseModalProps) => {
     const { isDark } = useTheme();
 
     let muscleColors = getMuscleColors(exercise?.exercise.muscleGroups || []);
@@ -38,8 +36,6 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked
         setExerciseState(exercise);
     }, [exercise]);
 
-    const [workoutInProgressNotification, setWorkoutInProgressNotification] = useState(false);
-
     return (
         <Modal
             isVisible={visible}
@@ -47,13 +43,13 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked
             onBackButtonPress={onClose}
             className="mt-20"
             style={{ margin: 0 }}
-            avoidKeyboard
             propagateSwipe
             animationOutTiming={1000}
             animationOut={'slideOutDown'}
             animationIn={'slideInUp'}
             backdropOpacity={0.25} // Aumentar opacidad del fondo
             useNativeDriver={true}
+            useNativeDriverForBackdrop
             backdropTransitionOutTiming={0}
             hideModalContentWhileAnimating
         >
@@ -82,20 +78,12 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked
                                         number={exerciseState?.sets || 0}
                                         title='Series'
                                         subFunction={() => {
-                                            if (blocked){
-                                                setWorkoutInProgressNotification(true);
-                                                return;
-                                            }
                                             updateExercise({
                                                 ...exercise,
                                                 sets: exercise?.sets - 1
                                             })
                                         }}
                                         addFunction={() => {
-                                            if (blocked){
-                                                setWorkoutInProgressNotification(true);
-                                                return;
-                                            }
                                             updateExercise({
                                                 ...exercise,
                                                 sets: exercise?.sets + 1
@@ -108,20 +96,12 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked
                                         number={exerciseState?.reps || 0}
                                         title='Repeticiones'
                                         subFunction={() => {
-                                            if (blocked){
-                                                setWorkoutInProgressNotification(true);
-                                                return;
-                                            }
                                             updateExercise({
                                                 ...exercise,
                                                 reps: exercise?.reps - 1
                                             })
                                         }}
                                         addFunction={() => {
-                                            if (blocked){
-                                                setWorkoutInProgressNotification(true);
-                                                return;
-                                            }
                                             updateExercise({
                                                 ...exercise,
                                                 reps: exercise?.reps + 1
@@ -134,20 +114,12 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked
                                         number={exerciseState?.restTime || 0}
                                         title='Descanso (seg)'
                                         subFunction={() => {
-                                            if (blocked){
-                                                setWorkoutInProgressNotification(true);
-                                                return;
-                                            }
                                             updateExercise({
                                                 ...exercise,
                                                 restTime: exercise?.restTime - 1
                                             })
                                         }}
                                         addFunction={() => {
-                                            if (blocked){
-                                                setWorkoutInProgressNotification(true);
-                                                return;
-                                            }
                                             updateExercise({
                                                 ...exercise,
                                                 restTime: exercise?.restTime + 1
@@ -160,20 +132,12 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked
                                         number={exerciseState?.weight || 0}
                                         title='Peso (kg)'
                                         subFunction={() => {
-                                            if (blocked){
-                                                setWorkoutInProgressNotification(true);
-                                                return;
-                                            }
                                             updateExercise({
                                                 ...exercise,
                                                 weight: exercise?.weight ? exercise?.weight - 1 : 0
                                             })
                                         }}
                                         addFunction={() => {
-                                            if (blocked){
-                                                setWorkoutInProgressNotification(true);
-                                                return;
-                                            }
                                             updateExercise({
                                                 ...exercise,
                                                 weight: exercise?.weight ? exercise?.weight + 1 : 0
@@ -196,12 +160,10 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked
                                 <Text className={`text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>{exercise?.exercise.description}</Text>
                             </View>
 
-
                             <View className='my-2'>
                                 <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Recomendación</Text>
                                 <Text className={`text-xl font-raleway ${isDark ? 'text-white' : 'text-darkGray-900'}`}>{exercise?.exercise.recommendation}</Text>
                             </View>
-
 
                             <View className='my-2'>
                                 <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Grupos musculares</Text>
@@ -247,13 +209,7 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise, blocked
                             </View>
 
                         </ScrollView>
-                        <CustomSnackbar
-                            visible={workoutInProgressNotification} 
-                            setVisible={setWorkoutInProgressNotification}
-                            message='Rutina en progreso'
-                            color='eOrange-500'
-                            textColor='white'
-                        />
+                        
                     </View>
                 ) : (
                     <SkeletonLoadingScreen />   

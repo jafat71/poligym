@@ -10,7 +10,7 @@ interface Props {
 
 export const HomePlanFlatlist = ({ data }: Props) => {
     const scrollX = useRef(new Animated.Value(0)).current;
-
+    
     return (
         <>
             <Animated.FlatList
