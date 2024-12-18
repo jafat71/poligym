@@ -21,6 +21,7 @@ const ImagePicker = ({imgUrl,setImg}:Props) => {
         }
     }, []);
 
+    
     useEffect(() => {
         if (imageCloudUrl) {
             setImg(imageCloudUrl)

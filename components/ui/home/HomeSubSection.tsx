@@ -9,7 +9,6 @@ import IconButton from '../common/buttons/IconButton';
 import { useTheme } from '@/context/ThemeContext';
 
 import { HomePlanFlatlist } from '../plans/HomePlanFlatlist';
-import IndividualCardSkeleton from '@/components/animatedUi/IndividualCarkSkeleton';
 import { useUser } from '@/context/UserContext';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { TrainingPlanAPI } from '@/types/interfaces/entities/plan';
@@ -39,7 +38,6 @@ const HomeSubSection = () => {
         staleTime: 1000 * 60 * 60 * 24,
 
     })
-    if (isLoadingRecommendedPlans) return <HorizontalFlatlistSkeleton/>;
 
     return (
         <View className="my-2">
@@ -53,9 +51,12 @@ const HomeSubSection = () => {
                     icon={<Ionicons name="add" size={24} color={isDark ? "white" : "black"} />}
                 />
             </View>
-            <HomePlanFlatlist
-                data={recommendedPlans}
-            />
+            {
+                isLoadingRecommendedPlans ? <HorizontalFlatlistSkeleton/> :
+                <HomePlanFlatlist
+                    data={recommendedPlans}
+                />
+            }
         </View>
     );
 }

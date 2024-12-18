@@ -179,7 +179,6 @@ const PlayWorkout = () => {
                 setVisible={setWorkoutInProgressNotification}
                 message='Rutina en progreso'
                 color='eOrange-500'
-                textColor='white'
             />
         </View>
     );

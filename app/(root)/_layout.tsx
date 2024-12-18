@@ -14,12 +14,15 @@ export default function RootLayout() {
   return (
       <Stack 
         screenOptions={{
-          statusBarTranslucent: true,
-          statusBarAnimation: 'fade',
-          statusBarStyle: isDark ? 'light' : 'dark',
         }}
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false, animation: 'fade', animationTypeForReplace: 'push' }} />
+        <Stack.Screen name="(tabs)" options={{ 
+          headerShown: false, 
+          animation: 'fade', 
+          animationTypeForReplace: 'push',
+          statusBarColor: isDark ? "#1c1c1c" : "#fff",
+          statusBarStyle: isDark ? "light" : "dark",
+          }} />
         <Stack.Screen name="(init)" options={{ headerShown: false, animation: 'fade', animationTypeForReplace: 'push'  }} />
         <Stack.Screen name="(config)" options={{ headerShown: false, animation: 'slide_from_bottom', animationTypeForReplace: 'push' }} />
       </Stack>

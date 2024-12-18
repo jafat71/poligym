@@ -90,7 +90,7 @@ const Form04 = () => {
                 </Text>
                 <Animated.View
                     style={animatedStyle}
-                    className="flex-1 w-full flex flex-col items-center justify-between">
+                    className="flex-1 w-full flex flex-col items-center ">
                     <View>
                         <Animated.View
                             style={animatedTranslateY}

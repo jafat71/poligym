@@ -8,7 +8,7 @@ export default function RootLayout() {
     const { isDark } = useTheme()
     return (
         <Stack
-            initialRouteName='profile'
+            initialRouteName='config'
             screenOptions={{
                 animation: 'none',
                 headerStyle: {
@@ -20,6 +20,7 @@ export default function RootLayout() {
                     fontSize: 20,
                     color: isDark ? '#fff' : '#1c1c1c',
                 },
+                statusBarColor: isDark ? '#171717' : '#fff',
                 statusBarStyle: isDark ? 'light' : 'dark',
             }}>
             <Stack.Screen name="config" options={{ animation: 'fade_from_bottom', headerTitle: 'Configuración' }} />

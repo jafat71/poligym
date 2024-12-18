@@ -16,6 +16,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '@/lib/queryClient/queryClient';
 import { useFonts } from 'expo-font';
 import { WorkoutPlayProvider } from '@/context/PlayWorkoutContext';
+import { StatusBar } from 'expo-status-bar';
 
 SplashScreen.preventAutoHideAsync().catch(() => {
   /* reloading the app might trigger some race conditions, ignore them */
@@ -54,28 +55,16 @@ export default function RootLayout() {
             <NavigationFlowProvider>
               <UserProvider>
                 <WorkoutPlayProvider>
-                  <GestureHandlerRootView style={{ flex: 1, backgroundColor: '#0055f9' }}>
-                    <Stack screenOptions={{
-                      headerShown: false,
-                      statusBarTranslucent: true,
-                    }}>
-                      <Stack.Screen name="welcome"
-                        options={{
-                          headerShown: false,
-                          statusBarColor: '#0055f9'
-                        }}
-                      />
+                  <GestureHandlerRootView
+                    style={{ flex: 1, backgroundColor: '#0055f9' }}>
+                    <Stack>
+                      <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
                       <Stack.Screen name="(animated)" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
                       <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'simple_push', animationTypeForReplace: 'pop' }} />
                       <Stack.Screen name="(auth)" options={{
-                        headerShown: false,
-                        animation: 'flip',
-                        animationTypeForReplace: 'pop',
-                        statusBarColor: '#0055f9'
-                      }} />
-                      <Stack.Screen name="(info)" options={{
-                        headerShown: false,
-                        animation: 'slide_from_bottom',
+                        animation: 'fade_from_bottom',
+                        animationTypeForReplace: 'push',
+                        headerShown: false
                       }} />
                       <Stack.Screen name="+not-found" options={{ headerShown: false }} />
                     </Stack>

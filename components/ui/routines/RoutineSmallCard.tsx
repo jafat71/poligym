@@ -53,14 +53,18 @@ const RoutineSmallCard = (routine: WorkoutAPI) => {
                 <View className='flex-1 items-start justify-end p-4'>
                     <View className="flex-row items-start justify-between px-2 gap-x-2">
 
-                        <HomePill
+                        {/* <HomePill
                             icon="time-outline"
-                            text={`${routine.duration} min.`}
+                            text={`${routine.duration ?? 0} min.`}
                         />
                         <HomePill
                             icon="flame-outline"
-                            text={`${routine.level}`}
-                        />
+                            text={`${routine.level ?? ''}`}
+                        /> */}
+
+                        <Text className='text-white font-raleway text-sm'>
+                            {routine.description}
+                        </Text>
                     </View>
                 </View>
             </View>

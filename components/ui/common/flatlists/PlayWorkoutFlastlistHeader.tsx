@@ -74,7 +74,7 @@ export const PlayWorkoutFlatlistHeader = ({
                     <View className="w-3/4 flex-row">
                         <ButtonPill
                             icon={
-                                isFavorite ? "heart-outline" : "trash-outline"
+                                isFavorite ? "trash-outline" : "heart-outline"
                             }
                             text={""}
                             onPress={() => {

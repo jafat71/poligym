@@ -7,7 +7,6 @@ import { usePathname } from 'expo-router';
 import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useNavigationFlowContext } from './NavFlowContext';
-import { updateUser } from '@/lib/api/userActions';
 import { NutritionPlan } from '@/types/interfaces/entities/foodplan';
 
 interface UserContextType {
@@ -124,10 +123,16 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         setLoggedUserInfo(userMapped)
     }
 
+    console.log("loggedUserInfo", loggedUserInfo)
+
     const [userFavWorkouts, setUserFavWorkouts] = useState<WorkoutAPI[]>([]);
     const [userFavFoodPlans, setUserFavFoodPlans] = useState<NutritionPlan[]>([]);
     const [userFavTrainingPlans, setUserFavTrainingPlans] = useState<TrainingPlanAPI[]>([]);
     
+    useEffect(() => {
+        console.log("Actual pathname", pathname)   
+    }, [pathname])
+
     return (
         <UserContext.Provider value={{
             userLogged,

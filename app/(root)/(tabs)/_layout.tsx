@@ -29,6 +29,7 @@ export default function TabsLayout() {
             fontWeight: '800',
           },
           tabBarActiveTintColor: tabBarActiveColor,
+          lazy: false,
         }}
       >
         <Tabs.Screen name="(home)" options={{

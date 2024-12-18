@@ -38,7 +38,6 @@ const HomeSmallSection = () => {
         },
         staleTime: 1000 * 60 * 60 * 24,
     })
-    if (isLoadingRecommendedWorkouts) return <HorizontalFlatlistSkeleton/>;
     return (
         <View className="mb-4">
             <View className="px-4 flex flex-row items-center justify-between ">
@@ -51,9 +50,12 @@ const HomeSmallSection = () => {
                     icon={<Ionicons name="add" size={24} color={isDark ? "white" : "black"} />}
                 />
             </View>
-            <HomeRoutineFlatlist
-                data={recommendedWorkouts}
-            />
+            {
+                isLoadingRecommendedWorkouts ? <HorizontalFlatlistSkeleton/> :
+                <HomeRoutineFlatlist
+                    data={recommendedWorkouts}
+                />
+            }
         </View>
     );
 }

@@ -9,6 +9,8 @@ export const useFavoriteWorkout = (workout: WorkoutAPI | null) => {
         workout && loggedUserInfo?.workoutIds?.includes(workout.id)
     );
 
+    console.log(isFavorite)
+
     useEffect(() => {
         if (workout) {
             setIsFavorite(loggedUserInfo?.workoutIds?.includes(workout.id) ?? false);

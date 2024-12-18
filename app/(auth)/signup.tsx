@@ -42,10 +42,14 @@ const Signup = () => {
       router.push('/(animated)/form00')
     },
     onError: (error: any) => {
+      console.log("Error al registrar el usuario", error)
       setErrors([error.message || "Error al registrar el usuario. Inténtelo más tarde"])
+      setIsVisible(true)
+
     },
   });
 
+  console.log("errors", errors)
   const handleSubmit = async () => {
     let { errors } = validateSignup(email, password)
     setErrors(errors)

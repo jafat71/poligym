@@ -19,6 +19,7 @@ export const useImagePicker = () => {
         }
     };
 
+    //TODO: bloquear actualziación hasta obtener URL de cloudinary
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
