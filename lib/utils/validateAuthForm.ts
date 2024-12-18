@@ -3,7 +3,7 @@ import { User } from "@/types/interfaces/entities/user";
 const emailRegex = /^[a-zA-Z0-9._%+-ñÑ]+@epn\.edu\.ec$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*\-_])[A-Za-z\d!@#$%^&*\-_]{8,}$/;
 
-export const validateSignup = (email: string, password: string, confirmPassword: string) => {
+export const validateSignup = (email: string, password: string) => {
     const errors: string[] = [];
 
     if (!emailRegex.test(email)) {
@@ -12,10 +12,6 @@ export const validateSignup = (email: string, password: string, confirmPassword:
 
     if (!passwordRegex.test(password)) {
         errors.push("La contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales");
-    }
-
-    if (password !== confirmPassword) {
-        errors.push("Las contraseñas no coinciden");
     }
     return {
         errors
@@ -74,7 +70,7 @@ export const validateForgotPassword = (email: string) => {
     }
 }
 
-export const validateResetPassword = (code: string, newPassword: string, confirmNewPassword: string) => {
+export const validateResetPassword = (code: string, newPassword: string) => {
 
     const errors: string[] = [];
 
@@ -85,12 +81,6 @@ export const validateResetPassword = (code: string, newPassword: string, confirm
     if (!passwordRegex.test(newPassword)) {
         errors.push("La nueva contraseña debe contener al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales");
     }
-
-    if (newPassword !== confirmNewPassword) {
-        errors.push("Las contraseñas no coinciden");
-    }
-
-
 
     return {
         errors

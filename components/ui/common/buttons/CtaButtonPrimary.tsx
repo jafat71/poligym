@@ -15,7 +15,6 @@ const CTAButtonPrimary = ({ onPress, text, disabled = false, isLoading = false, 
         Keyboard.dismiss();
         onPress?.(event);
     };
-    
     return (
         <TouchableHighlight
             onPress={handlePress}

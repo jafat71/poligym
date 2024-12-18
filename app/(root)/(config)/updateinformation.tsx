@@ -1,5 +1,4 @@
 import WorkoutLoadingScreen from '@/components/animatedUi/WorkoutLoadingScreen';
-import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import RadioButtonIconComponent from '@/components/ui/common/buttons/RadioButtonIcon';
 import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
@@ -8,7 +7,7 @@ import CustomSnackbar from '@/components/ui/common/snackbar/CustomSnackbar';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { updateUser } from '@/lib/api/userActions';
-import { getEnumKeyByValue, getEnumKeyByValueAsync } from '@/lib/utils/getEnumKeyByValue';
+import { getEnumKeyByValue } from '@/lib/utils/getEnumKeyByValue';
 import { validateFloatInput, validateNumericInput, validateUserInfo, validateZInput } from '@/lib/utils/validateAuthForm';
 import { FITNESS_LEVEL, GENDER, GOAL, HAS_INJURY, User, USER_TYPE } from '@/types/interfaces/entities/user';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,8 +15,8 @@ import Animated, { useSharedValue, useAnimatedStyle, withTiming } from "react-na
 
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, Platform, TextInput } from 'react-native';
-import { SafeAreaView, Text, View } from 'react-native';
+import { TextInput } from 'react-native';
+import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const EditProfile = () => {
@@ -57,12 +56,14 @@ const EditProfile = () => {
     const [selectedMedicalProblem, setSelectedMedicalProblem] = useState<HAS_INJURY>(updateUserState.injury !== "" ? HAS_INJURY.YES : HAS_INJURY.NO);
     const [medicalDetail, setMedicalDetail] = useState<string>(updateUserState.injury || '');
     const [enableEdit, setEnableEdit] = useState(false);
-    const [updateUserSuccess, setUpdateUserSuccess] = useState<boolean>(false);
+    const [isVisibleSuccess, setIsVisibleSuccess] = useState<boolean>(false);
+    const [isVisibleErrors, setIsVisibleErrors] = useState<boolean>(false);
     const [focused, setFocused] = useState(false);
     const userTypeValue = USER_TYPE[updateUserState.userType as unknown as keyof typeof USER_TYPE] || USER_TYPE.STUDENT
     const [selectedUserType, setSelectedUserType] = useState<USER_TYPE>(userTypeValue);
     const [profileImage, setprofileImage] = useState(updateUserState?.avatarUrl || '');
 
+    // const [hasEdited, setHasEdited] = useState(false);
     const updateUserMutation = useMutation({
         mutationFn: async () => {
             const gender = getEnumKeyByValue(GENDER, selectedGenre) as GENDER
@@ -89,6 +90,7 @@ const EditProfile = () => {
             )
         },
         onSuccess: async () => {
+            setIsVisibleSuccess(true)
             await updateUserInfo()
         },
         onError: (error: any) => {
@@ -121,25 +123,25 @@ const EditProfile = () => {
         let isValidHeight = validateFloatInput(tmbHeight)
         if (!isValidWeight || !isValidHeight) {
             setErrors(["Por favor, ingresa valores numéricos válidos. Por ejemplo: 59 [kg], 173.4 [cm]. Poligym considera el punto como separador decimal."])
+            setIsVisibleErrors(true)
             return
         }
         const { errors: numericErrors } = validateNumericInput(parseFloat(tmbWeight), parseFloat(tmbHeight))
         if (numericErrors.length > 0) {
             setErrors(numericErrors)
+            setIsVisibleErrors(true)
             return
         }
 
         const { errors: userInfoErrors } = validateUserInfo(updateUserState)
         setErrors(userInfoErrors)
-        if (userInfoErrors.length > 0) return
+        if (userInfoErrors.length > 0) {
+            setIsVisibleErrors(true)
+            return
+        }
         updateUserMutation.mutate()
     }
 
-    useEffect(() => {
-        if (updateUserMutation.isSuccess) {
-            setUpdateUserSuccess(true)
-        }
-    }, [updateUserMutation.isSuccess])
     if (isLoading) return <WorkoutLoadingScreen />
 
     return (
@@ -165,9 +167,11 @@ const EditProfile = () => {
                                 setImg={setprofileImage}
                             />
                         </View>
+
+                        <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>
+                            Nombre
+                        </Text>
                         <IconTextInputForm
-                            title='Nombre'
-                            icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                             inputKeyboardType='email-address'
                             inputPlaceholder='Jhon Doe'
                             inputSecure={false}
@@ -175,9 +179,11 @@ const EditProfile = () => {
                             inputOnChangeText={(text) => updateTmpUserState({ name: text })}
                             enabled={!updateUserMutation.isPending}
                         />
+
+                        <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>
+                            Edad
+                        </Text>
                         <IconTextInputForm
-                            title='Edad'
-                            icon={<Ionicons name="balloon-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                             inputKeyboardType='number-pad'
                             inputPlaceholder='18'
                             inputSecure={false}
@@ -188,9 +194,11 @@ const EditProfile = () => {
                             }}
                             enabled={!updateUserMutation.isPending}
                         />
+
+                        <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>
+                            Peso (kg)
+                        </Text>
                         <IconTextInputForm
-                            title='Peso (kg)'
-                            icon={<Ionicons name="scale" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                             inputKeyboardType='decimal-pad'
                             inputPlaceholder='60'
                             inputSecure={false}
@@ -199,9 +207,10 @@ const EditProfile = () => {
                             enabled={!updateUserMutation.isPending}
                         />
 
+                        <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>
+                            Altura (cm)
+                        </Text>
                         <IconTextInputForm
-                            title='Altura (cms)'
-                            icon={<Ionicons name="resize-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                             inputKeyboardType='decimal-pad'
                             inputPlaceholder='170'
                             inputSecure={false}
@@ -308,7 +317,7 @@ const EditProfile = () => {
                             <TextInput
                                 className={`flex-row items-center p-1 mb-2
                                     font-raleway border-2 border-transparent
-                                     ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}
+                                    ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}
                                     ${!enableEdit ? "opacity-40" : ""}
                                 `}
                                 placeholder={enableEdit ? "Tengo una fractura en..." : "No tengo ninguna lesión"}
@@ -366,16 +375,18 @@ const EditProfile = () => {
 
             </View>
 
-            <FormErrorAlert
-                errors={errors}
-            />
+            <CustomSnackbar
+                visible={isVisibleErrors}
+                message={errors.join('\n')}
+                setVisible={setIsVisibleErrors}
+                color='red'
+                />
 
             <CustomSnackbar
-                visible={updateUserSuccess}
-                setVisible={setUpdateUserSuccess}
-                message='Tu información ha sido actualizada'
-                color={isDark ? 'white' : 'black'}
-                textColor={isDark ? 'black' : 'white'}
+                visible={isVisibleSuccess}
+                message={'Tu información ha sido actualizada exitosamente'}
+                setVisible={setIsVisibleSuccess}
+                color='green'
             />
         </Animated.View>
 

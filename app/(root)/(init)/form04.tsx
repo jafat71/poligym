@@ -11,6 +11,7 @@ import { FITNESS_LEVEL, HAS_INJURY } from '@/types/interfaces/entities/user';
 
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import RadioButtonVerticalIconComponent from '@/components/ui/common/buttons/RadioButtonVerticalIcon';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 const Form04 = () => {
     const globalOpacity = useSharedValue(0);
@@ -79,101 +80,93 @@ const Form04 = () => {
     }));
 
     return (
-        <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={{ flex: 1 }}
+        <KeyboardAwareScrollView
+            keyboardShouldPersistTaps="handled"
+            alwaysBounceVertical
+            contentContainerStyle={{ flexGrow: 1 }}
         >
-            <View style={{ flex: 1 }}>
-                <ScrollView 
-                    className="flex-1" 
-                    contentContainerStyle={{ flexGrow: 1, paddingBottom: 80 }} // Ensure space for the button
-                >
-                    <Animated.View
-                        style={animatedStyle}
-                        className="flex-1 w-full flex flex-col items-center justify-between">
-
-                        <Text className="text-white text-4xl font-ralewayExtraBold">
-                            Cuéntanos de ti
-                        </Text>
-                        
-                        <View>
-                            <Animated.View
-                                style={animatedTranslateY}
-                                className="mt-2">
-                                <View className="mt-2">
-                                    <Text className="text-white text-center text-xl font-ralewaySemiBold mb-4">
-                                        ¿Tienes algúna lesión?
-                                    </Text>
-                                    <View>
-                                        <RadioButtonVerticalIconComponent
-                                            options={Object.values(HAS_INJURY)}
-                                            icons={[
-                                                <Ionicons name="body-outline" size={35} color={`#fff`} />,
-                                                <Ionicons name="bandage-outline" size={35} color={`#fff`} />,
-                                            ]}
-                                            rbComponentStyle="w-full flex flex-row"
-                                            rbIndividualRadioButtonStyle="items-center justify-center w-1/2"
-                                            rbIndividualTextBtnStyle="text-lg pb-2 font-ralewayExtraBold"
-                                            selectedValue={selectedMedicalProblem}
-                                            setSelectedValue={setSelectedMedicalProblem}
-                                        />
-                                    </View>
+                <Text className="text-white text-4xl font-ralewayExtraBold text-center">
+                    Cuéntanos de ti
+                </Text>
+                <Animated.View
+                    style={animatedStyle}
+                    className="flex-1 w-full flex flex-col items-center justify-between">
+                    <View>
+                        <Animated.View
+                            style={animatedTranslateY}
+                            className="mt-2">
+                            <View className="mt-2">
+                                <Text className="text-white text-center text-xl font-ralewaySemiBold mb-4">
+                                    ¿Tienes algúna lesión?
+                                </Text>
+                                <View>
+                                    <RadioButtonVerticalIconComponent
+                                        options={Object.values(HAS_INJURY)}
+                                        icons={[
+                                            <Ionicons name="body-outline" size={35} color={`#fff`} />,
+                                            <Ionicons name="bandage-outline" size={35} color={`#fff`} />,
+                                        ]}
+                                        rbComponentStyle="w-full flex flex-row"
+                                        rbIndividualRadioButtonStyle="items-center justify-center w-1/2"
+                                        rbIndividualTextBtnStyle="text-lg pb-2 font-ralewayExtraBold"
+                                        selectedValue={selectedMedicalProblem}
+                                        setSelectedValue={setSelectedMedicalProblem}
+                                    />
                                 </View>
-                            </Animated.View>
+                            </View>
+                        </Animated.View>
 
-                            {enableEdit && (
-                                <Animated.View
-                                    style={animatedInputStyle}
-                                    className="px-4">
-                                    <View className="w-full flex flex-row items-center justify-start mb-2">
-                                        <Ionicons name="pencil-outline" size={24} color={"#fff"} />
-                                        <Text className="text-white text-center text-xl font-ralewaySemiBold">
-                                            Detalle de la lesión
-                                        </Text>
-                                    </View>
-                                    <TextInput
-                                        className="h-44 text-white w-full font-ralewaySemiBold break-words 
+                        {enableEdit && (
+                            <Animated.View
+                                style={animatedInputStyle}
+                                className="px-4">
+                                <View className="w-full flex flex-row items-center justify-start mb-2">
+                                    <Ionicons name="pencil-outline" size={24} color={"#fff"} />
+                                    <Text className="text-white text-center text-xl font-ralewaySemiBold">
+                                        Detalle de la lesión
+                                    </Text>
+                                </View>
+                                <TextInput
+                                    className="h-44 text-white w-full font-ralewaySemiBold break-words 
                                             bg-eBlue-600
                                             border-2 border-white rounded-md p-2"
-                                        value={medicalDetail}
-                                        multiline={true}
-                                        onChangeText={setMedicalDetail}
-                                        numberOfLines={6}
-                                        placeholder="Tengo un problema de..."
-                                        placeholderTextColor="#c3c3c3"
-                                    />
-                                </Animated.View>
-                            )}
-                        </View>
+                                    value={medicalDetail}
+                                    multiline={true}
+                                    onChangeText={setMedicalDetail}
+                                    numberOfLines={6}
+                                    placeholder="Tengo un problema de..."
+                                    placeholderTextColor="#c3c3c3"
+                                />
+                            </Animated.View>
+                        )}
+                    </View>
 
-                        <View className="flex flex-col">
-                            <Text className="text-white text-center text-xl font-ralewaySemiBold mb-4">
-                                Tu experiencia es:
-                            </Text>
-                            <RadioButtonVerticalIconComponent
-                                options={Object.values(FITNESS_LEVEL)}
-                                icons={[
-                                    <Ionicons name="star-outline" size={35} color={"#fff"} />,
-                                    <Ionicons name="star-half-outline" size={35} color={"#fff"} />,
-                                    <Ionicons name="star" size={35} color={"#fff"} />,
-                                ]}
-                                selectedValue={selectedFitnessLevel}
-                                setSelectedValue={setSelectedFitnessLevel}
-                                rbComponentStyle="w-full flex flex-row"
-                                rbIndividualRadioButtonStyle="items-center justify-center w-1/3"
-                                rbIndividualTextBtnStyle="text-lg pb-2 font-ralewayExtraBold"
-                            />
-                        </View>
-                    </Animated.View>
-                </ScrollView>
+                    <View className="flex flex-col">
+                        <Text className="text-white text-center text-xl font-ralewaySemiBold mb-4">
+                            Tu experiencia es:
+                        </Text>
+                        <RadioButtonVerticalIconComponent
+                            options={Object.values(FITNESS_LEVEL)}
+                            icons={[
+                                <Ionicons name="star-outline" size={35} color={"#fff"} />,
+                                <Ionicons name="star-half-outline" size={35} color={"#fff"} />,
+                                <Ionicons name="star" size={35} color={"#fff"} />,
+                            ]}
+                            selectedValue={selectedFitnessLevel}
+                            setSelectedValue={setSelectedFitnessLevel}
+                            rbComponentStyle="w-full flex flex-row"
+                            rbIndividualRadioButtonStyle="items-center justify-center w-1/3"
+                            rbIndividualTextBtnStyle="text-lg pb-2 font-ralewayExtraBold"
+                        />
+                    </View>
+                </Animated.View>
                 <View className="absolute bottom-0 left-0 right-0 bg-eBlue-600">
                     <CTAButtonPrimary
                         onPress={handleContinue}
                         text="Continuar"
                     />
                 </View>
-            </View>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
     );
 };
 

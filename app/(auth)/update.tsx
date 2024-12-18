@@ -16,6 +16,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import { updatePassword } from '@/lib/api/auth';
 import { validateUpdatePassword } from '@/lib/utils/validateAuthForm';
+import CustomSnackbar from '@/components/ui/common/snackbar/CustomSnackbar';
 
 const Update = () => {
 
@@ -26,26 +27,30 @@ const Update = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<string[]>([]);
   const [successMessage, setSuccessMessage] = useState('');
+  const [isVisibleErrors, setIsVisibleErrors] = useState(false);
+  const [isVisibleSuccess, setIsVisibleSuccess] = useState(false);
 
   const updatePasswordMutation = useMutation({
     mutationFn: ({ userId, currentPassword, newPassword, confirmPassword }: { userId: string, currentPassword: string, newPassword: string, confirmPassword: string }) =>
       updatePassword(userId, currentPassword, newPassword, confirmPassword, accessToken ?? ""),
     onSuccess: (data) => {
       setSuccessMessage('Contraseña actualizada correctamente')
+      setIsVisibleSuccess(true);
       setTimeout(() => {
         router.navigate('/(root)/(tabs)/home')
       }, 2000)
     },
     onError: (error: any) => {
       setErrors([error.message || "Error al actualizar la contraseña. Inténtelo más tarde"])
+      setIsVisibleErrors(true);
     },
   });
 
   const handleSubmit = () => {
     let { errors } = validateUpdatePassword(oldPassword, password, confirmPassword)
     setErrors(errors)
+    setIsVisibleErrors(errors.length > 0)
     if (errors.length > 0) return
-
     updatePasswordMutation.mutate({
       userId: loggedUserInfo?.id ?? '',
       currentPassword: oldPassword,
@@ -63,38 +68,31 @@ const Update = () => {
       <View className={`pt-1`}>
 
         <IconTextInputForm
-          title='Contraseña Actual'
-          icon={<Ionicons name="shield-half" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
           inputKeyboardType='ascii-capable'
-          inputPlaceholder='*********'
+          inputPlaceholder='Contraseña actual'
           inputValue={oldPassword}
           inputOnChangeText={setOldPassword}
           inputSecure={true}
         />
 
-
         <IconTextInputForm
-          title='Nueva Contraseña'
-          icon={<Ionicons name="shield-checkmark-sharp" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
           inputKeyboardType='ascii-capable'
-          inputPlaceholder='*********'
+          inputPlaceholder='Nueva contraseña'
           inputValue={password}
           inputOnChangeText={setPassword}
           inputSecure={true}
         />
 
         <IconTextInputForm
-          title='Confirmar Nueva Contraseña'
-          icon={<Ionicons name="shield-checkmark-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
           inputKeyboardType='ascii-capable'
-          inputPlaceholder='*********'
+          inputPlaceholder='Confirmar contraseña'
           inputValue={confirmPassword}
           inputOnChangeText={setConfirmPassword}
           inputSecure={true}
         />
       </View>
 
-      <View className='mb-5'>
+      <View className='mb-2'>
         <AuthSupportButton
           title='Regresar'
           onPress={() => {
@@ -108,14 +106,22 @@ const Update = () => {
         onPress={handleSubmit}
         text={updatePasswordMutation.isPending ? '' : 'Actualizar'}
         disabled={updatePasswordMutation.isPending}
-      />
+        isLoading={updatePasswordMutation.isPending}
+      />  
 
-      <FormSuccessAlert
-        title='Contraseña actualizada correctamente'
+      <CustomSnackbar
+        visible={isVisibleSuccess}
         message={successMessage}
+        setVisible={setIsVisibleSuccess}
+        translated={true}
+        color='green'
       />
-      <FormErrorAlert
-        errors={errors}
+      <CustomSnackbar
+        visible={isVisibleErrors}
+        message={errors.join('\n')}
+        setVisible={setIsVisibleErrors}
+        translated={true}
+        color='red'
       />
 
     </View>

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Alert, SafeAreaView, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-import Checkbox from 'expo-checkbox';
 import { router } from 'expo-router';
 
 import { deleteToken } from '@/lib/token/store';
@@ -11,30 +10,12 @@ import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 
 import LightDarkButton from '@/components/ui/common/buttons/LightDarkButton';
-import AboutModal from '@/components/ui/common/modal/AboutModal';
-import FaqModal from '@/components/ui/common/modal/FaqModal';
-import TermsModal from '@/components/ui/common/modal/TermsModal';
 import { useMutation } from '@tanstack/react-query';
 import { logout } from '@/lib/api/auth';
 
 const Config = () => {
     const { isDark } = useTheme()
     const { setAccessToken, accessToken } = useUser()
-    const [termsVisible, setTermsVisible] = useState(false);
-    const [faqVisible, setFAQVisible] = useState(false);
-    const [aboutVisible, setAboutVisible] = useState(false);
-
-    const toggleTermsModal = () => {
-        setTermsVisible(!termsVisible);
-    };
-
-    const toggleFaqModal = () => {
-        setFAQVisible(!faqVisible);
-    };
-
-    const toggleAboutModal = () => {
-        setAboutVisible(!aboutVisible);
-    };
 
     const logoutMutation = useMutation({
         mutationFn: () => logout(accessToken!),
@@ -97,19 +78,19 @@ const Config = () => {
                     <Text className={`${titleStyle} mt-2`}>Información</Text>
 
                     <TouchableOpacity className={itemStyle}
-                        onPress={toggleTermsModal}
+                        onPress={() => router.push('/(info)/terms')}
                     >
                         <Text className={textStyle}>Términos y Condiciones</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity className={itemStyle}
-                        onPress={toggleFaqModal}
+                        onPress={() => router.push('/(info)/faq')}
                     >
                         <Text className={textStyle}>Preguntas Frecuentes</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity className={itemStyle}
-                        onPress={() => toggleAboutModal()}
+                        onPress={() => router.push('/(info)/about')}
                     >
                         <Text className={textStyle}>Acerca de</Text>
                     </TouchableOpacity>
@@ -123,21 +104,6 @@ const Config = () => {
 
                 </View>
             </View>
-
-            <TermsModal
-                modalVisible={termsVisible}
-                toggleModal={() => toggleTermsModal()}
-            />
-
-            <FaqModal
-                modalVisible={faqVisible}
-                toggleModal={() => toggleFaqModal()}
-            />
-
-            <AboutModal
-                modalVisible={aboutVisible}
-                toggleModal={() => toggleAboutModal()}
-            />
 
         </SafeAreaView>
     );

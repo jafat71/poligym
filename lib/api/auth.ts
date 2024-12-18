@@ -84,6 +84,7 @@ export const verifyToken = async (token: string) => {
     try {
         const response = await axiosInstance.get('/auth/verify',
             { headers: { 'Authorization': `Bearer ${token}` } });
+        console.log("Verify token response", response.data)
         return response.data;
     } catch (error) {
         console.error('Error al verificar el token');

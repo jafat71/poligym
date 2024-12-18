@@ -2,7 +2,6 @@ import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Pressable, Text, View } from 'react-native';
-import TermsModal from '../modal/TermsModal';
 
 interface Props {
     text: string;
@@ -43,7 +42,7 @@ export const SimpleInfoComponent = ({ text, pressable, modalVisible, toggleModal
             }}
             className={`
                 flex flex-col items-center justify-center
-                z-50 bg-black/50
+                z-50  h-full w-full
             `}
         >
             <Animated.View

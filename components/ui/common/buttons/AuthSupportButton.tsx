@@ -1,5 +1,4 @@
 
-import { useTheme } from '@/context/ThemeContext';
 import React from 'react';
 import { GestureResponderEvent, Text, TouchableOpacity, View } from 'react-native';
 
@@ -9,9 +8,8 @@ interface Props {
 }
 
 const AuthSupportButton = ({ title, onPress }: Props) => {
-    const { isDark } = useTheme()
     return (
-        <View className='w-full items-end justify-end mt-1'>
+        <View className='w-full items-end justify-end'>
             <TouchableOpacity
                 className='mt-1'
                 onPress={onPress}

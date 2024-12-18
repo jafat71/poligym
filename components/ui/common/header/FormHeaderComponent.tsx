@@ -7,18 +7,12 @@ import MainLogoCustomComponent from '../logo/mainLogo';
 
 import SkipButton from '../buttons/SkipButton';
 import SimpleInfoComponent from '../info/SimpleInfoComponent';
-import TermsModal from '../modal/TermsModal';
+import { router } from 'expo-router';
 
 const FormHeaderComponent = () => {
     const [infoVisible, setInfoVisible] = useState(false);
-    const [termsVisible, setTermsVisible] = useState(false);
-
     const toggleInfoModal = () => {
         setInfoVisible(!infoVisible);
-    };
-
-    const toggleTermsModal = () => {
-        setTermsVisible(!termsVisible);
     };
 
     return (
@@ -44,7 +38,7 @@ const FormHeaderComponent = () => {
                 pressable={
                     <Pressable
                         className='mt-2 '
-                        onPress={toggleTermsModal}
+                        onPress={() => router.push('/(info)/terms')}
                     >
                         <Text className={`text-eBlue-500 font-ralewaySemiBold`}>Más información sobre el uso de mis datos</Text>
                     </Pressable>
@@ -53,10 +47,6 @@ const FormHeaderComponent = () => {
                 toggleModal={toggleInfoModal}
             />
 
-            <TermsModal
-                modalVisible={termsVisible}
-                toggleModal={toggleTermsModal}
-            />
         </>
     );
 };

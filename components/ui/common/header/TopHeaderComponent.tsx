@@ -4,8 +4,6 @@ import { Pressable, View } from "react-native";
 import { router } from "expo-router";
 import { useSegments } from "expo-router";
 
-import { useTheme } from "@/context/ThemeContext";
-import { Ionicons } from "@expo/vector-icons";
 import MainLogoCustomComponent from "../logo/mainLogo";
 import { Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,7 +11,6 @@ import { Image } from "react-native";
 import { OnboardingItems } from "@/constants";
 
 const TopHeaderComponent = () => {
-    const { isDark } = useTheme();
     const segments = useSegments();
     return (
         <View className="w-full h-48 p-4 bg-eBlue-500">

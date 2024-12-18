@@ -1,44 +1,42 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Snackbar } from 'react-native-paper';
-import { styled } from 'nativewind';
 import MainLogoCustomComponent from '../logo/mainLogo';
 
 interface CustomSnackbarProps {
     visible: boolean;
     message: string;
-    color: string;
-    textColor: string;
     setVisible: (visible: boolean) => void;
+    translated?:boolean;
+    color?:string;
 }
 
-const StyledSnackbar = styled(Snackbar);
-
-const CustomSnackbar = ({ visible, setVisible,  message = "", color = "eBlue-500", textColor }: CustomSnackbarProps) => {
+const CustomSnackbar = ({ visible, setVisible,  message = "", translated = false, color = "red" }: CustomSnackbarProps) => {
     return (
-        <View className="absolute bottom-0 justify-center items-center w-full z-50 bg-sky-600">
-            <StyledSnackbar
+        <View className={`${translated ? "-translate-y-72" : ""}`}>
+            <Snackbar
                 visible={visible}
                 onDismiss={() => setVisible(false)}
                 duration={3000}
-                className={`bg-${color} rounded-lg w-full`}
+                style={{ 
+                    backgroundColor: color, 
+                    margin: 0,  
+                    alignContent: 'center',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
                 action={{
                     label: 'Ok',
-                    labelStyle: { color: textColor, fontFamily: 'RalewayBold' },
+                    labelStyle: { color: 'white', fontFamily: 'RalewayBold' },
                     onPress: () => {
                         setVisible(false);
                     },
                 }}
             >
-                <View className="flex-row items-center gap-x-2">
-                    <MainLogoCustomComponent
-                        width='30'
-                        height='30'
-                        principal={textColor}
-                    />
-                    <Text className={`text-${textColor} text-base font-ralewayBold`}>{message}</Text>
+                <View className="flex-col items-center gap-x-2">
+                    <Text className={`text-white text-sm font-ralewayBold`}>{message}</Text>
                 </View>
-            </StyledSnackbar>
+            </Snackbar>
         </View>
     );
 };

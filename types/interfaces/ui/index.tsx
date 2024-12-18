@@ -1,10 +1,8 @@
-import { MuscleGroups } from "@/components/ui/body/bodyConstants";
 import { ReactNode } from "react";
 import { KeyboardTypeOptions } from "react-native";
 
 export interface NumericInputForm {
     title: string;
-    icon: ReactNode;
     inputPlaceholder: string;
     inputKeyboardType: KeyboardTypeOptions | undefined;
     inputValue: string | undefined;
@@ -19,17 +17,12 @@ export interface NumericInputForm {
 }
 
 export interface NumericInputNotBtnsForm {
-    title: string;
-    icon: ReactNode;
     inputPlaceholder: string;
     inputKeyboardType: KeyboardTypeOptions | undefined;
     inputValue: string | undefined;
     inputOnChangeText: ((text: string) => void) | undefined;
     inputSecure?: boolean;
     enabled?: boolean;
-    maxLength?: number;
-    alert?: boolean;
-    alertMessage?: string;
 }
 
 export interface DoubleNumericInputForm extends NumericInputForm{

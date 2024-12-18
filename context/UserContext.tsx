@@ -73,7 +73,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
             try {
                 console.log("Verifying token")
                 const response = await verifyToken(accessToken!)
-                console.log("Getting user info")
                 const userResponse = await getUserInfo(response.user.id, accessToken!)
                 const userMapped = mapUserFromApiToUser(userResponse)
                 setLoggedUserInfo(userMapped)

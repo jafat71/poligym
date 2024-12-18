@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import { ActivityIndicator, Pressable, Text, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 
 import { router } from 'expo-router';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
-import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
 import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
-import TermsModal from '@/components/ui/common/modal/TermsModal';
 
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
@@ -19,6 +16,7 @@ import { transformEmailToName } from '@/lib/utils/transform';
 import { validateSignup } from '@/lib/utils/validateAuthForm';
 
 import { useMutation } from '@tanstack/react-query';
+import CustomSnackbar from '@/components/ui/common/snackbar/CustomSnackbar';
 
 const Signup = () => {
 
@@ -26,9 +24,8 @@ const Signup = () => {
   const { setAccessToken } = useUser()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState<string[]>([]);
-  const [termsVisible, setTermsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
   const signupMutation = useMutation({
     mutationFn: ({ name, email, password }: { name: string, email: string, password: string }) =>
@@ -42,7 +39,6 @@ const Signup = () => {
       setErrors([])
       setEmail('')
       setPassword('')
-      setConfirmPassword('')
       router.push('/(animated)/form00')
     },
     onError: (error: any) => {
@@ -50,13 +46,10 @@ const Signup = () => {
     },
   });
 
-  const toggleTermseModal = () => {
-    setTermsVisible(!termsVisible);
-  };
-
   const handleSubmit = async () => {
-    let { errors } = validateSignup(email, password, confirmPassword)
+    let { errors } = validateSignup(email, password)
     setErrors(errors)
+    setIsVisible(errors.length > 0)
     if (errors.length > 0) return
 
     let name = transformEmailToName(email)
@@ -68,42 +61,25 @@ const Signup = () => {
 
       <View>
 
-        <Text className={`text-2xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
+        <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Registro</Text>
 
-        <View className={`pt-1`}>
-          <IconTextInputForm
-            title='Email Institucional'
-            icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-            inputKeyboardType='email-address'
-            inputPlaceholder='tu.nombre@epn.edu.ec'
-            inputValue={email}
-            inputOnChangeText={setEmail}
-            inputSecure={false}
-          />
+        <IconTextInputForm
+          inputKeyboardType='email-address'
+          inputPlaceholder='Correo institucional (@epn.edu.ec)'
+          inputValue={email}
+          inputOnChangeText={setEmail}
+          inputSecure={false}
+        />
 
-          <IconTextInputForm
-            title='Contraseña'
-            icon={<Ionicons name="shield-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-            inputKeyboardType='ascii-capable'
-            inputPlaceholder='*********'
-            inputValue={password}
-            inputOnChangeText={setPassword}
-            inputSecure={true}
-          />
+        <IconTextInputForm
+          inputKeyboardType='ascii-capable'
+          inputPlaceholder='Contraseña'
+          inputValue={password}
+          inputOnChangeText={setPassword}
+          inputSecure={true}
+        />
 
-          <IconTextInputForm
-            title='Confirmar Contraseña'
-            icon={<Ionicons name="shield-checkmark-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-            inputKeyboardType='ascii-capable'
-            inputPlaceholder='*********'
-            inputValue={confirmPassword}
-            inputOnChangeText={setConfirmPassword}
-            inputSecure={true}
-          />
-
-        </View>
-
-        <View className='mb-5'>
+        <View className='mb-2'>
           <AuthSupportButton
             title='Ya tengo una cuenta'
             onPress={() => {
@@ -112,37 +88,33 @@ const Signup = () => {
           />
 
         </View>
-
         <CTAButtonPrimary
           onPress={handleSubmit}
           text={signupMutation.isPending ? '' : 'Registrarse'}
           disabled={signupMutation.isPending}
           isLoading={signupMutation.isPending}
         />
-
       </View>
-
       <View className='w-full items-center mt-1'>
         <Text className={`text-sm font-ralewaySemiBold text-center  ${isDark ? "text-white" : "text-darkGray-400"} `}>Al seleccionar REGISTRARSE, estas de acuerdo con nuestros
-          <Pressable
-            onPress={toggleTermseModal}
-            className='translate-y-1'
+          <TouchableOpacity
+            onPress={() => router.push('/(info)/terms')}
+            className='translate-y-1 translate-x-1'
           >
-            <Text className={`text-sm font-ralewayExtraBold  ${isDark ? "text-white" : "text-darkGray-500"}`}>
+            <Text className={`text-sm scale-105 font-ralewayExtraBold  ${isDark ? "text-white" : "text-darkGray-500"}`}>
               {' '} TÉRMINOS Y CONDICIONES
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         </Text>
       </View>
 
-      <TermsModal
-        modalVisible={termsVisible}
-        toggleModal={() => toggleTermseModal()}
-      />
-
-      <FormErrorAlert
-        errors={errors}
-      />
+      <CustomSnackbar
+        visible={isVisible}
+        message={errors.join('\n')}
+        setVisible={setIsVisible}
+        translated={true}
+        color='red'
+        />
 
     </View>
   )

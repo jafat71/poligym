@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { ActivityIndicator, Keyboard, Text, View } from 'react-native'
+import { Keyboard, Text, View } from 'react-native'
 
 import { router } from 'expo-router';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { useMutation } from '@tanstack/react-query';
 import { useUser } from '@/context/UserContext';
@@ -11,11 +10,11 @@ import { useTheme } from '@/context/ThemeContext';
 import CTAButtonPrimary from '@/components/ui/common/buttons/CtaButtonPrimary';
 import AuthSupportButton from '@/components/ui/common/buttons/AuthSupportButton';
 import IconTextInputForm from '@/components/ui/common/form/IconTextInputForm';
-import FormErrorAlert from '@/components/ui/common/alerts/FormErrorAlert';
 
 import { validateSignIn } from '@/lib/utils/validateAuthForm';
 import { signin } from '@/lib/api/auth';
 import { saveToken } from '@/lib/token/store';
+import CustomSnackbar from '@/components/ui/common/snackbar/CustomSnackbar';
 
 const Signin = () => {
 
@@ -26,6 +25,7 @@ const Signin = () => {
   const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState<string[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
 
   const signinMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
@@ -47,9 +47,10 @@ const Signin = () => {
   });
 
   const handleSubmit = async () => {
-    Keyboard.dismiss();
     const { errors } = validateSignIn(email, password)
     setErrors(errors)
+    setIsVisible(errors.length > 0)
+
     if (errors.length > 0) return
     signinMutation.mutate({ email, password });
   }
@@ -58,34 +59,27 @@ const Signin = () => {
     <View>
       
       <View>
-        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-2xl font-ralewayBold mb-2`}>
+        <Text className={`${isDark ? "text-white" : "text-darkGray-500"} text-2xl font-ralewayBold`}>
           Iniciar Sesión
         </Text>
 
-        <View className={`pt-1`}>
           <IconTextInputForm
-            title='Email Institucional'
-            icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
             inputKeyboardType='email-address'
-            inputPlaceholder='tu.nombre@epn.edu.ec'
+            inputPlaceholder='Correo institucional (@epn.edu.ec)'
             inputValue={email}
             inputOnChangeText={setEmail}
             inputSecure={false}
           />
 
           <IconTextInputForm
-            title='Contraseña'
-            icon={<Ionicons name="shield-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
             inputKeyboardType='ascii-capable'
-            inputPlaceholder='*********'
+            inputPlaceholder='Contraseña'
             inputValue={password}
             inputOnChangeText={setPassword}
             inputSecure={true}
           />
 
-        </View>
-
-        <View className='mb-5'>
+        <View className='mb-2'>
 
           <AuthSupportButton
             title='Olvidé mi contraseña'
@@ -111,8 +105,12 @@ const Signin = () => {
 
       </View>
 
-      <FormErrorAlert
-        errors={errors}
+      <CustomSnackbar
+        visible={isVisible}
+        message={errors.join('\n')}
+        setVisible={setIsVisible}
+        translated={true}
+        color='red'
       />
 
     </View>

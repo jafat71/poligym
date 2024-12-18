@@ -2,12 +2,8 @@ import { useTheme } from '@/context/ThemeContext';
 import { NumericInputNotBtnsForm } from '@/types/interfaces/ui';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-
+import { TextInput, TouchableOpacity, View } from 'react-native';
 const IconTextInputForm = ({
-    title,
-    icon,
     inputKeyboardType,
     inputOnChangeText,
     inputPlaceholder,
@@ -17,48 +13,44 @@ const IconTextInputForm = ({
 }: NumericInputNotBtnsForm) => {
     const { isDark } = useTheme();
     const [focused, setFocused] = useState(false);
-    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-
-    const isPasswordInput = inputKeyboardType === 'visible-password' || inputSecure;
+    const [isPasswordVisible, setIsPasswordVisible] = useState(inputSecure);
 
     const togglePasswordVisibility = () => {
         setIsPasswordVisible((prevState) => !prevState);
     };
 
     return (
-        <View>
-            <Text className={`text-sm font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} mb-2`}>
-                {title}
-            </Text>
+        <>
 
-            <View className={`flex-row items-center p-1 border-2 border-transparent mb-2 rounded-lg 
-            ${isDark ? "border-darkGray-500" : "border-darkGray-100" 
-        } ${focused ? "border-eBlue-500" : ""} transition-all duration-800`}>
-                <View className="flex flex-row items-center justify-center w-full">
-                    <View>
-                        {icon}
-                    </View>
-                    <TextInput
-                        className={`flex-1 p-2 rounded-lg shadow-lg pl-3 ${isDark ? "text-white" : "text-darkGray-500"}
-                        ml-2 font-ralewayBold`}
-                        placeholder={inputPlaceholder}
-                        keyboardType={inputKeyboardType}
-                        placeholderTextColor="#a6a6a6"
-                        value={inputValue}
-                        onChangeText={inputOnChangeText}
-                        secureTextEntry={isPasswordVisible ? false : inputSecure}
-                        editable={enabled}
-                        onFocus={() => setFocused(true)}
-                        onBlur={() => setFocused(false)}
-                    />
-                    {isPasswordInput && (
-                        <TouchableOpacity onPress={togglePasswordVisibility} className='p-2'>
+        <View className={`flex-row justify-center w-full items-center my-1  border-2
+            ${isDark ? "border-darkGray-500 " : "border-darkGray-300"}
+            ${focused ? "border-eBlue-500" : ""}
+        `}>
+                <TextInput
+                    className={`p-3 flex-1 w-full font-ralewaySemiBold 
+                        ${isDark ? "text-white" : "text-darkGray-500"}
+                    `}
+                    placeholder={inputPlaceholder}
+                    placeholderTextColor={isDark ? "white" : "#a6a6a6"}
+                    value={inputValue}
+                    onChangeText={inputOnChangeText}
+                    secureTextEntry={isPasswordVisible}
+                    editable={enabled}
+                    keyboardType={inputKeyboardType}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                />
+                {
+                    inputSecure && (
+                        <TouchableOpacity 
+                        className='px-1'
+                        onPress={togglePasswordVisibility}>
                             <Ionicons name={`${isPasswordVisible ? "eye-off" : "eye"}`} size={24} color="#a6a6a6" />
                         </TouchableOpacity>
-                    )}
-                </View>
+                    )
+                }
             </View>
-        </View>
+        </>
     );
 };
 

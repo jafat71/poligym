@@ -15,15 +15,17 @@ import FormSuccessAlert from '@/components/ui/common/alerts/FormSuccesAlert';
 
 import { forgotPassword, resetPassword } from '@/lib/api/auth';
 import { validateForgotPassword, validateResetPassword } from '@/lib/utils/validateAuthForm';
+import CustomSnackbar from '@/components/ui/common/snackbar/CustomSnackbar';
 
 const Forgot = () => {
   const { isDark } = useTheme()
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('');
-  const [newPassword, setnewPassword] = useState('')
-  const [confirmNewPassword, setconfirmNewPassword] = useState('');
+  const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState<string[]>([]);
+  const [isVisibleErrors, setIsVisibleErrors] = useState(false);
+  const [isVisibleSuccess, setIsVisibleSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [resetSent, setResetSent] = useState(false);
 
@@ -31,10 +33,12 @@ const Forgot = () => {
     mutationFn: ({ email }: { email: string }) => forgotPassword(email),
     onSuccess: () => {
       setSuccessMessage('Se ha enviado un correo con un código de recuperación');
+      setIsVisibleSuccess(true);
       setResetSent(true);
     },
     onError: (error: any) => {
       setErrors([error.message]);
+      setIsVisibleErrors(true);
     },
   })
 
@@ -42,7 +46,9 @@ const Forgot = () => {
     mutationFn: ({ code, newPassword }: { code: string; newPassword: string }) => resetPassword(code, newPassword),
     onSuccess: (data) => {
       setSuccessMessage('Contraseña restablecida correctamente');
+      setIsVisibleSuccess(true);
       setTimeout(() => {
+        setIsVisibleSuccess(false);
         setSuccessMessage('');
         router.push('/(auth)/signin')
       }, 3000);
@@ -50,22 +56,25 @@ const Forgot = () => {
     onError: (error: any) => {
       setSuccessMessage('');
       setErrors([error.message]);
+      setIsVisibleErrors(true);
     },
   })
 
   const handleSendMailSubmit = () => {
     const { errors } = validateForgotPassword(email)
     setErrors(errors)
+    setIsVisibleErrors(errors.length > 0)
     if (errors.length > 0) return
     forgotPasswordMutation.mutate({ email });
   };
 
   const handleResetPasswordSubmit = () => {
-    const { errors } = validateResetPassword(code, newPassword, confirmNewPassword)
+    const { errors } = validateResetPassword(code, password)
     setSuccessMessage('');
     setErrors(errors)
+    setIsVisibleErrors(errors.length > 0)
     if (errors.length > 0) return
-    resetPasswordMutation.mutate({ code, newPassword });
+    resetPasswordMutation.mutate({ code, newPassword: password });
   };
 
   return (
@@ -73,26 +82,27 @@ const Forgot = () => {
 
       <View >
 
-        <Text className={`text-2xl mb-2 font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
+        <Text className={`text-2xl font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Olvidé mi contraseña</Text>
 
-        <View className={`pt-1`}>
+        <View className={``}>
 
           {
             !resetSent ? (
               <>
-                <Text className={`text-sm mb-2 font-ralewaySemiBold text-start  ${isDark ? "text-darkGray-400" : "text-darkGray-500"} `}>Ingresa tu correo electónico para recibir un código de recuperación para reestablecer el acceso a tu cuenta</Text>
+                <Text className={`text-sm font-ralewaySemiBold text-start  
+                  ${isDark ? "text-darkGray-400" : "text-darkGray-500"} `}>
+                  Ingresa tu correo electónico para recibir un código de recuperación
+                </Text>
 
                 <IconTextInputForm
-                  title='Email Institucional'
-                  icon={<Ionicons name="person-circle-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                   inputKeyboardType='email-address'
-                  inputPlaceholder='tu.nombre@epn.edu.ec'
+                  inputPlaceholder='Correo institucional (@epn.edu.ec)'
                   inputValue={email}
                   inputOnChangeText={setEmail}
                   inputSecure={false}
                 />
 
-                <View className='mb-5'>
+                <View className='mb-2'>
                   <AuthSupportButton
                     title='Regresar al login'
                     onPress={() => {
@@ -108,7 +118,7 @@ const Forgot = () => {
                       setResetSent(true);
                       setSuccessMessage('');
                       setErrors([]);
-                    }}  
+                    }}
                   />
 
                 </View>
@@ -116,36 +126,22 @@ const Forgot = () => {
             ) : (
               <>
                 <IconTextInputForm
-                  title='Código de recuperación'
-                  icon={<Ionicons name="key-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                   inputKeyboardType='default'
-                  inputPlaceholder='***********************************'
+                  inputPlaceholder='Código de recuperación'
                   inputValue={code}
                   inputOnChangeText={setCode}
                   inputSecure={false}
                 />
 
                 <IconTextInputForm
-                  title='Nueva Contraseña'
-                  icon={<Ionicons name="shield-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
                   inputKeyboardType='ascii-capable'
-                  inputPlaceholder='*********'
-                  inputValue={newPassword}
-                  inputOnChangeText={setnewPassword}
+                  inputPlaceholder='Nueva contraseña'
+                  inputValue={password}
+                  inputOnChangeText={setPassword}
                   inputSecure={true}
                 />
 
-                <IconTextInputForm
-                  title='Confirmar Nueva Contraseña'
-                  icon={<Ionicons name="shield-checkmark-outline" size={35} color={`${isDark ? "white" : "#a6a6a6"}`} />}
-                  inputKeyboardType='ascii-capable'
-                  inputPlaceholder='*********'
-                  inputValue={confirmNewPassword}
-                  inputOnChangeText={setconfirmNewPassword}
-                  inputSecure={true}
-                />
-
-                <View className='mb-5'>
+                <View className='mb-2'>
                   <AuthSupportButton
                     title='Regresar al login'
                     onPress={() => {
@@ -181,17 +177,26 @@ const Forgot = () => {
           disabled={
             forgotPasswordMutation.isPending || resetPasswordMutation.isPending
           }
-        >
-        </CTAButtonPrimary>
+          isLoading={
+            forgotPasswordMutation.isPending || resetPasswordMutation.isPending
+          }
+        />
       </View>
 
-      <FormSuccessAlert
+      <CustomSnackbar
+        visible={isVisibleSuccess}
         message={successMessage}
-        title='Correo enviado'
-      />
-      <FormErrorAlert
-        errors={errors}
-      />
+        setVisible={setIsVisibleSuccess}
+        translated={true}
+        color='green'
+        />
+      <CustomSnackbar
+        visible={isVisibleErrors}
+        message={errors.join('\n')}
+        setVisible={setIsVisibleErrors}
+        translated={true}
+        color='red'
+        />
 
     </View>
   )
