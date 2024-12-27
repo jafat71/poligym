@@ -15,25 +15,27 @@ interface CustomTabProps {
 const CustomTab = ({ text, icon, onPress}: CustomTabProps) => {
     const { isDark } = useTheme();
     return (
-        <Pressable
-            onPress={onPress}
-            className={`flex-1 overflow-hidden items-center justify-center rounded-lg p-1 scale-105`}>
-            <LinearGradient
-                colors={[
-                    'rgba(0,85,249,0.95)',
-                    'rgba(0,85,249,0.8)',
-                    'rgba(0,85,249,0.95)'
-                ]}
-                className="absolute w-full h-full"
-            />
-            <View className='h-full flex flex-col items-center justify-center'>
-                <Ionicons name={icon as any} size={96} color={'white'} />
-                <Text className={`font-ralewayBold text-white text-xl text-center`}
-                >
-                    {text}
-                </Text>
-            </View>
-        </Pressable>
+        <>
+            <Pressable
+                onPress={onPress}
+                className={`items-center justify-center rounded-lg p-1 w-full h-24`}>
+                <LinearGradient
+                    colors={[
+                        'rgba(0,85,249,0.95)',
+                        'rgba(0,85,249,0.8)',
+                        'rgba(0,85,249,0.95)'
+                    ]}
+                    className="absolute w-full h-full"
+                />
+                <View className='h-full flex flex-col items-center justify-center'>
+                    <Ionicons name={icon as any} size={46} color={'white'} />
+                    <Text className={`font-ralewayBold text-white text-sm text-center`}>
+                        {text}
+                    </Text>
+                </View>
+            </Pressable>
+        
+        </>
     );
 }
 

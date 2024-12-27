@@ -6,7 +6,7 @@ import { Slot } from 'expo-router';
 import TopHeaderComponent from '@/components/ui/common/header/TopHeaderComponent';
 
 import { useTheme } from '@/context/ThemeContext';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function AuthLayout() {
   const { isDark } = useTheme()
@@ -14,7 +14,8 @@ export default function AuthLayout() {
   return (
     <KeyboardAwareScrollView
       keyboardShouldPersistTaps="handled"
-      alwaysBounceVertical
+      extraScrollHeight={170}
+      enableOnAndroid={true}
       contentContainerStyle={{ flexGrow: 1, backgroundColor: '#0059ff' }}
     >
       <StatusBar backgroundColor="#0059ff" barStyle="light-content" />

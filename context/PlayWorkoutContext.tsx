@@ -69,14 +69,6 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
     const [playExercises, setPlayExercises] = useState<ExerciseInWorkoutAPI[]>([]);
     const [completedPlayExercises, setCompletedPlayExercises] = useState<{ [key: string]: boolean }>({});
 
-    useEffect(() => {
-        console.log("PLAY EXERCISES",playExercises)
-    }, [playExercises]);
-
-    useEffect(() => {
-        console.log("COMPLETED EXERCISES",completedPlayExercises)
-    }, [completedPlayExercises])
-
     const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
     const [currentSet, setCurrentSet] = useState(1);
     const [timeLeft, setTimeLeft] = useState(15);
@@ -153,12 +145,11 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
             setIsPlaying(false);
             setIsCompleted(true);
             let totalWorkoutDuration = getWorkoutDuration();
-            console.log("TOTAL WORKOUT DURATION",totalWorkoutDuration)
             setWorkoutTotalDuration(totalWorkoutDuration);
             setTimeout(() => {
                 router.back();
                 resetWorkout();
-            }, 3000);
+            }, 1000);
         }
     };
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
-import * as ImagePicker from 'expo-image-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/context/ThemeContext';
 import IconButton from '../buttons/IconButton';
@@ -13,7 +12,8 @@ import { createPost } from '@/lib/api/actions';
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
 import { usePlayWorkoutContext } from '@/context/PlayWorkoutContext';
 import CustomSnackbar from '../snackbar/CustomSnackbar';
-import { DIFFICULTY } from '@/types/interfaces/entities/plan';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import PostImagePicker from '../image/PostImagePicker';
 
 interface Props {
     isVisible: boolean;
@@ -21,28 +21,20 @@ interface Props {
     post: Partial<SocialPost>;
 }
 
-const CreatePostModal = ({
-    isVisible,
-    onClose,
-    post,
-}: Props) => {
-    const { isDark } = useTheme()
-    const { loggedUserInfo, accessToken } = useUser()
-    const { setUserPosts } = useNavigationFlowContext()
-    const { workoutTotalDuration } = usePlayWorkoutContext()
-    const [postTimeWorkout, setPostTimeWorkout] = useState<string>("00:00");
+const CreatePostModal = ({ isVisible, onClose, post }: Props) => {
+    if(!isVisible) return null;
+    if(!post) return null;
+    const { isDark } = useTheme();
+    const { loggedUserInfo, accessToken } = useUser();
+    const { setUserPosts } = useNavigationFlowContext();
+    const { workoutTotalDuration } = usePlayWorkoutContext();
+    const [postTimeWorkout, setPostTimeWorkout] = useState<string>('00:00');
     const [content, setContent] = useState(``);
-
-    useEffect(() => {
-        setPostTimeWorkout(workoutTotalDuration)
-        setTimeout(() => {
-            setContent(`¡He completado la rutina "${post.rutina}" en ${workoutTotalDuration} mins! 💪`)
-        }, 1000)
-    }, [workoutTotalDuration])
-
     const [image, setImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [postTime, setPostTime] = useState<string | null>(null);
+    const [postCreatedNotification, setPostCreatedNotification] = useState(false);
+    const [postImage, setPostImage] = useState<string | null>(null);    
 
     useEffect(() => {
         if (isVisible) {
@@ -50,36 +42,25 @@ const CreatePostModal = ({
         }
     }, [isVisible]);
 
-    const [postCreatedNotification, setPostCreatedNotification] = useState(false);
-    const pickImage = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        if (!result.canceled) {
-            setImage(result.assets[0].uri);
-        }
-    };
+    useEffect(() => {
+        setPostTimeWorkout(workoutTotalDuration);
+        setContent(`¡He completado la rutina "${post.rutina}" en ${workoutTotalDuration} mins! 💪`);
+    }, [workoutTotalDuration]);
 
     const handleCreatePost = async () => {
         const randomId = Math.floor(Math.random() * 1000) + 1;
-        post.id = randomId
-        post.publico = true
-        post.imagenComentario = image ?? ""
-        post.likes = 0
-        post.mensaje = content
-        post.oculto = false
-        post.duracion = postTimeWorkout
-        post.nombre = loggedUserInfo?.name ?? ""
-        console.log("post", post)
+        post.id = randomId;
+        post.publico = true;
+        post.imagenComentario = postImage ?? '';
+        post.likes = 0;
+        post.mensaje = content;
+        post.oculto = false;
+        post.duracion = postTimeWorkout;
+        post.nombre = loggedUserInfo?.name ?? '';
+        console.log('post', post);
         try {
             await createPost(accessToken!, post as SocialPost);
-            // Actualizar la caché de posts si es necesario
-            //queryClient.invalidateQueries(['posts']);
-            setUserPosts((prevPosts) => [...prevPosts, post as SocialPost])
+            setUserPosts((prevPosts) => [...prevPosts, post as SocialPost]);
         } catch (error) {
             console.error('Error creating post:', error);
         }
@@ -93,8 +74,7 @@ const CreatePostModal = ({
             setTimeout(() => {
                 setPostCreatedNotification(false);
                 onClose();
-            }, 1000)
-
+            }, 1000);
         } catch (error) {
             console.error('Error creating post:', error);
         } finally {
@@ -107,21 +87,22 @@ const CreatePostModal = ({
             isVisible={isVisible}
             onBackdropPress={onClose}
             onBackButtonPress={onClose}
-            className="mt-2"
             style={{ margin: 0 }}
             avoidKeyboard
             propagateSwipe
             animationOutTiming={1000}
             animationOut={'bounceOutDown'}
             animationIn={'bounceInUp'}
-            backdropOpacity={0.25} // Aumentar opacidad del fondo
+            backdropOpacity={0.25}
             useNativeDriver={true}
             backdropTransitionOutTiming={0}
             hideModalContentWhileAnimating
         >
-            <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-                className="flex-1 mt-4"
+            <KeyboardAwareScrollView
+                keyboardShouldPersistTaps="handled"
+                extraScrollHeight={170}
+                enableOnAndroid={true}
+                contentContainerStyle={{ flexGrow: 1, backgroundColor: '#0059ff' }}
             >
                 <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'} mt-4 rounded-t-3xl p-4`}>
                     <View className="flex-row justify-between items-center mb-4">
@@ -134,11 +115,6 @@ const CreatePostModal = ({
                         />
                     </View>
 
-                    <ScrollView
-                        className="flex-1  rounded-sm"
-                        showsVerticalScrollIndicator={false}
-                        bounces={false}
-                    >
                         <View className={`my-3 p-2
                 ${isDark ? "bg-darkGray-500" : "bg-white"}  rounded-sm`}>
                             <View className={`flex flex-row items-center 
@@ -171,30 +147,7 @@ const CreatePostModal = ({
                                 </View>
                             </View>
 
-                            {image ? (
-                                <View className="relative mb-4">
-                                    <Image
-                                        source={{ uri: image }}
-                                        className="w-full h-48 rounded-xl"
-                                    />
-                                    <TouchableOpacity
-                                        className="absolute top-2 right-2 bg-black/50 rounded-full p-2"
-                                        onPress={() => setImage(null)}
-                                    >
-                                        <Ionicons name="close" size={20} color="white" />
-                                    </TouchableOpacity>
-                                </View>
-                            ) : (
-                                <TouchableOpacity
-                                    onPress={pickImage}
-                                    className="flex-row items-center justify-center h-48 p-4 border-2 border-dashed border-gray-300 rounded-xl mb-4"
-                                >
-                                    <Ionicons name="image-outline" size={24} color={`${isDark ? "#f2f2f2" : "#1c1c1c"}`} />
-                                    <Text className={`ml-2 ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                                        Añadir foto
-                                    </Text>
-                                </TouchableOpacity>
-                            )}
+                            <PostImagePicker setImg={setPostImage} />
 
                             <View className='pb-2 my-2'>
                                 <TextInput
@@ -223,24 +176,10 @@ const CreatePostModal = ({
                                 />
                             </View>
                         </View>
-                    </ScrollView>
 
-                    <CTAButtonPrimary
-                        text='Publicar'
-                        onPress={handleSubmit}
-                        isLoading={isLoading}
-                    />
-
-                    <CustomSnackbar
-                        visible={postCreatedNotification}
-                        setVisible={setPostCreatedNotification}
-                        message='Tu logro ha sido compartido en la comunidad'
-                        color={isDark ? 'white' : 'black'}
-                        textColor={isDark ? 'black' : 'white'}
-                    />
+                    <CTAButtonPrimary text="Publicar" onPress={handleSubmit} isLoading={isLoading} />
                 </View>
-
-            </KeyboardAvoidingView>
+            </KeyboardAwareScrollView>
         </Modal>
     );
 };

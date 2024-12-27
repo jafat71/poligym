@@ -18,6 +18,7 @@ import React, { useEffect, useState } from 'react';
 import { TextInput } from 'react-native';
 import { Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const EditProfile = () => {
 
@@ -147,13 +148,12 @@ const EditProfile = () => {
     return (
         <Animated.View
             style={animatedStyle}
-            className="flex-1 ">
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-                className={`flex flex-col 
-                    px-4
-                    h-full ${isDark ? "bg-darkGray-500" : "bg-white"}`}
+            className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-white"} px-4`}>
+            <KeyboardAwareScrollView
+                keyboardShouldPersistTaps="handled"
+                extraScrollHeight={170}
+                enableOnAndroid={true}
+                contentContainerStyle={{ flexGrow: 1, backgroundColor: isDark ? "#080808" : "#fff" }}
             >
                 <View className='mt-2 rounded-lg '>
 
@@ -311,7 +311,6 @@ const EditProfile = () => {
                             </View>
                         </View>
 
-
                         <>
                             <Text className={`text-sm mb-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `}>Detalle de lesión</Text>
                             <TextInput
@@ -362,10 +361,6 @@ const EditProfile = () => {
                     </View>
                 </View>
 
-            </ScrollView>
-
-
-            <View className='w-full'>
                 <CTAButtonPrimary
                     onPress={handleUpdateUser}
                     text="Actualizar"
@@ -373,7 +368,7 @@ const EditProfile = () => {
                     isLoading={updateUserMutation.isPending}
                 />
 
-            </View>
+            </KeyboardAwareScrollView>
 
             <CustomSnackbar
                 visible={isVisibleErrors}

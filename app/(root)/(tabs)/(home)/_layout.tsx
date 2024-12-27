@@ -71,7 +71,7 @@ const _layout = () => {
                     headerTintColor: isDark ? "#fff" : "#1c1c1c",
                     headerTitleAlign: "center",
                     statusBarStyle: isDark ? 'light' : 'dark',
-                    animation: "fade",
+                    animation: "fade_from_bottom",
                     statusBarTranslucent: true,
                     statusBarColor: 'transparent',
                     fullScreenGestureEnabled: true
@@ -95,7 +95,7 @@ const _layout = () => {
                     headerTintColor: isDark ? "#fff" : "#1c1c1c",
                     headerTitleAlign: "center",
                     statusBarStyle: isDark ? 'light' : 'dark',
-                    animation: "fade",
+                    animation: "fade_from_bottom",
                     statusBarTranslucent: true,
                     statusBarColor: 'transparent',
                     fullScreenGestureEnabled: true

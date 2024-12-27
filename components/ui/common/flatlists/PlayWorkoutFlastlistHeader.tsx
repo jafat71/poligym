@@ -7,7 +7,7 @@ import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext";
 import { router } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import HomePill from "../pills/HomePill";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
 import WorkoutLoadingScreen from "@/components/animatedUi/WorkoutLoadingScreen";
@@ -31,18 +31,26 @@ export const PlayWorkoutFlatlistHeader = ({
     isLoading
 }: PlayWorkoutFlatlistHeaderProps) => {
 
+    if(!workout) return null;
+    
     const { completedPlayExercises, lastWorkoutPlayed } = usePlayWorkoutContext()
     const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
 
-    const exercisesCompleted = (isLastWorkoutPlayed ? Object.values(completedPlayExercises).filter(Boolean).length : 0);
-    const progressOver100 = useMemo(
-        () => isLastWorkoutPlayed ? Object.values(completedPlayExercises).filter(Boolean).length / totalExercises : 0,
-        [completedPlayExercises, totalExercises, isLastWorkoutPlayed]
-    );
+    const [exercisesCompleted, setExercisesCompleted] = useState(0);
+    const [progressOver100, setProgressOver100] = useState(0);
+    const [isExecuting, setIsExecuting] = useState(false);
 
-    const isExecuting = (isLastWorkoutPlayed ? Object.values(completedPlayExercises).filter(Boolean).length > 0 : false);
+    useEffect(() => {
+        if(isLastWorkoutPlayed){
+            setExercisesCompleted(Object.values(completedPlayExercises).filter(Boolean).length);
+            setProgressOver100(Object.values(completedPlayExercises).filter(Boolean).length / totalExercises);
+            setIsExecuting(Object.values(completedPlayExercises).filter(Boolean).length > 0);
+        }
+    }, [exercisesCompleted, progressOver100, isExecuting])
+
     const { isFavorite, handleFavoriteWorkout, handleUnfavoriteWorkout } = useFavoriteWorkout(workout);
     const { isDark } = useTheme(); 
+
     if (isLoading) return <WorkoutSkeleton/>
 
     return (
@@ -154,7 +162,9 @@ export const PlayWorkoutFlatlistHeader = ({
                         <View className="flex flex-col items-end justify-end">
                             <Text className={`font-ralewayBold text-start text-white`}>Progreso</Text>
                             <Text className={`text-4xl text-start text-white`}>
-                                {Math.round(progressOver100 * 100)}/100%
+                                {
+                                    Math.round(progressOver100 * 100)
+                                }/100%
                             </Text>
                         </View>
                     </View>

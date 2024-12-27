@@ -66,6 +66,7 @@ export default function RootLayout() {
                         animationTypeForReplace: 'push',
                         headerShown: false
                       }} />
+                      <Stack.Screen name="(info)" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
                       <Stack.Screen name="+not-found" options={{ headerShown: false }} />
                     </Stack>
                     {/* <DebugCache /> */}

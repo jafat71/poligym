@@ -1,11 +1,11 @@
-import { Image, Pressable, Text, TouchableHighlight, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import { Image, Pressable, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { Ionicons } from '@expo/vector-icons';
 import { ExerciseInWorkoutAPI } from '@/types/interfaces/entities/plan';
-import { router } from 'expo-router';
 import { useQueryClient } from '@tanstack/react-query';
 import CustomSnackbar from '../common/snackbar/CustomSnackbar';
+import { LinearGradient } from 'expo-linear-gradient';
 
 interface ExerciseCardProps {
     exercise: ExerciseInWorkoutAPI;
@@ -13,7 +13,6 @@ interface ExerciseCardProps {
     isActive: boolean;
     handleEditExercise: () => void;
     blocked: boolean;
-    setWorkoutInProgressNotification: (value: boolean) => void;
 }
 
 const PlayRoutineExerciseItem = ({
@@ -22,20 +21,31 @@ const PlayRoutineExerciseItem = ({
     isActive,
     handleEditExercise,
     blocked,
-    setWorkoutInProgressNotification,
 }: ExerciseCardProps) => {
     const { isDark } = useTheme();
-    const [isPressing, setIsPressing] = useState(false);
+    const [pressing, setPressing] = useState(false);
     useQueryClient().setQueryData(['exercises', exercise.exercise?.id], exercise.exercise);
-
+    const [notification, setNotification] = useState(false);
+    const [workoutInProgressNotification, setWorkoutInProgressNotification] = useState(false);
+    
     return (
         <>
-            <View className={`
+            <View 
+            className={`
                 flex flex-row items-center justify-start
                 transition-all duration-300 px-2 h-24
-                bg-eBlue-500 rounded-lg
+                bg-eBlue-500/70 rounded-lg
                 ${isActive ? '-translate-x-2' : ''}
+                ${pressing ? 'bg-eBlue-700 ' : ''}
             `}>
+                <LinearGradient
+                colors={[
+                    'rgba(0,85,249,0.95)',
+                    'rgba(0,85,249,0.8)',
+                    'rgba(0,85,249,0.95)'
+                ]}
+                className="absolute w-full h-full"
+            />
                 <Pressable
                     disabled={blocked}
                     onLongPress={onDrag}
@@ -50,28 +60,33 @@ const PlayRoutineExerciseItem = ({
                     />
                 </Pressable>
 
-                <View className={`
+                <View 
+                className={`
                     flex-1 rounded-sm overflow-hidden
                 `}>
                     <Pressable
+                        onPress={()=>{
+                            if(blocked){
+                                setWorkoutInProgressNotification(true);
+                            }else{
+                                setPressing(true);
+                                setNotification(true);
+                                setTimeout(() => {
+                                setPressing(false);
+                                    setNotification(false);
+                                }, 1000);
+                            }
+                        }}
                         onLongPress={() => {
-                            setIsPressing(true)
-                            console.log("edit exercise tapped in item long press")
                             if (blocked){
                                 setWorkoutInProgressNotification(true);
                             }else{
                                 handleEditExercise()
                             }
-                            setTimeout(() => {
-                                setIsPressing(false)
-                            }, 1000)
+                            setPressing(false);
                         }}
-                        className={`
-                            px-4 py-0 flex-row items-center justify-between 
-                            ${isPressing ? 'bg-eBlue-700' : ''}
-                        `}
+                        className={`px-4 py-0 flex-row items-center justify-between`}
                     >
-
                         <View className="flex-1">
                             <Text
                                 numberOfLines={1}
@@ -139,8 +154,19 @@ const PlayRoutineExerciseItem = ({
                 </View>
 
             </View>
-            
-        
+
+            <CustomSnackbar
+                visible={notification}
+                setVisible={setNotification}
+                message='Manten presionado para editar'
+                color='#121212'
+            />
+
+        <CustomSnackbar
+                visible={workoutInProgressNotification}
+                setVisible={setWorkoutInProgressNotification}
+                message='Rutina en progreso'
+            />
         </>
     );
 };

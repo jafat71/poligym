@@ -7,11 +7,10 @@ interface SubAddNumericComponentProps {
     number: number
     subFunction: () => void
     addFunction: () => void
-    icon: string
     title: string
 }
 
-export const SubAddNumericComponent = ({ number, subFunction, addFunction, icon, title }: SubAddNumericComponentProps) => {
+export const SubAddNumericComponent = ({ number, subFunction, addFunction, title }: SubAddNumericComponentProps) => {
     const { isDark } = useTheme()
     return (
         <>
@@ -28,7 +27,6 @@ export const SubAddNumericComponent = ({ number, subFunction, addFunction, icon,
                     </TouchableOpacity>
 
                     <View className='flex flex-row items-center'>
-                        <Ionicons name={icon as any} size={34} color={isDark ? '#fff' : '#374151'} />
                         <Text className={`ml-2 text-2xl w-12 text-center font-semibold
                             ${isDark ? 'text-white' : 'text-darkGray-900'}
                         `}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { lazy, useEffect, useState } from 'react'
 
 import { View, Text, ScrollView, Image } from 'react-native'
 import Modal from 'react-native-modal';
@@ -12,13 +12,18 @@ import { isValidMuscleGroup } from '@/lib/utils/isMuscle';
 
 import { ExerciseInWorkoutAPI } from '@/types/interfaces/entities/plan';
 
-import SquarePill from '../pills/SquarePill';
 import IconButton from '../buttons/IconButton';
+
+import SquarePill from '../pills/SquarePill';
+import { SubAddNumericComponent } from '../form/SubAddNumericComponent';
+
+import { MuscleGroups } from '@/types/types/muscles';
+
 import MaleBack from '../../body/MaleBack';
 import MaleFront from '../../body/MaleFront';
-import { MuscleGroups } from '@/types/types/muscles';
-import { SubAddNumericComponent } from '../form/SubAddNumericComponent';
-import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
+
+// let MaleBack = lazy(() => import('../../body/MaleBack'));
+// let MaleFront = lazy(() => import('../../body/MaleFront'));
 
 interface EditExerciseModalProps {
     visible: boolean;
@@ -28,6 +33,10 @@ interface EditExerciseModalProps {
 }
 
 const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditExerciseModalProps) => {
+    if(!visible) return null;
+    if(!exercise) return null;
+    if(!updateExercise) return null;
+
     const { isDark } = useTheme();
 
     let muscleColors = getMuscleColors(exercise?.exercise.muscleGroups || []);
@@ -41,21 +50,17 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
             isVisible={visible}
             onBackdropPress={onClose}
             onBackButtonPress={onClose}
-            className="mt-20"
             style={{ margin: 0 }}
             propagateSwipe
             animationOutTiming={1000}
             animationOut={'slideOutDown'}
             animationIn={'slideInUp'}
-            backdropOpacity={0.25} // Aumentar opacidad del fondo
             useNativeDriver={true}
             useNativeDriverForBackdrop
             backdropTransitionOutTiming={0}
             hideModalContentWhileAnimating
         >
-            {
-                exercise ? (
-                    <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'} mt-20 rounded-t-3xl p-4`}>
+                    <View className={`flex-1 bg-${isDark ? 'darkGray-900' : 'white'} rounded-t-3xl p-4`}>
                         <View className="flex-row justify-between items-center mb-4">
                             <Text className={`text-3xl font-ralewayBold ${isDark ? 'text-white' : 'text-black'}`}>
                                 {exercise?.exercise.name}
@@ -70,10 +75,8 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                             contentContainerStyle={{ flexGrow: 1 }}
                             showsVerticalScrollIndicator={false}
                         >
-
                             <View className="w-full ">
                                 <View className={`flex flex-col items-start justify-between`}>
-
                                     <SubAddNumericComponent
                                         number={exerciseState?.sets || 0}
                                         title='Series'
@@ -89,9 +92,7 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                                 sets: exercise?.sets + 1
                                             })
                                         }}
-                                        icon='repeat-sharp'
                                     />
-
                                     <SubAddNumericComponent
                                         number={exerciseState?.reps || 0}
                                         title='Repeticiones'
@@ -107,7 +108,6 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                                 reps: exercise?.reps + 1
                                             })
                                         }}
-                                        icon='repeat-sharp'
                                     />
 
                                     <SubAddNumericComponent
@@ -125,7 +125,6 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                                 restTime: exercise?.restTime + 1
                                             })
                                         }}
-                                        icon='timer-outline'
                                     />
 
                                     <SubAddNumericComponent
@@ -143,13 +142,12 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                                 weight: exercise?.weight ? exercise?.weight + 1 : 0
                                             })
                                         }}
-                                        icon='barbell-outline'
-                                    />
-
+                                    /> 
                                 </View>
                             </View>
 
                             <Image
+                                crossOrigin='anonymous'
                                 source={{ uri: exercise?.exercise.mediaUrl }}
                                 className='w-full h-64 rounded-lg my-4 bg-gray-100'
                                 resizeMode='stretch'
@@ -180,10 +178,11 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                 }
                             </View>
 
+                            {/*LAZY LOADING */}
                             <View className='flex flex-row justify-center p-2'>
                                 <MaleBack width={150} height={150} muscleColors={muscleColors} />
                                 <MaleFront width={150} height={150} muscleColors={muscleColors} />
-                            </View>
+                            </View> 
 
                             <View className='my-2'>
                                 <Text className={`text-sm font-ralewayExtraBold ${isDark ? 'text-white' : 'text-darkGray-900'}`}>Equipamiento</Text>
@@ -207,14 +206,9 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                     )
                                 }
                             </View>
-
-                        </ScrollView>
+                        </ScrollView> 
                         
                     </View>
-                ) : (
-                    <SkeletonLoadingScreen />   
-                )
-            }
         </Modal>
     )
 }

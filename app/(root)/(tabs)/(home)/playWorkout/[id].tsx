@@ -1,6 +1,6 @@
 import { ExerciseInWorkoutAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
-import { router, useLocalSearchParams } from "expo-router";
-import { useState, useEffect } from "react";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import { useState, useEffect, useCallback } from "react";
 import { Alert, Text, View } from "react-native";
 import DraggableFlatList, { RenderItemParams } from "react-native-draggable-flatlist";
 import { useQuery } from "@tanstack/react-query";
@@ -17,12 +17,15 @@ import EditExerciseModal from "@/components/ui/common/modal/EditExerciseModal";
 import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
 import ExerciseInWorkoutSkeleton from "@/components/animatedUi/ExerciseInWorkoutSkeleton";
 import CustomSnackbar from "@/components/ui/common/snackbar/CustomSnackbar";
+import CompletionModal from "@/components/ui/common/modal/CompletionModal";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
+    if(!id) return null;
     const { accessToken } = useUser();
     const queryClient = useQueryClient();
     const workoutId = Number(id);
+    if(!workoutId) return null;
     const cachedWorkout = queryClient.getQueryData<WorkoutAPI>(['workouts', workoutId]);
 
     const { isDark } = useTheme();
@@ -36,13 +39,10 @@ const PlayWorkout = () => {
     });
 
     const [exercises, setExercises] = useState<ExerciseInWorkoutAPI[]>([]);
-
     useEffect(() => {
         if (workout) {
             setExercises(workout.exercisesInWorkout.map(exercise => ({ ...exercise })));
-            // setTimeout(() => {
             setInfoSetted(true);
-            // }, 1500);
         }
     }, [workout]);
 
@@ -61,30 +61,26 @@ const PlayWorkout = () => {
         exercise: null
     });
 
+    const handleShare = () => {
+        setShowPostModal(true);
+    };
+
+    const handleRate = (rating: number) => {
+        console.log(`Rated: ${rating}`);
+    };
+
+    const [showCompletionModal, setShowCompletionModal] = useState(false);
+
     useEffect(() => {
         if (isCompleted) {
             setIsCompleted(false);
             restoreWorkout();
-            Alert.alert(
-                "¡Felicitaciones! 🎉",
-                "Has completado la rutina exitosamente. ¿Deseas compartir tu logro?",
-                [
-                    {
-                        text: "No, gracias",
-                        style: "cancel"
-                    },
-                    {
-                        text: "¡Compartir!",
-                        onPress: () => setShowPostModal(true)
-                    }
-                ]
-            );
+            setShowCompletionModal(true);
         }
     }, [isCompleted]);
 
-    const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
+    let isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
     const [hasbeenModified, setHasbeenModified] = useState(false);
-    const [workoutInProgressNotification, setWorkoutInProgressNotification] = useState(false);
 
     const updateExercise = (exercise: ExerciseInWorkoutAPI) => {
         setHasbeenModified(true);
@@ -99,7 +95,7 @@ const PlayWorkout = () => {
         }
     }
 
-    const renderItem = ({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => {
+    const renderItem = useCallback(({ item, drag, isActive }: RenderItemParams<ExerciseInWorkoutAPI>) => {
         return <PlayRoutineExerciseItem
             exercise={item}
             onDrag={drag}
@@ -108,9 +104,8 @@ const PlayWorkout = () => {
                 setShowEditExerciseModal({ visible: true, exercise: item as any })
             }}
             blocked={isLastWorkoutPlayed}
-            setWorkoutInProgressNotification={setWorkoutInProgressNotification}
         />
-    }
+    }, [exercises, isLastWorkoutPlayed])
 
     const handlePlayWorkout = () => {
         if (exercises.length === 0) return;
@@ -139,6 +134,8 @@ const PlayWorkout = () => {
                 data={exercises}
                 ItemSeparatorComponent={() => <View className="h-2" />}
                 onDragEnd={({ data }) => {
+                    //Verify if order has changed
+                    if (data.every((exercise, index) => exercise.order === exercises[index].order)) return; 
                     setHasbeenModified(true);
                     setExercises([...data])
                 }}
@@ -174,14 +171,16 @@ const PlayWorkout = () => {
                 updateExercise={updateExercise}
             />
 
-            <CustomSnackbar
-                visible={workoutInProgressNotification}
-                setVisible={setWorkoutInProgressNotification}
-                message='Rutina en progreso'
-                color='eOrange-500'
-            />
+            <CompletionModal
+                visible={showCompletionModal}
+                onClose={() => setShowCompletionModal(false)}
+                onShare={handleShare}
+                onRate={handleRate}
+            />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+
         </View>
     );
 };
 
-export default PlayWorkout;
+export default PlayWorkout;                                            
+                                            
