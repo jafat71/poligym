@@ -5,7 +5,7 @@ import { View } from 'react-native';
 const HorizontalFlatlistSkeleton = () => {
     return (
         <View
-        className={`w-72 h-60 mr-2 mb-1 
+        className={`w-72 h-60 mr-2 my-2 mb-1 
         overflow-hidden rounded-lg`}>
         <LinearGradient
             colors={[

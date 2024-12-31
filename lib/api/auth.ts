@@ -77,6 +77,8 @@ export const signin = async (email: string, password: string) => {
         } else {
             throw new Error(`Error al realizar la solicitud: ${error.message}`);
         }
+        throw error;
+        
     }
 };
 

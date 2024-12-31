@@ -13,11 +13,15 @@ import WorkoutSkeleton from "@/components/animatedUi/WorkoutSkeleton";
 interface PlayPlanFlatlistHeaderProps {
     plan: TrainingPlanAPI;
     isLoading: boolean;
+    initDate: Date;
+    endDate: Date;
 }
 
 export const PlayPlanFlatlistHeader = ({
     plan,
-    isLoading
+    isLoading,
+    initDate,
+    endDate
 }: PlayPlanFlatlistHeaderProps) => {
 
     const workoutsCompleted = 0
@@ -94,6 +98,16 @@ export const PlayPlanFlatlistHeader = ({
                     <Text className={`text-xl font-ralewayLight text-white mb-4`}>
                         {plan?.description}
                     </Text>
+                </View>
+
+                <View>
+                    <Text className={`text-sm font-ralewayBold text-white`}>
+                        Fecha
+                    </Text>        
+                    <View className="flex-row justify-between">
+                        <Text className={`text-lg text-white`}>{initDate?.toLocaleDateString()}</Text>
+                        <Text className={`text-lg text-white`}>{endDate?.toLocaleDateString()}</Text>
+                    </View>
                 </View>
 
                 <View className={``}>

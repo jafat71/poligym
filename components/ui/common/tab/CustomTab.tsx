@@ -18,7 +18,7 @@ const CustomTab = ({ text, icon, onPress}: CustomTabProps) => {
         <>
             <Pressable
                 onPress={onPress}
-                className={`items-center justify-center rounded-lg p-1 w-full h-24`}>
+                className={`items-center justify-center overflow-hidden rounded-lg mb-2 w-full h-24`}>
                 <LinearGradient
                     colors={[
                         'rgba(0,85,249,0.95)',
@@ -27,6 +27,9 @@ const CustomTab = ({ text, icon, onPress}: CustomTabProps) => {
                     ]}
                     className="absolute w-full h-full"
                 />
+                <View className='absolute right-0  z-1 translate-x-4 '>
+                    <Ionicons name={icon as any} size={94} color="#0085F9" />  
+                </View>
                 <View className='h-full flex flex-col items-center justify-center'>
                     <Ionicons name={icon as any} size={46} color={'white'} />
                     <Text className={`font-ralewayBold text-white text-sm text-center`}>

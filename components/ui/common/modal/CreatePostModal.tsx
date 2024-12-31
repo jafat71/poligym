@@ -30,7 +30,6 @@ const CreatePostModal = ({ isVisible, onClose, post }: Props) => {
     const { workoutTotalDuration } = usePlayWorkoutContext();
     const [postTimeWorkout, setPostTimeWorkout] = useState<string>('00:00');
     const [content, setContent] = useState(``);
-    const [image, setImage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [postTime, setPostTime] = useState<string | null>(null);
     const [postCreatedNotification, setPostCreatedNotification] = useState(false);

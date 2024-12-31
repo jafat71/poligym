@@ -43,6 +43,8 @@ const Signin = () => {
     },
     onError: (error: any) => {
       setErrors([error.message]);
+      setIsVisible(true)
+
     },
   });
 

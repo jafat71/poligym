@@ -1,19 +1,21 @@
 import React, { useRef } from 'react'
 import { Animated } from 'react-native'
 import RoutineSmallCard from './RoutineSmallCard';
+import HorizontalFlatlistSkeleton from '@/components/animatedUi/HorizontalFlatlistSkeleton';
 
 interface Props {
     data: Animated.WithAnimatedObject<ArrayLike<any>> | null | undefined
-    ListHeaderComponent: React.JSX.Element
+    infoSetted: boolean
 }
 
-export const WorkoutsInPlanFlatList = ({ data, ListHeaderComponent }: Props) => {
+export const WorkoutsInPlanFlatList = ({ data, infoSetted }: Props) => {
     const scrollX = useRef(new Animated.Value(0)).current;
 
     return (
-        <>
-            {ListHeaderComponent}
-            <Animated.FlatList
+        <>  
+        {
+            infoSetted && data && data.length > 0 ? (
+                <Animated.FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 className='my-2'
@@ -61,6 +63,11 @@ export const WorkoutsInPlanFlatList = ({ data, ListHeaderComponent }: Props) => 
                 snapToInterval={300}
                 decelerationRate="fast"
             />
+            ) :(
+                <HorizontalFlatlistSkeleton/>
+            )
+        }
+            
         
         </>
     )

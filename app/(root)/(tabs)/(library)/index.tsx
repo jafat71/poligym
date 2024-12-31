@@ -9,9 +9,11 @@ const Index = () => {
     const { isDark } = useTheme();
     return (
         <View className={`flex flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`} >
-
             <View className='flex flex-row justify-center items-center px-4'>
-                <Text className='text-white text-4xl font-ralewayBold '>Descube todo lo que POLIGYM APP tiene para ti</Text>
+                <Text className={`text-4xl font-ralewayBold 
+                    ${isDark ? "text-white" : "text-darkGray-500"}`}>
+                    Descube todo lo que POLIGYM APP tiene para ti
+                </Text>
             </View>
 
             <View className='my-4'>

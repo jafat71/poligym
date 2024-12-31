@@ -31,7 +31,6 @@ export const PlayWorkoutFlatlistHeader = ({
     isLoading
 }: PlayWorkoutFlatlistHeaderProps) => {
 
-    if(!workout) return null;
     
     const { completedPlayExercises, lastWorkoutPlayed } = usePlayWorkoutContext()
     const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;

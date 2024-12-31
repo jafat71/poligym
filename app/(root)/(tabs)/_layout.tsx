@@ -120,7 +120,7 @@ export default function TabsLayout() {
           headerLeft: () => (
             <Pressable
               onPress={() => {
-                router.navigate('/(tabs)/home');
+                router.back();
               }}
               className='ml-4'
             >

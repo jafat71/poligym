@@ -17,6 +17,13 @@ const _layout = () => {
                     headerShown: false,
                 }}
             />
+            <Stack.Screen
+                name="historial"
+                options={{
+                    animation: "fade",
+                    headerShown: false,
+                }}
+            />
         </Stack>
     );
 };

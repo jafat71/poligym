@@ -40,8 +40,9 @@ const PostImagePicker = ({ setImg }: Props) => {
                     <View className='flex-row items-center justify-center h-48 p-4 border-2 border-dashed border-gray-300 rounded-xl mb-4'>
                         <TouchableOpacity
                             onPress={takePhoto}
-                            className="flex-col items-center justify-center rounded-full 
-                            bg-darkGray-900 p-4 w-1/2 h-3/4"
+                            className={`flex-col items-center justify-center rounded-full 
+                            ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"} 
+                            p-4 w-1/2 h-3/4`}
                         >
                             <Ionicons name="image-outline" size={24} color={`${isDark ? "#f2f2f2" : "#1c1c1c"}`} />
                             <Text className={`ml-2 ${isDark ? "text-white" : "text-darkGray-500"}`}>
@@ -51,8 +52,10 @@ const PostImagePicker = ({ setImg }: Props) => {
 
                         <TouchableOpacity
                             onPress={pickImage}
-                            className="flex-col items-center justify-center rounded-full 
-                            bg-darkGray-900 p-4 w-1/2 h-3/4"                        >
+                            className={`flex-col items-center justify-center rounded-full 
+                                ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"} 
+                                p-4 w-1/2 h-3/4`}                     
+                            >
                             <Ionicons name="image-outline" size={24} color={`${isDark ? "#f2f2f2" : "#1c1c1c"}`} />
                             <Text className={`ml-2 ${isDark ? "text-white" : "text-darkGray-500"}`}>
                                 Subir imagen 

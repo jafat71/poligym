@@ -6,10 +6,13 @@ import { useUser } from '@/context/UserContext'
 import { Ionicons } from '@expo/vector-icons'
 import IconButton from '../common/buttons/IconButton'
 import { StatsWeekChart } from '../stats/StatsWeekChart'
+import { useRouter } from 'expo-router'
 
 const TimeResumeFull = () => {
     const { isDark } = useTheme()
     const { loggedUserInfo } = useUser()
+    const router = useRouter
+    ()
     return (
         <View>
             <View className='flex flex-row items-center justify-between my-1'>
@@ -22,6 +25,7 @@ const TimeResumeFull = () => {
                 <IconButton
                     icon={<Ionicons name="add" size={24} color={isDark ? "white" : "black"} />}
                     onPress={() => {
+                        router.push('/(root)/(tabs)/(stats)/historial')
                     }}
                 />
             </View>
