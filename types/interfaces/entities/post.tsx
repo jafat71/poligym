@@ -10,7 +10,8 @@ export interface SocialPost {
     mensaje: string;
     likes: number;
     rutina: string;
-    imagenComentario?: string,
+    imagen_comentario?: string,
     duracion: string,
     dificultad: string,
+    user_id: string;
 }

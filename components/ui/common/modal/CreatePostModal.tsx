@@ -50,15 +50,15 @@ const CreatePostModal = ({ isVisible, onClose, post }: Props) => {
         const randomId = Math.floor(Math.random() * 1000) + 1;
         post.id = randomId;
         post.publico = true;
-        post.imagenComentario = postImage ?? '';
+        post.imagen_comentario = postImage ?? '';
         post.likes = 0;
         post.mensaje = content;
         post.oculto = false;
         post.duracion = postTimeWorkout;
-        post.nombre = loggedUserInfo?.name ?? '';
-        console.log('post', post);
+        post.user_id = loggedUserInfo?.id!;
         try {
-            await createPost(accessToken!, post as SocialPost);
+            const response = await createPost(accessToken!, post as SocialPost);
+            console.log('response', response);
             setUserPosts((prevPosts) => [...prevPosts, post as SocialPost]);
         } catch (error) {
             console.error('Error creating post:', error);

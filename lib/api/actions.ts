@@ -4,6 +4,7 @@ import { mapApiEquipmentToEquipment, mapApiExerciseInWorkoutToExerciseInWorkout,
 import { MuscleGroups } from "@/types/types/muscles";
 import { SocialPost } from "@/types/interfaces/entities/post";
 import { NutritionPlan } from "@/types/interfaces/entities/foodplan";
+import { createPostInDatabase } from "../postapi";
 
 interface FetchTrainingPlansResponse {
     plans: TrainingPlanAPI[];
@@ -214,10 +215,11 @@ export const fetchRecommendedPlans = async (token: string) : Promise<TrainingPla
 }
 
 export const createPost = async (token: string, post: SocialPost) => {
+
     try {
-        //const response = await axiosInstance.post(`/post/create`, post, { headers: { 'Authorization': `Bearer ${token}` } });
-        //return response.data;
-        return post;
+        console.log('post', post);
+        const response = await createPostInDatabase(post);
+        return response.data;
     } catch (error) {
         console.error('Error al crear la publicación');
         throw error;

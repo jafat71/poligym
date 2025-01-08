@@ -1,5 +1,6 @@
 import { Food, FOODPLAN_CATEGORY, Meal, NutritionPlan, WeeklyMeal } from "../interfaces/entities/foodplan"
 import { CATEGORY, DIFFICULTY, EquipmentApi, ExerciseAPI, ExerciseInWorkoutAPI, IndividualExercise, RoutinePlan, TrainingPlan, TrainingPlanAPI, WorkoutAPI } from "../interfaces/entities/plan"
+import { SocialPost } from "../interfaces/entities/post"
 import { User } from "../interfaces/entities/user"
 import { MuscleGroups } from "../types/muscles"
 
@@ -244,3 +245,19 @@ export const mapApiFoodToFood = (data: any): Food[] => {
     });
 }
 
+export const mapApiPostToPost = (data: any): SocialPost[] => {
+    return data.map((post: any) => {
+        return {
+            id: post.id,
+            user_id: post.user_id,
+            nombre: post.nombre,
+            fecha: post.fecha,
+            imagen_comentario: post.imagen_comentario,
+            mensaje: post.mensaje,
+            oculto: post.oculto,
+            publico: post.publico,
+            rutina: post.rutina,
+            likes: post.likes,
+        }
+    });
+}

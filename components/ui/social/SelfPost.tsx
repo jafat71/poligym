@@ -6,9 +6,15 @@ import { Alert, Image, Pressable, Switch, Text, View } from 'react-native';
 import ThemeHomePill from '../common/pills/ThemeHomePill';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, interpolateColor } from 'react-native-reanimated';
 import { useNavigationFlowContext } from '@/context/NavFlowContext';
+import { useUser } from '@/context/UserContext';
 
 export const SelfPost = (post: SocialPost) => {
+    if (!post) return null
     const { isDark } = useTheme()
+    const { loggedUserInfo } = useUser()
+    const userName = loggedUserInfo?.name || ""
+    const userImage = loggedUserInfo?.avatarUrl || ""   
+    //{"fecha": 2025-01-08T09:21:34.754Z transforma a 2025-01-08 09:21:34
 
     const {setUserPosts} = useNavigationFlowContext()
     const [postlikes, setPostLikes] = useState(post.likes)
@@ -24,6 +30,21 @@ export const SelfPost = (post: SocialPost) => {
             transform: [{ scale: scale.value }],
         };
     });
+
+    const getPostDate = (date: string) => {
+        const datePost = new Date(date)
+        const day = datePost.getDate()
+        const month = datePost.getMonth()
+        const year = datePost.getFullYear()
+        return `${day}/${month}/${year}`
+    }
+
+    const getPostTime = (date: string) => {
+        const datePost = new Date(date)
+        const hours = datePost.getHours()
+        const minutes = datePost.getMinutes()
+        return `${hours}:${minutes}`
+    }
 
     const handleLike = () => {
         setIsLiked(!isLiked);
@@ -49,32 +70,35 @@ export const SelfPost = (post: SocialPost) => {
         ])
     }
 
+    const postDate = getPostDate(post.fecha)
+    const postTime = getPostTime(post.fecha)
+
     return (
         <View className={`my-3 p-2
             ${isDark ? "bg-darkGray-500" : "bg-white"}  rounded-sm`}>
             <View className={`flex flex-row items-center 
-              justify-between pb-5`}>
+                justify-between pb-5`}>
                 <View className='flex flex-row items-center'>
                     <View className={`rounded-full w-12 h-12
                             flex flex-col items-center justify-center 
                             border-[2px] border-eBlue-500
                             ${isDark ? "" : "bg-darkGray-200 "}`}>
                         {
-                            post.imagenPerfil ? (
+                            userImage ? (
                                 <Image
-                                    source={{ uri: post.imagenPerfil }}
+                                    source={{ uri: userImage }}
                                     className='w-full h-full rounded-full'
                                 />
                             ) : (
                                 <Text className={` text-lg font-raleway text-eBlue-500 `}>
-                                    {post.nombre.split(" ").map((n) => n[0]).join("")}
+                                    {userName?.split(" ").map((n) => n[0]).join("")}
                                 </Text>
                             )
                         }
                     </View>
                     <View className={`pl-3`}>
-                        <Text className={`text-base font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{post.nombre}</Text>
-                        <Text className={`text-base font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>{post.fecha}</Text>
+                        <Text className={`text-base font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{userName}</Text>
+                        <Text className={`text-base font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>{postDate} {postTime}</Text>
                     </View>
                 </View>
                 <View className='flex flex-row items-center justify-center' >
@@ -89,8 +113,8 @@ export const SelfPost = (post: SocialPost) => {
             </View>
 
             {
-                post.imagenComentario && (
-                    <Image source={{ uri: post.imagenComentario }} className='w-full h-40 rounded-md' />
+                post.imagen_comentario && (
+                    <Image source={{ uri: post.imagen_comentario }} className='w-full h-40 rounded-md' />
                 )
             }
 
@@ -130,11 +154,9 @@ export const SelfPost = (post: SocialPost) => {
                     </Animated.View>
                 </Pressable>
 
-
             </View>
 
         </View>
     );
 }
-
 export default SelfPost;
