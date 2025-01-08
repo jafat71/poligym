@@ -26,6 +26,8 @@ export interface TrainingPlanAPI {
     exercisesInWorkout: ExerciseInWorkoutAPI[];
     exercises: ExerciseAPI[];
     isDeleted: boolean;
+    score: number;
+    totalRatings: number;
   }
   
   // ExerciseInWorkout Interface

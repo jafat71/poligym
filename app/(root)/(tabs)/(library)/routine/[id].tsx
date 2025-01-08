@@ -14,6 +14,7 @@ import RoutineExerciseItem from '@/components/ui/routines/RoutineExerciseItem';
 import ButtonPillLightDark from '@/components/ui/common/buttons/ButtonPillLightDark';
 import { updateUser } from '@/lib/api/userActions';
 import { useFavoriteWorkout } from '@/hooks/useFavoriteWorkout';
+import ScorePill from '@/components/ui/common/pills/ScorePill';
 
 const WorkoutInfo = () => {
     const { id } = useLocalSearchParams();
@@ -83,6 +84,11 @@ const WorkoutInfo = () => {
                     text={"Ejecutar rutina"}
                     onPress={handlePlayWorkout}
                     disabled={isLoading}
+                />
+
+                <ScorePill
+                    score={workout?.score ?? 0}
+                    totalRatings={workout?.totalRatings ?? 0}
                 />
 
                 <View>

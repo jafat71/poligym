@@ -25,7 +25,7 @@ const CTAButtonPrimary = ({ onPress, text, disabled = false, isLoading = false, 
                 bg-eBlue-500 px-28 py-4 ${extraClassname}`}>
                 {
                     isLoading ? (
-                        <ActivityIndicator color="white" size={20} />
+                        <ActivityIndicator color="white" size={24} />
                     ) : (
                         <Text className={`text-base text-center
                             text-white font-ralewayExtraBold`}>

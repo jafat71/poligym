@@ -26,6 +26,8 @@ export default function RootLayout() {
                         />
                     </View>
                 ),
+                statusBarStyle: isDark ? 'light' : 'dark',
+                statusBarAnimation: 'none',
             }}
         >
             <Stack.Screen name="terms" options={{ animation: 'slide_from_bottom', animationTypeForReplace: 'push' }} />

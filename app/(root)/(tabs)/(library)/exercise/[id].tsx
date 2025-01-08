@@ -38,6 +38,7 @@ const ExerciseInfo = () => {
         enabled: !!id 
     });
 
+
     if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error loading exercise details - {id}</Text>;
 

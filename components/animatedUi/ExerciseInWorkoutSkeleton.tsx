@@ -7,7 +7,7 @@ const ExerciseInWorkoutSkeleton = () => {
         <View className={`
             flex flex-row items-center justify-start
             transition-all duration-300 px-2 h-24
-            bg-eBlue-500 rounded-lg mb-2
+            bg-eBlue-500 rounded-lg my-2
         `}>
             <View
                 className={`p-4 justify-center 

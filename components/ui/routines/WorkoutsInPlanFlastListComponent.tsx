@@ -11,6 +11,9 @@ interface Props {
 export const WorkoutsInPlanFlatList = ({ data, infoSetted }: Props) => {
     const scrollX = useRef(new Animated.Value(0)).current;
 
+    console.log("data", data)
+
+    console.log("infoSetted", infoSetted)
     return (
         <>  
         {

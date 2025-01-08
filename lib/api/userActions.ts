@@ -1,9 +1,10 @@
 import { User } from "@/types/interfaces/entities/user";
 import axiosInstance from "./config";
 import { mapApiNutritionPlanToNutritionPlan, mapApiTrainingPlanToTrainingPlan, mapApiWorkoutToWorkout } from "@/types/mappers";
+import { TargetType } from "@/constants";
+import { AxiosError } from "axios";
 
 export const updateUser = async (token: string, userId: string, user: Partial<User>) => {
-    console.log("USER", user)
     try {   
         const response = await axiosInstance.patch(`/user/update-user/${userId}`, user, { headers: { 'Authorization': `Bearer ${token}` } });
         return response.data;
@@ -15,7 +16,6 @@ export const updateUser = async (token: string, userId: string, user: Partial<Us
 }
 
 export const getUserFoodPlans = async (token: string, userId: string) => {
-    console.log("GET USER FOOD PLANS")
     try {
         const response = await axiosInstance.get(`/user/find-nutrition-plans/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
         return mapApiNutritionPlanToNutritionPlan(response.data);
@@ -36,7 +36,6 @@ export const getUserTrainingPlans = async (token: string, userId: string) => {
 }
 
 export const getUserWorkouts = async (token: string, userId: string) => {
-    console.log("GET USER WORKOUTS")
     try {
         const response = await axiosInstance.get(`/user/find-workouts/${userId}`, { headers: { 'Authorization': `Bearer ${token}` } });
         return mapApiWorkoutToWorkout(response.data);
@@ -46,3 +45,30 @@ export const getUserWorkouts = async (token: string, userId: string) => {
     }
 }
 
+export const rateTarget = async (
+    targetType: TargetType, 
+    targetId: string, 
+    score: number,
+    token: string, 
+) => {
+    const body = {
+        targetId,
+        targetType,
+        score
+    }
+    console.log("BODY", body)
+    try {
+        const response = await axiosInstance.post(`/rating`, body, { headers: { 'Authorization': `Bearer ${token}` } });
+        return response.data;
+    } catch (error) {
+        if (error instanceof AxiosError){
+            if (error.response?.data.message){
+                throw new Error(error.response?.data.message);
+            }
+            if (error.response?.data.error){
+                throw new Error(error.response?.data.error);
+            }
+        }
+        throw error;
+    }
+}

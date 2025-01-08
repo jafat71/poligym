@@ -176,6 +176,8 @@ const PlayWorkout = () => {
                 onClose={() => setShowCompletionModal(false)}
                 onShare={handleShare}
                 onRate={handleRate}
+                routineExercises={exercises}
+                workoutId={workoutId}
             />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 
         </View>

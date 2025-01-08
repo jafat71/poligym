@@ -1,15 +1,17 @@
 import SkeletonLoadingScreen from '@/components/animatedUi/SkeletonLoadingScreen';
 import ButtonPillLightDark from '@/components/ui/common/buttons/ButtonPillLightDark';
 import FilterPill from '@/components/ui/common/pills/FilterPill';
+import ScorePill from '@/components/ui/common/pills/ScorePill';
 import SquarePill from '@/components/ui/common/pills/SquarePill';
 import DayMealFoodPlanCard from '@/components/ui/foodplan/DayMealFoodPlanCard';
+import { TargetType } from '@/constants';
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
 import { useFavoriteNutritionPlan } from '@/hooks/useFavoriteNutritionPlan';
 import { fetchFoodPlanById } from '@/lib/api/actions';
-import { updateUser } from '@/lib/api/userActions';
+import { rateTarget, updateUser } from '@/lib/api/userActions';
 import { DAY_OF_WEEK, FOODPLAN_CATEGORY, NutritionPlan } from '@/types/interfaces/entities/foodplan';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Image, SafeAreaView, ScrollView, Text } from 'react-native';
@@ -75,6 +77,11 @@ const Id = () => {
                         }
                     }}
                     disabled={isLoading}
+                />
+
+                <ScorePill
+                    score={plan?.score ?? 0}
+                    totalRatings={plan?.totalRatings ?? 0}
                 />
 
                 <Image

@@ -89,6 +89,8 @@ export const mapApiWorkoutToWorkout = (data: any): WorkoutAPI[] => {
             trainingType: workout.trainingType,
             exercisesInWorkout: mapApiExerciseInWorkoutToPartialExerciseInWorkout(workout.exercisesInWorkout) || [],
             isDeleted: workout.isDeleted,
+            score: workout.score ?? 0,
+            totalRatings: workout.totalRatings ?? 0,
         }
     });
 }
@@ -197,6 +199,8 @@ export const mapApiNutritionPlanToNutritionPlan = (data: any): NutritionPlan[] =
             duration: plan.duration,
             category: FOODPLAN_CATEGORY[plan.category as unknown as keyof typeof FOODPLAN_CATEGORY] || FOODPLAN_CATEGORY.ALL,
             weeklyMeals: mapApiWeeklyMealToWeeklyMeal(plan.weeklyMeals) || [],
+            score: plan.score,
+            totalRatings: plan.totalRatings,
         }
     });
 }

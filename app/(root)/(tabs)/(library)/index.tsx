@@ -12,7 +12,7 @@ const Index = () => {
             <View className='flex flex-row justify-center items-center px-4'>
                 <Text className={`text-4xl font-ralewayBold 
                     ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                    Descube todo lo que POLIGYM APP tiene para ti
+                    Descubre todo lo que POLIGYM APP tiene para ti
                 </Text>
             </View>
 
