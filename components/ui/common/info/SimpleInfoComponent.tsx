@@ -42,7 +42,7 @@ export const SimpleInfoComponent = ({ text, pressable, modalVisible, toggleModal
             }}
             className={`
                 flex flex-col items-center justify-center
-                z-50  h-full w-full
+                z-50  h-full w-full bg-black/50
             `}
         >
             <Animated.View

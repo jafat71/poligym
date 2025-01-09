@@ -14,4 +14,5 @@ export interface SocialPost {
     duracion: string,
     dificultad: string,
     user_id: string;
+    liked_by: string[];
 }

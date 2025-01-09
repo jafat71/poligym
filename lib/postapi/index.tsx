@@ -44,24 +44,62 @@ export async function getAllPostFromUser(userId: string) {
     }
 }   
 
+export async function getPostById(postId: number) {
+    try {
+        const post = await sql`SELECT * FROM posts WHERE id = ${postId};`;
+        return { data: post, status: 200 };
+    } catch (error) {
+        console.error("Error fetching post:", error);
+        return { error: "Error fetching post", status: 500 };
+    }
+}
+
 // Actualizar likes o estado de un post
-export async function updatePostInDatabase(
+export async function updateLikesPostInDatabase(
     postId: number,
-    updates: { likes?: number; oculto?: boolean; publico?: boolean }
+    userId: string
 ) {
     try {
+        const userJson = JSON.stringify(userId); 
+        console.log("userJson", userJson)   
         const response = await sql`
       UPDATE posts
       SET 
-        likes = COALESCE(${updates.likes}, likes),
-        oculto = COALESCE(${updates.oculto}, oculto),
-        publico = COALESCE(${updates.publico}, publico)
+        likes = CASE
+          WHEN liked_by @> ${userJson}::jsonb THEN likes - 1
+          ELSE likes + 1
+        END,
+        liked_by = CASE
+          WHEN COALESCE(liked_by, '[]'::jsonb) @> ${userJson}::jsonb THEN (
+            SELECT COALESCE(jsonb_agg(value), '[]'::jsonb)
+            FROM jsonb_array_elements_text(COALESCE(liked_by, '[]'::jsonb)) AS value
+            WHERE value != ${userId}
+          )
+          ELSE COALESCE(liked_by, '[]'::jsonb) || ${userJson}::jsonb
+        END
       WHERE id = ${postId}
       RETURNING *;
     `;
         if (response.length === 0) {
             return { error: "Post not found", status: 404 };
         }
+        return { data: response[0], status: 200 };
+    } catch (error) {
+        console.error("Error updating post:", error);
+        return { error: "Error updating post", status: 500 };
+    }
+}
+
+
+
+export async function updatePublicVisibilityPostInDatabase(
+    postId: number,
+    visibility: boolean
+) {
+    try {
+        const response = await sql`
+            UPDATE posts SET publico = ${visibility} WHERE id = ${postId} RETURNING *;
+        `;
         return { data: response[0], status: 200 };
     } catch (error) {
         console.error("Error updating post:", error);

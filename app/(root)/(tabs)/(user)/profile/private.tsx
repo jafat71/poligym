@@ -3,6 +3,7 @@ import SelfPost from "@/components/ui/social/SelfPost";
 import { socialPosts, UserPosts } from "@/constants";
 import { useNavigationFlowContext } from "@/context/NavFlowContext";
 import { useTheme } from "@/context/ThemeContext";
+import { queryClient } from "@/lib/queryClient/queryClient";
 import { SocialPost } from "@/types/interfaces/entities/post";
 import { useCallback, useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
@@ -12,36 +13,23 @@ export default function Private() {
 
     const { isDark } = useTheme()
     const [refreshing, setRefreshing] = useState(false)
-    const [posts, setPosts] = useState<SocialPost[]>([])
 
     const { userPosts } = useNavigationFlowContext()
 
-    useEffect(() => {
-        setPosts([...userPosts])
-    }, [userPosts])         
-
-
     const onRefresh = useCallback(() => {
         setRefreshing(true)
-        //TODO: Fetch Posts User
+        queryClient.invalidateQueries({ queryKey: ['userPosts'] })
         setTimeout(() => {
             setRefreshing(false)
         }, 2000)
-    }, [posts])
-
-    const onEndReached = () => {
-        // TODO: PREFETCH INFINITE SCROLL
-        console.log('End of list reached')
-    }
+    }, [userPosts])
 
     return (
         <FlatList
             className={`w-full px-2 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
-            data={posts.filter(post => !post.publico)}
+            data={userPosts.filter(post => !post.publico)}
             renderItem={({ item }) => <SelfPost {...item} />}
             keyExtractor={(item) => item.id.toString()}
-            onEndReached={onEndReached}
-            onEndReachedThreshold={0.1}
             refreshControl={
                 <RefreshControl
                     refreshing={refreshing}

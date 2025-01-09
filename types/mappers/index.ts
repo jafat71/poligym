@@ -258,6 +258,8 @@ export const mapApiPostToPost = (data: any): SocialPost[] => {
             publico: post.publico,
             rutina: post.rutina,
             likes: post.likes,
+            dificultad: post.dificultad,
+            liked_by: post.liked_by,
         }
     });
 }

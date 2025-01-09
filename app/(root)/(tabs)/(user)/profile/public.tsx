@@ -4,6 +4,7 @@ import { useNavigationFlowContext } from "@/context/NavFlowContext";
 import { useTheme } from "@/context/ThemeContext";
 import { useUser } from "@/context/UserContext";
 import { getAllPostFromUser } from "@/lib/postapi";
+import { queryClient } from "@/lib/queryClient/queryClient";
 import { SocialPost } from "@/types/interfaces/entities/post";
 import { mapApiPostToPost } from "@/types/mappers";
 import { useQuery } from "@tanstack/react-query";
@@ -15,50 +16,49 @@ export default function Public() {
 
     const { isDark } = useTheme()
     const { loggedUserInfo } = useUser()
+    const { userPosts, setUserPosts } = useNavigationFlowContext()
     const [refreshing, setRefreshing] = useState(false)
-    const { userPosts } = useNavigationFlowContext()
 
-    const [posts, setPosts] = useState<SocialPost[]>([])
+    // const [posts, setPosts] = useState<SocialPost[]>([])
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ['userPosts'],
         queryFn: async () => {
             const response = await getAllPostFromUser(loggedUserInfo?.id!)
-            return mapApiPostToPost(response.data)
+            const posts = mapApiPostToPost(response.data)
+            posts.forEach(post => {
+                queryClient.setQueryData(['userPosts', post.id], post)
+            })
+            return posts.filter(p=>p.oculto==false)
         },
+        initialData: userPosts
     })
 
-    console.log('data', data)
-
     useEffect(() => {
-        setPosts([...data!])
+        if (data) {
+            setUserPosts([...data!])
+        }
     }, [data])         
 
     const onRefresh = useCallback(() => {
         setRefreshing(true)
-        //TODO: Fetch Posts User
+        queryClient.invalidateQueries({ queryKey: ['userPosts'] })
         setTimeout(() => {
             setRefreshing(false)
         }, 2000)
-    }, [posts])
-
-    const onEndReached = () => {
-        // TODO: PREFETCH INFINITE SCROLL
-        console.log('End of list reached')
-    }
+    }, [userPosts])
 
     if (isLoading) return <Text className={`text-center text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"}`}>Cargando...</Text>
-
+    if (isError) return <Text className={`text-center text-lg font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"}`}>Error al cargar las publicaciones</Text>
+    
     return (
         <>
 
             <FlatList
                 className={`w-full px-2 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
-                data={posts.filter(post => post.publico)}
+                data={userPosts.filter(post => post.publico)}
                 renderItem={({ item }) => <SelfPost {...item} />}
                 keyExtractor={(item, index) => `${item.id}-${index}`}
-                onEndReached={onEndReached}
-                onEndReachedThreshold={0.1}
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
