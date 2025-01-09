@@ -42,6 +42,7 @@ export const SelfPost = (post: SocialPost) => {
         if(actualPost){
             setPostState(post)
             setIsLiked(post.liked_by?.includes(loggedUserInfo?.id!))
+            setPostLikes(post.likes)
         }
     }, [post])
 

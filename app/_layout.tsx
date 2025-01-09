@@ -58,7 +58,10 @@ export default function RootLayout() {
                   <GestureHandlerRootView
                     style={{ flex: 1, backgroundColor: '#0055f9' }}>
                     <Stack>
-                      <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
+                      <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push', 
+                        statusBarColor: '#0055f9',
+                        statusBarStyle: 'light'
+                       }} />
                       <Stack.Screen name="(animated)" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push' }} />
                       <Stack.Screen name="(root)" options={{ headerShown: false, animation: 'simple_push', animationTypeForReplace: 'pop' }} />
                       <Stack.Screen name="(auth)" options={{

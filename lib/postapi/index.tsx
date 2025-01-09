@@ -24,10 +24,24 @@ export async function createPostInDatabase(post: SocialPost) {
 }
 
 // Leer todos los posts
-export async function getAllPostsFromDatabase() {
+//paginar de 5 en 5
+export async function getAllPostsFromDatabase(page: number = 1) {
+    const limit = 5;
+    const offset = (page - 1) * limit;
     try {
-        const posts = await sql`SELECT * FROM posts ORDER BY fecha DESC;`;
-        return { data: posts, status: 200 };
+        const posts = await sql`SELECT * FROM posts WHERE oculto = false ORDER BY fecha DESC LIMIT ${limit} OFFSET ${offset};`;
+        const totalPostsResult = await sql`SELECT COUNT(*) FROM posts WHERE oculto = false;`;
+        const totalPosts = parseInt(totalPostsResult[0].count, 10);
+        const lastPage = Math.ceil(totalPosts / limit);
+        
+        return { 
+            data: posts, 
+            status: 200,
+            meta: { 
+                page, 
+                lastPage 
+            } 
+        };
     } catch (error) {
         console.error("Error fetching posts:", error);
         return { error: "Error fetching posts", status: 500 };
@@ -36,7 +50,7 @@ export async function getAllPostsFromDatabase() {
 
 export async function getAllPostFromUser(userId: string) {
     try {
-        const posts = await sql`SELECT * FROM posts WHERE user_id = ${userId};`;
+        const posts = await sql`SELECT * FROM posts WHERE user_id = ${userId} AND oculto = false;`;
         return { data: posts, status: 200 };
     } catch (error) {
         console.error("Error fetching posts:", error);
