@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useNavigationFlowContext } from './NavFlowContext';
 import { NutritionPlan } from '@/types/interfaces/entities/foodplan';
+import { getUserHistoryWorkoutProgress } from '@/database/sqlite';
 
 interface UserContextType {
     userLogged: boolean;
@@ -128,6 +129,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [userFavWorkouts, setUserFavWorkouts] = useState<WorkoutAPI[]>([]);
     const [userFavFoodPlans, setUserFavFoodPlans] = useState<NutritionPlan[]>([]);
     const [userFavTrainingPlans, setUserFavTrainingPlans] = useState<TrainingPlanAPI[]>([]);
+
     
     useEffect(() => {
         console.log("Actual pathname", pathname)   

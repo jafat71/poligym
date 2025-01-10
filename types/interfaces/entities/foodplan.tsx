@@ -29,6 +29,8 @@ export interface NutritionPlan {
     duration: number;
     category: FOODPLAN_CATEGORY;
     weeklyMeals: WeeklyMeal[];
+    score: number;
+    totalRatings: number;
   }
   
 export interface WeeklyMeal {

@@ -18,6 +18,8 @@ import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
 import ExerciseInWorkoutSkeleton from "@/components/animatedUi/ExerciseInWorkoutSkeleton";
 import CustomSnackbar from "@/components/ui/common/snackbar/CustomSnackbar";
 import CompletionModal from "@/components/ui/common/modal/CompletionModal";
+import { insertWorkoutProgress } from "@/database/sqlite";
+import { WorkoutProgress } from "@/types/interfaces/entities/progress";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
@@ -38,6 +40,7 @@ const PlayWorkout = () => {
         enabled: !!id,
     });
 
+    const { loggedUserInfo } = useUser();
     const [exercises, setExercises] = useState<ExerciseInWorkoutAPI[]>([]);
     useEffect(() => {
         if (workout) {
@@ -53,6 +56,7 @@ const PlayWorkout = () => {
         setIsCompleted,
         lastWorkoutPlayed,
         resetWorkout,
+        workoutTotalDuration
     } = usePlayWorkoutContext();
 
     const [showPostModal, setShowPostModal] = useState(false);
@@ -75,9 +79,23 @@ const PlayWorkout = () => {
         if (isCompleted) {
             setIsCompleted(false);
             restoreWorkout();
+            saveWorkoutProgress();
             setShowCompletionModal(true);
         }
     }, [isCompleted]);
+
+    const saveWorkoutProgress = async () => {
+        const body = {
+            userId: loggedUserInfo?.id!,
+            workoutId: workoutId.toString(),
+            workoutDuration: workoutTotalDuration,
+            workoutTimestamp: new Date().toISOString(),
+            workoutWorkedMuscles: exercises.map(exercise => exercise.exercise.muscleGroups).flat()
+        }
+        
+        const result = await insertWorkoutProgress(body as WorkoutProgress);
+        console.log(result);
+    }
 
     let isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
     const [hasbeenModified, setHasbeenModified] = useState(false);

@@ -19,8 +19,6 @@ export default function Public() {
     const { userPosts, setUserPosts } = useNavigationFlowContext()
     const [refreshing, setRefreshing] = useState(false)
 
-    // const [posts, setPosts] = useState<SocialPost[]>([])
-
     const { data, isLoading, isError } = useQuery({
         queryKey: ['userPosts'],
         queryFn: async () => {

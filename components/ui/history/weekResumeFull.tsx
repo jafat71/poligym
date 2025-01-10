@@ -7,12 +7,14 @@ import { Ionicons } from '@expo/vector-icons'
 import IconButton from '../common/buttons/IconButton'
 import { StatsWeekChart } from '../stats/StatsWeekChart'
 import { useRouter } from 'expo-router'
+import { useHistorialTime } from '@/hooks/useHistorialTime'
 
 const TimeResumeFull = () => {
     const { isDark } = useTheme()
     const { loggedUserInfo } = useUser()
-    const router = useRouter
-    ()
+    const router = useRouter()
+    const { historyTime } = useHistorialTime();
+
     return (
         <View>
             <View className='flex flex-row items-center justify-between my-1'>
@@ -34,7 +36,7 @@ const TimeResumeFull = () => {
 
                 <View >
                     <Text className={`font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Tiempo Trabajado</Text>
-                    <Text className={`text-3xl font-semibold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>00h00m</Text>
+                    <Text className={`text-3xl font-semibold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{historyTime}</Text>
                 </View>
                 <View >
                     <Text className={`text-sm font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Dias Activo</Text>
