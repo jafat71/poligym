@@ -2,21 +2,39 @@ import { View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { useTheme } from '@/context/ThemeContext';
 import { Dimensions } from 'react-native';
+import { useEffect, useState } from 'react';
+import { useWeekHistorial } from '@/hooks/useWeekHistorial';
 
 export const StatsWeekChart = () => {
     const { isDark } = useTheme();
+    const { dataPerDay } = useWeekHistorial();
 
-    const mockData = {
+    const [data, setData] = useState({
         labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
         datasets: [{
-            data: [45, 60, 10, 30, 75, 10, 0], // minutos de ejercicio por día
+            data: [
+                dataPerDay?.Lun ?? 0, 
+                dataPerDay?.Mar ?? 0, 
+                dataPerDay?.Mie ?? 0, 
+                dataPerDay?.Jue ?? 0, 
+                dataPerDay?.Vie ?? 0, 
+                dataPerDay?.Sab ?? 0, 
+                dataPerDay?.Dom ?? 0
+            ], 
         }]
-    };
+    });
+
+    useEffect(() => {
+        setData({
+            labels: ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'],
+            datasets: [{ data: [dataPerDay?.Lun ?? 0, dataPerDay?.Mar ?? 0, dataPerDay?.Mie ?? 0, dataPerDay?.Jue ?? 0, dataPerDay?.Vie ?? 0, dataPerDay?.Sab ?? 0, dataPerDay?.Dom ?? 0] }]
+        });
+    }, [dataPerDay]);
 
     return (
         <View className="mt-4">
             <LineChart
-                data={mockData}
+                data={data}
                 width={Dimensions.get('window').width} 
                 height={180}
                 chartConfig={{

@@ -89,12 +89,11 @@ const PlayWorkout = () => {
             userId: loggedUserInfo?.id!,
             workoutId: workoutId.toString(),
             workoutDuration: workoutTotalDuration,
-            workoutTimestamp: new Date().toISOString(),
+            workoutTimestamp: new Date().toISOString().split('T')[0],
             workoutWorkedMuscles: exercises.map(exercise => exercise.exercise.muscleGroups).flat()
         }
         
-        const result = await insertWorkoutProgress(body as WorkoutProgress);
-        console.log(result);
+        await insertWorkoutProgress(body as WorkoutProgress);
     }
 
     let isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;

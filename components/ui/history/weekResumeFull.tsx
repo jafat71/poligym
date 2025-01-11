@@ -2,18 +2,16 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import WeekCalendar from './weekCalendar'
 import { useTheme } from '@/context/ThemeContext'
-import { useUser } from '@/context/UserContext'
 import { Ionicons } from '@expo/vector-icons'
 import IconButton from '../common/buttons/IconButton'
 import { StatsWeekChart } from '../stats/StatsWeekChart'
 import { useRouter } from 'expo-router'
-import { useHistorialTime } from '@/hooks/useHistorialTime'
+import { useHistorial } from '@/hooks/useHistorial'
 
 const TimeResumeFull = () => {
     const { isDark } = useTheme()
-    const { loggedUserInfo } = useUser()
     const router = useRouter()
-    const { historyTime } = useHistorialTime();
+    const { historyTime , completedWorkouts} = useHistorial();
 
     return (
         <View>
@@ -39,8 +37,8 @@ const TimeResumeFull = () => {
                     <Text className={`text-3xl font-semibold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{historyTime}</Text>
                 </View>
                 <View >
-                    <Text className={`text-sm font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Dias Activo</Text>
-                    <Text className={`text-3xl font-semibold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{loggedUserInfo?.userNumberActivityDays ?? 0}</Text>
+                    <Text className={`text-sm font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>Rutinas Completadas</Text>
+                    <Text className={`text-3xl font-semibold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{completedWorkouts}</Text>
                 </View>
 
             </View>

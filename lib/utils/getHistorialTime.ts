@@ -20,3 +20,20 @@ export const getHistorialTime = (times: string[]) => {
     const totalWorkoutTime = sumWorkoutTimes(times);  
     return totalWorkoutTime; 
 };
+
+export const getMinutesSumFromTime = (time: string): number => {
+    // Example input: "00h01m25s"
+    console.log(time);
+
+    const [hoursPart, minutesAndSeconds] = time.split('h');
+    const [minutesPart, secondsPart] = minutesAndSeconds.split('m');
+
+    const hoursNumber = Number(hoursPart.replace(/^0+/, '')); // Remove leading zeros
+    const minutesNumber = Number(minutesPart.replace(/^0+/, '')); // Remove leading zeros
+    const secondsNumber = Number(secondsPart.replace(/^0+/, '').replace('s', '')); // Remove leading zeros and 's'
+
+    console.log(hoursNumber, minutesNumber, secondsNumber);
+
+    return (hoursNumber * 60) + minutesNumber + Math.floor(secondsNumber / 60);
+};
+

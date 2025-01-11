@@ -1,11 +1,9 @@
 import CustomListEmptyComponent from "@/components/ui/common/flatlists/CustomListEmptyComponent";
 import SelfPost from "@/components/ui/social/SelfPost";
-import { socialPosts, UserPosts } from "@/constants";
 import { useNavigationFlowContext } from "@/context/NavFlowContext";
 import { useTheme } from "@/context/ThemeContext";
 import { queryClient } from "@/lib/queryClient/queryClient";
-import { SocialPost } from "@/types/interfaces/entities/post";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { FlatList, View } from "react-native";
 import { RefreshControl } from "react-native-gesture-handler";
 

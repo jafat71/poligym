@@ -52,3 +52,12 @@ export interface FloatingModalProps {
     toggleModal: () => void;
 }
 
+
+export interface WeekCalendarItemTimeCount {
+    day: string;
+    month: string;
+    isToday: boolean;
+    isRestDay: boolean;
+    didExercise: boolean;
+    dayWorkoutTime: string;
+}

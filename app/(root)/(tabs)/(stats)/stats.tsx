@@ -1,7 +1,7 @@
 import { useTheme } from '@/context/ThemeContext';
 import { useUser } from '@/context/UserContext';
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Image, RefreshControl } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ScrollView, Image, RefreshControl, TouchableOpacity, Alert } from 'react-native';
 import { BodyColors, MuscleGroupsColors } from '@/components/ui/body/bodyConstants';
 import MaleBack from '@/components/ui/body/MaleBack';
 import FemaleFront from '@/components/ui/body/FemaleFront';
@@ -10,10 +10,17 @@ import MaleFront from '@/components/ui/body/MaleFront';
 import TimeResumeFull from '@/components/ui/history/weekResumeFull';
 import { StatsSmallCard } from '@/components/ui/stats/StatsSmallCard';
 import { useQueryClient } from '@tanstack/react-query';
+import { useHistorial } from '@/hooks/useHistorial';
+import { MuscleGroups } from '@/types/types/muscles';
+import { DataTable} from 'react-native-paper';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { resetUserWorkoutProgress } from '@/database/sqlite';
+import { useWeekHistorial } from '@/hooks/useWeekHistorial';
 
 export const Stats = () => {
   const { isDark } = useTheme();
   const { loggedUserInfo } = useUser();
+  const { userHistorial } = useHistorial();
   const [isRefreshing, setIsRefreshing] = useState(false);
   const queryClient = useQueryClient();
   const {
@@ -21,24 +28,59 @@ export const Stats = () => {
     selectedColor,
     ...scaleColors
   } = BodyColors;
-
-  let muscleGroups: MuscleGroupsColors = {
+  
+  const [muscleGroupsColors, setMuscleGroupsColors] = useState<MuscleGroupsColors>({
     abdominals: scaleColors.workedColor01,
     calves: scaleColors.workedColor01,
-    quads: scaleColors.workedColor04,
-    obliques: scaleColors.workedColor05,
-    forearms: scaleColors.workedColor08,
-    biceps: scaleColors.workedColor08,
-    chest: scaleColors.workedColor07,
-    shoulders: scaleColors.workedColor04,
-    traps: scaleColors.workedColor08,
-    lowerback: scaleColors.workedColor07,
-    triceps: scaleColors.workedColor06,
-    hamstrings: scaleColors.workedColor08,
-    glutes: scaleColors.workedColor02,
-    lats: scaleColors.workedColor09,
-    trapsmiddle: scaleColors.workedColor02
-  }
+    quads: scaleColors.workedColor01,
+    obliques: scaleColors.workedColor01,
+    forearms: scaleColors.workedColor01,
+    biceps: scaleColors.workedColor01,
+    chest: scaleColors.workedColor01,
+    shoulders: scaleColors.workedColor01,
+    traps: scaleColors.workedColor01,
+    lowerback: scaleColors.workedColor01,
+    triceps: scaleColors.workedColor01,
+    hamstrings: scaleColors.workedColor01,
+    glutes: scaleColors.workedColor01,
+    lats: scaleColors.workedColor01,
+    trapsmiddle: scaleColors.workedColor01
+  });
+  const [muscleGroupsCount, setMuscleGroupsCount] = useState({
+    abdominals: 0,
+    calves: 0,
+    quads: 0,
+    obliques: 0,
+    forearms: 0,
+    biceps: 0,
+    chest: 0,
+    shoulders: 0,
+    traps: 0,
+    lowerback: 0,
+    triceps: 0,
+    hamstrings: 0,
+    glutes: 0,
+    lats: 0,
+    trapsmiddle: 0
+  });
+
+  const [muscleGroupsPercentage, setMuscleGroupsPercentage] = useState({
+    abdominals: 0.0,
+    calves: 0.0,
+    quads: 0.0,
+    obliques: 0.0,
+    forearms: 0.0,
+    biceps: 0.0,
+    chest: 0.0,
+    shoulders: 0.0,
+    traps: 0.0,
+    lowerback: 0.0,
+    triceps: 0.0,
+    hamstrings: 0.0,
+    glutes: 0.0,
+    lats: 0.0,
+    trapsmiddle: 0.0
+  });
 
   const getIMC = (peso: number, altura: number) => {
     const alturaMeter = altura / 100;
@@ -46,13 +88,108 @@ export const Stats = () => {
     return imc.toFixed(2);
   };
 
+  let muscularGroupCount = {
+    abdominals: 0,
+    calves: 0,
+    quads: 0,
+    obliques: 0,
+    forearms: 0,
+    biceps: 0,
+    chest: 0,
+    shoulders: 0,
+    traps: 0,
+    lowerback: 0,
+    triceps: 0,
+    hamstrings: 0,
+    glutes: 0,
+    lats: 0,
+    trapsmiddle: 0
+  };
+
+  let muscularGroupPercentage = {
+    abdominals: 0.0,
+    calves: 0.0,
+    quads: 0.0,
+    obliques: 0.0,
+    forearms: 0.0,
+    biceps: 0.0,
+    chest: 0.0,
+    shoulders: 0.0,
+    traps: 0.0,
+    lowerback: 0.0,
+    triceps: 0.0,
+    hamstrings: 0.0,
+    glutes: 0.0,
+    lats: 0.0,
+    trapsmiddle: 0.0
+  };
+  const paintMuscles = () => {
+    const userWorkedMuscles = (userHistorial as any)?.map((workout: any) => workout.workoutWorkedMuscles);
+    let totalWorkedMuscles = 0;
+
+    for (const muscularGroupsWorkedOnWorkout of userWorkedMuscles) {
+      try {
+        const muscleGroups: string[] = JSON.parse(muscularGroupsWorkedOnWorkout);
+        muscleGroups.forEach(muscle => {
+          if (muscularGroupCount.hasOwnProperty(muscle)) {
+            muscularGroupCount[muscle as keyof MuscleGroupsColors] += 1;
+          }
+          totalWorkedMuscles += 1;
+        });
+      } catch (error) {
+        console.error(`Error al parsear los grupos musculares: ${muscularGroupsWorkedOnWorkout}`, error);
+      }
+    }
+    for (const muscle in muscularGroupCount) {
+      const percentage = totalWorkedMuscles > 0 ? muscularGroupCount[muscle as keyof MuscleGroupsColors] / totalWorkedMuscles : 0;
+      muscularGroupPercentage[muscle as keyof MuscleGroupsColors] = percentage;
+      if (percentage >= 0.75) {
+        muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor09;
+      } else if (percentage >= 0.50) {
+        muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor08;
+      } else if (percentage >= 0.25) {
+        muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor07;
+      } else if (percentage >= 0.10) {
+        muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor06;
+      } else if (percentage >= 0.05) {
+        muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor05;
+      } else if (percentage >= 0.025) {
+        muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor02;
+      } else {
+        muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor01;
+      }
+    }
+    setMuscleGroupsColors(muscleGroupsColors);
+    setMuscleGroupsCount(muscularGroupCount);
+    setMuscleGroupsPercentage(muscularGroupPercentage);
+  };
+
   const onRefresh = () => {
     setIsRefreshing(true);
     queryClient.invalidateQueries({ queryKey: ['historyTime'] });
+    queryClient.invalidateQueries({ queryKey: ['weekDays'] });
+    paintMuscles();
     setTimeout(() => {
       setIsRefreshing(false);
-    }, 2000);
+    }, 4000);
   };
+
+  const handleResetData = async () => { 
+    Alert.alert('¿Estás seguro de que deseas resetear tus datos?', 'Esta acción es irreversible y eliminará todos los datos recopilados.', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Resetear', onPress: async () => {
+        await resetUserWorkoutProgress(loggedUserInfo?.id ?? '');
+        queryClient.invalidateQueries({ queryKey: ['historyTime'] });
+        onRefresh();
+      } }
+    ]);
+  }
+
+  useEffect(() => {
+    if (userHistorial) {
+      paintMuscles();
+    }
+  }, [userHistorial]);
 
   return (
     <ScrollView
@@ -114,16 +251,89 @@ export const Stats = () => {
           {
             loggedUserInfo?.gender === 'Femenino' ? (
               <>
-                <FemaleBack width={150} height={200} muscleColors={muscleGroups} />
-                <FemaleFront width={150} height={200} muscleColors={muscleGroups} />
+                <FemaleBack width={150} height={200} muscleColors={muscleGroupsColors} />
+                <FemaleFront width={150} height={200} muscleColors={muscleGroupsColors} />
               </>
             ) : (
               <>
-                <MaleBack width={150} height={200} muscleColors={muscleGroups} />
-                <MaleFront width={150} height={200} muscleColors={muscleGroups} />
+                <MaleBack width={150} height={200} muscleColors={muscleGroupsColors} />
+                <MaleFront width={150} height={200} muscleColors={muscleGroupsColors} />
               </>
             )
           }
+        </View>
+        <View className="flex-col justify-between">
+          <DataTable>
+            <DataTable.Header>
+              <DataTable.Title >
+                <Text className={`text-xs font-ralewayBold ${isDark ? "text-white" : "text-black"}`}>
+                  Grupo Muscular
+                </Text>
+              </DataTable.Title>
+              <DataTable.Title numeric>
+                <Text className={`text-xs font-ralewayBold ${isDark ? "text-white" : "text-black"}`}>
+                  Rutinas
+                </Text>
+              </DataTable.Title>
+              <DataTable.Title numeric>
+                <Text className={`text-xs font-ralewayBold ${isDark ? "text-white" : "text-black"}`}>
+                  Porcentaje (%)
+                </Text>
+              </DataTable.Title>
+            </DataTable.Header>
+
+            {
+              Object.keys(muscularGroupCount).map((muscle, index) => (
+                <DataTable.Row key={index}>
+                  <DataTable.Cell>
+                    <Text className={`text-xs font-ralewayBold ${isDark ? "text-white" : "text-black"}`}> 
+                      {MuscleGroups[muscle as keyof typeof MuscleGroups]}
+                    </Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    <Text className={`text-xs  ${isDark ? "text-white" : "text-black"}`}>
+                      {muscleGroupsCount[muscle as keyof typeof muscleGroupsCount]}
+                    </Text>
+                  </DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    <View className="flex-row items-center">
+                      <Text className={`text-xs  ${isDark ? "text-white" : "text-black"}`}> 
+                        {muscleGroupsPercentage[muscle as keyof typeof muscleGroupsPercentage].toFixed(2)}
+                      </Text>
+                    </View>
+                  </DataTable.Cell>
+                </DataTable.Row>
+              ))
+            }
+
+          </DataTable>
+        </View>
+
+        <View className={`p-4 flex-col justify-between my-2 ${isDark ? "bg-darkGray-500" : "bg-darkGray-100"}`}>
+          <View className="flex-row items-center justify-start">
+            <Ionicons name="information-circle-outline" size={24} color={isDark ? "white" : "black"} />
+            <Text className={`text-base font-ralewayBold ${isDark ? "text-white" : "text-black"}`}>
+              Información
+            </Text>
+            </View>
+
+            <View className="flex-row items-center justify-center"> 
+              <Text className={`text-xs font-raleway ${isDark ? "text-white" : "text-black"}`}>
+                La información recopilada de la ejecución de rutinas nos sirve para llevar registro
+                de tus estadisticas. Si deseas resetear tus datos, puedes presionar el siguiente boton.
+              </Text>
+            </View>
+
+            <TouchableOpacity className="bg-redEPN-500 p-2 my-2 rounded-lg" onPress={handleResetData}>
+              <View className="flex-row items-center justify-center px-4">
+                <View className="justify-start w-full">
+                  <Ionicons name="trash-outline" size={24} color="white" />
+                </View>
+                <Text className={`absolute text-base font-ralewayBold w-full text-center text-white`}>
+                  Resetear datos
+                </Text>
+              </View>
+            </TouchableOpacity>
         </View>
       </View>
     </ScrollView>

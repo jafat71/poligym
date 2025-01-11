@@ -7,23 +7,28 @@ import { getUserHistoryWorkoutProgress } from "@/database/sqlite";
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { WorkoutProgress } from "@/types/interfaces/entities/progress";
 
-export const useHistorialTime = () => {
+export const useHistorial = () => {
     const { loggedUserInfo } = useUser();
     const [historyTime, setHistoryTime] = useState<string>('00:00');
+    const [userHistorial, setUserHistorial] = useState();
+    const [completedWorkouts, setCompletedWorkouts] = useState(0);
 
-    const { data: retrievedHistoryTime } = useQuery({
+    const { data: retrievedHistorial } = useQuery({
         queryKey: ['historyTime'],
         queryFn: () => getUserHistoryWorkoutProgress(loggedUserInfo?.id!),
     })
 
     useEffect(() => {
-        if (retrievedHistoryTime) {
-            const historyTimes = retrievedHistoryTime.map((workout:any) => workout.workoutDuration);
+        if (retrievedHistorial) {
+            setUserHistorial(retrievedHistorial as any);
+            const historyTimes = retrievedHistorial.map((workout:any) => workout.workoutDuration);
             const totalTime = getHistorialTime(historyTimes);
             setHistoryTime(totalTime);
+            setCompletedWorkouts(retrievedHistorial.length);
         }
-    }, [retrievedHistoryTime]);
+    }, [retrievedHistorial]);
 
-    return { historyTime };
+    return { historyTime, userHistorial, completedWorkouts };
 }

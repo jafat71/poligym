@@ -13,6 +13,7 @@ export const insertWorkoutProgress = async (progress: WorkoutProgress) => {
         } = progress;
         const muscles = JSON.stringify(workoutWorkedMuscles);
 
+
         const result = await db.runAsync(`
             INSERT INTO workout_progress (userId, workoutId, workoutDuration, workoutTimestamp, workoutWorkedMuscles) 
             VALUES (?, ?, ?, ?, ?);
@@ -73,6 +74,20 @@ export const getWorkoutProgressById = async (
         );
         return null;
     }
+};
+
+export const getWorkoutProgressByDate = async (userId: string, date: string) => {
+    const result = await db.getAllSync(`
+        SELECT * FROM workout_progress WHERE userId = '${userId.replace(/'/g, "''")}' AND workoutTimestamp = '${date.replace(/'/g, "''")}';
+    `);
+    return result;
+};
+
+export const resetUserWorkoutProgress = async (userId: string) => {
+    const result = await db.execSync(`
+        DELETE FROM workout_progress WHERE userId = '${userId.replace(/'/g, "''")}';
+    `);
+    return result;
 };
 
 export const tableExists = async (tableName: string): Promise<boolean> => {
