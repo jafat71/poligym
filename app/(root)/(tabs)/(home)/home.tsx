@@ -19,6 +19,8 @@ const Home = () => {
     setIsRefreshing(true);
     queryClient.invalidateQueries({ queryKey: ['historyTime'] });
     queryClient.invalidateQueries({ queryKey: ['weekDays'] });
+    queryClient.invalidateQueries({ queryKey: ['plans', 'recommended'] });
+    queryClient.invalidateQueries({ queryKey: ['workouts', 'recommended'] });
     setTimeout(() => {
       setIsRefreshing(false);
     }, 2000);

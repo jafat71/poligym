@@ -1,102 +1,152 @@
-import { View, Text } from 'react-native'
-import React, { useState } from 'react'
-import { Calendar } from 'react-native-calendars'
-import { useTheme } from '@/context/ThemeContext'
-import { useUser } from '@/context/UserContext'
-import { Ionicons } from '@expo/vector-icons'
-import IconButton from '../common/buttons/IconButton'
-import { StatsWeekChart } from '../stats/StatsWeekChart'
-import { FlatList } from 'react-native'
-import { format } from 'date-fns'
-
-interface Activity {
-    id: number;
-    date: string;
-    activityType: string;
-    duration: string;
-    description: string;
-}
-
-const mockActivities: Activity[] = [
-    {
-        id: 1,
-        date: '2024-12-31',
-        activityType: 'Cardio',
-        duration: '00h45m',
-        description: 'Running on the treadmill for 45 minutes.',
-    },
-    {
-        id: 2,
-        date: '2024-12-31',
-        activityType: 'Strength',
-        duration: '01h00m',
-        description: 'Full-body strength training.',
-    },
-    {
-        id: 3,
-        date: '2024-12-30',
-        activityType: 'Yoga',
-        duration: '00h30m',
-        description: 'Morning yoga session.',
-    },
-    // Agrega más actividades según sea necesario
-]
+import { View, Text, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Calendar } from 'react-native-calendars';
+import type { DateData } from 'react-native-calendars';
+import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
+import { StatsWeekChart } from '../stats/StatsWeekChart';
+import { FlatList } from 'react-native';
+import { format, eachDayOfInterval, parseISO, endOfDay, addDays } from 'date-fns';
+import { getWorkoutProgressByDate } from '@/database/sqlite';
+import { getHistorialTime } from '@/lib/utils/getHistorialTime';
+import { WorkoutProgress } from '@/types/interfaces/entities/progress';
+import { getMinutesSumFromTime } from '@/lib/utils/getHistorialTime';
+import { getLocaleDateTime } from '@/lib/utils/getLocaleTime';
+import { startOfDay } from 'date-fns';
+import { StatsCustomChart } from '../stats/StatsCustomChart';
 
 const CalendarResumeFull = () => {
-    const { isDark } = useTheme()
-    const { loggedUserInfo } = useUser()
+    const { isDark } = useTheme();
+    const { loggedUserInfo } = useUser();
+    const [startDate, setStartDate] = useState<Date | null>(null);
+    const [endDate, setEndDate] = useState<Date | null>(null);
+    const [markedDates, setMarkedDates] = useState<{ [key: string]: any }>({});
+    const [workouts, setWorkouts] = useState<any[]>([]);
+    const [minutesSum, setMinutesSum] = useState<number>(0);
+    const [minutesPerDay, setMinutesPerDay] = useState<number[]>([]);
+    const [loading, setLoading] = useState<boolean>(false); // Estado de carga
 
-    const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'))
-    const [markedDates, setMarkedDates] = useState<{ [key: string]: any }>({})
+    useEffect(() => {
+        if (startDate && endDate) {
+            const start = startOfDay(new Date(startDate));
+            const end = startOfDay(new Date(endDate));
+            getInformationRange(start, end);
+        }
+    }, [startDate, endDate]);
 
-    const getInformation = () => {
-        return mockActivities.filter(activity => activity.date === selectedDate)
-    }
+    const getInformationRange = async (start: Date, end: Date) => {
+        setLoading(true); // Inicia el estado de carga
+        const dates = eachDayOfInterval({
+            start: startOfDay(start),
+            end: startOfDay(end)
+        });
+        let allWorkouts: any[] = [];
+        let totalMinutes = 0;
+        const dailyMinutes: number[] = [];
 
-    // Marca las fechas que tienen actividades
-    const marked = mockActivities.reduce((acc, activity) => {
-        acc[activity.date] = { marked: true, dotColor: 'green' }
-        return acc
-    }, {} as { [key: string]: any })
+        for (const date of dates) {
+            const [workoutsForDay, minutesForDay] = await getDayInformation(date);
+            allWorkouts = allWorkouts.concat(workoutsForDay);
+            dailyMinutes.push(minutesForDay as number);
+            totalMinutes += minutesForDay as number;
+        }
 
-    const handleDayPress = (day: any) => {
-        setSelectedDate(day.dateString)
-        setMarkedDates({
-            ...marked,
-            [day.dateString]: { selected: true, marked: true, selectedColor: 'blue' },
-        })
-    }
+        setWorkouts(allWorkouts);
+        setMinutesSum(totalMinutes);
+        setMinutesPerDay(dailyMinutes);
+        setLoading(false); // Termina el estado de carga
+    };
 
-    const renderActivity = ({ item }: { item: Activity }) => (
-        <View className='mb-4 p-4 bg-sky-100 rounded-lg'>
-            <Text className={`text-xl font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                {item.activityType}
-            </Text>
-            <Text className={`text-sm font-ralewayLight ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                Duración: {item.duration}
-            </Text>
-            <Text className={`text-sm font-ralewayLight ${isDark ? "text-white" : "text-darkGray-500"} text-justify`}>
-                {item.description}
-            </Text>
-        </View>
-    )
+    const getDayInformation = async (date: Date) => {
+        const [dateForSearch, _] = getLocaleDateTime(date);
+        const workoutDayProgressQueried = await getWorkoutProgressByDate(loggedUserInfo?.id ?? '', dateForSearch);
+        const workoutsInDay = workoutDayProgressQueried.map((workout: any) => workout.workoutDuration);
+        const totalTime = getHistorialTime(workoutsInDay);
+        const minutesSum = getMinutesSumFromTime(totalTime);
+        return [
+            workoutDayProgressQueried,
+            minutesSum
+        ];
+    };
 
-    // Componente de encabezado que incluye el Calendario y la información adicional
+    const handleDayPress = (day: DateData) => {
+        console.log("PRESS", day);
+        const adjustedDate = startOfDay(new Date(day.dateString));
+        // Ajuste temporal para que el rango sea correcto
+        const selectedDate = addDays(adjustedDate, 1);
+        if (!startDate || (startDate && endDate)) {
+            setStartDate(selectedDate);
+            setEndDate(null);
+            setMarkedDates({
+                [day.dateString]: { selected: true, startingDay: true, color: 'blue', textColor: 'white' },
+            });
+        } else if (startDate && !endDate) {
+            let selectedStartDate = startDate;
+            let selectedEndDate = selectedDate;
+
+            if (selectedDate < startDate) {
+                selectedStartDate = selectedDate;
+                selectedEndDate = startDate;
+            }
+
+            const range = eachDayOfInterval({
+                start: selectedStartDate,
+                end: selectedEndDate,
+            });
+
+            const newMarkedDates: { [key: string]: any } = {};
+            range.forEach((date, index) => {
+                const dateString = format(date, 'yyyy-MM-dd');
+                newMarkedDates[dateString] = {
+                    color: 'blue',
+                    textColor: 'white',
+                    ...(index === 0 ? { startingDay: true } : {}),
+                    ...(index === range.length - 1 ? { endingDay: true } : {}),
+                };
+            });
+
+            setStartDate(startOfDay(selectedStartDate));
+            setEndDate(endOfDay(selectedEndDate));
+            setMarkedDates(newMarkedDates);
+        }
+    };
+
+    const renderItem = (item: any) => {
+        const workoutProgress = item.item as WorkoutProgress;
+        return (
+            <View className={`mb-4 p-4 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"} rounded-lg`}>
+                <Text className={`text-xl font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"}`}>
+                    {workoutProgress.workoutName}
+                </Text>
+                <Text className={`text-sm font-ralewayLight ${isDark ? "text-white" : "text-darkGray-500"}`}>
+                    Duración: {workoutProgress.workoutDuration}
+                </Text>
+                <Text className={`text-sm font-ralewayLight ${isDark ? "text-white" : "text-darkGray-500"} text-justify`}>
+                    Fecha: {workoutProgress.workoutDay}
+                </Text>
+                <Text className={`text-sm font-ralewayLight ${isDark ? "text-white" : "text-darkGray-500"} text-justify`}>
+                    Hora: {workoutProgress.workoutHour}
+                </Text>
+            </View>
+        );
+    };
+
     const ListHeader = () => (
         <View className='mb-4'>
             <Text className={`text-xl font-ralewayLight 
                     ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                Selecciona un periodo de tiempo para obervar tus rutinas
+                Selecciona un rango de fechas para observar tus rutinas
             </Text>
             <Calendar
                 onDayPress={handleDayPress}
                 markedDates={{
-                    ...marked,
                     ...markedDates,
+                    ...(startDate && !endDate ? { [format(startDate, 'yyyy-MM-dd')]: { selected: true, marked: true, selectedColor: 'blue' } } : {})
                 }}
+                markingType={'period'}
                 monthFormat={'yyyy MMMM'}
-                onMonthChange={(month) => {
-                    console.log('Mes cambiado:', month)
+                onMonthChange={(month: DateData) => {
+                    console.log('Mes cambiado:', month);
                 }}
                 hideExtraDays={true}
                 disableMonthChange={false}
@@ -107,11 +157,11 @@ const CalendarResumeFull = () => {
                     calendarBackground: isDark ? '#1c1c1c' : '#ffffff',
                     textSectionTitleColor: isDark ? '#ffffff' : '#000000',
                     selectedDayBackgroundColor: '#0055f9',
-                    selectedDayTextColor: '#ffffff',
+                    selectedDayTextColor: isDark ? '#ffffff' : '#1aa',
                     todayTextColor: '#0055f9',
-                    dayTextColor: isDark ? '#ffffff' : '#2d4150',
-                    textDisabledColor: '#d9e1e8',
-                    arrowColor: 'orange',
+                    dayTextColor: isDark ? '#ffffff' : '#1c1c1c',
+                    textDisabledColor: '#111',
+                    arrowColor: '#0055f9',
                     monthTextColor: isDark ? '#ffffff' : '#000000',
                     indicatorColor: 'blue',
                     textDayFontFamily: 'Raleway-Regular',
@@ -123,43 +173,54 @@ const CalendarResumeFull = () => {
                     textDayFontSize: 16,
                     textMonthFontSize: 16,
                     textDayHeaderFontSize: 16,
+                    ...loading && {
+                        dayTextColor: 'rgba(255, 255, 255, 0.5)',  // Reduce opacity when loading
+                    }
                 }}
             />
-            <View className='my-2'>
-                <Text className={`text-xl font-ralewayBold 
-                    ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                    Información para {selectedDate}
-                </Text>
+            {startDate && endDate && (
                 <View className='my-2'>
-                    <Text className={`font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                        Rutinas
+                    <Text className={`text-xl font-ralewayBold 
+                        ${isDark ? "text-white" : "text-darkGray-500"}`}>
+                        Información desde {format(startDate, 'yyyy-MM-dd')} hasta {format(endDate, 'yyyy-MM-dd')}
                     </Text>
-                    <Text className={`text-3xl font-semibold text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                        {mockActivities.filter(activity => activity.date === selectedDate).length}
-                    </Text>
+                    <View className='my-2'>
+                        <Text className={`text-3xl font-semibold text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>
+                            Total Rutinas: {workouts.length}
+                        </Text>
+                        <Text className={`text-xl font-ralewayLight text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>   
+                            Total minutos trabajados: {minutesSum}
+                        </Text>
+                    </View>
+                    <StatsCustomChart data={minutesPerDay} labels={[startDate.toLocaleDateString(), endDate.toLocaleDateString()]}  />
                 </View>
-                <StatsWeekChart />
-            </View>
+            )}
         </View>
-    )
+    );
 
     return (
         <View className='flex-1'>
+            {loading && (
+                <View className="absolute top-0 left-0 right-0 bottom-0 justify-center items-center z-10 bg-black bg-opacity-50">
+                    <ActivityIndicator size="large" color="#fff" />
+                    <Text className="text-white mt-2">Cargando...</Text>
+                </View>
+            )}
             <FlatList
-                data={getInformation()}
+                data={workouts}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={renderActivity}
+                renderItem={renderItem}
                 ListHeaderComponent={ListHeader}
                 ListEmptyComponent={
                     <Text className={`text-center text-lg font-ralewayLight 
                         ${isDark ? "text-white" : "text-darkGray-500"}`}>
-                        No hay información disponible para esta fecha.
+                        No hay información disponible para este rango de fechas.
                     </Text>
                 }
                 contentContainerStyle={{ paddingBottom: 50, paddingHorizontal: 4 }}
             />
         </View>
-    )
-}
+    );
+};
 
-export default CalendarResumeFull
+export default CalendarResumeFull;

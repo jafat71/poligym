@@ -20,6 +20,7 @@ import CustomSnackbar from "@/components/ui/common/snackbar/CustomSnackbar";
 import CompletionModal from "@/components/ui/common/modal/CompletionModal";
 import { insertWorkoutProgress } from "@/database/sqlite";
 import { WorkoutProgress } from "@/types/interfaces/entities/progress";
+import { getLocaleDateTime } from "@/lib/utils/getLocaleTime";
 
 const PlayWorkout = () => {
     const { id } = useLocalSearchParams();
@@ -85,11 +86,15 @@ const PlayWorkout = () => {
     }, [isCompleted]);
 
     const saveWorkoutProgress = async () => {
+        const date = new Date();
+        const [formattedDate, formattedTime] = getLocaleDateTime(date);
         const body = {
             userId: loggedUserInfo?.id!,
             workoutId: workoutId.toString(),
+            workoutName: workout?.name ?? "",
             workoutDuration: workoutTotalDuration,
-            workoutTimestamp: new Date().toISOString().split('T')[0],
+            workoutDay: formattedDate,
+            workoutHour: formattedTime,
             workoutWorkedMuscles: exercises.map(exercise => exercise.exercise.muscleGroups).flat()
         }
         

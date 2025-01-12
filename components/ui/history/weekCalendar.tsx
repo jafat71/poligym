@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { WeekCalendarItemTimeCount } from '@/types/interfaces/ui';
-import { isLoading } from 'expo-font';
 import { useWeekHistorial } from '@/hooks/useWeekHistorial';
 
 const WeekCalendar = () => {
     const { weekDaysData} = useWeekHistorial();
 
-    const getIcon = (date: WeekCalendarItemTimeCount) => {
-        return date.didExercise ? (
-            <Ionicons name="barbell-outline" size={12} color="white" />
-        ) : (
-            <Text className="text-xs font-ralewayExtraBold text-white">.</Text>
+    const getDayName = (index: number) => {
+        const days = {
+            0: 'D',
+            1: 'L',
+            2: 'M',
+            3: 'M',
+            4: 'J',
+            5: 'V',
+            6: 'S',
+        }
+        return (
+            <Text className="text-xs font-ralewaySemiBold text-white">{days[index]}</Text>
         );
     };
 
@@ -27,7 +31,7 @@ const WeekCalendar = () => {
                     }`}
                 >
                     <Text className="text-white font-ralewaySemiBold">{day.day}</Text>
-                    {getIcon(day)}
+                    {getDayName(index)}
                 </View>
             ))}
         </View>

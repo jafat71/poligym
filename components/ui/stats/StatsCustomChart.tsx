@@ -3,41 +3,43 @@ import { LineChart } from 'react-native-chart-kit';
 import { useTheme } from '@/context/ThemeContext';
 import { Dimensions } from 'react-native';
 import { useEffect, useState } from 'react';
-import { useWeekHistorial } from '@/hooks/useWeekHistorial';
 
-export const StatsWeekChart = () => {
+interface StatsCustomChartProps {
+    data: number[];
+    labels: string[];
+}
+
+interface ChartData {
+    labels: string[];
+    datasets: {
+        data: number[];
+    }[];
+}
+
+export const StatsCustomChart = ({ data, labels }: StatsCustomChartProps) => {
+    if(!data) return null;
+    if(!labels) return null;
+    if (data.length === 0) return null;
     const { isDark } = useTheme();
-    const { dataPerDay, weekDaysData } = useWeekHistorial();
 
-    console.log("weekDaysData: ", weekDaysData)
-    const [data, setData] = useState({
-        labels: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    const [chartData, setChartData] = useState<ChartData>({
+        labels: labels,
         datasets: [{
-            data: [
-                dataPerDay?.Dom ?? 0, 
-                dataPerDay?.Lun ?? 0, 
-                dataPerDay?.Mar ?? 0, 
-                dataPerDay?.Mie ?? 0, 
-                dataPerDay?.Jue ?? 0, 
-                dataPerDay?.Vie ?? 0, 
-                dataPerDay?.Sab ?? 0
-            ], 
+            data: [...data]
         }]
     });
 
     useEffect(() => {
-        setData({
-            labels: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
-            datasets: [{ data: [dataPerDay?.Dom ?? 0, dataPerDay?.Lun ?? 0, dataPerDay?.Mar ?? 0, dataPerDay?.Mie ?? 0, dataPerDay?.Jue ?? 0, dataPerDay?.Vie ?? 0, dataPerDay?.Sab ?? 0] }]
+        setChartData({
+            labels: labels,
+            datasets: [{ data: [...data] }]
         });
-    }, [dataPerDay]);
-
-    console.log("dataPerDay: ", dataPerDay)
+    }, [data]);
 
     return (
         <View className="mt-4">
             <LineChart
-                data={data}
+                data={chartData}
                 width={Dimensions.get('window').width} 
                 height={180}
                 chartConfig={{

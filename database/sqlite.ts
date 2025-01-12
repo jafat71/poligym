@@ -7,21 +7,23 @@ export const insertWorkoutProgress = async (progress: WorkoutProgress) => {
         const {
             userId,
             workoutId,
+            workoutName,
             workoutDuration,
-            workoutTimestamp,
+            workoutDay,
+            workoutHour,
             workoutWorkedMuscles,
         } = progress;
         const muscles = JSON.stringify(workoutWorkedMuscles);
-
-
         const result = await db.runAsync(`
-            INSERT INTO workout_progress (userId, workoutId, workoutDuration, workoutTimestamp, workoutWorkedMuscles) 
-            VALUES (?, ?, ?, ?, ?);
+            INSERT INTO workout_progress (userId, workoutId, workoutName, workoutDuration, workoutDay, workoutHour, workoutWorkedMuscles) 
+            VALUES (?, ?, ?, ?, ?, ?, ?);
         `, [
             userId.replace(/'/g, "''"), 
-            workoutId.replace(/'/g, "''"), 
+            workoutId.replace(/'/g, "''"),
+            workoutName.replace(/'/g, "''"),
             workoutDuration, 
-            workoutTimestamp.replace(/'/g, "''"), 
+            workoutDay.replace(/'/g, "''"), 
+            workoutHour,
             muscles
         ]);
         console.log("Progreso de entrenamiento insertado correctamente.");
@@ -78,7 +80,7 @@ export const getWorkoutProgressById = async (
 
 export const getWorkoutProgressByDate = async (userId: string, date: string) => {
     const result = await db.getAllSync(`
-        SELECT * FROM workout_progress WHERE userId = '${userId.replace(/'/g, "''")}' AND workoutTimestamp = '${date.replace(/'/g, "''")}';
+        SELECT * FROM workout_progress WHERE userId = '${userId.replace(/'/g, "''")}' AND workoutDay = '${date.replace(/'/g, "''")}';
     `);
     return result;
 };
@@ -114,8 +116,10 @@ export const initializeDatabase = async () => {
                     id INTEGER PRIMARY KEY AUTOINCREMENT, 
                     userId TEXT NOT NULL,
                     workoutId TEXT NOT NULL,
+                    workoutName TEXT NOT NULL,
                     workoutDuration TEXT NOT NULL,
-                    workoutTimestamp TEXT NOT NULL,
+                    workoutDay TEXT NOT NULL,
+                    workoutHour TEXT NOT NULL,
                     workoutWorkedMuscles TEXT DEFAULT '[]'
                 );
         `);
@@ -134,4 +138,10 @@ export const initializeDatabase = async () => {
             error
         );
     }
+};
+
+const dropWorkoutProgressTable = async () => {
+    await db.execSync(`
+        DROP TABLE IF EXISTS workout_progress;
+    `);
 };
