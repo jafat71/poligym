@@ -9,7 +9,7 @@ interface NavigationFlowContextType {
     setScreenPlayExercises: Dispatch<SetStateAction<ExerciseInWorkoutAPI[] | null>>;
     tmpUser: Partial<User> | null;
     updateInitUserShell: (updatedFields: Partial<User>) => void;
-    userPosts: SocialPost[];
+    userPosts: SocialPost[];    
     setUserPosts: Dispatch<SetStateAction<SocialPost[]>>;
 }
 
@@ -31,20 +31,14 @@ export const NavigationFlowProvider: React.FC<NavigationFlowProviderProps> = ({ 
     const [screenPlayExercises, setScreenPlayExercises] = useState<ExerciseInWorkoutAPI[] | null>(null);
     const [userPosts, setUserPosts] = useState<SocialPost[]>([]);
     
-    useEffect(() => {
-        console.log("tmpUser", tmpUser)
-    }, [tmpUser])
-
     const updateInitUserShell = (updatedFields: Partial<User> | null) => {
         if (!updatedFields) {
             setTmpUSer(null);
             return;
         }
-        console.log("updatedFields", updatedFields)
         setTmpUSer((prevUser) => prevUser ? { ...prevUser, ...updatedFields } : null);
     };
     
-
     return (
         <NavigationFlowContext.Provider value={{
             tmpUser,

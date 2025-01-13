@@ -1,19 +1,19 @@
 import React, { useRef } from 'react'
 import { Animated } from 'react-native'
-import RoutineSmallCard from './RoutineSmallCard';
 import HorizontalFlatlistSkeleton from '@/components/animatedUi/HorizontalFlatlistSkeleton';
+import RoutinePlanSmallCard from './RoutineInPlanSmallCard';
+import RoutineSmallCard from './RoutineSmallCard';
 
 interface Props {
     data: Animated.WithAnimatedObject<ArrayLike<any>> | null | undefined
     infoSetted: boolean
+    isUserCurrentPlan: boolean
+    weekIndex: number
 }
 
-export const WorkoutsInPlanFlatList = ({ data, infoSetted }: Props) => {
+export const WorkoutsInPlanFlatList = ({ data, infoSetted, isUserCurrentPlan, weekIndex }: Props) => {
     const scrollX = useRef(new Animated.Value(0)).current;
 
-    console.log("data", data)
-
-    console.log("infoSetted", infoSetted)
     return (
         <>  
         {
@@ -55,10 +55,18 @@ export const WorkoutsInPlanFlatList = ({ data, infoSetted }: Props) => {
                                 opacity
                             }}
                         >
-                            <RoutineSmallCard
-                                key={item.id}
-                                {...item}
-                            />
+                            {isUserCurrentPlan ? (
+                                <RoutinePlanSmallCard
+                                    key={item.id}   
+                                    routine={item}
+                                    weekIndex={weekIndex}
+                                />
+                            ) : (
+                                <RoutineSmallCard
+                                    key={item.id}
+                                    {...item}
+                                />
+                            )}
                         </Animated.View>
                     );
                 }}

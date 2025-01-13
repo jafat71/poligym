@@ -11,19 +11,16 @@ import { PlayWorkoutFlatlistHeader } from "@/components/ui/common/flatlists/Play
 import PlayRoutineExerciseItem from "@/components/ui/exercises/PlayRoutineExerciseItem";
 import CreatePostModal from "@/components/ui/common/modal/CreatePostModal";
 import { useTheme } from "@/context/ThemeContext";
-import WorkoutLoadingScreen from "@/components/animatedUi/WorkoutLoadingScreen";
-import { usePlayWorkoutContext, WorkoutPlayProvider } from "@/context/PlayWorkoutContext";
+import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext";
 import EditExerciseModal from "@/components/ui/common/modal/EditExerciseModal";
-import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
 import ExerciseInWorkoutSkeleton from "@/components/animatedUi/ExerciseInWorkoutSkeleton";
-import CustomSnackbar from "@/components/ui/common/snackbar/CustomSnackbar";
 import CompletionModal from "@/components/ui/common/modal/CompletionModal";
 import { insertWorkoutProgress } from "@/database/sqlite";
 import { WorkoutProgress } from "@/types/interfaces/entities/progress";
 import { getLocaleDateTime } from "@/lib/utils/getLocaleTime";
 
 const PlayWorkout = () => {
-    const { id } = useLocalSearchParams();
+    const { id, planId, planName, weekIndex } = useLocalSearchParams();
     if(!id) return null;
     const { accessToken } = useUser();
     const queryClient = useQueryClient();
@@ -40,6 +37,7 @@ const PlayWorkout = () => {
         initialData: cachedWorkout,
         enabled: !!id,
     });
+
 
     const { loggedUserInfo } = useUser();
     const [exercises, setExercises] = useState<ExerciseInWorkoutAPI[]>([]);
@@ -59,6 +57,7 @@ const PlayWorkout = () => {
         resetWorkout,
         workoutTotalDuration
     } = usePlayWorkoutContext();
+
 
     const [showPostModal, setShowPostModal] = useState(false);
     const [showEditExerciseModal, setShowEditExerciseModal] = useState({
@@ -152,6 +151,8 @@ const PlayWorkout = () => {
                     hasbeenModified={hasbeenModified}
                     restoreWorkout={restoreWorkout}
                     isLoading={isLoading}
+                    planName={planName as string}
+                    weekIndex={Number(weekIndex)}
                 />}
                 data={exercises}
                 ItemSeparatorComponent={() => <View className="h-2" />}

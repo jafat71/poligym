@@ -10,7 +10,6 @@ import HomePill from "../pills/HomePill";
 import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import { useFavoriteWorkout } from "@/hooks/useFavoriteWorkout";
-import WorkoutLoadingScreen from "@/components/animatedUi/WorkoutLoadingScreen";
 import WorkoutSkeleton from "@/components/animatedUi/WorkoutSkeleton";
 
 interface PlayWorkoutFlatlistHeaderProps {
@@ -20,6 +19,8 @@ interface PlayWorkoutFlatlistHeaderProps {
     hasbeenModified: boolean;
     restoreWorkout: () => void;
     isLoading: boolean;
+    planName: string;
+    weekIndex: number;
 }
 
 export const PlayWorkoutFlatlistHeader = ({
@@ -28,11 +29,13 @@ export const PlayWorkoutFlatlistHeader = ({
     handlePlayWorkout,
     hasbeenModified,
     restoreWorkout,
-    isLoading
+    isLoading,
+    planName,
+    weekIndex
 }: PlayWorkoutFlatlistHeaderProps) => {
 
-    
     const { completedPlayExercises, lastWorkoutPlayed } = usePlayWorkoutContext()
+
     const isLastWorkoutPlayed = lastWorkoutPlayed === workout?.id;
 
     const [exercisesCompleted, setExercisesCompleted] = useState(0);
@@ -63,6 +66,13 @@ export const PlayWorkoutFlatlistHeader = ({
                 className="absolute w-full h-full"
             />
             <View className="p-4 pb-3 ">
+                {
+                    planName && (
+                        <Text className={`text-white text-xs font-raleway mb-4 flex-1`}>
+                            {planName} - Semana {weekIndex + 1}
+                        </Text>
+                    )
+                }
                 <Text className={`text-white text-4xl font-ralewayBold mb-4 flex-1`}>
                     {workout?.name}
                 </Text>

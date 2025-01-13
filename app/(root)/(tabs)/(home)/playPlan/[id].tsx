@@ -1,15 +1,16 @@
-import { FlatList, ScrollView, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { useTheme } from '@/context/ThemeContext'
-import { useUser } from '@/context/UserContext'
-import { TrainingPlanAPI, WorkoutAPI } from '@/types/interfaces/entities/plan'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { fetchTrainingPlanById, fetchWorkoutById } from '@/lib/api/actions'
-import { WorkoutsInPlanFlatList } from '@/components/ui/routines/WorkoutsInPlanFlastListComponent'
-import { PlayPlanFlatlistHeader } from '@/components/ui/common/flatlists/PlayPlanFlastlistHeader'
-import HorizontalFlatlistSkeleton from '@/components/animatedUi/HorizontalFlatlistSkeleton'
-import { useLocalSearchParams } from 'expo-router'
-import WorkoutSkeleton from '@/components/animatedUi/WorkoutSkeleton'
+import { FlatList, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { useTheme } from '@/context/ThemeContext';
+import { useUser } from '@/context/UserContext';
+import { TrainingPlanAPI, WorkoutAPI } from '@/types/interfaces/entities/plan';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { fetchTrainingPlanById, fetchWorkoutById } from '@/lib/api/actions';
+import { WorkoutsInPlanFlatList } from '@/components/ui/routines/WorkoutsInPlanFlastListComponent';
+import { PlayPlanFlatlistHeader } from '@/components/ui/common/flatlists/PlayPlanFlastlistHeader';
+import HorizontalFlatlistSkeleton from '@/components/animatedUi/HorizontalFlatlistSkeleton';
+import { useLocalSearchParams } from 'expo-router';
+import WorkoutSkeleton from '@/components/animatedUi/WorkoutSkeleton';
+import { getLocaleDateTime } from '@/lib/utils/getLocaleTime';
 
 interface PlanForUser {
     plan: TrainingPlanAPI;
@@ -20,114 +21,154 @@ interface PlanForUser {
 }
 
 const PlayPlan = () => {
-    const { isDark } = useTheme()
+    const { isDark } = useTheme();
     const { id } = useLocalSearchParams();
-    const { accessToken, loggedUserInfo } = useUser();
+    const { accessToken, loggedUserInfo, userSelectedPlan } = useUser();
     const queryClient = useQueryClient();
     const planId = Number(id);
-    const cachedPlan = queryClient.getQueryData<TrainingPlanAPI>(['plans', planId]);
-    const [infoSetted, setInfoSetted] = useState(false);
 
+    const [infoSetted, setInfoSetted] = useState(false);
+    const [planForUser, setPlanForUser] = useState<PlanForUser | null>(null);
+
+    const [userPlanProgress, setUserPlanProgress] = useState<any>({
+        userId: loggedUserInfo?.id,
+        planId: 0,
+        planName: '',
+        planStartDate: new Date(),
+        planEndDate: new Date(),
+        planWeeks: [],
+        planWorkouts: {},
+    }
+    ); //fetch from sqllite
+
+    let planObject: any;
+    const isUserCurrentPlan = userSelectedPlan?.id === planId
     const { data: plan, isLoading, isError } = useQuery<TrainingPlanAPI>({
         queryKey: ['plans', id],
         queryFn: async () => {
-            const data = await fetchTrainingPlanById(accessToken!, id as string)
-            data.workouts?.forEach(workout => {
+            const planData = await fetchTrainingPlanById(accessToken!, id as string);
+            planData.workouts?.forEach((workout) => {
                 queryClient.prefetchQuery({
                     queryKey: ['workouts', workout.id],
-                    queryFn: async () => {
-                        const individualWorkout = await fetchWorkoutById(accessToken!, workout.id.toString());
-                        queryClient.setQueryData(['workouts', workout.id], individualWorkout);
-                        return individualWorkout;
-                    }
+                    queryFn: () => fetchWorkoutById(accessToken!, workout.id.toString()),
                 });
-            })
-            return data;
+            });
+            return planData;
         },
-        initialData: cachedPlan,
+        initialData: queryClient.getQueryData<TrainingPlanAPI>(['plans', planId]),
         enabled: !!id,
-    });
-
-    const [workouts, setWorkouts] = useState<WorkoutAPI[]>([]);
-    const [planForUser, setPlanForUser] = useState<PlanForUser>({
-        plan: plan!,
-        workouts: [],
-        startDate: new Date(),
-        endDate: new Date(),
-        weeks: [],
     });
 
     useEffect(() => {
         if (plan) {
-            setWorkouts(plan.workouts.map(workout => ({ ...workout })));
-            const planForUser = buildPlanWorkouts();
-            setPlanForUser(planForUser);
-            setTimeout(() => {
-                setInfoSetted(true);
-            }, 1000);
+            const processedPlan = buildPlanWorkouts(plan);
+            setPlanForUser(processedPlan);
+            setTimeout(() => setInfoSetted(true), 500); // Simula un pequeño retraso para la UX.
         }
     }, [plan]);
 
-    const isUserFavorite = loggedUserInfo?.trainingPlanIds.includes(plan?.id!)
+    const buildPlanWorkouts = (fetchedPlan: TrainingPlanAPI): PlanForUser => {
+        const initDate = new Date();
+        const endDate = new Date();
+        endDate.setDate(initDate.getDate() + 30);
 
-    const handleSelectPlan = () => {
-    }
+        const weeksBetween = Math.ceil((endDate.getTime() - initDate.getTime()) / (7 * 24 * 60 * 60 * 1000));
+        const weeks = Array.from({ length: weeksBetween }, (_, i) => i);
+        // endDate.setDate(initDate.getDate() + (weeksBetween * 7));
+        const [planStartDate, _] = getLocaleDateTime(new Date(initDate))
+        const [planEndDate, __] = getLocaleDateTime(new Date(endDate))
 
-    const buildPlanWorkouts = () : PlanForUser => {
-        let initDate = new Date();
-        let endDate = new Date();
-        endDate.setDate(endDate.getDate() + 30);//for each week, add 1 to weeks array
-        let weeks = [];
-        for (let i = 0; i < 4; i++) {
-            weeks.push(i);
+        const weekPlanUserObject: any = {}
+        weeks.forEach((week) => {
+            weekPlanUserObject[week + 1] = {
+                week: week + 1,
+                workouts: [],
+            }
+            fetchedPlan.workouts.forEach((workout) => {
+                weekPlanUserObject[week + 1].workouts.push({
+                    workout: workout.id,
+                    completed: false,
+                });
+            });
+
+        });
+        planObject = {
+            userId: loggedUserInfo?.id,
+            planId: fetchedPlan.id,
+            planName: fetchedPlan.name,
+            planStartDate: planStartDate,
+            planEndDate: planEndDate,
+            planWeeks: weeksBetween,
+            planWorkouts: weekPlanUserObject,
         }
-        let planForUser: PlanForUser = {
-            plan: plan!,
-            workouts: workouts.map(workout => ({ ...workout })),
+
+        setUserPlanProgress(planObject)
+
+        return {
+            plan: fetchedPlan,
+            workouts: fetchedPlan.workouts.map((workout) => ({ ...workout })),
             startDate: initDate,
             endDate: endDate,
             weeks: weeks,
-        }
-        return planForUser;
+        };
+    };
+
+    if (isError) {
+        return (
+            <View className="flex-1 items-center justify-center">
+                <Text className="text-red-500 text-lg font-bold">
+                    Error al cargar el plan de entrenamiento.
+                </Text>
+            </View>
+        );
     }
 
-    if (isError) return <Text>Error al cargar detalles de la rutina - {id}</Text>;
+    if (isLoading || !infoSetted || !planForUser) {
+        return (
+            <View className={`flex-1 ${isDark ? 'bg-darkGray-900' : 'bg-darkGray-100'}`}>
+                <WorkoutSkeleton />
+                <HorizontalFlatlistSkeleton />
+                <HorizontalFlatlistSkeleton />
+                <HorizontalFlatlistSkeleton />
+            </View>
+        );
+    }
+
     return (
-        <View className={`flex-1 
-            ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}>
-                <FlatList
-                    ListHeaderComponent={<PlayPlanFlatlistHeader
-                        plan={plan!}
+        <View className={`flex-1 ${isDark ? 'bg-darkGray-900' : 'bg-darkGray-100'}`}>
+            <FlatList
+                ListHeaderComponent={
+                    <PlayPlanFlatlistHeader
+                        plan={planForUser.plan}
                         isLoading={isLoading}
                         initDate={planForUser.startDate}
                         endDate={planForUser.endDate}
-                        />}
-                    data={planForUser.weeks}
-                    renderItem={({ item }) =>
-                        <>
-                            <Text className={`text-xl
-                                font-ralewaySemiBold px-4
-                                ${isDark ? "text-white" : "text-black"}`}>Semana {item+1}</Text>
-                            <WorkoutsInPlanFlatList
-                                data={planForUser.workouts}
-                                infoSetted={infoSetted}
-                            />
-                        </>
-                    }
-                />
-            {
-                (isLoading || !infoSetted) && (
+                        userPlanProgress={userPlanProgress}
+                    />
+                }
+                data={
+                    isUserCurrentPlan ? planForUser.weeks : planForUser.weeks.slice(0, 1)
+                }
+                keyExtractor={(item) => `week-${item}`}
+                renderItem={({ item, index }) => (
                     <>
-                        <WorkoutSkeleton/>
-                        <HorizontalFlatlistSkeleton/>
-                        <HorizontalFlatlistSkeleton/>
-                        <HorizontalFlatlistSkeleton/>
-                        <HorizontalFlatlistSkeleton/>
+                        <Text
+                            className={`text-xl font-ralewaySemiBold px-4 ${isDark ? 'text-white' : 'text-black'
+                                }`}
+                        >
+                            {isUserCurrentPlan ? `Semana ${item + 1}` : `Rutinas del plan`}
+                        </Text>
+                        <WorkoutsInPlanFlatList
+                            data={planForUser.workouts}
+                            infoSetted={infoSetted}
+                            isUserCurrentPlan={isUserCurrentPlan}
+                            weekIndex={index+1}
+                        />
                     </>
-                )
-            }
+                )}
+            />
         </View>
-    )
-}
+    );
+};
 
-export default PlayPlan
+export default PlayPlan;

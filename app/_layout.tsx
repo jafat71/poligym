@@ -56,9 +56,9 @@ export default function RootLayout() {
 
             <NavigationFlowProvider>
               <UserProvider>
-                <WorkoutPlayProvider>
-                  <GestureHandlerRootView
-                    style={{ flex: 1, backgroundColor: '#0055f9' }}>
+                  <WorkoutPlayProvider>
+                    <GestureHandlerRootView
+                      style={{ flex: 1, backgroundColor: '#0055f9' }}>
                     <Stack>
                       <Stack.Screen name="welcome" options={{ headerShown: false, animation: 'fade_from_bottom', animationTypeForReplace: 'push', 
                         statusBarColor: '#0055f9',
@@ -77,7 +77,7 @@ export default function RootLayout() {
                     {/* <DebugCache /> */}
 
                   </GestureHandlerRootView>
-                </WorkoutPlayProvider>
+                  </WorkoutPlayProvider>
               </UserProvider>
             </NavigationFlowProvider>
           </QueryClientProvider>
