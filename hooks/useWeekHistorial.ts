@@ -58,8 +58,6 @@ export const useWeekHistorial = () => {
         enabled: !!loggedUserInfo?.id,
     });
 
-    console.log("dataPerDay: ", dataPerDay)
-
     useEffect(() => {
         if (weekDaysData) {
             const timeForDayObject = {

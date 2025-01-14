@@ -8,7 +8,8 @@ import { router } from 'expo-router';
 import React, { createContext, useContext, ReactNode, useState, useEffect, Dispatch, SetStateAction } from 'react';
 import { useNavigationFlowContext } from './NavFlowContext';
 import { NutritionPlan } from '@/types/interfaces/entities/foodplan';
-import { getUserHistoryWorkoutProgress } from '@/database/sqlite';
+import { getActivePlan, getUserHistoryWorkoutProgress } from '@/database/sqlite';
+import { fetchTrainingPlanById } from '@/lib/api/actions';
 
 interface UserContextType {
     userLogged: boolean;
@@ -75,6 +76,11 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 const response = await verifyToken(accessToken!)
                 const userResponse = await getUserInfo(response.user.id, accessToken!)
                 const userMapped = mapUserFromApiToUser(userResponse)
+                const userPlanProgress = await getActivePlan(userMapped.id)
+                if(userPlanProgress){
+                    const userCurrentPLan = await fetchTrainingPlanById(accessToken!, userPlanProgress.planId)
+                    setUserSelectedPlan(userCurrentPLan)
+                }
                 setLoggedUserInfo(userMapped)
                 setUserLogged(true)
             } catch (error) {
@@ -114,26 +120,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         getRefreshToken()
     }, [accessToken])
 
-    useEffect(() => {
-        console.log("accessToken", accessToken)
-    }, [accessToken])
-
     const updateUserInfo = async () => {
         const response = await getUserInfo(loggedUserInfo?.id!, accessToken!)
         const userMapped = mapUserFromApiToUser(response)
         setLoggedUserInfo(userMapped)
     }
 
-    console.log("loggedUserInfo", loggedUserInfo)
-
     const [userFavWorkouts, setUserFavWorkouts] = useState<WorkoutAPI[]>([]);
     const [userFavFoodPlans, setUserFavFoodPlans] = useState<NutritionPlan[]>([]);
     const [userFavTrainingPlans, setUserFavTrainingPlans] = useState<TrainingPlanAPI[]>([]);
-
-    
-    useEffect(() => {
-        console.log("Actual pathname", pathname)   
-    }, [pathname])
 
     return (
         <UserContext.Provider value={{

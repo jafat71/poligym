@@ -7,9 +7,8 @@ import { useWeekHistorial } from '@/hooks/useWeekHistorial';
 
 export const StatsWeekChart = () => {
     const { isDark } = useTheme();
-    const { dataPerDay, weekDaysData } = useWeekHistorial();
+    const { dataPerDay } = useWeekHistorial();
 
-    console.log("weekDaysData: ", weekDaysData)
     const [data, setData] = useState({
         labels: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
         datasets: [{
@@ -31,8 +30,6 @@ export const StatsWeekChart = () => {
             datasets: [{ data: [dataPerDay?.Dom ?? 0, dataPerDay?.Lun ?? 0, dataPerDay?.Mar ?? 0, dataPerDay?.Mie ?? 0, dataPerDay?.Jue ?? 0, dataPerDay?.Vie ?? 0, dataPerDay?.Sab ?? 0] }]
         });
     }, [dataPerDay]);
-
-    console.log("dataPerDay: ", dataPerDay)
 
     return (
         <View className="mt-4">

@@ -3,7 +3,7 @@ import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import { useState, useEffect, useCallback } from "react";
 import { Alert, Text, View } from "react-native";
 import DraggableFlatList, { RenderItemParams } from "react-native-draggable-flatlist";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchWorkoutById } from "@/lib/api/actions";
 import { useUser } from "@/context/UserContext";
@@ -15,8 +15,8 @@ import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext";
 import EditExerciseModal from "@/components/ui/common/modal/EditExerciseModal";
 import ExerciseInWorkoutSkeleton from "@/components/animatedUi/ExerciseInWorkoutSkeleton";
 import CompletionModal from "@/components/ui/common/modal/CompletionModal";
-import { insertWorkoutProgress } from "@/database/sqlite";
-import { WorkoutProgress } from "@/types/interfaces/entities/progress";
+import { insertWorkoutProgress, updateUserPlanProgress } from "@/database/sqlite";
+import { PlanProgressDetails, WorkoutProgress } from "@/types/interfaces/entities/progress";
 import { getLocaleDateTime } from "@/lib/utils/getLocaleTime";
 
 const PlayWorkout = () => {
@@ -75,12 +75,32 @@ const PlayWorkout = () => {
 
     const [showCompletionModal, setShowCompletionModal] = useState(false);
 
+    const { mutate: saveWorkoutProgressMutation } = useMutation({
+        mutationFn: async (planProgressDetails: PlanProgressDetails) => {
+            await updateUserPlanProgress(planProgressDetails);
+        },
+        onSuccess: () => {
+            console.log("Workout progress saved");
+        },
+        onError: (error) => {
+            console.log("Error saving workout progress", error);
+        }   
+    })
+
     useEffect(() => {
         if (isCompleted) {
             setIsCompleted(false);
             restoreWorkout();
             saveWorkoutProgress();
             setShowCompletionModal(true);
+            if(planId && weekIndex && workoutId) {
+                saveWorkoutProgressMutation({
+                    planProgressId: Number(planId),
+                    week: Number(weekIndex),
+                    workoutId: workoutId.toString(),
+                    completed: true
+                })
+            }
         }
     }, [isCompleted]);
 

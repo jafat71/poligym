@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Text, View, Image, ActivityIndicator } from 'react-native';
 
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -27,9 +27,10 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
 
     const hasPlan = userSelectedPlan !== null
 
+    if(!loggedUserInfo) return <View className='flex-1 justify-center items-center'><ActivityIndicator size='large' color='#0085F9' /></View>
     return (
         <View
-            className="w-full h-[420px] rounded-lg overflow-hidden"
+            className={`w-full ${hasPlan ? 'h-[460px]' : 'h-[420px]'} rounded-lg overflow-hidden`}
         >
             <Image
                 source={{ uri: userSelectedPlan?.imagenPlanEntrenamiento }}
@@ -72,30 +73,26 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
 
                 {
                     hasPlan ? (
-                        <View className="flex-1 p-4 justify-between">
+                        <View className="flex-1 px-4 justify-between">
                             <View className="flex-row items-center justify-between">
-                                <View className="bg-white/20 backdrop-blur-md rounded-full px-4 py-1.5">
                                     <Text className="text-white text-sm font-ralewayBold">
-                                        Tu Plan Actual
+                                        Plan Actual
                                     </Text>
-                                </View>
                                 <HomePill
                                     icon="time-outline"
-                                    text={`${userSelectedPlan?.duracion} sem.`}
-                                />
-                                <HomePill
-                                    icon="flame-outline"
-                                    text={`${userSelectedPlan?.dificultad}`}
+                                    text={`${userSelectedPlan?.workouts.length} sesiones / semana`}
                                 />
                             </View>
 
                             <Text
-                                numberOfLines={1}
+                                numberOfLines={2}
                                 ellipsizeMode="tail"
-                                className="text-white font-ralewayBold text-2xl ">
-                                {userSelectedPlan?.nombre}
+                                className="text-white font-ralewayBold text-2xl">
+                                {userSelectedPlan?.name}
                             </Text>
-                            <CTAButtonSuccess onPress={handleNavigation} text="Continuar" />
+                            <View className='my-2'>
+                                <CTAButtonSuccess onPress={handleNavigation} text="Continuar" />
+                            </View>
                         </View>
                     ) : (
                         <View className="flex-1 p-4 justify-between">

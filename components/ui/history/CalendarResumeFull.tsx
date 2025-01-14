@@ -70,9 +70,7 @@ const CalendarResumeFull = () => {
     };
 
     const handleDayPress = (day: DateData) => {
-        console.log("PRESS", day);
         const adjustedDate = startOfDay(new Date(day.dateString));
-        // Ajuste temporal para que el rango sea correcto
         const selectedDate = addDays(adjustedDate, 1);
         if (!startDate || (startDate && endDate)) {
             setStartDate(selectedDate);

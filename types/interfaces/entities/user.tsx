@@ -24,6 +24,7 @@ export interface User {
     isActive: boolean,
 
     userNumberActivityDays?: number,
+    activePlanId?: number,
 }
 
 export enum GENDER {

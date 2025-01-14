@@ -163,7 +163,8 @@ const PlayPlan = () => {
                             infoSetted={infoSetted}
                             isUserCurrentPlan={isUserCurrentPlan}
                             weekIndex={index+1}
-                        />
+                            planId={planForUser.plan.id}
+                            />
                     </>
                 )}
             />

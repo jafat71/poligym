@@ -69,7 +69,7 @@ export const PlayWorkoutFlatlistHeader = ({
                 {
                     planName && (
                         <Text className={`text-white text-xs font-raleway mb-4 flex-1`}>
-                            {planName} - Semana {weekIndex + 1}
+                            {planName} - Semana {weekIndex}
                         </Text>
                     )
                 }
