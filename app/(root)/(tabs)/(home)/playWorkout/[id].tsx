@@ -77,6 +77,7 @@ const PlayWorkout = () => {
 
     const { mutate: saveWorkoutProgressMutation } = useMutation({
         mutationFn: async (planProgressDetails: PlanProgressDetails) => {
+            console.log("Saving workout progress", planProgressDetails)
             await updateUserPlanProgress(planProgressDetails);
         },
         onSuccess: () => {
@@ -87,20 +88,22 @@ const PlayWorkout = () => {
         }   
     })
 
+    console.log("planId", planId, "weekIndex", weekIndex, "workoutId", workoutId)
     useEffect(() => {
         if (isCompleted) {
             setIsCompleted(false);
             restoreWorkout();
             saveWorkoutProgress();
-            setShowCompletionModal(true);
-            if(planId && weekIndex && workoutId) {
+            if(!!planId && !!weekIndex && !!workoutId) {
                 saveWorkoutProgressMutation({
                     planProgressId: Number(planId),
                     week: Number(weekIndex),
                     workoutId: workoutId.toString(),
                     completed: true
                 })
+                
             }
+            setShowCompletionModal(true);
         }
     }, [isCompleted]);
 
@@ -216,7 +219,15 @@ const PlayWorkout = () => {
 
             <CompletionModal
                 visible={showCompletionModal}
-                onClose={() => setShowCompletionModal(false)}
+                onClose={() => {
+                    setShowCompletionModal(false)
+                    router.navigate({
+                        pathname:`/(home)/playPlan/${planId}` as never,
+                        params: {
+                            workoutCompleted: workoutId.toString(),
+                        },
+                    })
+                }}
                 onShare={handleShare}
                 onRate={handleRate}
                 routineExercises={exercises}

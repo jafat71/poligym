@@ -10,7 +10,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { useFavoriteTrainingPlan } from "@/hooks/useFavoriteTrainingPlan";
 import WorkoutSkeleton from "@/components/animatedUi/WorkoutSkeleton";
 import { useUser } from "@/context/UserContext";
-import { enrollUserOnPlan, getUserPlanProgress } from "@/database/sqlite";
+import { convertActivePlanToInactive, enrollUserOnPlan, getUserPlanProgress } from "@/database/sqlite";
 import { PlanProgress } from "@/types/interfaces/entities/progress";
 import { router } from "expo-router";
 
@@ -20,12 +20,14 @@ interface PlayPlanFlatlistHeaderProps {
     initDate: Date;
     endDate: Date;
     userPlanProgress: any;
+    workoutCompleted: string;
 }
 
 export const PlayPlanFlatlistHeader = ({
     plan,
     isLoading,
-    userPlanProgress
+    userPlanProgress,
+    workoutCompleted
 }: PlayPlanFlatlistHeaderProps) => {
     if(!plan) return null
 
@@ -47,6 +49,12 @@ export const PlayPlanFlatlistHeader = ({
             getUserProgressInCurrentPlan();
         }
     }, [isUserCurrentPlan]);
+
+    useEffect(() => {
+        if (workoutCompleted) {
+            getUserProgressInCurrentPlan();
+        }
+    }, [workoutCompleted]);
 
     const getUserProgressInCurrentPlan = async () => {
         try {
@@ -74,11 +82,6 @@ export const PlayPlanFlatlistHeader = ({
         }
     };
     
-    useEffect(() => {
-        console.log("NEXT WORKOUT", nextWorkout)
-    }, [workoutsCompleted])
-
-    console.log("NEXT WORKOUT", nextWorkout)
     const handleRollUserOnPlan = async () => {
         setUserSelectedPlan(plan)
         const planProgressObjsect = {
@@ -99,6 +102,13 @@ export const PlayPlanFlatlistHeader = ({
         } catch (error) {
             console.error("Error al enrollar el usuario en el plan:", error);
         }
+    }
+
+    const unrollUserFromPlan = async () => {
+        const result = await convertActivePlanToInactive(loggedUserInfo?.id!)
+        console.log("result", result)
+        setIsUserCurrentPlan(false)
+        setUserSelectedPlan(null)
     }
 
     
@@ -207,7 +217,7 @@ export const PlayPlanFlatlistHeader = ({
                                                 {
                                                     text: "Abandonar",
                                                     onPress: () => {
-                                                        setUserSelectedPlan(null)
+                                                        unrollUserFromPlan()
                                                     }
                                                 }
                                             ])

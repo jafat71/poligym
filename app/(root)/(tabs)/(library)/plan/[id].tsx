@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Text, View, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -69,6 +69,16 @@ const PlanInfo = () => {
                         } else {
                             handleFavoriteTrainingPlan()
                         }
+                    }}
+                    disabled={isLoading}
+                />
+
+                <ButtonPillLightDark
+                    icon="play-outline"
+                    text={
+                        "Comenzar plan"}
+                    onPress={() => {
+                        router.navigate(`/(root)/(tabs)/(home)/playPlan/${planId}`)
                     }}
                     disabled={isLoading}
                 />

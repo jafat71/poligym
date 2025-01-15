@@ -97,7 +97,7 @@ const _layout = () => {
                     statusBarStyle: isDark ? 'light' : 'dark',
                     animation: "fade_from_bottom",
                     statusBarTranslucent: true,
-                    statusBarColor: 'transparent',
+                    statusBarColor: isDark ? "#1c1c1c" : "#fff",
                     fullScreenGestureEnabled: true
                 }}
             />

@@ -63,7 +63,7 @@ if(isError) return <Text className={`text-center ${isDark ? "text-white" : "text
   return (
     <View style={{ flex: 1 }}>
       <FlatList
-        className={`w-full px-2 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
+        className={`w-full ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
         contentContainerStyle={{ paddingTop: 0 }}
         data={comunityPosts as SocialPost[]}
         renderItem={({ item }) => (

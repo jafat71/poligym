@@ -14,20 +14,22 @@ interface Props {
     routine: WorkoutAPI
     weekIndex: number
     planProgressId: number
+    workoutCompleted: string
 }   
 
-const RoutinePlanSmallCard = ({ routine, weekIndex, planProgressId}: Props) => {
+const RoutinePlanSmallCard = ({ routine, weekIndex, planProgressId, workoutCompleted}: Props) => {
     const router = useRouter()
     const {userSelectedPlan} = useUser()
     const routineFirstWord = routine.name.split(' ')[0]
     const routineRest = routine.name.split(' ').slice(1).join(' ')
 
-    const [isCompleted, setIsCompleted] = useState(false);
+    const [isCompleted, setIsCompleted] = useState<boolean>(false);
     if(!routine) return null
+    
     const getCurrentWorkoutInPlanProgress = async () => {
         try {
             const workoutState = await getUserPlanProgressById(planProgressId, weekIndex, routine.id.toString())
-            console.log(workoutState)
+            console.log("WORKOUT STATE", workoutState)
             setIsCompleted(workoutState?.completed!)
         } catch (error) {
             console.error("Error al obtener el progreso del plan:", error);
@@ -36,7 +38,7 @@ const RoutinePlanSmallCard = ({ routine, weekIndex, planProgressId}: Props) => {
 
     useEffect(() => {
         getCurrentWorkoutInPlanProgress()
-    }, [])
+    }, [userSelectedPlan, workoutCompleted])
 
 
     return (

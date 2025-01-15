@@ -93,15 +93,13 @@ export const ComunityPost = (post: SocialPost) => {
     const postTime = getPostTime(postState.fecha)
 
     return (
-        <View className={`my-3 p-2
-            ${isDark ? "bg-darkGray-500" : "bg-white"}  rounded-sm`}>
+        <View className={`my-3 ${isDark ? "bg-darkGray-500" : "bg-white"} rounded-lg`}>
             <View className={`flex flex-row items-center 
-                justify-between pb-5`}>
+                justify-between p-2`}>
                 <View className='flex flex-row items-center'>
                     <View className={`rounded-full w-12 h-12
                             flex flex-col items-center justify-center 
-                            border-[2px] border-eBlue-500
-                            ${isDark ? "" : "bg-darkGray-200 "}`}>
+                            border-[2px] border-eBlue-500`}>
                         {
                             userImage ? (
                                 <Image
@@ -109,27 +107,27 @@ export const ComunityPost = (post: SocialPost) => {
                                     className='w-full h-full rounded-full'
                                 />
                             ) : (
-                                <Text className={` text-lg font-raleway text-eBlue-500 `}>
+                                <Text className={` text-lg font-raleway text-eBlue-500`}>
                                     {userName?.split(" ").map((n) => n[0]).join("")}
                                 </Text>
                             )
                         }
                     </View>
                     <View className={`pl-3`}>
-                        <Text className={`text-base font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `}>{userName}</Text>
-                        <Text className={`text-base font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"} `}>{postDate} {postTime}</Text>
+                        <Text className={`text-base font-ralewayBold text-start ${isDark ? "text-white" : "text-darkGray-500"}`}>{userName}</Text>
+                        <Text className={`text-base font-raleway text-start  ${isDark ? "text-white" : "text-darkGray-400"}`}>{postDate} {postTime}</Text>
                     </View>
                 </View>
             </View>
 
             {
                 postState.imagen_comentario && (
-                    <Image source={{ uri: postState.imagen_comentario }} className='w-full h-40 rounded-md' />
+                    <Image source={{ uri: postState.imagen_comentario }} className='w-full h-60 rounded-md mb-2' />
                 )
             }
 
-            <View className='pb-2'>
-                <Text className={`text-xl font-ralewaySemiBold text-start ${isDark ? "text-white" : "text-darkGray-500"} `} >
+            <View className='p-2'>
+                <Text className={`text-lg font-raleway text-start ${isDark ? "text-white" : "text-darkGray-500"}`} >
                     {postState.mensaje}
                 </Text>
             </View>
@@ -154,13 +152,13 @@ export const ComunityPost = (post: SocialPost) => {
             <View className={`flex flex-row items-center justify-center`}>
 
             <Pressable
-                    className='flex flex-row items-center '
+                    className='flex flex-row items-center pb-2'
                     onPress={handleLike}>
-                    <Text className={`text-xl font-ralewayExtraBold  ${isDark ? "text-white" : "text-darkGray-500"} `} >
+                    <Text className={`text-xl font-ralewayExtraBold ${isDark ? "text-white" : "text-darkGray-500"}`} >
                         {postlikes}
                     </Text>
                     <Animated.View style={animatedStyle}>
-                        <Ionicons name={isLiked ? "heart" : "heart-outline"} size={24} color={`#0055f9`} />
+                        <Ionicons name={isLiked ? "heart" : "heart-outline"} size={34} color={`${isDark ? "white" : "#1c1c1c"}`} />
                     </Animated.View>
                 </Pressable>
 

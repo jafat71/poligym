@@ -60,7 +60,9 @@ const Index = () => {
                 />
 
                 <YouPageButton
-                    onPress={() => { }}
+                    onPress={() => { 
+                        router.push('/(root)/(tabs)/(stats)/historial')
+                    }}
                     title='Historial'
                 />
 

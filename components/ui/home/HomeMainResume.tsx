@@ -1,11 +1,10 @@
-import React from 'react';
-import { Text, View, Image, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View, ActivityIndicator } from 'react-native';
 
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
-import { useNavigationFlowContext } from '@/context/NavFlowContext';
 import { useUser } from '@/context/UserContext';
 
 import WeekResumeHome from '../history/weekResumeHome';
@@ -24,20 +23,20 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
     const handleNavigation = () => {
         router.push(`/(tabs)/(home)/playPlan/${userSelectedPlan?.id}`)
     }
+    const [hasPlan, setHasPlan] = useState(false)
 
-    const hasPlan = userSelectedPlan !== null
+    useEffect(() => {
+        setHasPlan(userSelectedPlan !== null)
+            
+    }, [userSelectedPlan])
 
-    if(!loggedUserInfo) return <View className='flex-1 justify-center items-center'><ActivityIndicator size='large' color='#0085F9' /></View>
+    if(!loggedUserInfo) return <View className='flex-1 justify-center items-center  h-[460px]'><ActivityIndicator size='large' color='#0085F9' /></View>
     return (
         <View
-            className={`w-full ${hasPlan ? 'h-[460px]' : 'h-[420px]'} rounded-lg overflow-hidden`}
+            className={`w-full 
+            ${hasPlan ? 'h-[460px]' : 'h-[420px]'} 
+                rounded-lg overflow-hidden`}
         >
-            <Image
-                source={{ uri: userSelectedPlan?.imagenPlanEntrenamiento }}
-                className="w-full h-full absolute"
-                resizeMode="cover"
-            />
-
             <LinearGradient
                 colors={[
                     'rgba(0,85,249,0.95)',
@@ -73,8 +72,8 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
 
                 {
                     hasPlan ? (
-                        <View className="flex-1 px-4 justify-between">
-                            <View className="flex-row items-center justify-between">
+                            <View className="flex-1 px-4 justify-between">
+                                <View className="flex-row items-center justify-between">
                                     <Text className="text-white text-sm font-ralewayBold">
                                         Plan Actual
                                     </Text>

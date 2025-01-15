@@ -10,9 +10,10 @@ interface Props {
     isUserCurrentPlan: boolean
     weekIndex: number
     planId: number
+    workoutCompleted: string
 }
 
-export const WorkoutsInPlanFlatList = ({ data, infoSetted, isUserCurrentPlan, weekIndex, planId }: Props) => {
+export const WorkoutsInPlanFlatList = ({ data, infoSetted, isUserCurrentPlan, weekIndex, planId, workoutCompleted }: Props) => {
     const scrollX = useRef(new Animated.Value(0)).current;
 
     return (
@@ -62,6 +63,7 @@ export const WorkoutsInPlanFlatList = ({ data, infoSetted, isUserCurrentPlan, we
                                     routine={item}
                                     weekIndex={weekIndex}
                                     planProgressId={planId}
+                                    workoutCompleted={workoutCompleted}
                                 />
                             ) : (
                                 <RoutineSmallCard

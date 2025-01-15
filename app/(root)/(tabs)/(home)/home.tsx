@@ -39,7 +39,7 @@ const Home = () => {
   return (
     <ScrollView
       ref={scrollViewRef}
-      className={`flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
+      className={`flex-1 h-full ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`}
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl
@@ -48,7 +48,8 @@ const Home = () => {
         />
       }
     >
-      <MainHomeResume scrollDown={scrollDown} />
+      <MainHomeResume 
+      scrollDown={scrollDown} />
       <HomeSubSection />
       <HomeSmallSection />
     </ScrollView>

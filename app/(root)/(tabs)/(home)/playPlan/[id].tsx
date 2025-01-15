@@ -22,7 +22,7 @@ interface PlanForUser {
 
 const PlayPlan = () => {
     const { isDark } = useTheme();
-    const { id } = useLocalSearchParams();
+    const { id, workoutCompleted } = useLocalSearchParams();
     const { accessToken, loggedUserInfo, userSelectedPlan } = useUser();
     const queryClient = useQueryClient();
     const planId = Number(id);
@@ -144,6 +144,7 @@ const PlayPlan = () => {
                         initDate={planForUser.startDate}
                         endDate={planForUser.endDate}
                         userPlanProgress={userPlanProgress}
+                        workoutCompleted={workoutCompleted as string}
                     />
                 }
                 data={
@@ -163,7 +164,8 @@ const PlayPlan = () => {
                             infoSetted={infoSetted}
                             isUserCurrentPlan={isUserCurrentPlan}
                             weekIndex={index+1}
-                            planId={planForUser.plan.id}
+                            planId={userPlanProgress.planId}
+                            workoutCompleted={workoutCompleted as string}
                             />
                     </>
                 )}

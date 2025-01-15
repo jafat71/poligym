@@ -145,15 +145,20 @@ export const Stats = () => {
       muscularGroupPercentage[muscle as keyof MuscleGroupsColors] = percentage;
       if (percentage >= 0.75) {
         muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor09;
-      } else if (percentage >= 0.50) {
+      } else if (percentage >= 0.15) {
         muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor08;
-      } else if (percentage >= 0.25) {
+      } else if (percentage >= 0.1) {
         muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor07;
-      } else if (percentage >= 0.10) {
+      }else if (percentage >= 0.050) {
         muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor06;
-      } else if (percentage >= 0.05) {
+      }  
+      else if (percentage >= 0.040) {
         muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor05;
       } else if (percentage >= 0.025) {
+        muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor04;
+      } else if (percentage >= 0.015) {
+        muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor03;
+      } else if (percentage >= 0.010) {
         muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor02;
       } else {
         muscleGroupsColors[muscle as keyof MuscleGroupsColors] = scaleColors.workedColor01;
