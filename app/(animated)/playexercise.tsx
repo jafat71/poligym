@@ -43,7 +43,7 @@ const PlayExercise = () => {
                     source={{
                         uri: isResting ?
                             "https://media.tenor.com/4RvzriUK-wUAAAAM/hot-summer.gif"
-                            : "https://media1.tenor.com/m/Re3T3B66V9UAAAAd/barbellsquats-gymexercisesmen.gif"
+                            : currentExercise?.exercise?.mediaUrl ?? "https://media1.tenor.com/m/Re3T3B66V9UAAAAd/barbellsquats-gymexercisesmen.gif"
                     }}
                     className={`w-full h-80 rounded-xl border-[4px] border-lightGreen`}
                     resizeMode="cover"

@@ -1,7 +1,7 @@
 import { useTheme } from "@/context/ThemeContext";
 import { Meal, MEAL_TYPES } from "@/types/interfaces/entities/foodplan";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, Text } from "react-native";
+import { Text } from "react-native";
 import { View } from "react-native"
 import { FoodItem } from "./FoodItem";
 
@@ -11,7 +11,7 @@ interface Props {
 
 export const DayMealItem = ({ meal}: Props) => {
     const { isDark } = useTheme();
-    const defaultDayMealImg = 'https://images.pexels.com/photos/1391487/pexels-photo-1391487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
+    console.log("meal", meal)
     return (
         <View className={`
             flex flex-col w-full
@@ -23,9 +23,6 @@ export const DayMealItem = ({ meal}: Props) => {
                     </Text>
                 </View>
                 <View className='flex-col p-2 w-full '>
-                <Image 
-                    source={{ uri: meal.imageUrl ?? defaultDayMealImg }} 
-                    className='w-full h-32 rounded-md' />
                     <View className='flex-row items-center p-1'>
                         <Ionicons name='restaurant-outline' size={24} color={isDark ? "white" : "black"} />
                         <Text className={`text-lg ml-2 font-ralewaySemiBold ${isDark ? "text-white" : "text-darkGray-900"}`}>

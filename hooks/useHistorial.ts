@@ -14,6 +14,7 @@ export const useHistorial = () => {
     const [historyTime, setHistoryTime] = useState<string>('00:00');
     const [userHistorial, setUserHistorial] = useState();
     const [completedWorkouts, setCompletedWorkouts] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     const { data: retrievedHistorial } = useQuery({
         queryKey: ['historyTime'],
@@ -22,13 +23,15 @@ export const useHistorial = () => {
 
     useEffect(() => {
         if (retrievedHistorial) {
+            setIsLoading(false);
             setUserHistorial(retrievedHistorial as any);
             const historyTimes = retrievedHistorial.map((workout:any) => workout.workoutDuration);
             const totalTime = getHistorialTime(historyTimes);
             setHistoryTime(totalTime);
             setCompletedWorkouts(retrievedHistorial.length);
+            setIsLoading(false);
         }
     }, [retrievedHistorial]);
 
-    return { historyTime, userHistorial, completedWorkouts };
+    return { historyTime, userHistorial, completedWorkouts, isLoading };
 }

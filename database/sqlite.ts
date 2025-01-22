@@ -27,7 +27,6 @@ export const insertWorkoutProgress = async (progress: WorkoutProgress) => {
             workoutHour,
             muscles
         ]);
-        console.log("Progreso de entrenamiento insertado correctamente.");
         return result;
     } catch (error) {
         console.error("Error al insertar progreso de entrenamiento:", error);
@@ -192,7 +191,6 @@ export const getActivePlan = async (userId: string) => {
             SELECT * FROM user_plan_progress WHERE userId = '${userId.replace(/'/g, "''")}' AND planStatus = 'ACTIVE';
         `);
         if (result.length > 0) {
-            console.log("PLAN ACTIVE", result)
             return result[0];
         }
         return null;
@@ -210,7 +208,6 @@ export const getAllUserPlanProgress = async () => {
 };
 
 export const getUserPlanProgress = async (userId: string, planId: string) => {
-    console.log("GETTING USER PLAN PROGRESS FOR USER ID", userId, "AND PLAN ID", planId)
     try {
         const rows = await db.getAllSync(`
             SELECT 
@@ -286,14 +283,11 @@ export const updateUserPlanProgress = async (planProgressDetails: PlanProgressDe
     } = planProgressDetails;
 
     try {
-        console.log("Updating workout progress", planProgressDetails)
-        console.log("PLAN PROGRESS ID", planProgressId, "WEEK", week, "WORKOUT ID", workoutId)
         const result = await db.runAsync(`
             UPDATE plan_progress_details 
             SET completed = ${completed} 
             WHERE planProgressId = ${planProgressId} AND week = ${week} AND workoutId = '${workoutId.replace(/'/g, "''")}';
         `);
-        console.log("RESULT", result)
         return result;
     } catch (error) {
         console.error("Error al actualizar el progreso del plan:", error);
@@ -302,12 +296,10 @@ export const updateUserPlanProgress = async (planProgressDetails: PlanProgressDe
 }
 
 export const getUserPlanProgressById = async (planProgressId: number, week: number, workoutId: string) => {
-    console.log("PLAN PROGRESS ID", planProgressId, "WEEK", week, "WORKOUT ID", workoutId)
     try {
         const result = await db.getFirstSync(`
             SELECT * FROM plan_progress_details WHERE planProgressId = ${planProgressId} AND week = ${week} AND workoutId = '${workoutId.replace(/'/g, "''")}';
         `);
-        console.log("RESULT", result)
         return result;
     } catch (error) {
         console.error("Error al obtener el progreso del plan:", error);
@@ -333,8 +325,8 @@ export const tableExists = async (tableName: string): Promise<boolean> => {
 
 export const initializeDatabase = async () => {
     try {
-        // await dropUserPlanProgressTable();
-        // await dropPlanProgressDetailsTable();
+        await dropUserPlanProgressTable();
+        await dropPlanProgressDetailsTable();
 
         await db.execSync(`
             CREATE TABLE IF NOT EXISTS workout_progress 
@@ -406,3 +398,8 @@ const dropPlanProgressDetailsTable = async () => {
     `);
 };
 
+export const resetUserPlanProgressTable = async (userId: string) => {
+    await db.execSync(`
+        DELETE FROM user_plan_progress WHERE userId = '${userId.replace(/'/g, "''")}';
+    `);
+};

@@ -29,9 +29,10 @@ export const FoodItem = ({ food }: Props) => {
                     </View>
 
                 </View>
-                <Image
+                {/* <Image
+                
                     source={{ uri: food.imageUrl ?? defaultFoodImg }}
-                    className='w-24 h-24 rounded-md ' />
+                    className='w-24 h-24 rounded-md ' /> */}
             </View>
             <View className='flex-row flex-wrap gap-x-2'>
                 <SquarePill

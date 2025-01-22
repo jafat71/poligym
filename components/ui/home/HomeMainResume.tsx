@@ -86,7 +86,7 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
                             <Text
                                 numberOfLines={2}
                                 ellipsizeMode="tail"
-                                className="text-white font-ralewayBold text-2xl">
+                                className="text-white font-ralewayBold text-4xl">
                                 {userSelectedPlan?.name}
                             </Text>
                             <View className='my-2'>

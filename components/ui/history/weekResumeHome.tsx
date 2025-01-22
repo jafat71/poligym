@@ -9,9 +9,9 @@ import IconButton from '../common/buttons/IconButton'
 import { useHistorial } from '@/hooks/useHistorial'
 
 const WeekResumeHome = () => {
-    const { historyTime, completedWorkouts } = useHistorial();
+    const { historyTime, completedWorkouts, isLoading } = useHistorial();
 
-    if (!historyTime || !completedWorkouts) {
+    if (isLoading) {
         return <ActivityIndicator size="large" color="#77ffaa" />;
     }
 

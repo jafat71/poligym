@@ -36,7 +36,7 @@ export default function Plan() {
     } = useInfiniteQuery({
         queryKey: ['trainingPlans', 'infinite'],
         initialPageParam: 0,
-        staleTime: 60 * 60 * 1000, // 1 hour
+        staleTime: 60 * 60 * 1000, 
         queryFn: async (params) => {
             const { pageParam = 0 } = params;
             const data = await fetchTrainingPlansPaged(accessToken!,pageParam);

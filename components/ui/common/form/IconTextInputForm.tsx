@@ -31,7 +31,7 @@ const IconTextInputForm = ({
                         ${isDark ? "text-white" : "text-darkGray-500"}
                     `}
                     placeholder={inputPlaceholder}
-                    placeholderTextColor={isDark ? "white" : "#a6a6a6"}
+                    placeholderTextColor={isDark ? "#b1b1b1" : "#a6a6a6"}
                     value={inputValue}
                     onChangeText={inputOnChangeText}
                     secureTextEntry={isPasswordVisible}

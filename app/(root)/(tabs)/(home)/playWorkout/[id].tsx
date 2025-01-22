@@ -88,7 +88,6 @@ const PlayWorkout = () => {
         }   
     })
 
-    console.log("planId", planId, "weekIndex", weekIndex, "workoutId", workoutId)
     useEffect(() => {
         if (isCompleted) {
             setIsCompleted(false);
@@ -221,12 +220,14 @@ const PlayWorkout = () => {
                 visible={showCompletionModal}
                 onClose={() => {
                     setShowCompletionModal(false)
-                    router.navigate({
-                        pathname:`/(home)/playPlan/${planId}` as never,
-                        params: {
-                            workoutCompleted: workoutId.toString(),
-                        },
-                    })
+                    if(!!planId && !!weekIndex && !!workoutId) {
+                        router.navigate({
+                            pathname:`/(home)/playPlan/${planId}` as never,
+                            params: {
+                                workoutCompleted: workoutId.toString(),
+                            },
+                        })
+                    }
                 }}
                 onShare={handleShare}
                 onRate={handleRate}

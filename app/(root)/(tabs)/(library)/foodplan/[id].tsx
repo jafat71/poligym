@@ -20,7 +20,7 @@ import { View } from 'react-native';
 const Id = () => {
     const { id } = useLocalSearchParams();
     
-    const { accessToken, loggedUserInfo, setLoggedUserInfo } = useUser();
+    const { accessToken } = useUser();
     const { isDark } = useTheme();
     const queryClient = useQueryClient()
     const planId = Number(id)
@@ -42,6 +42,8 @@ const Id = () => {
 
     if (isLoading) return <SkeletonLoadingScreen />;
     if (isError) return <Text>Error loading food plan details - {id}</Text>;
+
+    console.log("food plan", plan)
 
     return (
         <View className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>

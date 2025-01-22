@@ -29,8 +29,8 @@ export async function getAllPostsFromDatabase(page: number = 1) {
     const limit = 5;
     const offset = (page - 1) * limit;
     try {
-        const posts = await sql`SELECT * FROM posts WHERE oculto = false ORDER BY fecha DESC LIMIT ${limit} OFFSET ${offset};`;
-        const totalPostsResult = await sql`SELECT COUNT(*) FROM posts WHERE oculto = false;`;
+        const posts = await sql`SELECT * FROM posts WHERE oculto = false and publico = true ORDER BY fecha DESC LIMIT ${limit} OFFSET ${offset};`;
+        const totalPostsResult = await sql`SELECT COUNT(*) FROM posts WHERE oculto = false and publico = true;`;
         const totalPosts = parseInt(totalPostsResult[0].count, 10);
         const lastPage = Math.ceil(totalPosts / limit);
         

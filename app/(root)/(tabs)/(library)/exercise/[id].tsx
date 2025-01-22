@@ -37,6 +37,7 @@ const ExerciseInfo = () => {
 
     let muscleColors = getMuscleColors(exercise?.muscleGroups || [] );
 
+
     return (
         <View className={`${isDark ? 'bg-darkGray-900' : 'bg-white'} flex-1 px-4`}>
             <ScrollView

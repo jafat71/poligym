@@ -207,6 +207,7 @@ export const mapApiFoodToFood = (data: any): Food[] => {
             proteins: food.proteins,
             carbs: food.carbs,
             fats: food.fats,
+            imageUrl: food.imageUrl ?? "",
         }
     });
 }

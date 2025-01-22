@@ -176,7 +176,7 @@ const CalendarResumeFull = () => {
                     }
                 }}
             />
-            {startDate && endDate && (
+            {(startDate && endDate) && (
                 <View className='my-2'>
                     <Text className={`text-xl font-ralewayBold 
                         ${isDark ? "text-white" : "text-darkGray-500"}`}>
@@ -192,7 +192,7 @@ const CalendarResumeFull = () => {
                     </View>
                     <StatsCustomChart data={minutesPerDay} labels={[startDate.toLocaleDateString(), endDate.toLocaleDateString()]}  />
                 </View>
-            )}
+            ) }
         </View>
     );
 

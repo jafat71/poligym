@@ -48,7 +48,7 @@ const _layout = () => {
                     },
                     headerTintColor: isDark ? "#fff" : "#1c1c1c",
                     headerTitleAlign: "center",
-                    statusBarTranslucent: true,
+                    // statusBarTranslucent: true,
                     statusBarColor: isDark ? "#1c1c1c" : "#fff",
                     statusBarStyle: isDark ? 'light' : 'dark'
                 }}

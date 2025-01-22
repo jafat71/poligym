@@ -60,6 +60,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         getToken('accessToken')
             .then((token) => {
                 if (token) {
+                    router.replace('/(root)/(tabs)/home')
+
                     setAccessToken(token)
                 } else {
                     setAccessToken(null)
@@ -72,7 +74,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                console.log("Verifying token")
                 const response = await verifyToken(accessToken!)
                 const userResponse = await getUserInfo(response.user.id, accessToken!)
                 const userMapped = mapUserFromApiToUser(userResponse)

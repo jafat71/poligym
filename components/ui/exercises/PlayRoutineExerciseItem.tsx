@@ -145,10 +145,10 @@ const PlayRoutineExerciseItem = ({
 
                         <Image
                             source={{
-                                uri: "https://media1.tenor.com/m/c1Q1VD-Aq18AAAAC/muppetwiki-muppet-wiki.gif"
+                                uri: exercise.exercise?.mediaUrl ?? "https://media1.tenor.com/m/c1Q1VD-Aq18AAAAC/muppetwiki-muppet-wiki.gif"
                             }}
                             className="w-24 h-24 rounded-full"
-                            resizeMode="contain"
+                            resizeMode="stretch"
                         />
                     </Pressable>
                 </View>

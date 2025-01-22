@@ -178,6 +178,16 @@ export const resetPassword = async (code: string, newPassword: string) => {
         return response.data;
     } catch (error) {
         console.error('Error al restablecer la contraseña');
+        //catch exact error
+        if (error.response) {
+            console.log("ERROR ", error.response.data)
+        }
+        if (error.request) {
+            console.log("ERROR ", error.request)
+        }
+        if (error.message) {
+            console.log("ERROR ", error.message)
+        }
         throw error;
     }
 }

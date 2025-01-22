@@ -124,7 +124,6 @@ export const WorkoutPlayProvider = ({ children }: WorkoutPlayProviderProps) => {
 
     const handleNextExercise = () => {
         setCurrentExerciseDuration(getFormattedTime(EXERCISE_TIME));
-        //TODO: GENERAR EJERCICIO EN EL HISTORIAL
         if (currentExerciseIndex < playExercises.length - 1) {
             setCurrentExerciseIndex(prev => prev + 1);
             setCurrentSet(1);
