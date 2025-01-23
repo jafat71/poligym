@@ -41,7 +41,9 @@ const FavFoodPlanListItem = ({ plan }: FavFoodPlanListItemProps) => {
                     className="absolute w-full h-full"
                 />
                 <View className='flex flex-row h-full'>
-                    <TouchableOpacity onPress={handleUnfollowPlan} className={`w-6 h-full ${isDark ? 'bg-white' : 'bg-darkGray-500'} flex flex-col justify-center`}>
+                    <TouchableOpacity 
+                    testID="remove-foodplan-favorite-button"
+                    onPress={handleUnfollowPlan} className={`w-6 h-full ${isDark ? 'bg-white' : 'bg-darkGray-500'} flex flex-col justify-center`}>
                         <Ionicons name="trash-outline" size={24} color={isDark ? '#000' : '#fff'} />
                     </TouchableOpacity>
                     <View className='flex-1'>

@@ -152,9 +152,12 @@ export const ComunityPost = (post: SocialPost) => {
             <View className={`flex flex-row items-center justify-center`}>
 
             <Pressable
+                    testID="like-button"
                     className='flex flex-row items-center pb-2'
                     onPress={handleLike}>
-                    <Text className={`text-xl font-ralewayExtraBold ${isDark ? "text-white" : "text-darkGray-500"}`} >
+                    <Text 
+                        testID="like-count"
+                        className={`text-xl font-ralewayExtraBold ${isDark ? "text-white" : "text-darkGray-500"}`} >
                         {postlikes}
                     </Text>
                     <Animated.View style={animatedStyle}>

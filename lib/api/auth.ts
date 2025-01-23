@@ -56,6 +56,7 @@ export const signin = async (email: string, password: string) => {
         }
         return { accessToken };
     } catch (error: any) {
+        console.log("ERROR ", error)
         console.error('Login error:', error);
 
         if (error.response) {

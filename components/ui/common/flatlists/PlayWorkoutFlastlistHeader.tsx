@@ -126,6 +126,7 @@ export const PlayWorkoutFlatlistHeader = ({
 
                     <Pressable
                         onPress={handlePlayWorkout}
+                        testID="play-workout-button"
                         className={`absolute bottom-0 right-0 w-20 h-20 flex flex-col
                     items-center justify-center bg-eBlue-800
                     rounded-full border-2 border-lightGreen

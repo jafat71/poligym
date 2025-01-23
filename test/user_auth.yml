@@ -1,0 +1,19 @@
+appId: com.poligym.app
+---
+- launchApp
+- assertVisible: "Iniciar sesión"
+- tapOn: "Iniciar sesión"
+- assertVisible: "Correo institucional (@epn.edu.ec)"
+- tapOn: "Correo institucional (@epn.edu.ec)"
+- inputText: "israel.matute@epn.edu.ec"
+- tapOn: "Contraseña"
+- inputText: "Admin123_"
+- tapOn: "Ingresar"
+- assertVisible: "Hola"
+- assertVisible: "Israel"
+- tapOn:
+    id: "settings"
+- assertVisible: "Configuración"
+- assertVisible: "SALIR" 
+- tapOn: "SALIR"
+- assertVisible: "Iniciar sesión"

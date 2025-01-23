@@ -32,6 +32,7 @@ const _layout = () => {
                     ),
                     headerRight: () => (
                         <Pressable
+                            testID="settings"
                             onPress={() => {
                                 router.navigate("/(config)/config");
                             }}

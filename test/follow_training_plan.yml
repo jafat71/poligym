@@ -1,0 +1,64 @@
+appId: com.poligym.app
+---
+- launchApp
+- assertVisible: "Iniciar sesión"
+- tapOn: "Iniciar sesión"
+- assertVisible: "Correo institucional (@epn.edu.ec)"
+- tapOn: "Correo institucional (@epn.edu.ec)"
+- inputText: "israel.matute@epn.edu.ec"
+- tapOn: "Contraseña"
+- inputText: "Admin123_"
+- tapOn: "Ingresar"
+- assertVisible: "Hola"
+- assertVisible: "Israel"
+- assertVisible: "Explorar"
+- tapOn: "Explorar"
+- assertVisible: "Entrenamiento"
+- assertVisible: "de Fuerza para Principiantes"
+- tapOn: "Entrenamiento"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Entrenamiento de Fuerza para Principiantes"
+- assertVisible: "Seguir"
+- tapOn: "Seguir"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Fecha"
+- assertVisible: "Inicio"
+- assertVisible: "Fin"
+- assertVisible: "Progreso"
+- pressKey: "BACK"
+- assertVisible: "Entrenamiento"
+- assertVisible: "Continuar"
+- tapOn: "Continuar"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Abandonar"
+- tapOn: "Abandonar"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Seguir"
+- pressKey: "BACK"
+- scrollUntilVisible: 
+    element: "Hola"
+    direction: "UP"
+- assertVisible: "Explorar"
+- assertVisible: "No tienes un plan activo."
+- tapOn:
+    id: "settings"
+- assertVisible: "Configuración"
+- assertVisible: "SALIR" 
+- tapOn: "SALIR"
+- assertVisible: "Iniciar sesión"

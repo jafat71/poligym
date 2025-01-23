@@ -7,12 +7,14 @@ interface Props {
     text: string;
     icon?: string;
     onPress?: () => void;
+    testID?: string;
 }
 
 const ButtonPill = ({ 
     text, 
     icon = 'pricetag',
-    onPress
+    onPress,
+    testID = ""
 }: Props) => {
 
     return (
@@ -21,6 +23,7 @@ const ButtonPill = ({
             className={`px-2 py-2 rounded-full mr-1 mb-1 flex flex-row items-center justify-center   
                 bg-eBlue-600  border-2 border-lightGreen
             `}
+            testID={testID}
         >
             <Ionicons
                 name={icon as any}

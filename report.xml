@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites>
+  <testsuite name="Test Suite" device="9314b73" tests="8" failures="0" time="1196">
+    <testcase id="follow_food_plan" name="follow_food_plan" classname="follow_food_plan" time="152" status="SUCCESS"/>
+    <testcase id="follow_training_plan" name="follow_training_plan" classname="follow_training_plan" time="140" status="SUCCESS"/>
+    <testcase id="like_community_post" name="like_community_post" classname="like_community_post" time="108" status="SUCCESS"/>
+    <testcase id="like_training_plan" name="like_training_plan" classname="like_training_plan" time="147" status="SUCCESS"/>
+    <testcase id="play_workout._user_stats" name="play_workout._user_stats" classname="play_workout._user_stats" time="298" status="SUCCESS"/>
+    <testcase id="update-user-info" name="update-user-info" classname="update-user-info" time="176" status="SUCCESS"/>
+    <testcase id="user_auth" name="user_auth" classname="user_auth" time="64" status="SUCCESS"/>
+    <testcase id="user_historial" name="user_historial" classname="user_historial" time="111" status="SUCCESS"/>
+  </testsuite>
+</testsuites>

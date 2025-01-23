@@ -138,6 +138,7 @@ const PlayExercise = () => {
                         icon={<Ionicons name={isPlaying ? "pause" : "play"} size={62} color={'#fff'} />}
                     />
                     <IconButton
+                        testID="next-exercise-button"
                         onPress={handleNextExercise}
                         icon={<Ionicons name={"checkmark-circle-outline"} size={44} color={'#fff'} />}
                     />

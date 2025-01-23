@@ -154,6 +154,7 @@ const EditProfile = () => {
                 extraScrollHeight={170}
                 enableOnAndroid={true}
                 contentContainerStyle={{ flexGrow: 1, backgroundColor: isDark ? "#080808" : "#fff" }}
+                testID='update-info-scrollview'
             >
                 <View className='mt-2 rounded-lg '>
 
@@ -172,7 +173,7 @@ const EditProfile = () => {
                             Nombre
                         </Text>
                         <IconTextInputForm
-                            inputKeyboardType='email-address'
+                            inputKeyboardType='ascii-capable'
                             inputPlaceholder='Jhon Doe'
                             inputSecure={false}
                             inputValue={updateUserState.name}

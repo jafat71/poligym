@@ -1,0 +1,43 @@
+appId: com.poligym.app
+---
+- launchApp
+- assertVisible: "Iniciar sesión"
+- tapOn: "Iniciar sesión"
+- assertVisible: "Correo institucional (@epn.edu.ec)"
+- tapOn: "Correo institucional (@epn.edu.ec)"
+- inputText: "israel.matute@epn.edu.ec"
+- tapOn: "Contraseña"
+- inputText: "Admin123_"
+- tapOn: "Ingresar"
+- assertVisible: "Hola"
+- assertVisible: "Israel"
+- tapOn:
+    id: "people-sharp-tab"
+- assertVisible: "Comunidad"
+- assertVisible:
+    id: "like-count"
+- assertVisible: "0"
+- tapOn: 
+    id: "like-button"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "1"
+- tapOn: 
+    id: "like-button"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "0"
+- tapOn: 
+    id: "home-tab"
+- tapOn:
+    id: "settings"
+- assertVisible: "Configuración"
+- assertVisible: "SALIR" 
+- tapOn: "SALIR"
+- assertVisible: "Iniciar sesión"

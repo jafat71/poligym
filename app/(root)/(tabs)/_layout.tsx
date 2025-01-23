@@ -108,6 +108,7 @@ export default function TabsLayout() {
               name="library"
             />
           ),
+          tabBarAccessibilityLabel: 'Biblioteca',
           tabBarActiveBackgroundColor: tabBarActiveIconColor,
           tabBarShowLabel: false,
         }} />

@@ -22,11 +22,6 @@ const PlanListItem = (plan: TrainingPlanAPI) => {
                 key={plan.id}
                 onPress={handleNavigation}
                 className={`w-full h-72 mr-2 rounded-lg overflow-hidden`}>
-                <Image
-                    source={{ uri: plan.image }}
-                    className="w-full h-full absolute"
-                    resizeMode="cover"
-                />
                 <LinearGradient
                     colors={[
                         'rgba(0,85,249,0.95)',

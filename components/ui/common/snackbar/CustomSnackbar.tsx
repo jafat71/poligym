@@ -15,9 +15,11 @@ const CustomSnackbar = ({ visible, setVisible,  message = "", translated = false
     return (
         <View className={`${translated ? "-translate-y-72" : ""}`}>
             <Snackbar
+                id="custom-snackbar"
+                accessibilityLabel='custom-snackbar'
                 visible={visible}
                 onDismiss={() => setVisible(false)}
-                duration={3000}
+                duration={20000}
                 style={{ 
                     backgroundColor: color, 
                     margin: 0,  

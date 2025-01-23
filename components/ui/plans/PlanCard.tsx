@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Pressable, Image } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 
 import { router } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
@@ -22,11 +22,6 @@ const PlanCard = (plan: TrainingPlanAPI) => {
                 key={plan.id}
                 onPress={handleNavigation}
                 className={`w-72 h-72 mr-2 rounded-lg overflow-hidden`}>
-                <Image
-                    source={{ uri: plan.image }}
-                    className="w-full h-full absolute"
-                    resizeMode="cover"
-                />
                 <LinearGradient
                     colors={[
                         'rgba(0,85,249,0.95)',

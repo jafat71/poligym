@@ -1,0 +1,42 @@
+appId: com.poligym.app
+---
+- launchApp
+- assertVisible: "Iniciar sesión"
+- tapOn: "Iniciar sesión"
+- assertVisible: "Correo institucional (@epn.edu.ec)"
+- tapOn: "Correo institucional (@epn.edu.ec)"
+- inputText: "israel.matute@epn.edu.ec"
+- tapOn: "Contraseña"
+- inputText: "Admin123_"
+- tapOn: "Ingresar"
+- assertVisible: "Hola"
+- assertVisible: "Israel"
+- tapOn:
+    id: "person-tab"
+- assertVisible: "Historial"
+- tapOn: "Historial"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Historial"
+- assertVisible: "Selecciona un rango de fechas para observar tus rutinas"
+- assertVisible: "10"
+- tapOn: "10"
+- assertVisible: "17"
+- tapOn: "17"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Total Rutinas: 0"
+- tapOn:
+    id: "home-tab"
+- tapOn:
+    id: "settings"
+- assertVisible: "Configuración"
+- assertVisible: "SALIR" 
+- tapOn: "SALIR"
+- assertVisible: "Iniciar sesión"

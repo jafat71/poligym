@@ -209,18 +209,19 @@ export const PlayPlanFlatlistHeader = ({
                                             "Abandonar"
                                         }
                                         onPress={() => {
-                                            Alert.alert("Abandonar plan", "¿Estás seguro de que quieres abandonar este plan?", [
-                                                {
-                                                    text: "Cancelar",
-                                                    style: "cancel"
-                                                },
-                                                {
-                                                    text: "Abandonar",
-                                                    onPress: () => {
+                                            // Quita Alert para Testing
+                                            // Alert.alert("Abandonar plan", "¿Estás seguro de que quieres abandonar este plan?", [
+                                            //     {
+                                            //         text: "Cancelar",
+                                            //         style: "cancel"
+                                            //     },
+                                            //     {
+                                            //         text: "Abandonar",
+                                            //         onPress: () => {
                                                         unrollUserFromPlan()
-                                                    }
-                                                }
-                                            ])
+                                                    // }
+                                                // }
+                                            // ])
                                         }}
                                     />
                                 </View>

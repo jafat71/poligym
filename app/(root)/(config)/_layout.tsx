@@ -23,7 +23,9 @@ export default function RootLayout() {
                 statusBarColor: isDark ? '#171717' : '#fff',
                 statusBarStyle: isDark ? 'light' : 'dark',
             }}>
-            <Stack.Screen name="config" options={{ animation: 'fade_from_bottom', headerTitle: 'Configuración' }} />
+            <Stack.Screen name="config" options={{ animation: 'fade_from_bottom', headerTitle: 'Configuración',
+                headerBackTitle: 'headerBackTitle'
+             }} />
             <Stack.Screen name="updateinformation"
                 options={{
                     animation: 'slide_from_right',

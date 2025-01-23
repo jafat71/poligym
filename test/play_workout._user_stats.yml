@@ -1,0 +1,128 @@
+appId: com.poligym.app
+---
+- launchApp
+- assertVisible: "Iniciar sesión"
+- tapOn: "Iniciar sesión"
+- assertVisible: "Correo institucional (@epn.edu.ec)"
+- tapOn: "Correo institucional (@epn.edu.ec)"
+- inputText: "israel.matute@epn.edu.ec"
+- tapOn: "Contraseña"
+- inputText: "Admin123_"
+- tapOn: "Ingresar"
+- assertVisible: "Hola"
+- assertVisible: "Israel"
+- tapOn: 
+    id: "library-tab"
+- assertVisible: "Rutinas"
+- tapOn: "Rutinas"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Fuerza"
+- assertVisible: "para principiantes"
+- tapOn: "Fuerza"
+- assertVisible: "Ejecutar Rutina"
+- tapOn: "Ejecutar Rutina"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Plank"
+- tapOn: "Plank"
+- longPressOn: "Plank"
+- assertVisible: "Plank"
+- assertVisible: "Series"
+- assertVisible: "Repeticiones"
+- assertVisible: "Descanso (seg)"
+- assertVisible: "Peso (kg)"
+- tapOn: 
+    id: "add-button"
+- tapOn: 
+    id: "add-button"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- tapOn:
+    id: "close-exercise-modal"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- tapOn: 
+    id: "play-workout-button"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Plank"
+- tapOn: 
+    id: "next-exercise-button"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Squat"
+- tapOn: 
+    id: "next-exercise-button"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Push Up"
+- tapOn: 
+    id: "next-exercise-button"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "¡Rutina completada!"
+- assertVisible: "Cerrar"
+- tapOn: "Cerrar"
+- pressKey: "BACK"
+- launchApp
+- tapOn:  #delay para esperar lectura de token
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 4000
+- assertVisible: "Rutinas Completadas"
+- assertVisible: "1" 
+- tapOn: 
+    id: "bar-chart-tab"
+- scrollUntilVisible:
+    element: "Resetear datos"
+    direction: DOWN
+- tapOn: "Resetear datos"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- scrollUntilVisible: 
+    element: "Israel Matute"
+    direction: "UP"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- assertVisible: "Rutinas Completadas"
+- assertVisible: "0" 
+- tapOn:
+    id: "home-tab"
+- tapOn:
+    id: "settings"
+- assertVisible: "Configuración"
+- assertVisible: "SALIR" 
+- tapOn: "SALIR"
+- assertVisible: "Iniciar sesión"

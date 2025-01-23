@@ -36,6 +36,7 @@ const IconTextInputForm = ({
                     onChangeText={inputOnChangeText}
                     secureTextEntry={isPasswordVisible}
                     editable={enabled}
+                    autoCapitalize='none'
                     keyboardType={inputKeyboardType}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setFocused(false)}

@@ -66,6 +66,7 @@ const EditExerciseModal = ({ visible, onClose, exercise, updateExercise }: EditE
                                 {exercise?.exercise.name}
                             </Text>
                             <IconButton
+                                testID='close-exercise-modal'
                                 icon={<Ionicons name="close" size={24} color="#999" />}
                                 onPress={onClose}
                             />

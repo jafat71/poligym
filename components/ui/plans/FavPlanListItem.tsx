@@ -29,11 +29,6 @@ const FavPlanListItem = ({ plan }: FavPlanListItemProps) => {
                 key={plan.id}
                 onPress={handleNavigation}
                 className={`w-full h-36 mb-1 rounded-lg overflow-hidden`}>
-                <Image
-                    source={{ uri: plan.image }}
-                    className="w-full h-full absolute"
-                    resizeMode="cover"
-                />
                 <LinearGradient
                     colors={[
                         'rgba(0,85,249,0.95)',
@@ -43,7 +38,9 @@ const FavPlanListItem = ({ plan }: FavPlanListItemProps) => {
                     className="absolute w-full h-full"
                 />
                 <View className='flex flex-row h-full'>
-                    <TouchableOpacity onPress={handleUnfavoriteTrainingPlan} className={`w-6 h-full ${isDark ? 'bg-white' : 'bg-darkGray-500'} flex flex-col justify-center`}>
+                    <TouchableOpacity 
+                    testID="remove-favorite-button"
+                    onPress={handleUnfavoriteTrainingPlan} className={`w-6 h-full ${isDark ? 'bg-white' : 'bg-darkGray-500'} flex flex-col justify-center`}>
                         <Ionicons name="trash-outline" size={24} color={isDark ? '#000' : '#fff'} />
                     </TouchableOpacity>
                     <View className='flex-1'>

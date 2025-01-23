@@ -1,0 +1,64 @@
+appId: com.poligym.app
+---
+- launchApp
+- assertVisible: "Iniciar sesión"
+- tapOn: "Iniciar sesión"
+- assertVisible: "Correo institucional (@epn.edu.ec)"
+- tapOn: "Correo institucional (@epn.edu.ec)"
+- inputText: "israel.matute@epn.edu.ec"
+- tapOn: "Contraseña"
+- inputText: "Admin123_"
+- tapOn: "Ingresar"
+- assertVisible: "Hola"
+- assertVisible: "Israel"
+- tapOn:
+    id: "settings"
+- assertVisible: "Actualizar información"
+- tapOn: "Actualizar información"
+- tapOn: "Israel Matute"
+- eraseText
+- inputText: "Josafat Matute" # Escribe el nuevo nombre
+- hideKeyboard # Cierra el teclado
+- scrollUntilVisible:
+    element: "Actualizar"
+    direction: DOWN
+- tapOn: "Actualizar"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- pressKey: "BACK"
+- pressKey: "BACK"
+- assertVisible: "Hola"
+- assertVisible: "Josafat"
+- tapOn:
+    id: "settings"
+- assertVisible: "Actualizar información"
+- tapOn: "Actualizar información"
+- tapOn: "Josafat Matute"
+- eraseText
+- inputText: "Israel Matute" # Escribe el nombre de vuelta
+- hideKeyboard # Cierra el teclado
+- assertVisible:
+    id: "update-info-scrollview"
+- scrollUntilVisible:
+    element: "Actualizar"
+    direction: DOWN
+- tapOn: "Actualizar"
+- tapOn: 
+    text: randText  
+    optional: true  
+    repeat: 2
+    delay: 2000
+- pressKey: "BACK"
+- pressKey: "BACK"
+- assertVisible: "Hola"
+- assertVisible: "Israel"
+- tapOn:
+    id: "settings"
+- assertVisible: "Configuración"
+- assertVisible: "SALIR" 
+- tapOn: "SALIR"
+- assertVisible: "Iniciar sesión"
+

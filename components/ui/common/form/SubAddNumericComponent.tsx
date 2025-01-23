@@ -36,6 +36,7 @@ export const SubAddNumericComponent = ({ number, subFunction, addFunction, title
 
                     <TouchableOpacity
                         onPress={addFunction}
+                        testID='add-button'
                         className='p-2'>
                         <Ionicons name="add-circle" size={34} color={isDark ? '#fff' : '#374151'} />
                     </TouchableOpacity>

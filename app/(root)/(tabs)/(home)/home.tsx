@@ -43,6 +43,7 @@ const Home = () => {
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl
+          testID="refresh-control"
           refreshing={isRefreshing}
           onRefresh={onRefresh}
         />
