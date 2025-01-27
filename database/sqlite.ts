@@ -166,7 +166,7 @@ export const enrollUserOnPlan = async (planProgress: PlanProgress, planWorkouts:
 
     }else{
         console.log("USER HAS PROGRESS IN THE PLAN")
-        return { success: false, planProgressId: userPlanProgress?.id };
+        return { success: false, planProgressId: userPlanProgress?.planProgressId };
     }
 
 };

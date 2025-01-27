@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { Animated } from 'react-native'
+import { ActivityIndicator, Animated, View } from 'react-native'
 import HorizontalFlatlistSkeleton from '@/components/animatedUi/HorizontalFlatlistSkeleton';
 import RoutinePlanSmallCard from './RoutineInPlanSmallCard';
 import RoutineSmallCard from './RoutineSmallCard';
@@ -14,6 +14,7 @@ interface Props {
 }
 
 export const WorkoutsInPlanFlatList = ({ data, infoSetted, isUserCurrentPlan, weekIndex, planId, workoutCompleted }: Props) => {
+    if(!data) return null
     const scrollX = useRef(new Animated.Value(0)).current;
 
     return (

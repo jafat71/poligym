@@ -30,6 +30,7 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
             
     }, [userSelectedPlan])
 
+    console.log("userSelectedPlan", userSelectedPlan)
     if(!loggedUserInfo) return <View className='flex-1 justify-center items-center  h-[460px]'><ActivityIndicator size='large' color='#0085F9' /></View>
     return (
         <View
@@ -78,8 +79,8 @@ const MainHomeResume = ({ scrollDown }: MainHomeResumeProps) => {
                                         Plan Actual
                                     </Text>
                                 <HomePill
-                                    icon="time-outline"
-                                    text={`${userSelectedPlan?.workouts.length} sesiones / semana`}
+                                    icon="flame-outline"
+                                    text={`${userSelectedPlan?.level}`}
                                 />
                             </View>
 

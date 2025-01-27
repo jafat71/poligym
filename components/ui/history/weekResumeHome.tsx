@@ -45,7 +45,7 @@ const WeekResumeHome = () => {
                 </View>
                 <View className='flex flex-col items-end justify-end'>
                     <Text className={`text-sm font-ralewayBold text-start text-white`}>Rutinas Completadas</Text>
-                    <Text className={`text-4xl text-start text-white`}>{completedWorkouts ? completedWorkouts : "0"}</Text>
+                    <Text testID='completed-workouts' className={`text-4xl text-start text-white`}>{completedWorkouts ? completedWorkouts : "0"}</Text>
                 </View>
 
             </View>

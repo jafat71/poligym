@@ -1,6 +1,6 @@
-import { Alert, Easing, Pressable, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Easing, Modal, Pressable, Text, View } from "react-native";
 import * as Progress from 'react-native-progress';
-import { DIFFICULTY, TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
+import { DIFFICULTY, ShortTrainingPlanAPI, TrainingPlanAPI, WorkoutAPI } from "@/types/interfaces/entities/plan";
 import ButtonPill from "../buttons/ButtonPill";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -44,6 +44,7 @@ export const PlayPlanFlatlistHeader = ({
     const userHasOtherPlan = userSelectedPlan?.id !== plan.id && userHasSelectedAPlan
     const { isDark } = useTheme();
 
+
     useEffect(() => {
         if (isUserCurrentPlan) {
             getUserProgressInCurrentPlan();
@@ -59,8 +60,6 @@ export const PlayPlanFlatlistHeader = ({
     const getUserProgressInCurrentPlan = async () => {
         try {
             const userPlanInfoProgress = await getUserPlanProgress(loggedUserInfo?.id!, plan.id.toString());
-            console.log("USER PLAN PROGRESS", userPlanInfoProgress);
-
             if (userPlanInfoProgress) {
                 const totalWorkouts = userPlanInfoProgress.planWeeks * plan.workouts.length;
                 setTotalWorkouts(totalWorkouts);
@@ -83,34 +82,57 @@ export const PlayPlanFlatlistHeader = ({
     };
     
     const handleRollUserOnPlan = async () => {
-        setUserSelectedPlan(plan)
-        const planProgressObjsect = {
-            id: "",
-            userId: loggedUserInfo?.id!,
-            planId: userPlanProgress.planId.toString(),
-            planName: userPlanProgress.planName,
-            planStartDate: userPlanProgress.planStartDate,
-            planEndDate: userPlanProgress.planEndDate,
-            planStatus: userPlanProgress.planStatus,
-            planWeeks: userPlanProgress.planWeeks
+        const shortPlan: ShortTrainingPlanAPI = {
+            id: plan.id,    
+            name: plan.name,
+            level: plan.level
         }
+        setUserSelectedPlan(shortPlan);
+        setIsUserCurrentPlan(true);
         try {
-            const result = await enrollUserOnPlan(planProgressObjsect, plan.workouts)
-            console.log("result", result)
-            // getUserProgressInCurrentPlan()
-            setIsUserCurrentPlan(true)
+            const planProgressObject = {
+                id: "",
+                userId: loggedUserInfo?.id!,
+                planId: userPlanProgress.planId.toString(),
+                planName: userPlanProgress.planName,
+                planStartDate: userPlanProgress.planStartDate,
+                planEndDate: userPlanProgress.planEndDate,
+                planStatus: userPlanProgress.planStatus,
+                planWeeks: userPlanProgress.planWeeks
+            };
+            await enrollUserOnPlan(planProgressObject, plan.workouts);
         } catch (error) {
-            console.error("Error al enrollar el usuario en el plan:", error);
-        }
-    }
+            console.error("Error al inscribir al usuario en el plan:", error);
+            setIsUserCurrentPlan(false);
+        } 
+    };
 
     const unrollUserFromPlan = async () => {
-        const result = await convertActivePlanToInactive(loggedUserInfo?.id!)
-        console.log("result", result)
-        setIsUserCurrentPlan(false)
-        setUserSelectedPlan(null)
-    }
+        setUserSelectedPlan(null);
+        setIsUserCurrentPlan(false);
+        try {
+            await convertActivePlanToInactive(loggedUserInfo?.id!);
+        } catch (error) {
+            console.error("Error al desinscribir al usuario del plan:", error);
+        } 
+    };
 
+    const handleUnrollPlan = async () => {
+        
+        // Quita Alert para Testing
+        // Alert.alert("Abandonar plan", "¿Estás seguro de que quieres abandonar este plan?", [
+        //     {
+        //         text: "Cancelar",
+        //         style: "cancel"
+        //     },
+        //     {
+        //         text: "Abandonar",
+        //         onPress: () => {
+                   unrollUserFromPlan()
+                // }
+            // }
+        // ])
+    }
     
     if (!plan || isLoading) return <WorkoutSkeleton />
     return (
@@ -153,6 +175,9 @@ export const PlayPlanFlatlistHeader = ({
 
                         <Pressable
                             onPress={() => { 
+                                if(!isUserCurrentPlan){ 
+                                    Alert.alert("Debes seguir el plan para poder comenzar las rutinas")
+                                    return }
                                 router.push({
                                     pathname: `/(home)/playWorkout/${nextWorkout?.workout.id}` as never,
                                     params: {
@@ -208,21 +233,7 @@ export const PlayPlanFlatlistHeader = ({
                                         text={
                                             "Abandonar"
                                         }
-                                        onPress={() => {
-                                            // Quita Alert para Testing
-                                            // Alert.alert("Abandonar plan", "¿Estás seguro de que quieres abandonar este plan?", [
-                                            //     {
-                                            //         text: "Cancelar",
-                                            //         style: "cancel"
-                                            //     },
-                                            //     {
-                                            //         text: "Abandonar",
-                                            //         onPress: () => {
-                                                        unrollUserFromPlan()
-                                                    // }
-                                                // }
-                                            // ])
-                                        }}
+                                        onPress={handleUnrollPlan}
                                     />
                                 </View>
                                 <View>

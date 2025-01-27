@@ -1,7 +1,7 @@
 import GoBackUpButton from "@/components/ui/common/buttons/GoBackUpButton"
 import IconButton from "@/components/ui/common/buttons/IconButton"
 import { Ionicons } from "@expo/vector-icons"
-import { Animated, Image, Pressable, SafeAreaView, StatusBar, Text, TouchableHighlight, TouchableOpacity, View } from "react-native"
+import { Animated, Dimensions, Image, Pressable, SafeAreaView, StatusBar, Text, TouchableHighlight, TouchableOpacity, View } from "react-native"
 import { usePlayWorkoutContext } from "@/context/PlayWorkoutContext"
 import { LinearGradient } from "expo-linear-gradient"
 import { useKeepAwake } from "expo-keep-awake"
@@ -26,6 +26,8 @@ const PlayExercise = () => {
     const currentExercise = playExercises[currentExerciseIndex];
     const progressWidth = `${((isResting ? REST_TIME : EXERCISE_TIME) - timeLeft) / (isResting ? REST_TIME : EXERCISE_TIME) * 100}%`
 
+    const windowHeight = Dimensions.get('window').height;
+
     return (
         <View className={`flex-1 bg-eBlue-600`}>
             <StatusBar barStyle="light-content" backgroundColor="#0055f9" />
@@ -45,7 +47,7 @@ const PlayExercise = () => {
                             "https://media.tenor.com/4RvzriUK-wUAAAAM/hot-summer.gif"
                             : currentExercise?.exercise?.mediaUrl ?? "https://media1.tenor.com/m/Re3T3B66V9UAAAAd/barbellsquats-gymexercisesmen.gif"
                     }}
-                    className={`w-full h-80 rounded-xl border-[4px] border-lightGreen`}
+                    className={`w-full h-80 sm:h-52 lg:h-full rounded-xl border-[4px] border-lightGreen`}
                     resizeMode="cover"
                 />
             </View>

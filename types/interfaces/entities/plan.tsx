@@ -10,7 +10,12 @@ export interface TrainingPlanAPI {
     endDate?: Date;
     workouts: WorkoutAPI[];
     isDeleted: boolean;
-    image?:string; //!add bk
+  }
+
+export interface ShortTrainingPlanAPI {
+    id: number;
+    name: string;
+    level: DIFFICULTY;
   }
   
   // Workout Interface

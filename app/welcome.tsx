@@ -26,6 +26,7 @@ const Welcome = () => {
                         router.navigate('/(auth)/signin')
                     }}
                     text='Iniciar sesión'
+                    testID='signin-button'
                 />
             </View>
 

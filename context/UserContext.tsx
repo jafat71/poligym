@@ -1,6 +1,6 @@
 import { getUserInfo, verifyToken } from '@/lib/api/auth';
 import { getToken } from '@/lib/token/store';
-import { WorkoutAPI, TrainingPlanAPI } from '@/types/interfaces/entities/plan';
+import { WorkoutAPI, TrainingPlanAPI, ShortTrainingPlanAPI } from '@/types/interfaces/entities/plan';
 import { User } from '@/types/interfaces/entities/user';
 import { mapUserFromApiToUser } from '@/types/mappers';
 import { usePathname } from 'expo-router';
@@ -16,8 +16,8 @@ interface UserContextType {
     setAccessToken: Dispatch<SetStateAction<string | null>>;
     loggedUserInfo: User | null;
     accessToken: string | null;
-    userSelectedPlan: TrainingPlanAPI | null;
-    setUserSelectedPlan: Dispatch<SetStateAction<TrainingPlanAPI | null>>;
+    userSelectedPlan: ShortTrainingPlanAPI | null;
+    setUserSelectedPlan: Dispatch<SetStateAction<ShortTrainingPlanAPI | null>>;
     updateUserInfo: () => Promise<void>;
     setLoggedUserInfo: Dispatch<SetStateAction<User | null | undefined>>;
     userFavWorkouts: WorkoutAPI[];
@@ -54,7 +54,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [loggedUserInfo, setLoggedUserInfo] = useState<User | null>();
     const [accessToken, setAccessToken] = useState<string | null>(null);
     const pathname = usePathname()
-    const [userSelectedPlan, setUserSelectedPlan] = useState<TrainingPlanAPI | null>(null)
+    const [userSelectedPlan, setUserSelectedPlan] = useState<ShortTrainingPlanAPI | null>(null)
 
     useEffect(() => {
         getToken('accessToken')
@@ -80,7 +80,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
                 const userPlanProgress = await getActivePlan(userMapped.id)
                 if(userPlanProgress){
                     const userCurrentPLan = await fetchTrainingPlanById(accessToken!, userPlanProgress.planId)
-                    setUserSelectedPlan(userCurrentPLan)
+                    const shortUserCurrentPLan: ShortTrainingPlanAPI = {
+                        id: userCurrentPLan.id,
+                        name: userCurrentPLan.name,
+                        level: userCurrentPLan.level
+                    }
+                    setUserSelectedPlan(shortUserCurrentPLan)
                 }
                 setLoggedUserInfo(userMapped)
                 setUserLogged(true)

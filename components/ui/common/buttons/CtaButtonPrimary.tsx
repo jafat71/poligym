@@ -6,10 +6,11 @@ interface Props {
     text: string,
     disabled?: boolean,
     isLoading?: boolean,
-    extraClassname?: string
+    extraClassname?: string,
+    testID?: string
 }
 
-const CTAButtonPrimary = ({ onPress, text, disabled = false, isLoading = false, extraClassname = "" }: Props) => {
+const CTAButtonPrimary = ({ onPress, text, disabled = false, isLoading = false, extraClassname = "", testID }: Props) => {
 
     const handlePress = (event: GestureResponderEvent) => {
         Keyboard.dismiss();
@@ -20,6 +21,7 @@ const CTAButtonPrimary = ({ onPress, text, disabled = false, isLoading = false, 
             onPress={handlePress}
             className={`w-full items-center ${disabled ? 'opacity-70' : ''}`}
             disabled={disabled}
+            testID={testID}
         >
             <View className={`w-full rounded-sm flex-row justify-center items-center
                 bg-eBlue-500 px-28 py-4 ${extraClassname}`}>

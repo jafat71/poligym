@@ -2,13 +2,13 @@ import CustomTab from '@/components/ui/common/tab/CustomTab';
 import { useTheme } from '@/context/ThemeContext';
 import { router } from 'expo-router';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 
 
 const Index = () => {
     const { isDark } = useTheme();
     return (
-        <View className={`flex flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`} >
+        <ScrollView className={`flex flex-1 ${isDark ? "bg-darkGray-900" : "bg-darkGray-100"}`} >
             <View className='flex flex-row justify-center items-center px-4'>
                 <Text className={`text-4xl font-ralewayBold 
                     ${isDark ? "text-white" : "text-darkGray-500"}`}>
@@ -45,7 +45,7 @@ const Index = () => {
                     }}
                 />
             </View>
-        </View>
+        </ScrollView>
     );
 }
 

@@ -332,7 +332,9 @@ export const Stats = () => {
               </Text>
             </View>
 
-            <TouchableOpacity className="bg-redEPN-500 p-2 my-2 rounded-lg" onPress={handleResetData}>
+            <TouchableOpacity 
+            testID="reset-data"
+            className="bg-redEPN-500 p-2 my-2 rounded-lg" onPress={handleResetData}>
               <View className="flex-row items-center justify-center px-4">
                 <View className="justify-start w-full">
                   <Ionicons name="trash-outline" size={24} color="white" />
