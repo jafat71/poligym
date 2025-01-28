@@ -153,15 +153,19 @@ export const PlayPlanFlatlistHeader = ({
 
                         <Pressable
                             onPress={() => { 
-                                router.push({
-                                    pathname: `/(home)/playWorkout/${nextWorkout?.workout.id}` as never,
-                                    params: {
+                                if(nextWorkout?.workout){
+                                    router.push({
+                                        pathname: `/(home)/playWorkout/${nextWorkout?.workout.id}` as never,
+                                        params: {
                                         planId: userSelectedPlan?.id ?? null,
                                         planName: userSelectedPlan?.name ?? null,
                                         weekIndex: nextWorkout?.week ? nextWorkout.week : 0,
                                         planProgressId: userPlanProgress.id,
                                     },
                                 });      
+                                }else{
+                                    Alert.alert("No es tu plan actual")
+                                }
                             }}
                             className={`absolute bottom-0 right-0 w-20 h-20 flex flex-col
                         items-center justify-center bg-eBlue-800
@@ -209,19 +213,18 @@ export const PlayPlanFlatlistHeader = ({
                                             "Abandonar"
                                         }
                                         onPress={() => {
-                                            // Quita Alert para Testing
-                                            // Alert.alert("Abandonar plan", "¿Estás seguro de que quieres abandonar este plan?", [
-                                            //     {
-                                            //         text: "Cancelar",
-                                            //         style: "cancel"
-                                            //     },
-                                            //     {
-                                            //         text: "Abandonar",
-                                            //         onPress: () => {
+                                            Alert.alert("Abandonar plan", "¿Estás seguro de que quieres abandonar este plan?", [
+                                                {
+                                                    text: "Cancelar",
+                                                    style: "cancel"
+                                                },
+                                                {
+                                                    text: "Abandonar",
+                                                    onPress: () => {
                                                         unrollUserFromPlan()
-                                                    // }
-                                                // }
-                                            // ])
+                                                    }
+                                                }
+                                            ])
                                         }}
                                     />
                                 </View>
@@ -297,6 +300,7 @@ export const PlayPlanFlatlistHeader = ({
                                         ]
                                     )
                                 } else {
+                                    Alert.alert("Generando plan...", "Este proceso puede tardar unos minutos, por favor espera...")
                                     handleRollUserOnPlan()
                                 }
                             }}

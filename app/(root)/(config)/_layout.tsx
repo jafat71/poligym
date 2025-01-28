@@ -28,7 +28,8 @@ export default function RootLayout() {
              }} />
             <Stack.Screen name="updateinformation"
                 options={{
-                    animation: 'slide_from_right',
+                    animation: 'flip',
+                    animationTypeForReplace: 'push',
                     headerShown: true,
                     headerTitle: () => (
                         <MainLogoCustomComponent

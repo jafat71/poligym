@@ -24,23 +24,18 @@ const Config = () => {
     const handleSignOut = async () => {
 
         //TESTING: FUNCTIONALIDAD 
-        // Alert.alert('Salir', '¿Estás seguro de querer salir de POLIGYM APP?', [
-        //     { text: 'Cancelar', style: 'cancel' },
-        //     { text: 'Salir', onPress: async () =>{ 
-        //         router.replace('/welcome')
-        //         await deleteToken('accessToken')
-        //         await deleteToken('refreshToken')
-        //         setAccessToken(null)
-        //         logoutMutation.mutate()
-        //     } 
-        // }
-        // ])
+        Alert.alert('Salir', '¿Estás seguro de querer salir de POLIGYM APP?', [
+            { text: 'Cancelar', style: 'cancel' },
+            { text: 'Salir', onPress: async () =>{ 
+                // router.replace('/welcome')
+                await deleteToken('accessToken')
+                await deleteToken('refreshToken')
+                setAccessToken(null)
+                logoutMutation.mutate()
+            } 
+        }
+        ])
 
-        router.replace('/welcome')
-        await deleteToken('accessToken')
-        await deleteToken('refreshToken')
-        setAccessToken(null)
-        logoutMutation.mutate()
     }
 
     const textStyle = `text-lg ml-2  font-ralewayBold ${isDark ? "text-white" : "text-darkGray-500"} `

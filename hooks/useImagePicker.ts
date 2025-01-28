@@ -19,7 +19,6 @@ export const useImagePicker = () => {
         }
     };
 
-    //TODO: bloquear actualziación hasta obtener URL de cloudinary
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== 'granted') {
@@ -39,7 +38,6 @@ export const useImagePicker = () => {
     };
 
     const takePhoto = async () => {
-        // Request permission to access the camera
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
         if (status !== 'granted') {
             alert("Debes dar permisos para acceder a la cámara");

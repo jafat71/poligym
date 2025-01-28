@@ -180,17 +180,17 @@ export const Stats = () => {
   };
 
   const handleResetData = async () => { 
-    // Alert.alert('¿Estás seguro de que deseas resetear tus datos?', 'Esta acción es irreversible y eliminará todos los datos recopilados.', [
-    //   { text: 'Cancelar', style: 'cancel' },
-    //   { text: 'Resetear', onPress: async () => {
+    Alert.alert('¿Estás seguro de que deseas resetear tus datos?', 'Esta acción es irreversible y eliminará todos los datos recopilados.', [
+      { text: 'Cancelar', style: 'cancel' },
+      { text: 'Resetear', onPress: async () => {
         // await dropWorkoutProgressTable();
         // await dropUserPlanProgressTable();
         // await dropPlanProgressDetailsTable();
         await resetUserWorkoutProgress(loggedUserInfo?.id ?? '');
         queryClient.invalidateQueries({ queryKey: ['historyTime'] });
         onRefresh();
-    //   } }
-    // ]);
+      } }
+    ]);
   }
 
   useEffect(() => {

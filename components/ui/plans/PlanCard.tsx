@@ -44,6 +44,7 @@ const PlanCard = (plan: TrainingPlanAPI) => {
                             <IconButton
                                 icon={<Ionicons name="information" size={24} color="white" />}
                                 onPress={() => {
+                                    router.push(`/(root)/(tabs)/(library)/plan/${plan.id}`)
                                 }}
                             />
                         </View>

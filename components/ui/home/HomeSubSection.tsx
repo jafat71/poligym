@@ -14,6 +14,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { TrainingPlanAPI } from '@/types/interfaces/entities/plan';
 import { fetchRecommendedPlans, fetchTrainingPlanById, fetchWorkoutById } from '@/lib/api/actions';
 import HorizontalFlatlistSkeleton from '@/components/animatedUi/HorizontalFlatlistSkeleton';
+import { router } from 'expo-router';
 
 const HomeSubSection = () => {
     const { isDark } = useTheme()
@@ -47,7 +48,9 @@ const HomeSubSection = () => {
                     TE PUEDEN INTERESAR
                 </Text>
                 <IconButton
-                    onPress={() => { }}
+                    onPress={() => { 
+                        router.push('/(root)/(tabs)/(library)/plan')
+                    }}
                     icon={<Ionicons name="add" size={24} color={isDark ? "white" : "black"} />}
                 />
             </View>

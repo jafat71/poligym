@@ -18,6 +18,7 @@ import { useFonts } from 'expo-font';
 import { WorkoutPlayProvider } from '@/context/PlayWorkoutContext';
 
 import { initializeDatabase } from '@/database/sqlite';
+import useIcons from '@/hooks/useIcons';
 
 SplashScreen.preventAutoHideAsync().catch(() => {
   /* reloading the app might trigger some race conditions, ignore them */
@@ -33,10 +34,11 @@ export default function RootLayout() {
     "Raleway-SemiBold": require("../assets/fonts/Raleway-SemiBold.ttf"),
     "Raleway-Thin": require("../assets/fonts/Raleway-Thin.ttf"),
   });
+  const {iconsloaded} = useIcons()
 
   useEffect(() => {
     async function prepare() {
-      if (loaded) {
+      if (loaded ) {
         await SplashScreen.hideAsync();
         await initializeDatabase();
       }

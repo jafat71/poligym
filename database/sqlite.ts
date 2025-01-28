@@ -325,8 +325,8 @@ export const tableExists = async (tableName: string): Promise<boolean> => {
 
 export const initializeDatabase = async () => {
     try {
-        await dropUserPlanProgressTable();
-        await dropPlanProgressDetailsTable();
+        // await dropUserPlanProgressTable();
+        // await dropPlanProgressDetailsTable();
 
         await db.execSync(`
             CREATE TABLE IF NOT EXISTS workout_progress 

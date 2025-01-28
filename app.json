@@ -8,7 +8,6 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "backgroundColor": "#0055f9",
-    "statusBarColor": "#0055f9",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",

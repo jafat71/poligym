@@ -60,8 +60,6 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         getToken('accessToken')
             .then((token) => {
                 if (token) {
-                    // router.replace('/(root)/(tabs)/home')
-
                     setAccessToken(token)
                 } else {
                     setAccessToken(null)
