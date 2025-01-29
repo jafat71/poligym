@@ -300,7 +300,7 @@ export const PlayPlanFlatlistHeader = ({
                                         ]
                                     )
                                 } else {
-                                    Alert.alert("Generando plan...", "Este proceso puede tardar unos minutos, por favor espera...")
+                                    Alert.alert("Generando plan...", "Este proceso puede tardar unos segundos, por favor espera...")
                                     handleRollUserOnPlan()
                                 }
                             }}

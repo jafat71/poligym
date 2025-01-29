@@ -14,7 +14,7 @@ import { useHistorial } from '@/hooks/useHistorial';
 import { MuscleGroups } from '@/types/types/muscles';
 import { DataTable} from 'react-native-paper';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { resetUserWorkoutProgress } from '@/database/sqlite';
+import { resetUserPlanProgress, resetUserPlanProgressDetails, resetUserWorkoutProgress } from '@/database/sqlite';
 import { useWeekHistorial } from '@/hooks/useWeekHistorial';
 
 export const Stats = () => {
@@ -187,6 +187,8 @@ export const Stats = () => {
         // await dropUserPlanProgressTable();
         // await dropPlanProgressDetailsTable();
         await resetUserWorkoutProgress(loggedUserInfo?.id ?? '');
+        await resetUserPlanProgress(loggedUserInfo?.id ?? '');
+        await resetUserPlanProgressDetails(loggedUserInfo?.id ?? '');
         queryClient.invalidateQueries({ queryKey: ['historyTime'] });
         onRefresh();
       } }

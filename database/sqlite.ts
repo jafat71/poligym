@@ -386,6 +386,12 @@ const dropWorkoutProgressTable = async () => {
     `);
 };
 
+export const resetUserPlanProgressDetails = async(userId: string) => {
+    await db.execSync(`
+        DELETE FROM plan_progress_details WHERE userId = '${userId.replace(/'/g, "''")}';
+    `);
+}
+
 const dropUserPlanProgressTable = async () => {
     await db.execSync(`
         DROP TABLE IF EXISTS user_plan_progress;
@@ -398,7 +404,7 @@ const dropPlanProgressDetailsTable = async () => {
     `);
 };
 
-export const resetUserPlanProgressTable = async (userId: string) => {
+export const resetUserPlanProgress = async (userId: string) => {
     await db.execSync(`
         DELETE FROM user_plan_progress WHERE userId = '${userId.replace(/'/g, "''")}';
     `);
