@@ -2,11 +2,20 @@
   "build": {
     "development": {
       "developmentClient": true,
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "ENVFILE": ".env"
+      }
     },
     "preview": {
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_DEV_API_BASE_URL": "https://zrs1cvj6-3002.use2.devtunnels.ms",
+        "EXPO_PUBLIC_PROD_API_BASE_URL": "https://zrs1cvj6-3002.use2.devtunnels.ms",
+        "EXPO_PUBLIC_CLOUDINARY_URL": "https://api.cloudinary.com/v1_1/dzepmjeyp/image/upload",
+        "EXPO_PUBLIC_POSTS_DATABASE_URL": "postgresql://poligym_owner:6wx8yVdzLvCJ@ep-still-meadow-a5yjydu0.us-east-2.aws.neon.tech/poligym?sslmode=require"
       }
     },
     "preview2": {
@@ -20,6 +29,18 @@
     "preview4": {
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_DEV_API_BASE_URL": "https://zrs1cvj6-3002.use2.devtunnels.ms",
+        "EXPO_PUBLIC_PROD_API_BASE_URL": "https://zrs1cvj6-3002.use2.devtunnels.ms",
+        "EXPO_PUBLIC_CLOUDINARY_URL": "https://api.cloudinary.com/v1_1/dzepmjeyp/image/upload",
+        "EXPO_PUBLIC_POSTS_DATABASE_URL": "postgresql://poligym_owner:6wx8yVdzLvCJ@ep-still-meadow-a5yjydu0.us-east-2.aws.neon.tech/poligym?sslmode=require"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    }
   }
 }

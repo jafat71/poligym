@@ -9,9 +9,11 @@ import MainHomeResume from '@/components/ui/home/HomeMainResume'
 import HomeSubSection from '@/components/ui/home/HomeSubSection'
 import HomeSmallSection from '@/components/ui/home/HomeSmallSection'
 import { useQueryClient } from '@tanstack/react-query'
+import { useUser } from '@/context/UserContext'
 const Home = () => {
   useBackBehaviour()
   const { isDark } = useTheme()
+  const { loggedUserInfo } = useUser()
   const [isRefreshing, setIsRefreshing] = useState(false);
   const queryClient = useQueryClient();
 
@@ -33,8 +35,6 @@ const Home = () => {
       animated: true
     });
   };
-
-
 
   return (
     <ScrollView

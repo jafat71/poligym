@@ -34,12 +34,12 @@ export default function RootLayout() {
     "Raleway-SemiBold": require("../assets/fonts/Raleway-SemiBold.ttf"),
     "Raleway-Thin": require("../assets/fonts/Raleway-Thin.ttf"),
   });
-  const {iconsloaded} = useIcons()
+  useIcons()
 
   useEffect(() => {
     async function prepare() {
       if (loaded ) {
-        await SplashScreen.hideAsync();
+        SplashScreen.hideAsync();
         await initializeDatabase();
       }
     }

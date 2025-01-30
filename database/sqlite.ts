@@ -325,8 +325,8 @@ export const tableExists = async (tableName: string): Promise<boolean> => {
 
 export const initializeDatabase = async () => {
     try {
-        // await dropUserPlanProgressTable();
-        // await dropPlanProgressDetailsTable();
+        await dropUserPlanProgressTable();
+        await dropPlanProgressDetailsTable();
 
         await db.execSync(`
             CREATE TABLE IF NOT EXISTS workout_progress 
@@ -363,7 +363,7 @@ export const initializeDatabase = async () => {
                 workoutId TEXT NOT NULL,
                 completed BOOLEAN NOT NULL,
                 insertedOrder INTEGER NOT NULL,
-                FOREIGN KEY(planProgressId) REFERENCES user_plan_progress(id)
+                FOREIGN KEY(planProgressId) REFERENCES user_plan_progress(id) ON DELETE CASCADE
             );
         `);
 
@@ -386,9 +386,9 @@ const dropWorkoutProgressTable = async () => {
     `);
 };
 
-export const resetUserPlanProgressDetails = async(userId: string) => {
+export const resetUserPlanProgressDetails = async(planProgressId: string) => {
     await db.execSync(`
-        DELETE FROM plan_progress_details WHERE userId = '${userId.replace(/'/g, "''")}';
+        DELETE FROM plan_progress_details WHERE planProgressId = '${planProgressId.replace(/'/g, "''")}';
     `);
 }
 
@@ -405,7 +405,12 @@ const dropPlanProgressDetailsTable = async () => {
 };
 
 export const resetUserPlanProgress = async (userId: string) => {
+    try {
+
     await db.execSync(`
-        DELETE FROM user_plan_progress WHERE userId = '${userId.replace(/'/g, "''")}';
-    `);
+            DELETE FROM user_plan_progress WHERE userId = '${userId.replace(/'/g, "''")}';
+        `);
+    } catch (error) {
+        console.error("Error al resetear el progreso del plan:", error);
+    }
 };

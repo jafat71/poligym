@@ -9,7 +9,7 @@ export default function RootLayout() {
   const { loggedUserInfo } = useUser();
   const { isDark } = useTheme();
 
-  if (!loggedUserInfo) return <Loading />;
+  // if (!loggedUserInfo) return <Loading />;
 
   return (
       <Stack 

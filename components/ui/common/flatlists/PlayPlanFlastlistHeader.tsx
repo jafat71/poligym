@@ -187,7 +187,7 @@ export const PlayPlanFlatlistHeader = ({
                     <Text 
                     numberOfLines={1} 
                     className={`text-white text-xl font-ralewayLight`}>
-                                Semana {nextWorkout?.week} - {nextWorkout?.workout.name}
+                                Semana {nextWorkout?.week} - {nextWorkout?.workout?.name}
                             </Text>
                         </View>
                     )

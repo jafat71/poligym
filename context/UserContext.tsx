@@ -91,6 +91,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         accessToken ? fetchUser() : setUserLogged(false)
     }, [accessToken]);
 
+    useEffect(() => {
+        console.log("pathname", pathname)
+    }, [pathname])
+
     const { updateInitUserShell } = useNavigationFlowContext()
     useEffect(() => {
         if (userLogged) {

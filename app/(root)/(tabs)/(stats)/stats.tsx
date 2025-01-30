@@ -187,8 +187,7 @@ export const Stats = () => {
         // await dropUserPlanProgressTable();
         // await dropPlanProgressDetailsTable();
         await resetUserWorkoutProgress(loggedUserInfo?.id ?? '');
-        await resetUserPlanProgress(loggedUserInfo?.id ?? '');
-        await resetUserPlanProgressDetails(loggedUserInfo?.id ?? '');
+        // await resetUserPlanProgress(loggedUserInfo?.id ?? '');
         queryClient.invalidateQueries({ queryKey: ['historyTime'] });
         onRefresh();
       } }

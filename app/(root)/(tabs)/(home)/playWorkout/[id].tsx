@@ -221,6 +221,7 @@ const PlayWorkout = () => {
                 onClose={() => {
                     setShowCompletionModal(false)
                     if(!!planId && !!weekIndex && !!workoutId) {
+                        Alert.alert("Guardando progreso de la rutina ...")
                         router.navigate({
                             pathname:`/(home)/playPlan/${planId}` as never,
                             params: {
